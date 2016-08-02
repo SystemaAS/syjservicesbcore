@@ -28,10 +28,15 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, b.navsg navsg ");
-			sql.append(" from kodta a, navavd b ");
-			sql.append(" where a.koaavd = b.koaavd (+) ");
-			
+			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
+			 sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, a.koaie, a.koapos, a.koalk, ");
+			 sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr ");
+			 
+			 sql.append(" from kodta AS a ");
+			 sql.append(" full outer join navavd AS b ");
+			 sql.append(" on a.koaavd = b.koaavd  ");
+			 sql.append(" full outer join kodtasid AS c ");
+			 sql.append(" on a.koaavd = c.ksavd ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
 		}catch(Exception e){
@@ -51,13 +56,21 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		List<KodtaDao> retval = new ArrayList<KodtaDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, b.navsg navsg ");
-			sql.append(" from kodta a, navavd b ");
-			sql.append(" where a.koaavd = ? ");
-			sql.append(" and a.koaavd = b.koaavd ");
 			
+			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
+			sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, a.koaie, a.koapos, a.koalk, ");
+			sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr ");
+			 
+			sql.append(" from kodta AS a ");
+			sql.append(" full outer join navavd AS b ");
+			sql.append(" on a.koaavd = b.koaavd  ");
+			sql.append(" full outer join kodtasid AS c ");
+			sql.append(" on a.koaavd = c.ksavd ");
+			//WHERE
+			sql.append(" where a.koaavd = ? ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new KodtaMapper());
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());

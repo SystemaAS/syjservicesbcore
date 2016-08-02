@@ -132,7 +132,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 	/**
 	 * 
 	 * Update Database DML operations
-	 * File: 		KODTA
+	 * File: 	KODTA, subtables: NAVAVD, KODTASID
 	 * PGM:		SYFA14
 	 * Member: 	MAINT AVD Maintenance - SELECT LIST or SELECT SPECIFIC
 	 * 

@@ -45,7 +45,8 @@ public class SqlTester {
 				 sql.append(" on a.koaavd = b.koaavd  ");
 				 sql.append(" full outer join kodtasid AS c ");
 				 sql.append(" on a.koaavd = c.ksavd ");
-					
+				 //sql.append(" where a.koaavd = 1 ");
+				 	
 				 PreparedStatement stmt = conn.prepareStatement(sql.toString());
 				 
 				 ResultSet rs = stmt.executeQuery();
