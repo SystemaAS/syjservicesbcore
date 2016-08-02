@@ -27,8 +27,18 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   
+  
+  <bean id="navavdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.NavavdDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  <bean id="kodtasidDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtasidDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  
   <bean id="kodtaDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+      <property name="navavdDaoServices"><ref bean="navavdDaoServices"/></property>
+      <property name="kodtasidDaoServices"><ref bean="kodtasidDaoServices"/></property>
   </bean>
   
 

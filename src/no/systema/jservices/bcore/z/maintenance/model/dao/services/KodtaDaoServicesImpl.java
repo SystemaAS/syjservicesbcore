@@ -28,17 +28,19 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
+			
 			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
-			 sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, a.koaie, a.koapos, a.koalk, ");
-			 sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr ");
+			sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, a.koaie, a.koapos, a.koalk, ");
+			sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr ");
 			 
-			 sql.append(" from kodta AS a ");
-			 sql.append(" full outer join navavd AS b ");
-			 sql.append(" on a.koaavd = b.koaavd  ");
-			 sql.append(" full outer join kodtasid AS c ");
-			 sql.append(" on a.koaavd = c.ksavd ");
+			sql.append(" from kodta AS a ");
+			sql.append(" full outer join navavd AS b ");
+			sql.append(" on a.koaavd = b.koaavd  ");
+			sql.append(" full outer join kodtasid AS c ");
+			sql.append(" on a.koaavd = c.ksavd ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -90,16 +92,22 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	
 	public int insert(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
-		/*
+		
 		try{
-			KodtlikDao dao = (KodtlikDao)daoObj;
+			KodtaDao dao = (KodtaDao)daoObj;
 			StringBuffer sql = new StringBuffer();
-			//DEBUG --> logger.info("mydebug");
-			sql.append(" INSERT INTO kodtlik (klista, kliuni, klikod, klinav, klisto, klixxx) ");
-			sql.append(" VALUES(?, ?, ?, ?, ?, ? ) ");
+			//DEBUG --> 
+			logger.info("Inside insert");
+			sql.append(" INSERT INTO kodta ( koauni, koaavd, koanvn, koafir, koaknr, KOABÆR, koakon, koaiat, koapos, koaie, koalk ) ");
+			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKlista(), dao.getKliuni(), dao.getKlikod(), dao.getKlinav(), 
-					dao.getKlisto(), dao.getKlixxx() } );
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoauni(), dao.getKoaavd(), dao.getKoanvn(), dao.getKoafir(), dao.getKoaknr(), 
+					dao.getKoabaer(), dao.getKoakon(), dao.getKoaiat(), dao.getKoapos(), dao.getKoaie(), dao.getKoalk() } );
+			
+			if(retval>=0){
+				this.navavdDaoServices.insert(dao, errorStackTrace);
+				this.kodtasidDaoServices.insert(dao, errorStackTrace);
+			}
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -108,7 +116,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
-		*/
+		
 		return retval;
 	}
 	
@@ -116,18 +124,26 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	/**
 	 * UPDATE
 	 */
-	
 	public int update(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
-		/*
+		
 		try{
-			KodtlikDao dao = (KodtlikDao)daoObj;
+			KodtaDao dao = (KodtaDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE kodtlik SET klinav = ?, klisto = ?, klixxx = ? ");
-			sql.append(" WHERE klikod = ? ");
+			sql.append(" UPDATE kodta SET koanvn = ?, koafir = ?, koaknr = ?, KOABÆR = ?, koakon = ?, koaiat = ?, ");
+			sql.append(" koapos = ?, koaie = ?, koalk = ? ");
+			sql.append(" WHERE koaavd = ? ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKlinav(), dao.getKlisto(), dao.getKlixxx(), dao.getKlikod() } );
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoanvn(), dao.getKoafir(), dao.getKoaknr(), dao.getKoabaer(),  
+				dao.getKoakon(), dao.getKoaiat(), dao.getKoapos(), dao.getKoaie(), dao.getKoalk(), 
+				//WHERE
+				dao.getKoaavd() } );
+			
+			if(retval>=0){
+				this.updateChildNavAvd(daoObj, errorStackTrace);
+				this.updateChildKodtasid(daoObj, errorStackTrace);
+			}
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -136,10 +152,73 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
-		*/
+		
+		return retval;
+	}
+	/**
+	 * Child Update on: NAVAVD
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	
+	private int updateChildNavAvd(Object daoObj, StringBuffer errorStackTrace){
+		int retval = 0;
+		try{
+			KodtaDao dao = (KodtaDao)daoObj;
+			int childRecord = this.navavdDaoServices.findById(dao.getKoaavd(), errorStackTrace);
+			//logger.info("EXISTS:" + childRecord);
+			
+			if(childRecord>0){
+				logger.info("Navavd child update...");
+				retval = this.navavdDaoServices.update(dao, errorStackTrace);
+				
+			}else{
+				logger.info("Navavd child insert...");
+				retval = this.navavdDaoServices.insert(dao, errorStackTrace);
+			}
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
 		return retval;
 	}
 	
+	/**
+	 * Child Update on: KODTASID
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	private int updateChildKodtasid(Object daoObj, StringBuffer errorStackTrace){
+		int retval = 0;
+		try{
+			KodtaDao dao = (KodtaDao)daoObj;
+			int childRecord = this.kodtasidDaoServices.findById(dao.getKoaavd(), errorStackTrace);
+			//logger.info("EXISTS:" + childRecord);
+			
+			if(childRecord>0){
+				logger.info("Kodtasid child update...");
+				retval = this.kodtasidDaoServices.update(dao, errorStackTrace);
+				
+			}else{
+				logger.info("Kodtasid child insert...");
+				retval = this.kodtasidDaoServices.insert(dao, errorStackTrace);
+			}
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		return retval;
+	}
 	
 	/**
 	 * DELETE
@@ -147,16 +226,21 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	
 	public int delete(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
-		/*
+		
 		try{
-			KodtlikDao dao = (KodtlikDao)daoObj;
+			KodtaDao dao = (KodtaDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" DELETE from kodtlik ");
-			sql.append(" WHERE klikod = ? ");
+			sql.append(" DELETE from kodta ");
+			sql.append(" WHERE koaavd = ? ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKlikod() } );
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoaavd() } );
 			
+			//Delete children
+			if(retval>=0){
+				this.navavdDaoServices.delete(dao, errorStackTrace);
+				this.kodtasidDaoServices.delete(dao, errorStackTrace);
+			}
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -164,7 +248,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
-		*/
+		
 		return retval;
 	}
 	
@@ -177,4 +261,14 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
 	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}                                    
 
+	private NavavdDaoServices navavdDaoServices = null;                                                            
+	public void setNavavdDaoServices( NavavdDaoServices navavdDaoServices) {this.navavdDaoServices = navavdDaoServices;}          
+	public NavavdDaoServices getNavavdDaoServices() {return this.navavdDaoServices;}                                    
+	
+	private KodtasidDaoServices kodtasidDaoServices = null;                                                            
+	public void setKodtasidDaoServices( KodtasidDaoServices kodtasidDaoServices) {this.kodtasidDaoServices = kodtasidDaoServices;}          
+	public KodtasidDaoServices getKodtasidDaoServices() {return this.kodtasidDaoServices;}                                    
+	
+	
+	
 }

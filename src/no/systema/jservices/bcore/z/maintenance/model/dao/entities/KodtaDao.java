@@ -12,6 +12,11 @@ import no.systema.jservices.model.dao.entities.IDao;
  */
 public class KodtaDao implements Serializable, IDao {
 	
+	private String koauni = "A"; //always as default                               
+	public String getKoauniPropertyName (){ return "koauni"; }
+	public void setKoauni (String value){ this.koauni = value;   }   
+	public String getKoauni (){ return this.koauni;   }  
+	
 	private String koaavd = "";                                
 	public String getKoaavdPropertyName (){ return "koaavd"; }
 	public void setKoaavd (String value){ this.koaavd = value;   }   

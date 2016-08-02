@@ -34,7 +34,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaDaoServi
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 //rules
-//import no.systema.jservices.tvinn.sad.z.maintenance.sadimport.controller.rules.SYFT19R_U;
+import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA14R_U;
 
 
 
@@ -143,7 +143,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 	 * @return
 	 * 
 	 */
-	/*
+	
 	@RequestMapping(value="syjsSYFA14R_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsR_U( HttpSession session, HttpServletRequest request) {
@@ -151,7 +151,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.info("Inside syjsSYFT19R_U.do");
+			logger.info("Inside syjsSYFA14R_U.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
@@ -163,17 +163,18 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 			
 			//bind attributes is any
-			KodtlikDao dao = new KodtlikDao();
+			KodtaDao dao = new KodtaDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYFT19R_U rulerLord = new SYFT19R_U();
+            SYFA14R_U rulerLord = new SYFA14R_U();
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("D".equals(mode)){
+					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						dmlRetval = this.kodtlikDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.kodtaDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -182,23 +183,26 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 					}
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode)){
-						logger.info("Before UPDATE ...");
-						List<KodtlikDao> list = new ArrayList<KodtlikDao>();
+						List<KodtaDao> list = new ArrayList<KodtaDao>();
+						//must complete numeric values to avoid <null> on those
+						rulerLord.updateNumericFieldsIfNull(dao);
 						
 						//do ADD
 						if("A".equals(mode)){
-							list = this.kodtlikDaoServices.findById(dao.getKlikod(), dbErrorStackTrace);
+							logger.info("Before INSERT ...");
+							list = this.kodtaDaoServices.findById(dao.getKoaavd(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output
-								errMsg = "ERROR on UPDATE: Code exists already";
+								errMsg = "ERROR on UPDATE: Record exists already";
 								status = "error";
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
-								dmlRetval = this.kodtlikDaoServices.insert(dao, dbErrorStackTrace);
+								dmlRetval = this.kodtaDaoServices.insert(dao, dbErrorStackTrace);
 							}
 						}else if("U".equals(mode)){
-							 dmlRetval = this.kodtlikDaoServices.update(dao, dbErrorStackTrace);
+							logger.info("Before UPDATE ...");
+							dmlRetval = this.kodtaDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{
@@ -238,7 +242,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 		}
 		return sb.toString();
 	}
-	*/
+	
 	//----------------
 	//WIRED SERVICES
 	//----------------
