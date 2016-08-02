@@ -28,7 +28,11 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append("select koaavd, koaknr from kodta");
+			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, b.navsg navsg ");
+			sql.append(" from kodta a, navavd b ");
+			sql.append(" where a.koaavd = b.koaavd (+) ");
+			
+			
 			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -46,8 +50,14 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	public List findById (String id, StringBuffer errorStackTrace ){
 		List<KodtaDao> retval = new ArrayList<KodtaDao>();
 		try{
-			String sql= "select koaavd, koaknr from kodta where koaavd = ?";
-			retval = this.jdbcTemplate.query( sql, new Object[] { id }, new KodtaMapper());
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, b.navsg navsg ");
+			sql.append(" from kodta a, navavd b ");
+			sql.append(" where a.koaavd = ? ");
+			sql.append(" and a.koaavd = b.koaavd ");
+			
+			
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new KodtaMapper());
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());

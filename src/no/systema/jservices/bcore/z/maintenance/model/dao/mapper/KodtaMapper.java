@@ -18,9 +18,13 @@ public class KodtaMapper implements RowMapper {
 	private static Logger logger = Logger.getLogger(KodtaMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+    	
     	KodtaDao dao = new KodtaDao();
     	dao.setKoaavd(rs.getString("koaavd"));
     	dao.setKoaknr(rs.getString("koaknr"));
+    	dao.setKoabaer(rs.getString("koabaer"));
+    	dao.setNavsg(rs.getString("navsg"));
+    	
     	//TODO
     	
         return dao;

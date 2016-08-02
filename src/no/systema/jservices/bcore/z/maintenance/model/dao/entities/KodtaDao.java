@@ -22,6 +22,16 @@ public class KodtaDao implements Serializable, IDao {
 	public void setKoaknr (String value){ this.koaknr = value;   }   
 	public String getKoaknr (){ return this.koaknr;   }              
 
+	private String koabaer = ""; 
+	public String getKoabaerPropertyName (){ return "koabaer"; }
+	public void setKoabaer (String value){ this.koabaer = value;   }   
+	public String getKoabaer (){ return this.koabaer;   }              
+
+	private String navsg = ""; 
+	public String getNavsgPropertyName (){ return "navsg"; }
+	public void setNavsg (String value){ this.navsg = value;   }   
+	public String getNavsg (){ return this.navsg;   }              
+
 	
 	
 }
