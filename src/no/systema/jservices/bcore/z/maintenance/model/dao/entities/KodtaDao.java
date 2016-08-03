@@ -52,6 +52,11 @@ public class KodtaDao implements Serializable, IDao {
 	public void setKoaiat (String value){ this.koaiat = value;   }   
 	public String getKoaiat (){ return this.koaiat;   }              
 
+	private String koaia2 = ""; 
+	public String getKoaia2PropertyName (){ return "koaia2"; }
+	public void setKoaia2 (String value){ this.koaia2 = value;   }   
+	public String getKoaia2 (){ return this.koaia2;   }              
+
 	private String koaie = ""; 
 	public String getKoaiePropertyName (){ return "koaie"; }
 	public void setKoaie (String value){ this.koaie = value;   }   

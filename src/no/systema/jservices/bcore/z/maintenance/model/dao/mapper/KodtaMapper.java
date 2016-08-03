@@ -27,6 +27,7 @@ public class KodtaMapper implements RowMapper {
     	dao.setKoafir(rs.getString("koafir"));
     	dao.setKoanvn(rs.getString("koanvn"));
     	dao.setKoaiat(rs.getString("koaiat"));
+    	dao.setKoaia2(rs.getString("koaia2"));
     	dao.setKoaie(rs.getString("koaie"));
     	dao.setKoapos(rs.getString("koapos"));
     	dao.setKoalk(rs.getString("koalk"));

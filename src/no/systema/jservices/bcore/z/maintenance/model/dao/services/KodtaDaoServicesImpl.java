@@ -30,7 +30,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			StringBuffer sql = new StringBuffer();
 			
 			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
-			sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, a.koaie, a.koapos, a.koalk, ");
+			sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, CHAR(a.koaia2) koaia2, a.koaie, a.koapos, a.koalk, ");
 			sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr ");
 			 
 			sql.append(" from kodta AS a ");
@@ -60,7 +60,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			StringBuffer sql = new StringBuffer();
 			
 			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
-			sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, a.koaie, a.koapos, a.koalk, ");
+			sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, CHAR(a.koaia2) koaia2, a.koaie, a.koapos, a.koalk, ");
 			sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr ");
 			 
 			sql.append(" from kodta AS a ");
@@ -98,11 +98,11 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> 
 			logger.info("Inside insert");
-			sql.append(" INSERT INTO kodta ( koauni, koaavd, koanvn, koafir, koaknr, KOABÆR, koakon, koaiat, koapos, koaie, koalk ) ");
-			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
+			sql.append(" INSERT INTO kodta ( koauni, koaavd, koanvn, koafir, koaknr, KOABÆR, koakon, koaiat, koaia2, koapos, koaie, koalk ) ");
+			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoauni(), dao.getKoaavd(), dao.getKoanvn(), dao.getKoafir(), dao.getKoaknr(), 
-					dao.getKoabaer(), dao.getKoakon(), dao.getKoaiat(), dao.getKoapos(), dao.getKoaie(), dao.getKoalk() } );
+					dao.getKoabaer(), dao.getKoakon(), dao.getKoaiat(), dao.getKoaia2(), dao.getKoapos(), dao.getKoaie(), dao.getKoalk() } );
 			
 			if(retval>=0){
 				this.navavdDaoServices.insert(dao, errorStackTrace);
@@ -131,12 +131,12 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			KodtaDao dao = (KodtaDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE kodta SET koanvn = ?, koafir = ?, koaknr = ?, KOABÆR = ?, koakon = ?, koaiat = ?, ");
+			sql.append(" UPDATE kodta SET koanvn = ?, koafir = ?, koaknr = ?, KOABÆR = ?, koakon = ?, koaiat = ?, koaia2 = ?, ");
 			sql.append(" koapos = ?, koaie = ?, koalk = ? ");
 			sql.append(" WHERE koaavd = ? ");
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoanvn(), dao.getKoafir(), dao.getKoaknr(), dao.getKoabaer(),  
-				dao.getKoakon(), dao.getKoaiat(), dao.getKoapos(), dao.getKoaie(), dao.getKoalk(), 
+				dao.getKoakon(), dao.getKoaiat(), dao.getKoaia2(), dao.getKoapos(), dao.getKoaie(), dao.getKoalk(), 
 				//WHERE
 				dao.getKoaavd() } );
 			
