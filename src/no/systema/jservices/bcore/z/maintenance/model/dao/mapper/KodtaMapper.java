@@ -31,10 +31,16 @@ public class KodtaMapper implements RowMapper {
     	dao.setKoaie(rs.getString("koaie"));
     	dao.setKoapos(rs.getString("koapos"));
     	dao.setKoalk(rs.getString("koalk"));
-    	
+    	//external children tables
     	dao.setNavsg(rs.getString("navsg"));
     	dao.setKsidnr(rs.getString("ksidnr"));
-    	//TODO
+    	//DUP child table
+    	dao.setKodus1(rs.getString("kodus1"));
+    	dao.setKodus2(rs.getString("kodus2"));
+    	dao.setKodus3(rs.getString("kodus3"));
+    	dao.setKodus4(rs.getString("kodus4"));
+    	dao.setKodus5(rs.getString("kodus5"));
+    	dao.setKodus6(rs.getString("kodus6"));
     	
         return dao;
     }

@@ -28,16 +28,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
-			
-			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
-			sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, CHAR(a.koaia2) koaia2, a.koaie, a.koapos, a.koalk, ");
-			sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr ");
-			 
-			sql.append(" from kodta AS a ");
-			sql.append(" full outer join navavd AS b ");
-			sql.append(" on a.koaavd = b.koaavd  ");
-			sql.append(" full outer join kodtasid AS c ");
-			sql.append(" on a.koaavd = c.ksavd ");
+			sql.append(this.getSELECT_CLAUSE());
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
 			
@@ -58,16 +49,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		List<KodtaDao> retval = new ArrayList<KodtaDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
-			
-			sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
-			sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, CHAR(a.koaia2) koaia2, a.koaie, a.koapos, a.koalk, ");
-			sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr ");
-			 
-			sql.append(" from kodta AS a ");
-			sql.append(" full outer join navavd AS b ");
-			sql.append(" on a.koaavd = b.koaavd  ");
-			sql.append(" full outer join kodtasid AS c ");
-			sql.append(" on a.koaavd = c.ksavd ");
+			sql.append(this.getSELECT_CLAUSE());
 			//WHERE
 			sql.append(" where a.koaavd = ? ");
 			
@@ -81,6 +63,29 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			retval = null;
 		}
 		return retval;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	private String getSELECT_CLAUSE(){
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
+		sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, CHAR(a.koaia2) koaia2, a.koaie, a.koapos, a.koalk, ");
+		sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr, coalesce(d.kodus1,'') kodus1, coalesce(d.kodus2,'') kodus2,  ");
+		sql.append(" coalesce(d.kodus3,'') kodus3, coalesce(d.kodus4,'') kodus4, coalesce(d.kodus5,'') kodus5, coalesce(d.kodus6,'') kodus6 ");
+		 
+		sql.append(" from kodta AS a ");
+		sql.append(" full outer join navavd AS b ");
+		sql.append(" on a.koaavd = b.koaavd  ");
+		sql.append(" full outer join kodtasid AS c ");
+		sql.append(" on a.koaavd = c.ksavd ");
+		sql.append(" full outer join kodtd AS d ");
+		sql.append(" on a.koaavd = d.kodavd ");
+		
+		return sql.toString();
 	}
 	
 	/**
@@ -107,6 +112,8 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			if(retval>=0){
 				this.navavdDaoServices.insert(dao, errorStackTrace);
 				this.kodtasidDaoServices.insert(dao, errorStackTrace);
+				this.kodtdDaoServices.insert(dao, errorStackTrace);
+				
 			}
 			
 		}catch(Exception e){
@@ -143,6 +150,8 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			if(retval>=0){
 				this.updateChildNavAvd(daoObj, errorStackTrace);
 				this.updateChildKodtasid(daoObj, errorStackTrace);
+				this.updateChildKodtd(daoObj, errorStackTrace);
+				
 			}
 			
 		}catch(Exception e){
@@ -221,6 +230,38 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	}
 	
 	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	private int updateChildKodtd(Object daoObj, StringBuffer errorStackTrace){
+		int retval = 0;
+		try{
+			KodtaDao dao = (KodtaDao)daoObj;
+			int childRecord = this.kodtdDaoServices.findById(dao.getKoaavd(), errorStackTrace);
+			//logger.info("EXISTS:" + childRecord);
+			
+			if(childRecord>0){
+				logger.info("Kodtd child update...");
+				retval = this.kodtdDaoServices.update(dao, errorStackTrace);
+				
+			}else{
+				logger.info("kodtd child insert...");
+				retval = this.kodtdDaoServices.insert(dao, errorStackTrace);
+			}
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		return retval;
+	}
+	
+	/**
 	 * DELETE
 	 */
 	
@@ -240,7 +281,9 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			if(retval>=0){
 				this.navavdDaoServices.delete(dao, errorStackTrace);
 				this.kodtasidDaoServices.delete(dao, errorStackTrace);
+				this.kodtdDaoServices.delete(dao, errorStackTrace);
 			}
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -268,6 +311,10 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	private KodtasidDaoServices kodtasidDaoServices = null;                                                            
 	public void setKodtasidDaoServices( KodtasidDaoServices kodtasidDaoServices) {this.kodtasidDaoServices = kodtasidDaoServices;}          
 	public KodtasidDaoServices getKodtasidDaoServices() {return this.kodtasidDaoServices;}                                    
+	
+	private KodtdDaoServices kodtdDaoServices = null;                                                            
+	public void setKodtdDaoServices( KodtdDaoServices kodtdDaoServices) {this.kodtdDaoServices = kodtdDaoServices;}          
+	public KodtdDaoServices getKodtdDaoServices() {return this.kodtdDaoServices;}                                    
 	
 	
 	

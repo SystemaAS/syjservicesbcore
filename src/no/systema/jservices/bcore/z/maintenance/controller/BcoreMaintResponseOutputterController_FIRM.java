@@ -29,13 +29,13 @@ import javax.servlet.http.HttpSession;
 
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
 
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 //rules
-import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA14R_U;
+import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFIRMR_U;
 
 
 
@@ -48,34 +48,34 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA14R_U;
  * All communication to the outside world is done through this gateway.
  * 
  * @author oscardelatorre
- * @date Aug 1, 2016
+ * @date Aug 4, 2016
  * 
  */
 
 @Controller
-public class BcoreMaintResponseOutputterController_AVD_KODTA {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_AVD_KODTA.class.getName());
+public class BcoreMaintResponseOutputterController_FIRM {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_FIRM.class.getName());
 	
 	/**
 	 * FreeForm Source:
-	 * 	 File: 		KODTA
-	 * 	 PGM:		SYFA14
+	 * 	 File: 		FIRM
+	 * 	 PGM:		SYFA30 ?
 	 * 	 Member: 	MAINT - AVD - Maintenance - SELECT LIST or SELECT SPECIFIC
 	 *  
 	 * 
 	 * @return
-	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA14R.do?user=OSCAR
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA14R.do?user=OSCAR&koaavd=1
+	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYFIRMR.do?user=OSCAR
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYFIRMR.do?user=OSCAR&fifirm=SY
 	 * 
 	 */
-	@RequestMapping(value="syjsSYFA14R.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="syjsSYFIRMR.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsRList( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.info("Inside syjsSYFA14R.do");
+			logger.info("Inside syjsSYFIRMR.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			
@@ -89,17 +89,17 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				//bind attributes is any
-				KodtaDao dao = new KodtaDao();
+				FirmDao dao = new FirmDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 	            binder.bind(request);
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
 				//do SELECT
 				logger.info("Before SELECT ...");
-				if(dao.getKoaavd()!=null && !"".equals(dao.getKoaavd())){
-					list = this.kodtaDaoServices.findById(dao.getKoaavd(), dbErrorStackTrace);
+				if(dao.getFifirm()!=null && !"".equals(dao.getFifirm())){
+					list = this.firmDaoServices.findById(dao.getFifirm(), dbErrorStackTrace);
 				}else{
-					list = this.kodtaDaoServices.getList(dbErrorStackTrace);
+					list = this.firmDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result
 				if (list!=null){
@@ -144,8 +144,8 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 	 * @return
 	 * 
 	 */
-	
-	@RequestMapping(value="syjsSYFA14R_U.do", method={RequestMethod.GET, RequestMethod.POST})
+	/*
+	@RequestMapping(value="syjsSYFIRMR_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsR_U( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
@@ -243,16 +243,16 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 		}
 		return sb.toString();
 	}
-	
+	*/
 	//----------------
 	//WIRED SERVICES
 	//----------------
-	@Qualifier ("kodtaDaoServices")
-	private KodtaDaoServices kodtaDaoServices;
+	@Qualifier ("firmDaoServices")
+	private FirmDaoServices firmDaoServices;
 	@Autowired
 	@Required
-	public void setKodtaDaoServices (KodtaDaoServices value){ this.kodtaDaoServices = value; }
-	public KodtaDaoServices getKodtaDaoServices(){ return this.kodtaDaoServices; }
+	public void setFirmDaoServices (FirmDaoServices value){ this.firmDaoServices = value; }
+	public FirmDaoServices getFirmDaoServices(){ return this.firmDaoServices; }
 
 
 	@Qualifier ("bridfDaoServices")
