@@ -59,7 +59,7 @@ public class BcoreMaintResponseOutputterController_FIRM {
 	/**
 	 * FreeForm Source:
 	 * 	 File: 		FIRM
-	 * 	 PGM:		SYFA30 ?
+	 * 	 PGM:		SYFA30 ?	
 	 * 	 Member: 	MAINT - AVD - Maintenance - SELECT LIST or SELECT SPECIFIC
 	 *  
 	 * 
