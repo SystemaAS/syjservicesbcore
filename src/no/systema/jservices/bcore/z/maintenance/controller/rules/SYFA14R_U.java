@@ -61,14 +61,18 @@ public class SYFA14R_U {
 	 * @param dao
 	 */
 	public void updateNumericFieldsIfNull(KodtaDao dao){
+		String ZERO = "0";
 		if(dao.getKoabaer()==null || "".equals(dao.getKoabaer())){
-			dao.setKoabaer("0");
+			dao.setKoabaer(ZERO);
 		}
 		if(dao.getKoakon()==null || "".equals(dao.getKoakon())){
-			dao.setKoakon("0");
+			dao.setKoakon(ZERO);
 		}
 		if(dao.getKoaiat()==null || "".equals(dao.getKoaiat())){
-			dao.setKoaiat("0");
+			dao.setKoaiat(ZERO);
+		}
+		if(dao.getKoaia2()==null || "".equals(dao.getKoaia2())){
+			dao.setKoaia2(ZERO);
 		}
 	}
 }
