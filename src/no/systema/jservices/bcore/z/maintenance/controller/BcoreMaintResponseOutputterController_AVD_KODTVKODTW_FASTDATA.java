@@ -96,9 +96,11 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 	            List list = null;
 				//do SELECT
 				logger.info("Before SELECT ...");
-				if(dao.getKowavd()!=null && !"".equals(dao.getKowavd())){
-					list = this.kodtvKodtwDaoServices.findById(dao.getKowavd(), dbErrorStackTrace);
+				if(dao.getKovavd()!=null && !"".equals(dao.getKovavd())){
+					logger.info("findById...");
+					list = this.kodtvKodtwDaoServices.findById(dao.getKovavd(), dbErrorStackTrace);
 				}else{
+					
 					list = this.kodtvKodtwDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result
@@ -191,7 +193,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
-							list = this.kodtvKodtwDaoServices.findById(dao.getKowavd(), dbErrorStackTrace);
+							list = this.kodtvKodtwDaoServices.findById(dao.getKovavd(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output

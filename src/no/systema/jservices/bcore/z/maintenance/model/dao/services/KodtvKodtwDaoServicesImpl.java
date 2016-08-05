@@ -24,11 +24,10 @@ public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
 	 */
 	public List getList(StringBuffer errorStackTrace){
 		List<KodtvKodtwDao> retval = new ArrayList<KodtvKodtwDao>();
-		
+		/* N/A TODO when needed
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select kowavd, kowlas, kowawb, kowbbs, kowxxx ");
-			sql.append(" from kodtw ");
+			sql.append(this.getSELECT_CLAUSE());
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new KodtvKodtwMapper());
 			
@@ -39,6 +38,7 @@ public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = null;
 		}
+		*/
 		return retval;
 	}
 	/**
@@ -48,11 +48,11 @@ public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
 		List<KodtvKodtwDao> retval = new ArrayList<KodtvKodtwDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
-			
-			sql.append(" select kowavd, kowlas, kowawb, kowbbs, kowxxx ");
-			sql.append(" from kodtw ");
+			logger.info(retval);
+			sql.append(this.getSELECT_CLAUSE());
 			//WHERE
-			sql.append(" where kowavd = ?  ");
+			sql.append(" where a.kovavd = ?  ");
+			sql.append(" and a.kovavd = b.kowavd  ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new KodtvKodtwMapper());
 			
@@ -63,6 +63,26 @@ public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 		}
 		return retval;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	private String getSELECT_CLAUSE(){
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" select a.kovuni kovuni, CHAR(a.kovavd) kovavd, CHAR(a.kovlkg) kovlkg, CHAR(a.kovkkg) kovkkg, CHAR(a.kovk1) kovk1, CHAR(a.kovk2) kovk2, CHAR(a.kovk3) kovk3, ");
+		sql.append(" CHAR(a.kovk4) kovk4, CHAR(a.kovk5) kovk5, CHAR(a.kovk6) kovk6, CHAR(a.kovk7) kovk7, CHAR(a.kovk8) kovk8, CHAR(a.kovk9) kovk9, ");
+		sql.append(" CHAR(a.kovk10) kovk10, CHAR(a.kovk11) kovk11, CHAR(a.kovomr) kovomr, a.kovpro kovpro, a.kovfir kovfir, a.kovavr kovavr, a.kovxxx kovxxx,  ");
+		sql.append(" CHAR(a.avutpr) avutpr, CHAR(a.avutmi) avutmi, ");
+		sql.append(" b.kowuni kowuni, CHAR(b.kowavd) kowavd, b.kowf1 kowf1, b.kowf2 kowf2, b.kowf3 kowf3, b.kowf4 kowf4, b.kowf5 kowf5, b.kowf6 kowf6, b.kowf7 kowf7, ");
+		sql.append(" b.kowf8 kowf8, b.kowf9 kowf9, b.kowf10 kowf10, b.kowf11 kowf11, b.kowf12 kowf12, CHAR(b.kowmm) kowmm, b.kowlas kowlas, b.kowawb kowawb, b.kowhod kowhod, ");
+		sql.append(" b.kowbbs kowbbs, b.kowxxx kowxxx, b.kowkom kowkom ");
+		
+		sql.append(" from kodtv a, kodtw b ");
+		
+		return sql.toString();
 	}
 	
 	/**

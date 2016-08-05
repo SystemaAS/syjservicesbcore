@@ -20,7 +20,7 @@ public class SYFA28R_U {
 		if( (user!=null && !"".equals(user)) &&
 			(mode!=null && !"".equals(mode)) ){
 			//check dao
-			if( (dao.getKowavd()!=null && !"".equals(dao.getKowavd())) ){
+			if( (dao.getKovavd()!=null && !"".equals(dao.getKovavd())) ){
 					
 				
 			}else{
@@ -42,7 +42,7 @@ public class SYFA28R_U {
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
-			if( dao.getKowavd()!=null && !"".equals(dao.getKowavd()) ){
+			if( dao.getKovavd()!=null && !"".equals(dao.getKovavd()) ){
 				//OK
 			}else{
 				retval = false;
@@ -59,8 +59,9 @@ public class SYFA28R_U {
 	 */
 	public void updateNumericFieldsIfNull(KodtvKodtwDao dao){
 		String ZERO = "0";
+		/*
 		if(dao.getKowmm()==null || "".equals(dao.getKowmm())){
 			dao.setKowmm(ZERO);
-		}
+		}*/
 	}
 }
