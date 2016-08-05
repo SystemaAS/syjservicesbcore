@@ -10,7 +10,7 @@ import no.systema.jservices.model.dao.entities.IDao;
  * @date Aug 5, 2016
  * 
  */
-public class KodtwDao implements Serializable, IDao {
+public class KodtvKodtwDao implements Serializable, IDao {
 	
 	private String kowuni = "W"; //always as default                               
 	public String getKowuniPropertyName (){ return "kowuni"; }

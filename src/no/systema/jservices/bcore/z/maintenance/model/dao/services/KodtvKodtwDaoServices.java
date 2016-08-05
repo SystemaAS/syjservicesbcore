@@ -7,4 +7,4 @@ import java.util.*;
  * @date Aug 5, 2016
  * 
  */
-public interface KodtwDaoServices extends IDaoServices { }
+public interface KodtvKodtwDaoServices extends IDaoServices { }

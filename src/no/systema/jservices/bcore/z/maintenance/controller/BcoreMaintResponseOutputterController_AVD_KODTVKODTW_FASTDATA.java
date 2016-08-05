@@ -29,8 +29,8 @@ import javax.servlet.http.HttpSession;
 
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtwDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtwDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtvKodtwDaoServices;
 
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -53,8 +53,8 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA28R_U;
  */
 
 @Controller
-public class BcoreMaintResponseOutputterController_AVD_KODTW {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_AVD_KODTW.class.getName());
+public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA.class.getName());
 	
 	/**
 	 * FreeForm Source:
@@ -89,7 +89,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTW {
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				//bind attributes is any
-				KodtwDao dao = new KodtwDao();
+				KodtvKodtwDao dao = new KodtvKodtwDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 	            binder.bind(request);
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
@@ -97,9 +97,9 @@ public class BcoreMaintResponseOutputterController_AVD_KODTW {
 				//do SELECT
 				logger.info("Before SELECT ...");
 				if(dao.getKowavd()!=null && !"".equals(dao.getKowavd())){
-					list = this.kodtwDaoServices.findById(dao.getKowavd(), dbErrorStackTrace);
+					list = this.kodtvKodtwDaoServices.findById(dao.getKowavd(), dbErrorStackTrace);
 				}else{
-					list = this.kodtwDaoServices.getList(dbErrorStackTrace);
+					list = this.kodtvKodtwDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result
 				if (list!=null){
@@ -164,7 +164,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTW {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 			
 			//bind attributes is any
-			KodtwDao dao = new KodtwDao();
+			KodtvKodtwDao dao = new KodtvKodtwDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
@@ -175,7 +175,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTW {
 				if("D".equals(mode)){
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						dmlRetval = this.kodtwDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.kodtvKodtwDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -184,14 +184,14 @@ public class BcoreMaintResponseOutputterController_AVD_KODTW {
 					}
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode)){
-						List<KodtwDao> list = new ArrayList<KodtwDao>();
+						List<KodtvKodtwDao> list = new ArrayList<KodtvKodtwDao>();
 						//must complete numeric values to avoid <null> on those
 						rulerLord.updateNumericFieldsIfNull(dao);
 						
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
-							list = this.kodtwDaoServices.findById(dao.getKowavd(), dbErrorStackTrace);
+							list = this.kodtvKodtwDaoServices.findById(dao.getKowavd(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output
@@ -199,11 +199,11 @@ public class BcoreMaintResponseOutputterController_AVD_KODTW {
 								status = "error";
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
-								dmlRetval = this.kodtwDaoServices.insert(dao, dbErrorStackTrace);
+								dmlRetval = this.kodtvKodtwDaoServices.insert(dao, dbErrorStackTrace);
 							}
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							dmlRetval = this.kodtwDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = this.kodtvKodtwDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{
@@ -247,12 +247,12 @@ public class BcoreMaintResponseOutputterController_AVD_KODTW {
 	//----------------
 	//WIRED SERVICES
 	//----------------
-	@Qualifier ("kodtwDaoServices")
-	private KodtwDaoServices kodtwDaoServices;
+	@Qualifier ("kodtvKodtwDaoServices")
+	private KodtvKodtwDaoServices kodtvKodtwDaoServices;
 	@Autowired
 	@Required
-	public void setKodtwDaoServices (KodtwDaoServices value){ this.kodtwDaoServices = value; }
-	public KodtwDaoServices getKodtwDaoServices(){ return this.kodtwDaoServices; }
+	public void setKodtvKodtwDaoServices (KodtvKodtwDaoServices value){ this.kodtvKodtwDaoServices = value; }
+	public KodtvKodtwDaoServices getKodtvKodtwDaoServices(){ return this.kodtvKodtwDaoServices; }
 
 
 	@Qualifier ("bridfDaoServices")

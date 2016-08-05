@@ -3,7 +3,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.mapper;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtwDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,12 +14,12 @@ import java.sql.SQLException;
  * @date  Aug 5, 2016
  * 
  */
-public class KodtwMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(KodtwMapper.class.getName());
+public class KodtvKodtwMapper implements RowMapper {
+	private static Logger logger = Logger.getLogger(KodtvKodtwMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	
-    	KodtwDao dao = new KodtwDao();
+    	KodtvKodtwDao dao = new KodtvKodtwDao();
     	dao.setKowavd(rs.getString("kowavd"));
     	dao.setKowlas(rs.getString("kowlas"));
     	dao.setKowawb(rs.getString("kowawb"));

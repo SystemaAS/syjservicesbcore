@@ -40,7 +40,7 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   
-  <bean id="kodtwDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtwDaoServicesImpl">
+  <bean id="kodtvKodtwDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtvKodtwDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   

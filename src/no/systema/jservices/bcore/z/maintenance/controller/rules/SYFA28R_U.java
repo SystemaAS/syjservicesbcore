@@ -1,6 +1,6 @@
 package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtwDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
 /**
  * 
  * @author oscardelatorre
@@ -15,7 +15,7 @@ public class SYFA28R_U {
 	 * @param mode
 	 * @return
 	 */
-	public boolean isValidInput(KodtwDao dao, String user, String mode){
+	public boolean isValidInput(KodtvKodtwDao dao, String user, String mode){
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) &&
 			(mode!=null && !"".equals(mode)) ){
@@ -38,7 +38,7 @@ public class SYFA28R_U {
 	 * @param mode
 	 * @return
 	 */
-	public boolean isValidInputForDelete(KodtwDao dao, String user, String mode){
+	public boolean isValidInputForDelete(KodtvKodtwDao dao, String user, String mode){
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
@@ -57,7 +57,7 @@ public class SYFA28R_U {
 	 * 
 	 * @param dao
 	 */
-	public void updateNumericFieldsIfNull(KodtwDao dao){
+	public void updateNumericFieldsIfNull(KodtvKodtwDao dao){
 		String ZERO = "0";
 		if(dao.getKowmm()==null || "".equals(dao.getKowmm())){
 			dao.setKowmm(ZERO);

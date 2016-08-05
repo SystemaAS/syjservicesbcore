@@ -5,8 +5,8 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.KodtwMapper;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtwDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.KodtvKodtwMapper;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -15,22 +15,22 @@ import no.systema.main.util.DbErrorMessageManager;
  * @date Aug 5, 2016
  * 
  */
-public class KodtwDaoServicesImpl implements KodtwDaoServices {
-	private static Logger logger = Logger.getLogger(KodtwDaoServicesImpl.class.getName());
+public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
+	private static Logger logger = Logger.getLogger(KodtvKodtwDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	/**
 	 * 
 	 */
 	public List getList(StringBuffer errorStackTrace){
-		List<KodtwDao> retval = new ArrayList<KodtwDao>();
+		List<KodtvKodtwDao> retval = new ArrayList<KodtvKodtwDao>();
 		
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(" select kowavd, kowlas, kowawb, kowbbs, kowxxx ");
 			sql.append(" from kodtw ");
 			
-			retval = this.jdbcTemplate.query( sql.toString(), new KodtwMapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new KodtvKodtwMapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -45,7 +45,7 @@ public class KodtwDaoServicesImpl implements KodtwDaoServices {
 	 * 
 	 */
 	public List findById (String id, StringBuffer errorStackTrace ){
-		List<KodtwDao> retval = new ArrayList<KodtwDao>();
+		List<KodtvKodtwDao> retval = new ArrayList<KodtvKodtwDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
 			
@@ -54,7 +54,7 @@ public class KodtwDaoServicesImpl implements KodtwDaoServices {
 			//WHERE
 			sql.append(" where kowavd = ?  ");
 			
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new KodtwMapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new KodtvKodtwMapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
