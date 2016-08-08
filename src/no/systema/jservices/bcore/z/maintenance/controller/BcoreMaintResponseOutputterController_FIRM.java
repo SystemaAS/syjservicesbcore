@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -119,7 +121,7 @@ public class BcoreMaintResponseOutputterController_FIRM {
 				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 			}
-			
+
 		}catch(Exception e){
 			//write std.output error output
 			Writer writer = new StringWriter();
@@ -127,6 +129,7 @@ public class BcoreMaintResponseOutputterController_FIRM {
 			e.printStackTrace(printWriter);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
+		session.invalidate();
 		return sb.toString();
 	}
 	

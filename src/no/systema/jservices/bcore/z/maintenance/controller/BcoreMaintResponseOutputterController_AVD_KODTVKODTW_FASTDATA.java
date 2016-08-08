@@ -121,7 +121,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 			}
-			
+		
 		}catch(Exception e){
 			//write std.output error output
 			Writer writer = new StringWriter();
@@ -129,6 +129,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 			e.printStackTrace(printWriter);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
+		session.invalidate();
 		return sb.toString();
 	}
 	
@@ -243,6 +244,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 			e.printStackTrace(printWriter);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
+		session.invalidate();
 		return sb.toString();
 	}
 	

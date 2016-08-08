@@ -127,6 +127,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 			e.printStackTrace(printWriter);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
+		session.invalidate();
 		return sb.toString();
 	}
 	
@@ -241,6 +242,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 			e.printStackTrace(printWriter);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
+		session.invalidate();
 		return sb.toString();
 	}
 	
