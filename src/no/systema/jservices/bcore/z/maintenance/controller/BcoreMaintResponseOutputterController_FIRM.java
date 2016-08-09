@@ -244,6 +244,7 @@ public class BcoreMaintResponseOutputterController_FIRM {
 			e.printStackTrace(printWriter);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
+		session.invalidate();
 		return sb.toString();
 	}
 	*/
