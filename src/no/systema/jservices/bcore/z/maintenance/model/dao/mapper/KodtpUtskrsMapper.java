@@ -3,7 +3,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.mapper;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDao;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -13,17 +13,18 @@ import java.util.*;
 /**
  * 
  * @author oscardelatorre
- * @date  Aug 5, 2016
+ * @date  Aug 9, 2016
  * 
  */
-public class KodtvKodtwMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(KodtvKodtwMapper.class.getName());
+public class KodtpUtskrsMapper implements RowMapper {
+	private static Logger logger = Logger.getLogger(KodtpUtskrsMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	
-    	KodtvKodtwDao dao = new KodtvKodtwDao();
+    	KodtpUtskrsDao dao = new KodtpUtskrsDao();
     	//We use reflection since there are many fields. We could have written all fields manually without reflection. Refer to other daos.
     	try{
+    		
 	    	Class cl = Class.forName(dao.getClass().getCanonicalName());
 			Field[] fields = cl.getDeclaredFields();
 			List<Field> list = Arrays.asList(fields);
@@ -36,6 +37,10 @@ public class KodtvKodtwMapper implements RowMapper {
 				field.setAccessible(true);
 				field.set(dao, rs.getString(name));
 			}
+    		//dao.setKopuni(rs.getString("kopuni"));
+    		//dao.setKopavd(rs.getString("kopavd"));
+    		
+			
     	}catch(Exception e){
     		e.toString();
     	}

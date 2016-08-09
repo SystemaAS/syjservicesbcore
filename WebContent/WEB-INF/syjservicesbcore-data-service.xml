@@ -55,6 +55,9 @@
       <property name="kodtdDaoServices"><ref bean="kodtdDaoServices"/></property>
   </bean>
   
+  <bean id="kodtpUtskrsDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtpUtskrsDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
 
   
   <!--///////////////////
