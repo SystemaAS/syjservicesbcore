@@ -38,9 +38,6 @@ import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA28ChildR_U;
 
 
-
-
-
 /**
  * Service Response Controller
  * 
@@ -176,6 +173,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTPUTSKRS_FASTDATA {
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("D".equals(mode)){
+					/* N/A for this child
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
 						dmlRetval = this.kodtpUtskrsDaoServices.delete(dao, dbErrorStackTrace);
@@ -185,6 +183,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTPUTSKRS_FASTDATA {
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
+					*/
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode)){
 						List<KodtpUtskrsDao> list = new ArrayList<KodtpUtskrsDao>();
@@ -192,7 +191,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTPUTSKRS_FASTDATA {
 						rulerLord.updateNumericFieldsIfNull(dao);
 						//do ADD
 						if("A".equals(mode)){
-							/*
+							/* N/A for this child
 							logger.info("Before INSERT ...");
 							list = this.kodtpUtskrsDaoServices.findById(dao.getKopavd(), dao.getKoplnr(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
