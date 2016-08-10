@@ -209,13 +209,15 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 			KodtpUtskrsDao dao = (KodtpUtskrsDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE kodtp SET kopty = ?, kopnvn = ?, kophea = ?, koplas = ?, koplpi = ?, kopfm = ?, kopdraw = ?, kopoutb = ? ");
+			sql.append(" UPDATE kodtp SET kopty = ?, kopnvn = ?, kophea = ?, koplas = ?, koplpi = ?, kopfm = ?, kopdraw = ?, kopoutb = ?, ");
+			sql.append(" kopcopi = ?, kopfov1 = ? ");
+			
 			sql.append(" WHERE kopavd = ? ");
 			sql.append(" AND koplnr = ? ");
 			
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKopty(), dao.getKopnvn(), dao.getKophea(), dao.getKoplas(), dao.getKoplpi(), dao.getKopfm(), 
-					dao.getKopdraw(), dao.getKopoutb(), 
+					dao.getKopdraw(), dao.getKopoutb(), dao.getKopcopi(), dao.getKopfov1(), 
 					//WHERE
 					dao.getKopavd(), dao.getKoplnr() } );
 			

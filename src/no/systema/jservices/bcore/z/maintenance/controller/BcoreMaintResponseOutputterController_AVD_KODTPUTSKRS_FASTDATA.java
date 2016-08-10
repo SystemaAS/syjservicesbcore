@@ -140,7 +140,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTPUTSKRS_FASTDATA {
 	 * PGM:		SYFA28 Child (Del-2)
 	 * Member: 	MAINT AVD - Del-2 Faste data, Maintenance - SELECT LIST or SELECT SPECIFIC
 	 * 
-	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsSYFA28R_U.do?user=OSCAR&kopavd=1&koplnr=1&mode=U/A/D
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsSYFA28ChildR_U.do?user=OSCAR&kopavd=1&koplnr=1&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
