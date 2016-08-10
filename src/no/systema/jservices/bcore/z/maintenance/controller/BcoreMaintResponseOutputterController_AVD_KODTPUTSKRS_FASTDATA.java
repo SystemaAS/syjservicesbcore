@@ -190,9 +190,9 @@ public class BcoreMaintResponseOutputterController_AVD_KODTPUTSKRS_FASTDATA {
 						List<KodtpUtskrsDao> list = new ArrayList<KodtpUtskrsDao>();
 						//must complete numeric values to avoid <null> on those
 						rulerLord.updateNumericFieldsIfNull(dao);
-						
 						//do ADD
 						if("A".equals(mode)){
+							/*
 							logger.info("Before INSERT ...");
 							list = this.kodtpUtskrsDaoServices.findById(dao.getKopavd(), dao.getKoplnr(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
@@ -204,9 +204,10 @@ public class BcoreMaintResponseOutputterController_AVD_KODTPUTSKRS_FASTDATA {
 							}else{
 								dmlRetval = this.kodtpUtskrsDaoServices.insert(dao, dbErrorStackTrace);
 							}
+							*/
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							dmlRetval = this.kodtpUtskrsDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = this.kodtpUtskrsDaoServices.updateChild(dao, dbErrorStackTrace);
 						}
 						
 				  }else{

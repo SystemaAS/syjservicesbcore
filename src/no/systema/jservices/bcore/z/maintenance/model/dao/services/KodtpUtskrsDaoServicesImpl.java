@@ -174,16 +174,20 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 		int retval = 0;
 		
 		try{
-			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
+			/*
+			KodtpUtskrsDao dao = (KodtpUtskrsDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE firm SET xxx = ? ");
-			sql.append(" WHERE xxx = ? ");
+			sql.append(" UPDATE kodtp SET kopty = ?, kopnvn = ?, kophea = ?, koplas = ?, koplpi = ?, kopfm = ?, kopdraw = ?, kopoutb = ? ");
+			sql.append(" WHERE kopavd = ? ");
+			sql.append(" AND koplnr = ? ");
+			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getXXX(), 
-				//WHERE
-				dao.getKoaavd() } );
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKopty(), dao.getKopnvn(), dao.getKophea(), dao.getKoplas(), dao.getKoplpi(), dao.getKopfm(), 
+					dao.getKopdraw(), dao.getKopoutb(), 
+					//WHERE
+					dao.getKopavd(), dao.getKoplnr() } );
+			
 			*/
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -192,7 +196,36 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
+		return retval;
+	}
+	
+	/**
+	 * Updates KODTP (faste data Del-2)
+	 */
+	public int updateChild(Object daoObj, StringBuffer errorStackTrace){
+		int retval = 0;
 		
+		try{
+			KodtpUtskrsDao dao = (KodtpUtskrsDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" UPDATE kodtp SET kopty = ?, kopnvn = ?, kophea = ?, koplas = ?, koplpi = ?, kopfm = ?, kopdraw = ?, kopoutb = ? ");
+			sql.append(" WHERE kopavd = ? ");
+			sql.append(" AND koplnr = ? ");
+			
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKopty(), dao.getKopnvn(), dao.getKophea(), dao.getKoplas(), dao.getKoplpi(), dao.getKopfm(), 
+					dao.getKopdraw(), dao.getKopoutb(), 
+					//WHERE
+					dao.getKopavd(), dao.getKoplnr() } );
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
 		return retval;
 	}
 	

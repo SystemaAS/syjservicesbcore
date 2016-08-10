@@ -20,9 +20,8 @@ public class SYFA28ChildR_U {
 		if( (user!=null && !"".equals(user)) &&
 			(mode!=null && !"".equals(mode)) ){
 			//check dao
-			if( (dao.getKopavd()!=null && !"".equals(dao.getKopavd())) ){
-					
-				
+			if( (dao.getKopavd()!=null && !"".equals(dao.getKopavd())) && (dao.getKoplnr()!=null && !"".equals(dao.getKoplnr())) ){
+				//OK
 			}else{
 				retval = false;
 			}
@@ -42,8 +41,9 @@ public class SYFA28ChildR_U {
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
-			if( dao.getKopavd()!=null && !"".equals(dao.getKopavd()) ){
+			if( (dao.getKopavd()!=null && !"".equals(dao.getKopavd())) && (dao.getKoplnr()!=null && !"".equals(dao.getKoplnr())) ){
 				//OK
+				
 			}else{
 				retval = false;
 			}
@@ -86,4 +86,5 @@ public class SYFA28ChildR_U {
 			dao.setUtplpi(ZERO);
 		}
 	}
+	
 }

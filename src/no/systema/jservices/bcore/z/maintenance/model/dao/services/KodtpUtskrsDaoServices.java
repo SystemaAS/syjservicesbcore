@@ -10,4 +10,7 @@ import java.util.*;
 public interface KodtpUtskrsDaoServices extends IDaoServices { 
 	public List getList(String id, StringBuffer errorStackTrace);
 	public List findById(String id, String lnr, StringBuffer errorStackTrace);
+	//children record operations
+	public int updateChild(Object daoObj, StringBuffer errorStackTrace);
+	
 }
