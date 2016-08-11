@@ -123,17 +123,20 @@ public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
 		int retval = 0;
 		
 		try{
-			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
+			KodtvKodtwDao dao = (KodtvKodtwDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE firm SET xxx = ? ");
-			sql.append(" WHERE xxx = ? ");
+			sql.append(" UPDATE kodtv SET kovpro = ?, kovlkg = ?, kovkkg = ?, kovavr = ?, avutpr = ?, avutmi = ?, kovomr = ?, ");
+			sql.append(" kovk1 = ?, kovk2 = ?, kovk3 = ?, kovk4 = ?, kovk5 = ?, kovk6 = ?, kovk7 = ?, kovk8 = ?, kovk9 = ?, kovk10 = ?, kovk11 = ?   ");
+			sql.append(" WHERE kovavd = ? ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getXXX(), 
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKovpro(), dao.getKovlkg(), dao.getKovkkg(), dao.getKovavr(), dao.getAvutpr(), 
+				dao.getAvutmi(), dao.getKovomr(), 
+				dao.getKovk1(), dao.getKovk2(), dao.getKovk3(), dao.getKovk4(), dao.getKovk5(), dao.getKovk6(), dao.getKovk7(), dao.getKovk8(), dao.getKovk9(), 
+				dao.getKovk10(), dao.getKovk11(), 
 				//WHERE
-				dao.getKoaavd() } );
-			*/
+				dao.getKovavd() } );
+		
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());

@@ -59,9 +59,76 @@ public class SYFA28R_U {
 	 */
 	public void updateNumericFieldsIfNull(KodtvKodtwDao dao){
 		String ZERO = "0";
-		/*
+		//KODTV
+		if(dao.getKovlkg()==null || "".equals(dao.getKowmm())){
+			dao.setKowmm(ZERO);
+		}
+		if(dao.getKovkkg()==null || "".equals(dao.getKowmm())){
+			dao.setKowmm(ZERO);
+		}
+		if(dao.getKovk1()==null || "".equals(dao.getKovk1())){
+			dao.setKovk1(ZERO);
+		}
+		if(dao.getKovk2()==null || "".equals(dao.getKovk2())){
+			dao.setKovk2(ZERO);
+		}
+		if(dao.getKovk3()==null || "".equals(dao.getKovk3())){
+			dao.setKovk3(ZERO);
+		}
+		if(dao.getKovk4()==null || "".equals(dao.getKovk4())){
+			dao.setKovk4(ZERO);
+		}
+		if(dao.getKovk5()==null || "".equals(dao.getKovk5())){
+			dao.setKovk5(ZERO);
+		}
+		if(dao.getKovk6()==null || "".equals(dao.getKovk6())){
+			dao.setKovk6(ZERO);
+		}
+		if(dao.getKovk7()==null || "".equals(dao.getKovk7())){
+			dao.setKovk7(ZERO);
+		}
+		if(dao.getKovk8()==null || "".equals(dao.getKovk8())){
+			dao.setKovk8(ZERO);
+		}
+		if(dao.getKovk9()==null || "".equals(dao.getKovk9())){
+			dao.setKovk9(ZERO);
+		}
+		if(dao.getKovk10()==null || "".equals(dao.getKovk10())){
+			dao.setKovk10(ZERO);
+		}
+		if(dao.getKovk11()==null || "".equals(dao.getKovk11())){
+			dao.setKovk11(ZERO);
+		}
+		if(dao.getKovomr()==null || "".equals(dao.getKovomr())){
+			dao.setKovomr(ZERO);
+		}
+		
+		if(dao.getAvutpr()==null || "".equals(dao.getAvutpr())){
+			dao.setAvutpr(ZERO);
+		}else{
+			dao.setAvutpr(this.updateDecimalFields(dao.getAvutpr()));
+		}
+		
+		if(dao.getAvutmi()==null || "".equals(dao.getAvutmi())){
+			dao.setAvutmi(ZERO);
+		}
+		//KODTW
 		if(dao.getKowmm()==null || "".equals(dao.getKowmm())){
 			dao.setKowmm(ZERO);
-		}*/
+		}
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @return
+	 */
+	private String updateDecimalFields(String value){
+		String retval = value;
+		if(value!=null && !"".equals(value)){
+			String tmp = value.replace(",", ".");
+			retval = tmp;
+		}
+		return retval;
 	}
 }

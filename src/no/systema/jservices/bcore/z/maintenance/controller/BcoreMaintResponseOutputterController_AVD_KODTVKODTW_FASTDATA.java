@@ -140,7 +140,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 	 * PGM:		SYFA28
 	 * Member: 	MAINT AVD Maintenance - SELECT LIST or SELECT SPECIFIC
 	 * 
-	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsSYFA28R_U.do?user=OSCAR&mode=U/A/D
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA28R_U.do?user=OSCAR&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
@@ -176,6 +176,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("D".equals(mode)){
+					/*
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
 						dmlRetval = this.kodtvKodtwDaoServices.delete(dao, dbErrorStackTrace);
@@ -184,7 +185,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-					}
+					}*/
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode)){
 						List<KodtvKodtwDao> list = new ArrayList<KodtvKodtwDao>();
@@ -193,6 +194,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 						
 						//do ADD
 						if("A".equals(mode)){
+							/*
 							logger.info("Before INSERT ...");
 							list = this.kodtvKodtwDaoServices.findById(dao.getKovavd(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
@@ -203,7 +205,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
 								dmlRetval = this.kodtvKodtwDaoServices.insert(dao, dbErrorStackTrace);
-							}
+							}*/
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
 							dmlRetval = this.kodtvKodtwDaoServices.update(dao, dbErrorStackTrace);
