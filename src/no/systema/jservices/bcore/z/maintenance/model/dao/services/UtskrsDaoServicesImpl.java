@@ -5,7 +5,7 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.KodtpUtskrsMapper;
+import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.UtskrsMapper;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDao;
 import no.systema.main.util.DbErrorMessageManager;
 
@@ -27,8 +27,8 @@ public class UtskrsDaoServicesImpl implements UtskrsDaoServices {
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_CLAUSE());
-			logger.info("AAA");
-			retval = this.jdbcTemplate.query( sql.toString(), new KodtpUtskrsMapper());
+			//logger.info("AAA");
+			retval = this.jdbcTemplate.query( sql.toString(), new UtskrsMapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);

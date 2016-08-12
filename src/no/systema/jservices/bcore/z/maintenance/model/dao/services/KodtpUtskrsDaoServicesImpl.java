@@ -24,22 +24,7 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 	 */
 	public List getList(StringBuffer errorStackTrace){
 		List<KodtpUtskrsDao> retval = new ArrayList<KodtpUtskrsDao>();
-		/* N/A
-		try{
-			StringBuffer sql = new StringBuffer();
-			sql.append(this.getSELECT_CLAUSE());
-			sql.append(" where a.kopavd = ?  ");
-			sql.append(" and a.koplnr = b.utpnr  ");
-			
-			retval = this.jdbcTemplate.query( sql.toString(), new KodtpUtskrsMapper());
-			
-		}catch(Exception e){
-			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
-			//Chop the message to comply to JSON-validation
-			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-			retval = null;
-		}*/
+		// N/A
 		return retval;
 	}
 	/**
@@ -54,6 +39,10 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 			sql.append(" and a.koplnr = b.utpnr  ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new KodtpUtskrsMapper());
+			/* DEBUG
+			for(KodtpUtskrsDao record: retval){
+				logger.info(record.getKoplnr());
+			}*/
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -69,23 +58,8 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 	 */
 	public List findById (String id, StringBuffer errorStackTrace ){
 		List<KodtpUtskrsDao> retval = new ArrayList<KodtpUtskrsDao>();
-		/* N/A 
-		try{
-			StringBuffer sql = new StringBuffer();
-			logger.info(retval);
-			sql.append(this.getSELECT_CLAUSE());
-			//WHERE
-			sql.append(" where a.kopavd = ?  ");
-			sql.append(" and a.koplnr = b.utpnr  ");
-			
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new KodtpUtskrsMapper());
-			
-		}catch(Exception e){
-			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
-			//Chop the message to comply to JSON-validation
-			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-		}*/
+		//N/A 
+		
 		return retval;
 	}
 	/**
@@ -130,7 +104,6 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 		sql.append(" b.utpfov2 utpfov2, b.utpfov3 utpfov3, b.utpfov4 utpfov4, b.utpbov1 utpbov1, b.utpbov2 utpbov2, b.utpbov3 utpbov3, b.utpbov4 utpbov4, b.utpbov5 utpbov5, ");
 		sql.append(" b.utpcopi utpcopi, b.utphold utphold, b.utpsave utpsave, b.utpfrmp utpfrmp, b.utpbamp utpbamp, b.utpfrmf utpfrmf, b.utpbamf utpbamf ");
 		
-		//sql.append(" select a.kopuni kopuni, a.kopavd kopavd ");
 		sql.append(" from kodtp a, utskrs b ");
 		
 		return sql.toString();
@@ -146,15 +119,18 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 	public int insert(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
 		try{
-			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
+			
+			KodtpUtskrsDao dao = (KodtpUtskrsDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" INSERT INTO firm ( koaavd, navsg ) ");
-			sql.append(" VALUES ( ?, ? ) ");
+			sql.append(" INSERT INTO kodtp ( kopuni, kopavd, koplnr, kopty, kopnvn, kopcpi, koplpi, koplpp, kopcpl ) ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
+			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoaavd(), dao.getNavsg() } );
-			*/
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKopuni(), dao.getKopavd(), 
+								dao.getUtpnr().trim(), dao.getUtpty(), dao.getKopnvn(),
+								dao.getUtpcpi().trim(), dao.getUtplpi().trim(), dao.getUtplpp().trim(), dao.getUtpcpl().trim()  } );
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -172,30 +148,8 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 	 */
 	public int update(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
+		//N/A
 		
-		try{
-			/*
-			KodtpUtskrsDao dao = (KodtpUtskrsDao)daoObj;
-			StringBuffer sql = new StringBuffer();
-			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE kodtp SET kopty = ?, kopnvn = ?, kophea = ?, koplas = ?, koplpi = ?, kopfm = ?, kopdraw = ?, kopoutb = ? ");
-			sql.append(" WHERE kopavd = ? ");
-			sql.append(" AND koplnr = ? ");
-			
-			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKopty(), dao.getKopnvn(), dao.getKophea(), dao.getKoplas(), dao.getKoplpi(), dao.getKopfm(), 
-					dao.getKopdraw(), dao.getKopoutb(), 
-					//WHERE
-					dao.getKopavd(), dao.getKoplnr() } );
-			
-			*/
-		}catch(Exception e){
-			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
-			//Chop the message to comply to JSON-validation
-			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-			retval = -1;
-		}
 		return retval;
 	}
 	

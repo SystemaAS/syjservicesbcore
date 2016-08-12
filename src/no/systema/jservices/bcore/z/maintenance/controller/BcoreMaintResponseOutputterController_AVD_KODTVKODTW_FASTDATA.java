@@ -30,7 +30,10 @@ import javax.servlet.http.HttpSession;
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtpUtskrsDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtvKodtwDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.UtskrsDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDao;
 
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -194,7 +197,6 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 						
 						//do ADD
 						if("A".equals(mode)){
-						
 							logger.info("Before INSERT ...");
 							list = this.kodtvKodtwDaoServices.findById(dao.getKovavd(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
@@ -205,9 +207,20 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
 								dmlRetval = this.kodtvKodtwDaoServices.insert(dao, dbErrorStackTrace);
-								//list = this.utskrsDaoServices.getList(dbErrorStackTrace);
+								if(dmlRetval>=0){
+									//create list of UTSKRS-table-records in KODTP-table
+									List<KodtpUtskrsDao> utskrsList = this.utskrsDaoServices.getList(dbErrorStackTrace);
+									logger.info("starting to create records in KODTP-table...");
+									for(KodtpUtskrsDao record : utskrsList){
+										record.setKopavd(dao.getKovavd());
+										record.setKopnvn("*JOB");
+										//logger.info("X" + record.getUtpnr() + "X");
+										//create record
+										this.kodtpUtskrsDaoServices.insert(record, dbErrorStackTrace);
+										
+									}
+								}
 								//loop for insert on kodtp
-								
 							}
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
@@ -256,14 +269,6 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 	//----------------
 	//WIRED SERVICES
 	//----------------
-	@Qualifier ("kodtvKodtwDaoServices")
-	private KodtvKodtwDaoServices kodtvKodtwDaoServices;
-	@Autowired
-	@Required
-	public void setKodtvKodtwDaoServices (KodtvKodtwDaoServices value){ this.kodtvKodtwDaoServices = value; }
-	public KodtvKodtwDaoServices getKodtvKodtwDaoServices(){ return this.kodtvKodtwDaoServices; }
-
-
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
 	@Autowired
@@ -271,5 +276,26 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 	public void setBridfDaoServices (BridfDaoServices value){ this.bridfDaoServices = value; }
 	public BridfDaoServices getBridfDaoServices(){ return this.bridfDaoServices; }
 	
+	@Qualifier ("kodtvKodtwDaoServices")
+	private KodtvKodtwDaoServices kodtvKodtwDaoServices;
+	@Autowired
+	@Required
+	public void setKodtvKodtwDaoServices (KodtvKodtwDaoServices value){ this.kodtvKodtwDaoServices = value; }
+	public KodtvKodtwDaoServices getKodtvKodtwDaoServices(){ return this.kodtvKodtwDaoServices; }
+
+	@Qualifier ("utskrsDaoServices")
+	private UtskrsDaoServices utskrsDaoServices;
+	@Autowired
+	@Required
+	public void setUtskrsDaoServices (UtskrsDaoServices value){ this.utskrsDaoServices = value; }
+	public UtskrsDaoServices getUtskrsDaoServices(){ return this.utskrsDaoServices; }
+
+	@Qualifier ("kodtpUtskrsDaoServices")
+	private KodtpUtskrsDaoServices kodtpUtskrsDaoServices;
+	@Autowired
+	@Required
+	public void setKodtpUtskrsDaoServices (KodtpUtskrsDaoServices value){ this.kodtpUtskrsDaoServices = value; }
+	public KodtpUtskrsDaoServices getKodtpUtskrsDaoServices(){ return this.kodtpUtskrsDaoServices; }
+
 }
 

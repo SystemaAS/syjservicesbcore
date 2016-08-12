@@ -16,30 +16,21 @@ import java.util.*;
  * @date  Aug 9, 2016
  * 
  */
-public class KodtpUtskrsMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(KodtpUtskrsMapper.class.getName());
+public class UtskrsMapper implements RowMapper {
+	private static Logger logger = Logger.getLogger(UtskrsMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	
     	KodtpUtskrsDao dao = new KodtpUtskrsDao();
     	//We use reflection since there are many fields. We could have written all fields manually without reflection. Refer to other daos.
-		try{
-	    	Class cl = Class.forName(dao.getClass().getCanonicalName());
-			Field[] fields = cl.getDeclaredFields();
-			List<Field> list = Arrays.asList(fields);
-			for(Field field : list){
-				String name = (String)field.getName();
-				if(name!=null && !"".equals(name)){
-					//DEBUG --> System.out.println(field.getName() + " Name:" + name);
-				}
-				//here we put the value
-				field.setAccessible(true);
-				field.set(dao, rs.getString(name));
-			}
-    	}catch(Exception e){
-    		e.toString();
-    	}
-        
+    		dao.setUtpnr(rs.getString("utpnr"));
+    		dao.setUtpty(rs.getString("utpty"));
+    		dao.setUtpcpi(rs.getString("utpcpi"));
+    		dao.setUtplpi(rs.getString("utplpi"));
+    		dao.setUtplpp(rs.getString("utplpp"));
+    		dao.setUtpcpl(rs.getString("utpcpl"));
+    		
+    	
         return dao;
     }
 
