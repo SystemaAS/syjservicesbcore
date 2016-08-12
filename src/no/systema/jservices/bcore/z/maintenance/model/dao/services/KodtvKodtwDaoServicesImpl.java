@@ -95,15 +95,61 @@ public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
 	public int insert(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
 		try{
-			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
+			
+			KodtvKodtwDao dao = (KodtvKodtwDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" INSERT INTO firm ( koaavd, navsg ) ");
-			sql.append(" VALUES ( ?, ? ) ");
+			sql.append(" INSERT INTO kodtv ( kovuni, kovavd, kovpro, kovlkg, kovkkg, kovavr, avutpr, avutmi, kovomr, kovxxx, ");
+			sql.append(" kovk1, kovk2, kovk3, kovk4, kovk5, kovk6, kovk7, kovk8, kovk9, kovk10, kovk11 ) ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
+			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoaavd(), dao.getNavsg() } );
-			*/
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKovuni(), dao.getKovavd(), dao.getKovpro(), dao.getKovlkg(), dao.getKovkkg(),
+						dao.getKovavr(), dao.getAvutpr(), dao.getAvutmi(), dao.getKovomr(), dao.getKovxxx(), 
+						dao.getKovk1(), dao.getKovk2(), dao.getKovk3(), dao.getKovk4(), dao.getKovk5(), dao.getKovk6(), dao.getKovk7(), dao.getKovk8(), dao.getKovk9(),
+						dao.getKovk10(), dao.getKovk11() } ); 
+			
+			//Child table KODTW
+			if(retval>=0){
+				this.insertChild(daoObj, errorStackTrace);
+			}
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		
+		return retval;
+	}
+	
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public int insertChild(Object daoObj, StringBuffer errorStackTrace){
+		int retval = 0;
+		
+		try{
+			KodtvKodtwDao dao = (KodtvKodtwDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			sql.append(" INSERT INTO kodtw ( kowavd, kowuni, kowmm, kowlas, kowawb, kowhod, kowbbs, kowxxx, kowkom, ");
+			sql.append(" kowf1, kowf2, kowf3, kowf4, kowf5, kowf6, kowf7, kowf8, kowf9, kowf10, kowf11, kowf12 ) ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
+			
+			
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKovavd(), //must be kovavd and NOT kowavd since we are consistent with kovavd
+				dao.getKowuni(), dao.getKowmm(), dao.getKowlas(), dao.getKowawb(), dao.getKowhod(), dao.getKowbbs(), dao.getKowxxx(), dao.getKowkom(), 
+				dao.getKowf1(), dao.getKowf2(), dao.getKowf3(), dao.getKowf4(), dao.getKowf5(), dao.getKowf6(), dao.getKowf7(), dao.getKowf8(), dao.getKowf9(), 
+				dao.getKowf10(), dao.getKowf11(), dao.getKowf12()  } );
+			
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -126,14 +172,56 @@ public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
 			KodtvKodtwDao dao = (KodtvKodtwDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE kodtv SET kovpro = ?, kovlkg = ?, kovkkg = ?, kovavr = ?, avutpr = ?, avutmi = ?, kovomr = ?, ");
+			sql.append(" UPDATE kodtv SET kovpro = ?, kovlkg = ?, kovkkg = ?, kovavr = ?, avutpr = ?, avutmi = ?, kovomr = ?, kovxxx = ?, ");
 			sql.append(" kovk1 = ?, kovk2 = ?, kovk3 = ?, kovk4 = ?, kovk5 = ?, kovk6 = ?, kovk7 = ?, kovk8 = ?, kovk9 = ?, kovk10 = ?, kovk11 = ?   ");
 			sql.append(" WHERE kovavd = ? ");
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKovpro(), dao.getKovlkg(), dao.getKovkkg(), dao.getKovavr(), dao.getAvutpr(), 
-				dao.getAvutmi(), dao.getKovomr(), 
-				dao.getKovk1(), dao.getKovk2(), dao.getKovk3(), dao.getKovk4(), dao.getKovk5(), dao.getKovk6(), dao.getKovk7(), dao.getKovk8(), dao.getKovk9(), 
-				dao.getKovk10(), dao.getKovk11(), 
+				dao.getAvutmi(), dao.getKovomr(), dao.getKovxxx(),  
+				//kovk1-kovk11
+				dao.getKovk1(), dao.getKovk2(), dao.getKovk3(), dao.getKovk4(), dao.getKovk5(), dao.getKovk6(), 
+				dao.getKovk7(), dao.getKovk8(), dao.getKovk9(), dao.getKovk10(), dao.getKovk11(), 
+				//WHERE
+				dao.getKovavd() } );
+			
+			//Child table KODTW
+			if(retval>=0){
+				this.updateChild(daoObj, errorStackTrace);
+			}
+		
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		
+		return retval;
+	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public int updateChild(Object daoObj, StringBuffer errorStackTrace){
+		int retval = 0;
+		
+		try{
+			KodtvKodtwDao dao = (KodtvKodtwDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" UPDATE kodtw SET kowmm = ?, kowxxx = ?, ");
+			//sql.append(" kowf1 = ?, kowf2 = ?, kowf3 = ?, kowf4 = ?, kowf5 = ?, kowf6 = ?, kowf7 = ?, kowf8 = ?, kowf9 = ?, kowf10 = ?, kowf11 = ?, kowf12 = ?,  ");
+			sql.append(" kowkom = ?, kowbbs = ?, kowawb = ?, kowhod = ?, kowlas = ?   ");
+			sql.append(" WHERE kowavd = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKowmm(), dao.getKowxxx(),  
+				//dao.getKowf1(), dao.getKowf2(), dao.getKowf3(), dao.getKowf4(), dao.getKowf5(), dao.getKowf6(), 
+				//dao.getKowf7(), dao.getKowf8(), dao.getKowf9(), dao.getKowf10(), dao.getKowf11(), dao.getKowf12(),
+				dao.getKowkom(), dao.getKowbbs(), dao.getKowawb(), dao.getKowhod(), dao.getKowlas(), 
+				
 				//WHERE
 				dao.getKovavd() } );
 		

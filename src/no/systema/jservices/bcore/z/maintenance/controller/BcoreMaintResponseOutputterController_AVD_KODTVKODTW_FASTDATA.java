@@ -194,7 +194,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 						
 						//do ADD
 						if("A".equals(mode)){
-							/*
+						
 							logger.info("Before INSERT ...");
 							list = this.kodtvKodtwDaoServices.findById(dao.getKovavd(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
@@ -205,7 +205,10 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
 								dmlRetval = this.kodtvKodtwDaoServices.insert(dao, dbErrorStackTrace);
-							}*/
+								//list = this.utskrsDaoServices.getList(dbErrorStackTrace);
+								//loop for insert on kodtp
+								
+							}
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
 							dmlRetval = this.kodtvKodtwDaoServices.update(dao, dbErrorStackTrace);

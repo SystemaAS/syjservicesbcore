@@ -59,6 +59,10 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
 
+  <bean id="utskrsDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.UtskrsDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+
   
   <!--///////////////////
         NativeExtractor 

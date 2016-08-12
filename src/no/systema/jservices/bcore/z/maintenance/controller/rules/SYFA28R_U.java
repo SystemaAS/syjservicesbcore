@@ -60,11 +60,11 @@ public class SYFA28R_U {
 	public void updateNumericFieldsIfNull(KodtvKodtwDao dao){
 		String ZERO = "0";
 		//KODTV
-		if(dao.getKovlkg()==null || "".equals(dao.getKowmm())){
-			dao.setKowmm(ZERO);
+		if(dao.getKovlkg()==null || "".equals(dao.getKovlkg())){
+			dao.setKovlkg(ZERO);
 		}
-		if(dao.getKovkkg()==null || "".equals(dao.getKowmm())){
-			dao.setKowmm(ZERO);
+		if(dao.getKovkkg()==null || "".equals(dao.getKovkkg())){
+			dao.setKovkkg(ZERO);
 		}
 		if(dao.getKovk1()==null || "".equals(dao.getKovk1())){
 			dao.setKovk1(ZERO);
