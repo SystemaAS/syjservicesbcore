@@ -1,6 +1,9 @@
 package no.systema.jservices.model.dao.services;
 import java.util.*;
 
-public interface CundfDaoServices {
-	public List getList();
+import no.systema.jservices.model.dao.entities.CusdfDao;
+
+public interface CundfDaoServices extends IDaoServicesReadOnly { 
+	public List<CusdfDao> getList();
+	public List findById(String id, String firm,  StringBuffer errorStackTrace);
 }

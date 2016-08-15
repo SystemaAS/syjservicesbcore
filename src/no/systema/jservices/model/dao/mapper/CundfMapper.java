@@ -20,11 +20,17 @@ public class CundfMapper implements RowMapper {
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	CusdfDao dao = new CusdfDao();
+    	dao.setKundnr(rs.getString("kundnr"));
     	dao.setKnavn(rs.getString("knavn"));
     	dao.setAdr1(rs.getString("adr1"));
     	dao.setAdr2(rs.getString("adr2"));
     	dao.setAdr3(rs.getString("adr3"));
     	dao.setPostnr(rs.getString("postnr"));
+    	dao.setSyrg(rs.getString("syrg"));
+    	dao.setSyland(rs.getString("syland"));
+    	dao.setFirma(rs.getString("firma"));
+    	
+    	
     	
     	//DEBUG-->logger.info(cusdf.getKnavn());
     	
