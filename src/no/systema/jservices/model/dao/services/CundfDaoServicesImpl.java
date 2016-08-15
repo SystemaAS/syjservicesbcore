@@ -81,6 +81,28 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	}
 	/**
 	 * 
+	 */
+	public List findByName(String name, String firm, StringBuffer errorStackTrace){
+		String WILDCARD = "%";
+		List<CusdfDao> retval = new ArrayList<CusdfDao>();
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(this.getSELECT_CLAUSE());
+			sql.append(" where knavn LIKE ? ");
+			sql.append(" and firma = ? ");
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { name + WILDCARD, firm }, new CundfMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = null;
+		}
+		return retval;
+	}
+	/**
+	 * 
 	 * @return
 	 */
 	private String getSELECT_CLAUSE(){

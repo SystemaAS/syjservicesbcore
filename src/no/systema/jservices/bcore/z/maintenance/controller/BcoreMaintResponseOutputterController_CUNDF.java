@@ -69,6 +69,7 @@ public class BcoreMaintResponseOutputterController_CUNDF {
 	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYCUNDFR.do?user=OSCAR
 	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYCUNDFR.do?user=OSCAR&kundnr=1
 	 * @Example SELECT specific with unique firm: http://gw.systema.no:8080/syjservicesbcore/syjsSYCUNDFR.do?user=OSCAR&kundnr=1&firma=SY
+	 * @Example SELECT specific with name: http://gw.systema.no:8080/syjservicesbcore/syjsSYCUNDFR.do?user=OSCAR&knavn=SYS&firma=SY
 	 * 
 	 */
 	@RequestMapping(value="syjsSYCUNDFR.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -101,11 +102,19 @@ public class BcoreMaintResponseOutputterController_CUNDF {
 				logger.info("Before SELECT ...");
 				if(dao.getKundnr()!=null && !"".equals(dao.getKundnr())){
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
+						logger.info("Before findById ...");
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
 					}else{
+						logger.info("Before findById ...");
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
 					}
+				}else if (dao.getKnavn()!=null && !"".equals(dao.getKnavn())){
+					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
+						logger.info("Before findByName ...");
+						list = this.cundfDaoServices.findByName(dao.getKnavn(), dao.getFirma(), dbErrorStackTrace);
+					}
 				}else{
+					logger.info("Before getList ...");
 					list = this.cundfDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result
