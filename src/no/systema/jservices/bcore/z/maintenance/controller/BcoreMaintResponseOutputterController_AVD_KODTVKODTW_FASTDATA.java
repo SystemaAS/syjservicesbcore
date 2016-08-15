@@ -209,18 +209,21 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 								dmlRetval = this.kodtvKodtwDaoServices.insert(dao, dbErrorStackTrace);
 								if(dmlRetval>=0){
 									//create list of UTSKRS-table-records in KODTP-table
-									List<KodtpUtskrsDao> utskrsList = this.utskrsDaoServices.getList(dbErrorStackTrace);
-									logger.info("starting to create records in KODTP-table...");
-									for(KodtpUtskrsDao record : utskrsList){
+									List<KodtpUtskrsDao> utskrsListSource = this.utskrsDaoServices.getList(dbErrorStackTrace);
+									logger.info("starting to create records for batchUpdate in KODTP-table...");
+									List <KodtpUtskrsDao> utskrsListTarget = new ArrayList<KodtpUtskrsDao>();
+									for(KodtpUtskrsDao record : utskrsListSource){
 										record.setKopavd(dao.getKovavd());
 										record.setKopnvn("*JOB");
+										utskrsListTarget.add(record);
 										//logger.info("X" + record.getUtpnr() + "X");
-										//create record
-										this.kodtpUtskrsDaoServices.insert(record, dbErrorStackTrace);
-										
+										//create record N/A-->this.kodtpUtskrsDaoServices.insert(record, dbErrorStackTrace);
 									}
+									//now do the batch insert
+									this.kodtpUtskrsDaoServices.insertBatch(utskrsListTarget, dbErrorStackTrace);
+									
 								}
-								//loop for insert on kodtp
+
 							}
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");

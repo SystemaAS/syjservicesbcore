@@ -1,6 +1,8 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.util.*;
 
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDao;
+
 /**
  * 
  * @author oscardelatorre
@@ -12,5 +14,6 @@ public interface KodtpUtskrsDaoServices extends IDaoServices {
 	public List findById(String id, String lnr, StringBuffer errorStackTrace);
 	//children record operations
 	public int updateChild(Object daoObj, StringBuffer errorStackTrace);
+	public int insertBatch(final List<KodtpUtskrsDao> utskrsListTarget, StringBuffer errorStackTrace);
 	
 }

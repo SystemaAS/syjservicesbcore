@@ -1,9 +1,10 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
 import java.util.*;
-
+import java.sql.*;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.KodtpUtskrsMapper;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDao;
@@ -130,6 +131,58 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKopuni(), dao.getKopavd(), 
 								dao.getUtpnr().trim(), dao.getUtpty(), dao.getKopnvn(),
 								dao.getUtpcpi().trim(), dao.getUtplpi().trim(), dao.getUtplpp().trim(), dao.getUtpcpl().trim()  } );
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		
+		return retval;
+	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public int insertBatch(final List<KodtpUtskrsDao> utskrsListTarget, StringBuffer errorStackTrace){
+		int retval = 0; 
+		try{
+			
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" INSERT INTO kodtp ( kopuni, kopavd, koplnr, kopty, kopnvn, kopcpi, koplpi, koplpp, kopcpl ) ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
+			
+			
+			this.jdbcTemplate.batchUpdate(sql.toString(), new BatchPreparedStatementSetter() {
+
+		        @Override
+		        public void setValues(PreparedStatement ps, int i)
+		            throws SQLException {
+
+		        	KodtpUtskrsDao dao = utskrsListTarget.get(i);
+		            ps.setString(1, dao.getKopuni());
+		            ps.setString(2, dao.getKopavd());
+		            ps.setString(3, dao.getUtpnr().trim());
+		            ps.setString(4, dao.getUtpty());
+		            ps.setString(5, dao.getKopnvn());
+		            ps.setString(6, dao.getUtpcpi().trim());
+		            ps.setString(7, dao.getUtplpi().trim());
+		            ps.setString(8, dao.getUtplpp().trim());
+		            ps.setString(9, dao.getUtpcpl().trim());
+		            
+		        }
+
+		        @Override
+		        public int getBatchSize() {
+		            return utskrsListTarget.size();
+		        }
+		    });
+			
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
