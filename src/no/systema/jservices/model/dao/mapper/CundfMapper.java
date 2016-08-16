@@ -29,6 +29,8 @@ public class CundfMapper implements RowMapper {
     	dao.setSyrg(rs.getString("syrg"));
     	dao.setSyland(rs.getString("syland"));
     	dao.setFirma(rs.getString("firma"));
+    	dao.setSykont(rs.getString("sykont"));
+    	dao.setSyfr02(rs.getString("syfr02"));
     	
     	
     	

@@ -84,13 +84,16 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	 */
 	public List findByName(String name, String firm, StringBuffer errorStackTrace){
 		String WILDCARD = "%";
+		String nameStr = "";
+		if(name!=null && !"".equals(name)){ nameStr = name.toUpperCase(); }
+		
 		List<CusdfDao> retval = new ArrayList<CusdfDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_CLAUSE());
-			sql.append(" where knavn LIKE ? ");
+			sql.append(" where UPPER(knavn) LIKE ? ");
 			sql.append(" and firma = ? ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { name + WILDCARD, firm }, new CundfMapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + nameStr + WILDCARD, firm }, new CundfMapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -107,7 +110,14 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	 */
 	private String getSELECT_CLAUSE(){
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select kundnr, knavn, adr1, adr2, postnr, adr3, firma, syrg, syland ");
+		sql.append(" select kundnr, knavn, adr1, adr2, postnr, adr3, firma, syrg, syland, ");
+		//all columns...map to  CundfMapper as needed
+		sql.append(" dkund, kpers, sonavn, valkod, spraak, bankg, postg, fmot, betbet, ");
+		sql.append(" betmat, sfakt, kgrens, tfaxnr, syregn, sykont, sylikv, syopdt, syminu, ");
+		sql.append(" syutlp, sypoge, systat, syselg, syiat1, syiat2, sycoty, syfr01, syfr02, ");
+		sql.append(" syfr03, syfr04, syfr05, syfr06, sysalu, syepos, aknrku, vatkku, xxbre, ");
+		sql.append(" xxlen, xxinm3, xxinlm, rnraku, golk, kundgr, pnpbku, adr21, eori ");
+		
 		sql.append(" FROM cundf");
 		return sql.toString();
 	}
