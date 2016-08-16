@@ -1,4 +1,4 @@
-package no.systema.jservices.bcore.z.maintenance.controller.rules;
+package no.systema.jservices.controller.rules;
 
 
 import no.systema.jservices.model.dao.entities.CusdfDao;

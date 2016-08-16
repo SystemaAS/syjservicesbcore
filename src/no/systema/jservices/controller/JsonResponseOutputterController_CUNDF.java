@@ -1,4 +1,4 @@
-package no.systema.jservices.bcore.z.maintenance.controller;
+package no.systema.jservices.controller;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -37,7 +37,7 @@ import no.systema.jservices.model.dao.entities.CusdfDao;
 
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 //rules
-import no.systema.jservices.bcore.z.maintenance.controller.rules.SYCUNDFR_U;
+import no.systema.jservices.controller.rules.SYCUNDFR_U;
 
 
 
@@ -55,8 +55,8 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.SYCUNDFR_U;
  */
 
 @Controller
-public class BcoreMaintResponseOutputterController_CUNDF {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_CUNDF.class.getName());
+public class JsonResponseOutputterController_CUNDF {
+	private static Logger logger = Logger.getLogger(JsonResponseOutputterController_CUNDF.class.getName());
 	
 	/**
 	 *
