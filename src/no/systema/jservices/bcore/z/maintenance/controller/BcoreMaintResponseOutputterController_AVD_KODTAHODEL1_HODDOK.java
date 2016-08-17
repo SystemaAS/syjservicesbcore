@@ -65,14 +65,14 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODEL1_HODDOK {
 	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA63.do?user=OSCAR&koaavd=1
 	 * 
 	 */
-	@RequestMapping(value="syjsSYFA63.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="syjsSYFA63R.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsRList( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.info("Inside syjsSYFA63.do");
+			logger.info("Inside syjsSYFA63R.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			
