@@ -63,7 +63,7 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
 
-  <bean id="kodtaHodel1DaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaHodel1DaoServicesImpl">
+  <bean id="kodtaHodeDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaHodeDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
 
