@@ -23,6 +23,11 @@ public class KodtaHodeDao implements Serializable, IDao {
 	public void setKoanvn (String value){ this.koanvn = value;   }   
 	public String getKoanvn (){ return this.koanvn;   }  
 	
+	private String hoavd = "";                                
+	public String getHoavdPropertyName (){ return "hoavd"; }
+	public void setHoavd (String value){ this.hoavd = value;   }   
+	public String getHoavd (){ return this.hoavd;   }  
+	
 	private String honet = "";                                
 	public String getHonetPropertyName (){ return "honet"; }
 	public void setHonet (String value){ this.honet = value;   }   

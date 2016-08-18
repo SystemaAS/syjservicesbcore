@@ -72,7 +72,7 @@ public class KodtaHodeDaoServicesImpl implements KodtaHodeDaoServices {
 		
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append(" select a.koaavd koaavd, a.koanvn koanvn, coalesce(b.honet,'') honet, coalesce(b.hostfr,'') hostfr ");
+		sql.append(" select a.koaavd koaavd, a.koanvn koanvn, coalesce(b.hoavd,'') hoavd, coalesce(b.honet,'') honet, coalesce(b.hostfr,'') hostfr ");
 		sql.append(" from kodta AS a ");
 		sql.append(" full outer join hode AS b ");
 		sql.append(" on a.koaavd = b.hoavd ");

@@ -22,12 +22,23 @@ public class KodtaHodeMapper implements RowMapper {
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	
     	KodtaHodeDao dao = new KodtaHodeDao();
-    	
-    	dao.setKoaavd(rs.getString("koaavd"));
-    	dao.setKoanvn(rs.getString("koanvn"));
-    	dao.setHonet(rs.getString("honet"));
-    	dao.setHostfr(rs.getString("hostfr"));
-    	
+    	//We use reflection since there are many fields. We could have written all fields manually without reflection. Refer to other daos.
+		try{
+	    	Class cl = Class.forName(dao.getClass().getCanonicalName());
+			Field[] fields = cl.getDeclaredFields();
+			List<Field> list = Arrays.asList(fields);
+			for(Field field : list){
+				String name = (String)field.getName();
+				if(name!=null && !"".equals(name)){
+					//DEBUG --> System.out.println(field.getName() + " Name:" + name);
+				}
+				//here we put the value
+				field.setAccessible(true);
+				field.set(dao, rs.getString(name));
+			}
+    	}catch(Exception e){
+    		e.toString();
+    	}
         
         return dao;
     }
