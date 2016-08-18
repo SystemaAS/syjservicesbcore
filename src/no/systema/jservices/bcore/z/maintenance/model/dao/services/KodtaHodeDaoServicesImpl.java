@@ -63,6 +63,33 @@ public class KodtaHodeDaoServicesImpl implements KodtaHodeDaoServices {
 		
 		return retval;
 	}
+	/**
+	 * 
+	 * @param id
+	 * @param lang
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public List findById (String id, String lang, StringBuffer errorStackTrace ){
+		List<KodtaHodeDao> retval = new ArrayList<KodtaHodeDao>();
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(this.getSELECT_CLAUSE());
+			sql.append(" where a.koaavd = ?");
+			sql.append(" and b.honet = ?");
+			//logger.info("honet:" + "X" + lang + "X");
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id, lang }, new KodtaHodeMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = null;
+		}
+		
+		return retval;
+	}
 	
 	/**
 	 * 
@@ -72,7 +99,9 @@ public class KodtaHodeDaoServicesImpl implements KodtaHodeDaoServices {
 		
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append(" select a.koaavd koaavd, a.koanvn koanvn, coalesce(b.hoavd,'') hoavd, coalesce(b.honet,'') honet, coalesce(b.hostfr,'') hostfr ");
+		sql.append(" select a.koaavd koaavd, a.koanvn koanvn, coalesce(b.hoavd,'') hoavd, coalesce(b.honet,'') honet, coalesce(b.hostfr,'') hostfr, ");
+		sql.append(" b.hoht1 hoht1, b.hoht2 hoht2, b.hoht3 hoht3, b.hoht4 hoht4, b.hoht5 hoht5, b.hoht6 hoht6, b.hoht7 hoht7,  ");
+		sql.append(" b.hobt1 hobt1, b.hobt2 hobt2, b.hobt3 hobt3 ");
 		sql.append(" from kodta AS a ");
 		sql.append(" full outer join hode AS b ");
 		sql.append(" on a.koaavd = b.hoavd ");
@@ -121,7 +150,20 @@ public class KodtaHodeDaoServicesImpl implements KodtaHodeDaoServices {
 	 */
 	public int update(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
-		//N/A
+		
+		KodtaHodeDao dao = (KodtaHodeDao)daoObj;
+		StringBuffer sql = new StringBuffer();
+		//DEBUG --> logger.info("mydebug");
+		sql.append(" UPDATE hode SET hostfr = ? ");
+		sql.append(" WHERE hoavd = ? ");
+		sql.append(" AND honet = ? ");
+		
+		//params
+		retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getHostfr(),
+			//dao.getKodus5(), dao.getKodus6(),
+			//WHERE
+			dao.getHoavd(), dao.getHonet() } );
+		
 		
 		return retval;
 	}
@@ -136,7 +178,7 @@ public class KodtaHodeDaoServicesImpl implements KodtaHodeDaoServices {
 		int retval = 0;
 		try{
 			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
+			KodtaHodeDao dao = (KodtaHodeDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
 			sql.append(" DELETE from navavd ");

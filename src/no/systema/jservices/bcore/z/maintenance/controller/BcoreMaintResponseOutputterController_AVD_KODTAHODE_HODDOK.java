@@ -94,8 +94,14 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODE_HODDOK {
 				//do SELECT
 				logger.info("Before SELECT ...");
 				if( (dao.getKoaavd()!=null && !"".equals(dao.getKoaavd())) ){
-					logger.info("findById...");
-					list = this.kodtaHodeDaoServices.findById(dao.getKoaavd(), dbErrorStackTrace);
+					if( (dao.getHoavd()!=null && !"".equals(dao.getHoavd())) ){
+						logger.info("findById with languange (honet)");
+						list = this.kodtaHodeDaoServices.findById(dao.getKoaavd(), dao.getHonet(), dbErrorStackTrace);
+						
+					}else{
+						logger.info("findById...");
+						list = this.kodtaHodeDaoServices.findById(dao.getKoaavd(), dbErrorStackTrace);
+					}
 				}else{
 					logger.info("getList...");
 					list = this.kodtaHodeDaoServices.getList(dbErrorStackTrace);
@@ -173,8 +179,8 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODE_HODDOK {
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("D".equals(mode)){
-					/* N/A for this child
 					logger.info("Before DELETE ...");
+					/* TODO
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
 						dmlRetval = this.kodtpUtskrsDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
@@ -191,8 +197,8 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODE_HODDOK {
 						rulerLord.updateNumericFieldsIfNull(dao);
 						//do ADD
 						if("A".equals(mode)){
-							/* N/A for this child
 							logger.info("Before INSERT ...");
+							/* TODO
 							list = this.kodtpUtskrsDaoServices.findById(dao.getKopavd(), dao.getKoplnr(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
@@ -206,7 +212,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODE_HODDOK {
 							*/
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							dmlRetval = this.kodtaHodeDaoServices.update(dao, dbErrorStackTrace);
+							//dmlRetval = this.kodtaHodeDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{

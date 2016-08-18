@@ -22,24 +22,24 @@ public class KodtaHodeMapper implements RowMapper {
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	
     	KodtaHodeDao dao = new KodtaHodeDao();
-    	//We use reflection since there are many fields. We could have written all fields manually without reflection. Refer to other daos.
-		try{
-	    	Class cl = Class.forName(dao.getClass().getCanonicalName());
-			Field[] fields = cl.getDeclaredFields();
-			List<Field> list = Arrays.asList(fields);
-			for(Field field : list){
-				String name = (String)field.getName();
-				if(name!=null && !"".equals(name)){
-					//DEBUG --> System.out.println(field.getName() + " Name:" + name);
-				}
-				//here we put the value
-				field.setAccessible(true);
-				field.set(dao, rs.getString(name));
-			}
-    	}catch(Exception e){
-    		e.toString();
-    	}
-        
+    	
+    	dao.setKoaavd(rs.getString("koaavd"));
+    	dao.setKoanvn(rs.getString("koanvn"));
+    	dao.setHoavd(rs.getString("hoavd"));
+    	dao.setHonet(rs.getString("honet"));
+    	dao.setHostfr(rs.getString("hostfr"));
+    	
+    	dao.setHoht1(rs.getString("hoht1"));
+    	dao.setHoht2(rs.getString("hoht2"));
+    	dao.setHoht3(rs.getString("hoht3"));
+    	dao.setHoht4(rs.getString("hoht4"));
+    	dao.setHoht5(rs.getString("hoht5"));
+    	dao.setHoht6(rs.getString("hoht6"));
+    	dao.setHoht7(rs.getString("hoht7"));
+    	dao.setHobt1(rs.getString("hobt1"));
+    	dao.setHobt2(rs.getString("hobt2"));
+    	dao.setHobt3(rs.getString("hobt3"));
+    	
         return dao;
     }
 

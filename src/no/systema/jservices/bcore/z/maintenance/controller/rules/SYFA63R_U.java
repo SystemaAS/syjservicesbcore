@@ -20,8 +20,9 @@ public class SYFA63R_U {
 		if( (user!=null && !"".equals(user)) &&
 			(mode!=null && !"".equals(mode)) ){
 			//check dao
-			if( (dao.getKoaavd()!=null && !"".equals(dao.getKoaavd())) ){
-					
+			if( (dao.getKoaavd()!=null && !"".equals(dao.getKoaavd())) && 
+				(dao.getHoavd()!=null && !"".equals(dao.getHoavd())) &&
+				(dao.getHonet()!=null && !"".equals(dao.getHonet())) ){
 				
 			}else{
 				retval = false;
@@ -42,7 +43,9 @@ public class SYFA63R_U {
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
-			if( dao.getKoaavd()!=null && !"".equals(dao.getKoaavd()) ){
+			if( (dao.getKoaavd()!=null && !"".equals(dao.getKoaavd())) && 
+				(dao.getHoavd()!=null && !"".equals(dao.getHoavd())) &&
+				(dao.getHonet()!=null && !"".equals(dao.getHonet())) ){
 				//OK
 			}else{
 				retval = false;

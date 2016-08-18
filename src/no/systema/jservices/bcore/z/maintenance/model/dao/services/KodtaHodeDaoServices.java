@@ -10,4 +10,5 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDa
  * 
  */
 public interface KodtaHodeDaoServices extends IDaoServices { 
+	public List findById (String id, String lang, StringBuffer errorStackTrace );
 }
