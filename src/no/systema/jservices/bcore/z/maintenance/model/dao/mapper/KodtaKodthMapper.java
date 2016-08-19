@@ -3,7 +3,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.mapper;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaKodthDao;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -13,17 +13,18 @@ import java.util.*;
 /**
  * 
  * @author oscardelatorre
- * @date  Aug 5, 2016
+ * @date  Aug 19, 2016
  * 
  */
-public class KodtvKodtwMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(KodtvKodtwMapper.class.getName());
+public class KodtaKodthMapper implements RowMapper {
+	private static Logger logger = Logger.getLogger(KodtaKodthMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	
-    	KodtvKodtwDao dao = new KodtvKodtwDao();
+    	KodtaKodthDao dao = new KodtaKodthDao();
+    	//dao.setKohavd("999");
     	//We use reflection since there are many fields. We could have written all fields manually without reflection. Refer to other daos.
-    	try{
+		try{
 	    	Class cl = Class.forName(dao.getClass().getCanonicalName());
 			Field[] fields = cl.getDeclaredFields();
 			List<Field> list = Arrays.asList(fields);
@@ -36,7 +37,7 @@ public class KodtvKodtwMapper implements RowMapper {
 					//here we put the value
 					field.setAccessible(true);
 					field.set(dao, rs.getString(name));
-				}catch(Exception e){
+				}catch (Exception e){
 					//Usually when no column matches the JavaBean property...
 					logger.info(e.getMessage() + e.toString());
 					continue;
@@ -46,7 +47,7 @@ public class KodtvKodtwMapper implements RowMapper {
     		e.toString();
     		logger.info(e.getMessage() + e.toString());
     	}
-    	
+        
         return dao;
     }
 

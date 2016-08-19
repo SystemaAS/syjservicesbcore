@@ -30,14 +30,21 @@ public class KodtpUtskrsMapper implements RowMapper {
 			for(Field field : list){
 				String name = (String)field.getName();
 				if(name!=null && !"".equals(name)){
-					//DEBUG --> System.out.println(field.getName() + " Name:" + name);
+					//DEBUG --> logger.info(field.getName() + " Name:" + name + " value:" + rs.getString(name));
 				}
-				//here we put the value
-				field.setAccessible(true);
-				field.set(dao, rs.getString(name));
+				try{
+					//here we put the value
+					field.setAccessible(true);
+					field.set(dao, rs.getString(name));
+				}catch(Exception e){
+					//Usually when no column matches the JavaBean property...
+					logger.info(e.getMessage() + e.toString());
+					continue;
+				}
 			}
     	}catch(Exception e){
     		e.toString();
+    		logger.info(e.getMessage() + e.toString());
     	}
         
         return dao;

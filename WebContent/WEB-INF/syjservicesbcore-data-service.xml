@@ -66,7 +66,11 @@
   <bean id="kodtaHodeDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaHodeDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-
+ 
+  <bean id="kodtaKodthDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaKodthDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  
   
   <!--///////////////////
         NativeExtractor 
