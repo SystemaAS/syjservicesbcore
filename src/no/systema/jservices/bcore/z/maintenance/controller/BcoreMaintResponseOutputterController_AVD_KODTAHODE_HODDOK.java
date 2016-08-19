@@ -180,16 +180,14 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODE_HODDOK {
 				int dmlRetval = 0;
 				if("D".equals(mode)){
 					logger.info("Before DELETE ...");
-					/* TODO
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						dmlRetval = this.kodtpUtskrsDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.kodtaHodeDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
-					*/
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode)){
 						List<KodtaHodeDao> list = new ArrayList<KodtaHodeDao>();
@@ -198,8 +196,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODE_HODDOK {
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
-							/* TODO
-							list = this.kodtpUtskrsDaoServices.findById(dao.getKopavd(), dao.getKoplnr(), dbErrorStackTrace);
+							list = this.kodtaHodeDaoServices.findById(dao.getKoaavd(), dao.getHonet(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output
@@ -207,12 +204,13 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODE_HODDOK {
 								status = "error";
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
-								dmlRetval = this.kodtpUtskrsDaoServices.insert(dao, dbErrorStackTrace);
+								logger.info("Before INSERT ...");
+								dmlRetval = this.kodtaHodeDaoServices.insert(dao, dbErrorStackTrace);
 							}
-							*/
+							
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							//dmlRetval = this.kodtaHodeDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = this.kodtaHodeDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{
@@ -263,7 +261,6 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODE_HODDOK {
 	@Required
 	public void setKodtaHodeDaoServices (KodtaHodeDaoServices value){ this.kodtaHodeDaoServices = value; }
 	public KodtaHodeDaoServices getKodtaHodeDaoServices(){ return this.kodtaHodeDaoServices; }
-
 
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;

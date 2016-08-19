@@ -119,18 +119,18 @@ public class KodtaHodeDaoServicesImpl implements KodtaHodeDaoServices {
 	public int insert(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
 		try{
-			/* TODO
-			KodtpUtskrsDao dao = (KodtpUtskrsDao)daoObj;
+
+			KodtaHodeDao dao = (KodtaHodeDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" INSERT INTO kodtp ( kopuni, kopavd, koplnr, kopty, kopnvn, kopcpi, koplpi, koplpp, kopcpl ) ");
-			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
+			sql.append(" INSERT INTO hode ( hoavd, honet, hostfr, hoht1, hoht2, hoht3, hoht4, hoht5, hoht6, hoht7, hobt1, hobt2, hobt3 ) ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
 			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKopuni(), dao.getKopavd(), 
-								dao.getUtpnr().trim(), dao.getUtpty(), dao.getKopnvn(),
-								dao.getUtpcpi().trim(), dao.getUtplpi().trim(), dao.getUtplpp().trim(), dao.getUtpcpl().trim()  } );
-			*/
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getHoavd(), dao.getHonet(), dao.getHostfr(), 
+				dao.getHoht1(), dao.getHoht2(), dao.getHoht3(), dao.getHoht4(), dao.getHoht5(), dao.getHoht6(),  dao.getHoht7(), 
+				dao.getHobt1(), dao.getHobt2(), dao.getHobt3()  } );
+
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -154,12 +154,14 @@ public class KodtaHodeDaoServicesImpl implements KodtaHodeDaoServices {
 		KodtaHodeDao dao = (KodtaHodeDao)daoObj;
 		StringBuffer sql = new StringBuffer();
 		//DEBUG --> logger.info("mydebug");
-		sql.append(" UPDATE hode SET hostfr = ? ");
+		sql.append(" UPDATE hode SET hostfr = ?, hoht1 = ?, hoht2 = ?, hoht3 = ?, hoht4 = ?, hoht5 = ?, hoht6 = ?, hoht7 = ?, ");
+		sql.append(" hobt1 = ?, hobt2 = ?, hobt3 = ? ");
 		sql.append(" WHERE hoavd = ? ");
 		sql.append(" AND honet = ? ");
 		
 		//params
-		retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getHostfr(),
+		retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getHostfr(), dao.getHoht1(), dao.getHoht2(), dao.getHoht3(),
+			dao.getHoht4(), dao.getHoht5(), dao.getHoht6(),  dao.getHoht7(), dao.getHobt1(), dao.getHobt2(), dao.getHobt3(), 
 			//dao.getKodus5(), dao.getKodus6(),
 			//WHERE
 			dao.getHoavd(), dao.getHonet() } );
@@ -177,15 +179,17 @@ public class KodtaHodeDaoServicesImpl implements KodtaHodeDaoServices {
 	public int delete(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
 		try{
-			/* TODO
+
 			KodtaHodeDao dao = (KodtaHodeDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" DELETE from navavd ");
-			sql.append(" WHERE koaavd = ? ");
+			sql.append(" DELETE from hode ");
+			sql.append(" WHERE hoavd = ? ");
+			sql.append(" AND honet = ? ");
+			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoaavd() } );
-			*/
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getHoavd(), dao.getHonet() } );
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
