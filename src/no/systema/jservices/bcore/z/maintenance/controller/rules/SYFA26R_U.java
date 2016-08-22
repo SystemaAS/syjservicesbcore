@@ -62,18 +62,12 @@ public class SYFA26R_U {
 		String ZERO = "0";
 		//TELL
 		if(dao.getTeopdn()==null || "".equals(dao.getTeopdn())){
-			
-		}else{
 			dao.setTeopdn(ZERO);
 		}
 		if(dao.getTeturn()==null || "".equals(dao.getTeturn())){
-			
-		}else{
 			dao.setTeturn(ZERO);
 		}
 		if(dao.getTetmin()==null || "".equals(dao.getTetmin())){
-			
-		}else{
 			dao.setTetmin(ZERO);
 		}
 		

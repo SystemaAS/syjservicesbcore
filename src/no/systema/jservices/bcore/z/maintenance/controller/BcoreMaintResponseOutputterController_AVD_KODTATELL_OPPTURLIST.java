@@ -167,6 +167,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTATELL_OPPTURLIST {
 			KodtaTellDao dao = new KodtaTellDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
+            
             //rules
             SYFA26R_U rulerLord = new SYFA26R_U();
 			//Start processing now
