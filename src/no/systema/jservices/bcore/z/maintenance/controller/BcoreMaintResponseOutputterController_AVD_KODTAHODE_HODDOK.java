@@ -61,8 +61,8 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAHODE_HODDOK {
 	 *  
 	 * 
 	 * @return
-	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA63.do?user=OSCAR
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA63.do?user=OSCAR&koaavd=1
+	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA63R.do?user=OSCAR
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA63R.do?user=OSCAR&koaavd=1
 	 * 
 	 */
 	@RequestMapping(value="syjsSYFA63R.do", method={RequestMethod.GET, RequestMethod.POST})

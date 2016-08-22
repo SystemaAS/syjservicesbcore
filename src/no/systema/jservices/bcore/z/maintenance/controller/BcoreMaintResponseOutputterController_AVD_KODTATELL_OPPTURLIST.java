@@ -61,8 +61,8 @@ public class BcoreMaintResponseOutputterController_AVD_KODTATELL_OPPTURLIST {
 	 *  
 	 * 
 	 * @return
-	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA26.do?user=OSCAR
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA26.do?user=OSCAR&teavd=1
+	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA26R.do?user=OSCAR
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA26R.do?user=OSCAR&teavd=1
 	 * 
 	 */
 	@RequestMapping(value="syjsSYFA26R.do", method={RequestMethod.GET, RequestMethod.POST})

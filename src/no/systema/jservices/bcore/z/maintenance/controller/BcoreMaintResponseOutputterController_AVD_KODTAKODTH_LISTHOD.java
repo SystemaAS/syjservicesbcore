@@ -61,8 +61,8 @@ public class BcoreMaintResponseOutputterController_AVD_KODTAKODTH_LISTHOD {
 	 *  
 	 * 
 	 * @return
-	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA68.do?user=OSCAR
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA68.do?user=OSCAR&kohavd=1
+	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA68R.do?user=OSCAR
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA68R.do?user=OSCAR&kohavd=1
 	 * 
 	 */
 	@RequestMapping(value="syjsSYFA68R.do", method={RequestMethod.GET, RequestMethod.POST})
