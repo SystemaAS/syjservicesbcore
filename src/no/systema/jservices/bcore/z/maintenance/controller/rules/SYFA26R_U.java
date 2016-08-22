@@ -6,7 +6,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaTellDao;
  * @author oscardelatorre
  * @date Aug 19, 2016
  */
-public class SYTELLR_U {
+public class SYFA26R_U {
 
 	/**
 	 * 
