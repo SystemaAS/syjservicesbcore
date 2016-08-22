@@ -50,8 +50,8 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA68R_U;
  */
 
 @Controller
-public class BcoreMaintResponseOutputterController_AVD_KODTAKODTH_HODDOK {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_AVD_KODTAKODTH_HODDOK.class.getName());
+public class BcoreMaintResponseOutputterController_AVD_KODTAKODTH_LISTHOD {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_AVD_KODTAKODTH_LISTHOD.class.getName());
 	
 	/**
 	 * FreeForm Source:

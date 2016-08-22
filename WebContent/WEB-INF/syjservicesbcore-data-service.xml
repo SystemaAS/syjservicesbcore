@@ -70,7 +70,10 @@
   <bean id="kodtaKodthDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaKodthDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
+  <bean id="kodtaTellDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaTellDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+ 
   
   <!--///////////////////
         NativeExtractor 
