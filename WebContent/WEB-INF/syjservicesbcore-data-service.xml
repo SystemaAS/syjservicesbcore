@@ -73,6 +73,10 @@
   <bean id="kodtaTellDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaTellDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  
+  <bean id="standiDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sadimport.StandiDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
  
   
   <!--///////////////////
