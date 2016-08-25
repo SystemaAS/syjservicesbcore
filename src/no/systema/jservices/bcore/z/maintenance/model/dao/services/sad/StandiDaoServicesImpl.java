@@ -27,8 +27,8 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select siavd, sitdn ");
-			sql.append(" from standi ");
+			sql.append(this.getSELECT_CLAUSE());
+			sql.append(" where a.siavd = b.koaavd ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new StandiMapper());
 			
@@ -49,10 +49,10 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 		try{
 			StringBuffer sql = new StringBuffer();
 			
-			sql.append(" select siavd, sitdn ");
-			sql.append(" from standi ");
+			sql.append(this.getSELECT_CLAUSE());
 			//WHERE
-			sql.append(" where siavd = ?  ");
+			sql.append(" where a.siavd = b.koaavd ");
+			sql.append(" and a.siavd = ?  ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new StandiMapper());
 			
@@ -152,6 +152,19 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 		return retval;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
+	private String getSELECT_CLAUSE(){
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" select a.*, b.koanvn, a.SIDTØ sidto ");
+		sql.append(" from standi a, kodta b ");
+		
+		return sql.toString();
+	}
 	
 	/**                                                                                                  
 	 * Wires jdbcTemplate                                                                                
