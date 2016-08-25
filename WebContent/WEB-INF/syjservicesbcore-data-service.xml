@@ -74,7 +74,7 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   
-  <bean id="standiDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sadimport.StandiDaoServicesImpl">
+  <bean id="standiDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.StandiDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
  
