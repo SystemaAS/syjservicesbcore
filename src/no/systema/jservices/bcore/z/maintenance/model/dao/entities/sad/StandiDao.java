@@ -532,6 +532,10 @@ public class StandiDao implements Serializable, IDao {
 	public void setSiekst (String value){ this.siekst = value;   }   
 	public String getSiekst (){ return this.siekst;   }  
 	
+	private String sirab = "";                                
+	public String getSirabPropertyName (){ return "sirab"; }
+	public void setSirab (String value){ this.sirab = value;   }   
+	public String getSirab (){ return this.sirab;   }  
 	
 	//DUP 
 	/*OBSOLETE ?
