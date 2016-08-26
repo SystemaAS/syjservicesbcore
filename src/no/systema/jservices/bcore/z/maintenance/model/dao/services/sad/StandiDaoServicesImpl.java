@@ -161,7 +161,7 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append(" select a.*, b.koanvn, a.SIDTØ sidto ");
-		sql.append(" from standi a, kodta b ");
+		sql.append(" from standi a, kodta AS b  ");
 		
 		return sql.toString();
 	}
