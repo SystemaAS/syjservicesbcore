@@ -1,6 +1,7 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad;
 import java.io.Serializable;
 import no.systema.jservices.model.dao.entities.IDao;
+import no.systema.main.util.*;
 
 /**
  * All variables must be initialized to empty strings and NOT to NULL values
@@ -11,6 +12,7 @@ import no.systema.jservices.model.dao.entities.IDao;
  * 
  */
 public class StandiDao implements Serializable, IDao {
+	private NumberFormatterLocaleAware numberFormatter = new NumberFormatterLocaleAware();
 	
 	private String sist = "";                             
 	public String getSistPropertyName (){ return "sist"; }
