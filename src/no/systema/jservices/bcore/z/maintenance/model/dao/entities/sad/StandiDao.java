@@ -494,25 +494,25 @@ public class StandiDao implements Serializable, IDao {
 	public void setS0035 (String value){ this.s0035 = value;   }   
 	public String getS0035 (){ return this.s0035;   }  
 	
-	private String s3039D = "";                                
-	public String getS3039DPropertyName (){ return "s3039D"; }
-	public void setS3039D (String value){ this.s3039D = value;   }   
-	public String getS3039D (){ return this.s3039D;   }  
+	private String s3039d = "";                                
+	public String getS3039dPropertyName (){ return "s3039d"; }
+	public void setS3039d (String value){ this.s3039d = value;   }   
+	public String getS3039d (){ return this.s3039d;   }  
 	
-	private String s3039E = "";                                
-	public String getS3039EPropertyName (){ return "s3039E"; }
-	public void setS3039E (String value){ this.s3039E = value;   }   
-	public String getS3039E (){ return this.s3039E;   }  
+	private String s3039e = "";                                
+	public String getS3039ePropertyName (){ return "s3039e"; }
+	public void setS3039e (String value){ this.s3039e = value;   }   
+	public String getS3039e (){ return this.s3039e;   }  
 	
-	private String s3039E01 = "";                                
-	public String getS3039E01PropertyName (){ return "s3039E01"; }
-	public void setS3039E01 (String value){ this.s3039E01 = value;   }   
-	public String getS3039E01 (){ return this.s3039E01;   }  
+	private String s3039eo1 = "";                                
+	public String getS3039eo1PropertyName (){ return "s3039eo1"; }
+	public void setS3039eo1 (String value){ this.s3039eo1 = value;   }   
+	public String getS3039eo1 (){ return this.s3039eo1;   }  
 	
-	private String s3039E02 = "";                                
-	public String getS3039E02PropertyName (){ return "s3039E02"; }
-	public void setS3039E02 (String value){ this.s3039E02 = value;   }   
-	public String getS3039E02 (){ return this.s3039E02;   }  
+	private String s3039eo2 = "";                                
+	public String getS3039eo2PropertyName (){ return "s3039eo2"; }
+	public void setS3039eo2 (String value){ this.s3039eo2 = value;   }   
+	public String getS3039eo2 (){ return this.s3039eo2;   }  
 	
 	private String sia4 = "";                                
 	public String getSia4PropertyName (){ return "sia4"; }
