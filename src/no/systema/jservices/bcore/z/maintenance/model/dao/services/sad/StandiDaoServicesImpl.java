@@ -14,6 +14,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * @author oscardelatorre
  * @date Aug 23, 2016
  * 
+ * 
  */
 public class StandiDaoServicesImpl implements StandiDaoServices {
 	private static Logger logger = Logger.getLogger(StandiDaoServicesImpl.class.getName());
@@ -27,7 +28,7 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(this.getSELECT_CLAUSE());
+			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" where a.siavd = b.koaavd ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new StandiMapper());
@@ -49,7 +50,7 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 		try{
 			StringBuffer sql = new StringBuffer();
 			
-			sql.append(this.getSELECT_CLAUSE());
+			sql.append(this.getSELECT_FROM_CLAUSE());
 			//WHERE
 			sql.append(" where a.siavd = b.koaavd ");
 			sql.append(" and a.siavd = ?  ");
@@ -75,15 +76,15 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 	public int insert(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
 		try{
-			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
+			
+			StandiDao dao = (StandiDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" INSERT INTO firm ( koaavd, navsg ) ");
+			sql.append(" INSERT INTO standi ( siavd, sinas ) ");
 			sql.append(" VALUES ( ?, ? ) ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoaavd(), dao.getNavsg() } );
-			*/
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSiavd(), dao.getSinas() } );
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -103,17 +104,18 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 		int retval = 0;
 		
 		try{
-			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
+			
+			StandiDao dao = (StandiDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE firm SET xxx = ? ");
-			sql.append(" WHERE xxx = ? ");
+			sql.append(" UPDATE standi SET sinas = ? ");
+			sql.append(" WHERE siavd = ? ");
+			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getXXX(), 
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSinas(), 
 				//WHERE
-				dao.getKoaavd() } );
-			*/
+				dao.getSiavd() } );
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -132,15 +134,16 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 	public int delete(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
 		try{
-			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
+		
+			StandiDao dao = (StandiDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" DELETE from navavd ");
-			sql.append(" WHERE koaavd = ? ");
+			sql.append(" DELETE from standi ");
+			sql.append(" WHERE siavd = ? ");
+			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoaavd() } );
-			*/
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSiavd() } );
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -156,7 +159,7 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 	 * 
 	 * @return
 	 */
-	private String getSELECT_CLAUSE(){
+	private String getSELECT_FROM_CLAUSE(){
 		
 		StringBuffer sql = new StringBuffer();
 		

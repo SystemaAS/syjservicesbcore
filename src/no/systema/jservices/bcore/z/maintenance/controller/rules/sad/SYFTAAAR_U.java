@@ -17,11 +17,10 @@ public class SYFTAAAR_U {
 	 */
 	public boolean isValidInput(StandiDao dao, String user, String mode){
 		boolean retval = true;
-		if( (user!=null && !"".equals(user)) &&
-			(mode!=null && !"".equals(mode)) ){
+		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
 			if( (dao.getSiavd()!=null && !"".equals(dao.getSiavd())) ){	
-				
+				//OK
 			}else{
 				retval = false;
 			}
@@ -41,7 +40,7 @@ public class SYFTAAAR_U {
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
-			if( dao.getSiavd()!=null && !"".equals(dao.getSiavd()) ){
+			if( (dao.getSiavd()!=null && !"".equals(dao.getSiavd())) ){	
 				//OK
 			}else{
 				retval = false;
