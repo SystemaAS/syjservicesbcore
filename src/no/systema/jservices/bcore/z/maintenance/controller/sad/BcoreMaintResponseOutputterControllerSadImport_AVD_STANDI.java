@@ -187,12 +187,11 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
 				}else{
-				  if(rulerLord.isValidInput(dao, userName, mode, validatorStackTrace)){
+				  if(rulerLord.isValidInput(dao, userName, mode )){
 						List<StandiDao> list = new ArrayList<StandiDao>();
 						//must complete numeric values to avoid <null> on those
 						rulerLord.updateNumericFieldsIfNull(dao);
 						//do ADD
-						/*
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
 							list = this.standiDaoServices.findById(dao.getSiavd(), dbErrorStackTrace);
@@ -211,10 +210,10 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
 							logger.info("Before UPDATE ...");
 							dmlRetval = this.standiDaoServices.update(dao, dbErrorStackTrace);
 						}
-						*/
+						
 				  }else{
 						//write JSON error output
-						errMsg = "ERROR RULER LORD:" +  "<b>" + validatorStackTrace.toString()+ "</br>" ;
+						errMsg = "ERROR RULER LORD:" +  "<b>" + rulerLord.getValidatorStackTrace() + "</br>" ;
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg , status, dbErrorStackTrace));
 						logger.info(sb.toString());

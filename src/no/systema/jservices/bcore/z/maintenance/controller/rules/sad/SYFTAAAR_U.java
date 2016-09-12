@@ -19,6 +19,9 @@ public class SYFTAAAR_U {
 	private static Logger logger = Logger.getLogger(SYFTAAAR_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
 	
+	private StringBuffer validatorStackTrace = new StringBuffer();
+	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }
+	
 	/**
 	 * 
 	 * @param ediiDaoServices
@@ -35,7 +38,7 @@ public class SYFTAAAR_U {
 	 * @param errorStackTrace
 	 * @return
 	 */
-	public boolean isValidInput(StandiDao dao, String user, String mode, StringBuffer errorStackTrace ){
+	public boolean isValidInput(StandiDao dao, String user, String mode ){
 		boolean retval = true;
 		
 		//starting point
@@ -54,7 +57,7 @@ public class SYFTAAAR_U {
 		//-----------------------
 		//(1) Validity of Exchanges ID
 		if("J".equals(dao.getSitolk())){
-			retval = this.vaidateExchangesId(dao, errorStackTrace);
+			retval = this.vaidateExchangesId(dao);
 		}
 		//TODO ... more validations here
 
@@ -107,11 +110,11 @@ public class SYFTAAAR_U {
 	 * @param dao
 	 * @param errorStackTrace
 	 */
-	public boolean vaidateExchangesId(StandiDao dao, StringBuffer errorStackTrace){
+	public boolean vaidateExchangesId(StandiDao dao){
 		boolean retval = true;
 		
-		List s0004List = this.ediiDaoServices.findById(dao.getS0004(), errorStackTrace);
-		List s0010List = this.ediiDaoServices.findById(dao.getS0010(), errorStackTrace);
+		List s0004List = this.ediiDaoServices.findById(dao.getS0004(), this.validatorStackTrace);
+		List s0010List = this.ediiDaoServices.findById(dao.getS0010(), this.validatorStackTrace);
 		
 		if( (s0004List!=null && s0004List.size()==1) && (s0010List!=null && s0010List.size()==1)){
 			//OK
@@ -120,13 +123,13 @@ public class SYFTAAAR_U {
 			if(s0004List!=null && s0004List.size()==1){ 
 				//OK 
 			}else{
-				errorStackTrace.append(" UtvekslingsId Avd. er feil /" );
+				this.validatorStackTrace.append(" UtvekslingsId Avd. er feil /" );
 			}
 			
 			if(s0010List!=null && s0010List.size()==1){
 				//OK
 			}else{
-				errorStackTrace.append(" UtvekslingsId Tollvesenet er feil " );
+				this.validatorStackTrace.append(" UtvekslingsId Tollvesenet er feil " );
 				
 			}
 			retval = false;
