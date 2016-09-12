@@ -33,6 +33,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.StandiDao
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.StandiDaoServices;
 
 import no.systema.jservices.model.dao.services.BridfDaoServices;
+import no.systema.jservices.model.dao.services.EdiiDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 //rules
 import no.systema.jservices.bcore.z.maintenance.controller.rules.sad.SYFTAAAR_U;
@@ -162,6 +163,8 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
             String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
+			StringBuffer validatorStackTrace = new StringBuffer();
+			
 			
 			//bind attributes is any
 			StandiDao dao = new StandiDao();
@@ -169,7 +172,7 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
             binder.bind(request);
             
             //rules
-            SYFTAAAR_U rulerLord = new SYFTAAAR_U();
+            SYFTAAAR_U rulerLord = new SYFTAAAR_U(this.ediiDaoServices);
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
@@ -184,11 +187,12 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
 				}else{
-				  if(rulerLord.isValidInput(dao, userName, mode)){
+				  if(rulerLord.isValidInput(dao, userName, mode, validatorStackTrace)){
 						List<StandiDao> list = new ArrayList<StandiDao>();
 						//must complete numeric values to avoid <null> on those
 						rulerLord.updateNumericFieldsIfNull(dao);
 						//do ADD
+						/*
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
 							list = this.standiDaoServices.findById(dao.getSiavd(), dbErrorStackTrace);
@@ -207,12 +211,13 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
 							logger.info("Before UPDATE ...");
 							dmlRetval = this.standiDaoServices.update(dao, dbErrorStackTrace);
 						}
-						
+						*/
 				  }else{
 						//write JSON error output
-						errMsg = "ERROR on UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update";
+						errMsg = "ERROR RULER LORD:" +  "<b>" + validatorStackTrace.toString()+ "</br>" ;
 						status = "error";
-						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg , status, dbErrorStackTrace));
+						logger.info(sb.toString());
 				  }
 				}
 				//----------------------------------
@@ -264,5 +269,12 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
 	public void setBridfDaoServices (BridfDaoServices value){ this.bridfDaoServices = value; }
 	public BridfDaoServices getBridfDaoServices(){ return this.bridfDaoServices; }
 	
+	@Qualifier ("ediiDaoServices")
+	private EdiiDaoServices ediiDaoServices;
+	@Autowired
+	@Required
+	public void setEdiiDaoServices (EdiiDaoServices value){ this.ediiDaoServices = value; }
+	public EdiiDaoServices getEdiiDaoServices(){ return this.ediiDaoServices; }
+
 }
 
