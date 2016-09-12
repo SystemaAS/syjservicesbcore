@@ -41,6 +41,33 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		}
 		return retval;
 	}
+	/**
+	 * This method is used to show an end-user the valid choices and not all invalid available choices.
+	 * 
+	 */
+	public List getListForAvailableAvdTvinnSadImport(StringBuffer errorStackTrace){
+		List<KodtaDao> retval = new ArrayList<KodtaDao>();
+		
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select a.koaavd, a.koafir, a.koanvn, a.koaknr ");
+			sql.append(" from kodta AS a ");
+			sql.append(" left outer join standi AS b ");
+			sql.append(" on a.koaavd = b.siavd ");
+			sql.append(" where b.siavd is NULL ");
+			sql.append(" order by a.koaavd ");
+			
+			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = null;
+		}
+		return retval;
+	}
 	
 	/**
 	 * 
@@ -72,7 +99,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append(" select CHAR(a.koaavd) koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
+		sql.append(" select a.koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
 		sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, CHAR(a.koaia2) koaia2, a.koaie, a.koapos, a.koalk, ");
 		sql.append(" coalesce(b.navsg,'') navsg, coalesce(c.ksidnr,'') ksidnr, coalesce(d.kodus1,'') kodus1, coalesce(d.kodus2,'') kodus2,  ");
 		sql.append(" coalesce(d.kodus3,'') kodus3, coalesce(d.kodus4,'') kodus4, coalesce(d.kodus5,'') kodus5, coalesce(d.kodus6,'') kodus6 ");
@@ -84,7 +111,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		sql.append(" on a.koaavd = c.ksavd ");
 		sql.append(" full outer join kodtd AS d ");
 		sql.append(" on a.koaavd = d.kodavd ");
-		
+		sql.append(" order by a.koaavd " );
 		return sql.toString();
 	}
 	

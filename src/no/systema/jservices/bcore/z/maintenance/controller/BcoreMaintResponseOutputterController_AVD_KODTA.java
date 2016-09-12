@@ -78,6 +78,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 			logger.info("Inside syjsSYFA14R.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
+			String sadImportAvdList = request.getParameter("sialist"); //SadImportAvdlist
 			
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
@@ -99,7 +100,13 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 				if(dao.getKoaavd()!=null && !"".equals(dao.getKoaavd())){
 					list = this.kodtaDaoServices.findById(dao.getKoaavd(), dbErrorStackTrace);
 				}else{
-					list = this.kodtaDaoServices.getList(dbErrorStackTrace);
+					if(sadImportAvdList!=null && !"".equals(sadImportAvdList)){
+						logger.info("Before getListForAvailableAvdTvinnSadImport ...");
+						list = this.kodtaDaoServices.getListForAvailableAvdTvinnSadImport(dbErrorStackTrace);
+					}else{
+						logger.info("Before getList ...");
+						list = this.kodtaDaoServices.getList(dbErrorStackTrace);
+					}
 				}
 				//process result
 				if (list!=null){

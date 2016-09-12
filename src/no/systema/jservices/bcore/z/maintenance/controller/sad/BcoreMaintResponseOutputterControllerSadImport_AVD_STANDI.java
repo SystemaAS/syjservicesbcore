@@ -76,7 +76,7 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
 			logger.info("Inside syjsSYFTAAAR.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
-			
+			String validAvd = request.getParameter("va");
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
             //DEBUG --> logger.info("USERNAME:" + userName + "XX");

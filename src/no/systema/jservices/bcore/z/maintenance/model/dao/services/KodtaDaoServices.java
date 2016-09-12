@@ -7,4 +7,6 @@ import java.util.*;
  * @date Aug 1, 2016
  * 
  */
-public interface KodtaDaoServices extends IDaoServices { }
+public interface KodtaDaoServices extends IDaoServices { 
+	public List getListForAvailableAvdTvinnSadImport(StringBuffer errorStackTrace);
+}

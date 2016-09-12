@@ -5,8 +5,11 @@ import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaDao;
 
+import java.lang.reflect.Field;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 
@@ -20,28 +23,31 @@ public class KodtaMapper implements RowMapper {
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	
     	KodtaDao dao = new KodtaDao();
-    	dao.setKoaavd(rs.getString("koaavd"));
-    	dao.setKoaknr(rs.getString("koaknr"));
-    	dao.setKoabaer(rs.getString("koabaer"));
-    	dao.setKoakon(rs.getString("koakon"));
-    	dao.setKoafir(rs.getString("koafir"));
-    	dao.setKoanvn(rs.getString("koanvn"));
-    	dao.setKoaiat(rs.getString("koaiat"));
-    	dao.setKoaia2(rs.getString("koaia2"));
-    	dao.setKoaie(rs.getString("koaie"));
-    	dao.setKoapos(rs.getString("koapos"));
-    	dao.setKoalk(rs.getString("koalk"));
-    	//external children tables
-    	dao.setNavsg(rs.getString("navsg"));
-    	dao.setKsidnr(rs.getString("ksidnr"));
-    	//DUP child table
-    	dao.setKodus1(rs.getString("kodus1"));
-    	dao.setKodus2(rs.getString("kodus2"));
-    	dao.setKodus3(rs.getString("kodus3"));
-    	dao.setKodus4(rs.getString("kodus4"));
-    	dao.setKodus5(rs.getString("kodus5"));
-    	dao.setKodus6(rs.getString("kodus6"));
-    	
+    	//We use reflection since there are many fields. We could have written all fields manually without reflection. Refer to other daos.
+		try{
+	    	Class cl = Class.forName(dao.getClass().getCanonicalName());
+			Field[] fields = cl.getDeclaredFields();
+			List<Field> list = Arrays.asList(fields);
+			for(Field field : list){
+				String name = (String)field.getName();
+				if(name!=null && !"".equals(name)){
+					//DEBUG --> logger.info(field.getName() + " Name:" + name + " value:" + rs.getString(name));
+				}
+				try{
+					//here we put the value
+					field.setAccessible(true);
+					field.set(dao, rs.getString(name));
+				}catch(Exception e){
+					//Usually when no column matches the JavaBean property...
+					logger.info(e.getMessage() + e.toString());
+					continue;
+				}
+			}
+    	}catch(Exception e){
+    		e.toString();
+    		logger.info(e.getMessage() + e.toString());
+    	}
+        
         return dao;
     }
 
