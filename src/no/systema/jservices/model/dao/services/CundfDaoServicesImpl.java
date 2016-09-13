@@ -61,7 +61,6 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	 * 
 	 */
 	public List findById(String id, String firm, StringBuffer errorStackTrace){
-		String WILDCARD = "%";
 		List<CusdfDao> retval = new ArrayList<CusdfDao>();
 		try{
 			StringBuffer sql = new StringBuffer();

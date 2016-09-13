@@ -93,18 +93,125 @@ public class SYFTAAAR_U {
 	public void updateNumericFieldsIfNull(StandiDao dao){
 		String ZERO = "0";
 		//STANDI
-		/*
-		if(dao.getTeopdn()==null || "".equals(dao.getTeopdn())){
-			dao.setTeopdn(ZERO);
+		
+		if(dao.getSidp()==null || "".equals(dao.getSidp())){
+			dao.setSidp(ZERO);
 		}
-		if(dao.getTeturn()==null || "".equals(dao.getTeturn())){
-			dao.setTeturn(ZERO);
+		if(dao.getSikns()==null || "".equals(dao.getSikns())){
+			dao.setSikns(ZERO);
 		}
-		if(dao.getTetmin()==null || "".equals(dao.getTetmin())){
-			dao.setTetmin(ZERO);
-		}*/
+		if(dao.getSintk()==null || "".equals(dao.getSintk())){
+			dao.setSintk(ZERO);
+		}
+		
+		if(dao.getSintk()==null || "".equals(dao.getSintk())){
+			dao.setSintk(ZERO);
+		}
+		if(dao.getSivkb()==null || "".equals(dao.getSivkb())){
+			dao.setSivkb(ZERO);
+		}
+		if(dao.getSiknk()==null || "".equals(dao.getSiknk())){
+			dao.setSiknk(ZERO);
+		}
+		if(dao.getSibel1()==null || "".equals(dao.getSibel1())){
+			dao.setSibel1(ZERO);
+		}
+		if(dao.getSibel2()==null || "".equals(dao.getSibel2())){
+			dao.setSibel2(ZERO);
+		}
+		if(dao.getSibel3()==null || "".equals(dao.getSibel3())){
+			dao.setSibel3(ZERO);
+		}
+		if(dao.getSivku()==null || "".equals(dao.getSivku())){
+			dao.setSivku(ZERO);
+		}
+		if(dao.getSitst()==null || "".equals(dao.getSitst())){
+			dao.setSitst(ZERO);
+		}
+		if(dao.getSitrt()==null || "".equals(dao.getSitrt())){
+			dao.setSitrt(ZERO);
+		}
+		if(dao.getSitrm()==null || "".equals(dao.getSitrm())){
+			dao.setSitrm(ZERO);
+		}
+		if(dao.getSifid()==null || "".equals(dao.getSifid())){
+			dao.setSifid(ZERO);
+		}
+		if(dao.getSibelt()==null || "".equals(dao.getSibelt())){
+			dao.setSibelt(ZERO);
+		}
+		
+		if(dao.getSikta()==null || "".equals(dao.getSikta())){
+			dao.setSikta(ZERO);
+		}
+		
+		if(dao.getSiktb()==null || "".equals(dao.getSiktb())){
+			dao.setSiktb(ZERO);
+		}
+		
+		if(dao.getSibel4()==null || "".equals(dao.getSibel4())){
+			dao.setSibel4(ZERO);
+		}
+		if(dao.getSikdh()==null || "".equals(dao.getSikdh())){
+			dao.setSikdh(ZERO);
+		}
+		if(dao.getSias()==null || "".equals(dao.getSias())){
+			dao.setSias(ZERO);
+		}
+		if(dao.getSidt()==null || "".equals(dao.getSidt())){
+			dao.setSidt(ZERO);
+		}
+		if(dao.getSibel5()==null || "".equals(dao.getSibel5())){
+			dao.setSibel5(ZERO);
+		}
+		if(dao.getSibel6()==null || "".equals(dao.getSibel6())){
+			dao.setSibel6(ZERO);
+		}
+		if(dao.getSibel7()==null || "".equals(dao.getSibel7())){
+			dao.setSibel7(ZERO);
+		}
+		if(dao.getSibel8()==null || "".equals(dao.getSibel8())){
+			dao.setSibel8(ZERO);
+		}
+		if(dao.getSibel9()==null || "".equals(dao.getSibel9())){
+			dao.setSibel9(ZERO);
+		}
+		if(dao.getSibela()==null || "".equals(dao.getSibela())){
+			dao.setSibela(ZERO);
+		}
+		if(dao.getSibelb()==null || "".equals(dao.getSibelb())){
+			dao.setSibelb(ZERO);
+		}
+		if(dao.getSimp()==null || "".equals(dao.getSimp())){
+			dao.setSimp(ZERO);
+		}
+		if(dao.getSibeld()==null || "".equals(dao.getSibeld())){
+			dao.setSibeld(ZERO);
+		}
+		if(dao.getSiopd()==null || "".equals(dao.getSiopd())){
+			dao.setSiopd(ZERO);
+		}
+		if(dao.getSifrbn()==null || "".equals(dao.getSifrbn())){
+			dao.setSifrbn(ZERO);
+		}
+		if(dao.getSibelr()==null || "".equals(dao.getSibelr())){
+			dao.setSibelr(ZERO);
+		}
+		if(dao.getS3039d()==null || "".equals(dao.getS3039d())){
+			dao.setS3039d(ZERO);
+		}
+		if(dao.getS3039e()==null || "".equals(dao.getS3039e())){
+			dao.setS3039e(ZERO);
+		}
+		if(dao.getS3039eo1()==null || "".equals(dao.getS3039eo1())){
+			dao.setS3039eo1(ZERO);
+		}
+		if(dao.getS3039eo2()==null || "".equals(dao.getS3039eo2())){
+			dao.setS3039eo2(ZERO);
+		}
 		
 	}
+	
 	/**
 	 * 
 	 * @param dao

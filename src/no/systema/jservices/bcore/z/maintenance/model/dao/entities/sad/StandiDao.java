@@ -29,6 +29,16 @@ public class StandiDao implements Serializable, IDao {
 	public void setKoanvn (String value){ this.koanvn = value;   }   
 	public String getKoanvn (){ return this.koanvn;   }  
 	
+	private String koaknr = "";                                
+	public String getKoaknrPropertyName (){ return "koaknr"; }
+	public void setKoaknr (String value){ this.koaknr = value;   }   
+	public String getKoaknr (){ return this.koaknr;   }  
+	
+	private String syrg = "";                                
+	public String getSyrgPropertyName (){ return "syrg"; }
+	public void setSyrg (String value){ this.syrg = value;   }   
+	public String getSyrg (){ return this.syrg;   }  
+	
 	private String sitdn = "";                                
 	public String getSitdnPropertyName (){ return "sitdn"; }
 	public void setSitdn (String value){ this.sitdn = value;   }   
@@ -234,9 +244,6 @@ public class StandiDao implements Serializable, IDao {
 	public void setSibelt (String value){ this.sibelt = value;   }   
 	public String getSibelt (){ return this.sibelt;   }  
 	
-	
-	
-	
 	private String si07 = "";                                
 	public String getSi07PropertyName (){ return "si07"; }
 	public void setSi07 (String value){ this.si07 = value;   }   
@@ -357,6 +364,11 @@ public class StandiDao implements Serializable, IDao {
 	public String getSibel9PropertyName (){ return "sibel9"; }
 	public void setSibel9 (String value){ this.sibel9 = value;   }   
 	public String getSibel9 (){ return this.sibel9;   }  
+	
+	private String sibela = "";                                
+	public String getSibelaPropertyName (){ return "sibela"; }
+	public void setSibela (String value){ this.sibela = value;   }   
+	public String getSibela (){ return this.sibela;   }  
 	
 	private String sibel8a = "";                                
 	public String getSibel8aPropertyName (){ return "sibel8a"; }

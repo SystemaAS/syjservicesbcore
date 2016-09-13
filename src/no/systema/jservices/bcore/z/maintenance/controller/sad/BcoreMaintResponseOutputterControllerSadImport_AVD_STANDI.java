@@ -101,6 +101,7 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
 					logger.info("getList...");
 					list = this.standiDaoServices.getList(dbErrorStackTrace);
 				}
+				
 				//process result
 				if (list!=null){
 					//write the final JSON output
@@ -275,5 +276,6 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDI {
 	public void setEdiiDaoServices (EdiiDaoServices value){ this.ediiDaoServices = value; }
 	public EdiiDaoServices getEdiiDaoServices(){ return this.ediiDaoServices; }
 
+	
 }
 

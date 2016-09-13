@@ -29,6 +29,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_CLAUSE());
+			sql.append(" order by a.koaavd " );
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
 			
@@ -111,7 +112,6 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		sql.append(" on a.koaavd = c.ksavd ");
 		sql.append(" full outer join kodtd AS d ");
 		sql.append(" on a.koaavd = d.kodavd ");
-		sql.append(" order by a.koaavd " );
 		return sql.toString();
 	}
 	
