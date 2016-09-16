@@ -93,7 +93,65 @@ public class SYFTAAAR_U {
 	public void updateNumericFieldsIfNull(StandiDao dao){
 		String ZERO = "0";
 		//STANDI
+		//-----------------
+		//Decimal amounts
+		//-----------------
+		if(dao.getSibel1()!=null && !"".equals(dao.getSibel1())){
+			String tmp = dao.getSibel1().replace(",", ".");
+			dao.setSibel1(tmp);
+		}else{
+			dao.setSibel1(ZERO);	
+		}
+		if(dao.getSibel2()!=null && !"".equals(dao.getSibel2())){
+			String tmp = dao.getSibel2().replace(",", ".");
+			dao.setSibel2(tmp);
+		}else{
+			dao.setSibel2(ZERO);	
+		}
+		if(dao.getSibel3()!=null && !"".equals(dao.getSibel3())){
+			String tmp = dao.getSibel3().replace(",", ".");
+			dao.setSibel3(tmp);
+		}else{
+			dao.setSibel3(ZERO);	
+		}
+		if(dao.getSivku()!=null && !"".equals(dao.getSivku())){
+			String tmp = dao.getSivku().replace(",", ".");
+			dao.setSivku(tmp);
+		}else{
+			dao.setSivku(ZERO);	
+		}
+		if(dao.getSias()!=null && !"".equals(dao.getSias())){
+			String tmp = dao.getSias().replace(",", ".");
+			dao.setSias(tmp);
+		}else{
+			dao.setSias(ZERO);	
+		}
+		if(dao.getSibel8()!=null && !"".equals(dao.getSibel8())){
+			String tmp = dao.getSibel8().replace(",", ".");
+			dao.setSibel8(tmp);
+		}else{
+			dao.setSibel8(ZERO);	
+		}
+		if(dao.getSibel9()!=null && !"".equals(dao.getSibel9())){
+			String tmp = dao.getSibel9().replace(",", ".");
+			dao.setSibel9(tmp);
+		}else{
+			dao.setSibel9(ZERO);	
+		}
+		if(dao.getSibelb()!=null && !"".equals(dao.getSibelb())){
+			String tmp = dao.getSibelb().replace(",", ".");
+			dao.setSibelb(tmp);
+		}else{
+			dao.setSibelb(ZERO);	
+		}
+		if(dao.getSibelr()!=null && !"".equals(dao.getSibelr())){
+			String tmp = dao.getSibelr().replace(",", ".");
+			dao.setSibelr(tmp);
+		}else{
+			dao.setSibelr(ZERO);	
+		}
 		
+		//Integers
 		if(dao.getSidp()==null || "".equals(dao.getSidp())){
 			dao.setSidp(ZERO);
 		}
@@ -113,18 +171,7 @@ public class SYFTAAAR_U {
 		if(dao.getSiknk()==null || "".equals(dao.getSiknk())){
 			dao.setSiknk(ZERO);
 		}
-		if(dao.getSibel1()==null || "".equals(dao.getSibel1())){
-			dao.setSibel1(ZERO);
-		}
-		if(dao.getSibel2()==null || "".equals(dao.getSibel2())){
-			dao.setSibel2(ZERO);
-		}
-		if(dao.getSibel3()==null || "".equals(dao.getSibel3())){
-			dao.setSibel3(ZERO);
-		}
-		if(dao.getSivku()==null || "".equals(dao.getSivku())){
-			dao.setSivku(ZERO);
-		}
+		
 		if(dao.getSitst()==null || "".equals(dao.getSitst())){
 			dao.setSitst(ZERO);
 		}
@@ -155,9 +202,7 @@ public class SYFTAAAR_U {
 		if(dao.getSikdh()==null || "".equals(dao.getSikdh())){
 			dao.setSikdh(ZERO);
 		}
-		if(dao.getSias()==null || "".equals(dao.getSias())){
-			dao.setSias(ZERO);
-		}
+		
 		if(dao.getSidt()==null || "".equals(dao.getSidt())){
 			dao.setSidt(ZERO);
 		}
@@ -170,18 +215,11 @@ public class SYFTAAAR_U {
 		if(dao.getSibel7()==null || "".equals(dao.getSibel7())){
 			dao.setSibel7(ZERO);
 		}
-		if(dao.getSibel8()==null || "".equals(dao.getSibel8())){
-			dao.setSibel8(ZERO);
-		}
-		if(dao.getSibel9()==null || "".equals(dao.getSibel9())){
-			dao.setSibel9(ZERO);
-		}
+		
 		if(dao.getSibela()==null || "".equals(dao.getSibela())){
 			dao.setSibela(ZERO);
 		}
-		if(dao.getSibelb()==null || "".equals(dao.getSibelb())){
-			dao.setSibelb(ZERO);
-		}
+		
 		if(dao.getSimp()==null || "".equals(dao.getSimp())){
 			dao.setSimp(ZERO);
 		}
@@ -194,9 +232,7 @@ public class SYFTAAAR_U {
 		if(dao.getSifrbn()==null || "".equals(dao.getSifrbn())){
 			dao.setSifrbn(ZERO);
 		}
-		if(dao.getSibelr()==null || "".equals(dao.getSibelr())){
-			dao.setSibelr(ZERO);
-		}
+		
 		if(dao.getS3039d()==null || "".equals(dao.getS3039d())){
 			dao.setS3039d(ZERO);
 		}

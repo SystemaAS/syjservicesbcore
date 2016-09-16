@@ -79,6 +79,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			String sadImportAvdList = request.getParameter("sialist"); //SadImportAvdlist
+			String sadExportAvdList = request.getParameter("sealist"); //SadExportAvdlist
 			
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
@@ -103,6 +104,11 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 					if(sadImportAvdList!=null && !"".equals(sadImportAvdList)){
 						logger.info("Before getListForAvailableAvdTvinnSadImport ...");
 						list = this.kodtaDaoServices.getListForAvailableAvdTvinnSadImport(dbErrorStackTrace);
+					
+					}else if(sadExportAvdList!=null && !"".equals(sadExportAvdList)){
+						logger.info("Before getListForAvailableAvdTvinnSadExport ...");
+						list = this.kodtaDaoServices.getListForAvailableAvdTvinnSadExport(dbErrorStackTrace);
+					
 					}else{
 						logger.info("Before getList ...");
 						list = this.kodtaDaoServices.getList(dbErrorStackTrace);

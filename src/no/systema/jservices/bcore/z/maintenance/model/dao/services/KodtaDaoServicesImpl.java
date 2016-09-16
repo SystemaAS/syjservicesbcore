@@ -69,6 +69,32 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		}
 		return retval;
 	}
+	/**
+	 * 
+	 */
+	public List getListForAvailableAvdTvinnSadExport(StringBuffer errorStackTrace){
+		List<KodtaDao> retval = new ArrayList<KodtaDao>();
+		
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select a.koaavd, a.koafir, a.koanvn, a.koaknr ");
+			sql.append(" from kodta AS a ");
+			sql.append(" left outer join stande AS b ");
+			sql.append(" on a.koaavd = b.seavd ");
+			sql.append(" where b.seavd is NULL ");
+			sql.append(" order by a.koaavd ");
+			
+			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = null;
+		}
+		return retval;
+	}
 	
 	/**
 	 * 
