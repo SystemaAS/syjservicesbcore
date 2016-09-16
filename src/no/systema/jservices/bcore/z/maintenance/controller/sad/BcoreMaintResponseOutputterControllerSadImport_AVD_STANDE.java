@@ -191,7 +191,7 @@ public class BcoreMaintResponseOutputterControllerSadImport_AVD_STANDE {
 				  if(rulerLord.isValidInput(dao, userName, mode )){
 						List<StandeDao> list = new ArrayList<StandeDao>();
 						//must complete numeric values to avoid <null> on those
-						rulerLord.updateNumericFieldsIfNull(dao);
+						rulerLord.adjustNumericFields(dao);
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");

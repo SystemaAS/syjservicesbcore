@@ -90,10 +90,32 @@ public class SYFTAAAER_U {
 	 * 
 	 * @param dao
 	 */
-	public void updateNumericFieldsIfNull(StandeDao dao){
+	public void adjustNumericFields(StandeDao dao){
 		String ZERO = "0";
-		//STANDI
+		//STANDE
+		//Decimals
+		if(dao.getSebel1()!=null && !"".equals(dao.getSebel1())){
+			String tmp = dao.getSebel1().replace(",", ".");
+			dao.setSebel1(tmp);
+		}else{
+			dao.setSebel1(ZERO);
+		}
 		
+		if(dao.getSebel2()!=null && !"".equals(dao.getSebel2())){
+			String tmp = dao.getSebel2().replace(",", ".");
+			dao.setSebel2(tmp);
+		}else{
+			dao.setSebel2(ZERO);
+		}
+		
+		if(dao.getSevku()!=null && !"".equals(dao.getSevku())){
+			String tmp = dao.getSevku().replace(",", ".");
+			dao.setSevku(tmp);
+		}else{
+			dao.setSevku(ZERO);
+		}
+		
+		//Integers
 		if(dao.getSedp()==null || "".equals(dao.getSedp())){
 			dao.setSedp(ZERO);
 		}
@@ -111,19 +133,11 @@ public class SYFTAAAER_U {
 		if(dao.getSeknk()==null || "".equals(dao.getSeknk())){
 			dao.setSeknk(ZERO);
 		}
-		if(dao.getSebel1()==null || "".equals(dao.getSebel1())){
-			dao.setSebel1(ZERO);
-		}
-		if(dao.getSebel2()==null || "".equals(dao.getSebel2())){
-			dao.setSebel2(ZERO);
-		}
+		
 		if(dao.getSebel3()==null || "".equals(dao.getSebel3())){
 			dao.setSebel3(ZERO);
 		}
 		
-		if(dao.getSevku()==null || "".equals(dao.getSevku())){
-			dao.setSevku(ZERO);
-		}
 		if(dao.getSekdh()==null || "".equals(dao.getSekdh())){
 			dao.setSekdh(ZERO);
 		}

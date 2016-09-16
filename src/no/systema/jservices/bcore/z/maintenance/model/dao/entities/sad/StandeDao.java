@@ -105,6 +105,11 @@ public class StandeDao implements Serializable, IDao {
 	public void setSeknk (String value){ this.seknk = value;   }   
 	public String getSeknk (){ return this.seknk;   }  
 	
+	private String serg = "";     
+	public String getSergPropertyName (){ return "serg"; }
+	public void setSerg (String value){ this.serg = value;   }   
+	public String getSerg (){ return this.serg;   }  
+	
 	private String senak = "";                                
 	public String getSenakPropertyName (){ return "senak"; }
 	public void setSenak (String value){ this.senak = value;   }   
