@@ -436,7 +436,7 @@ public class StandeDao implements Serializable, IDao {
 	private String seekst = "";                                
 	public String getSeekstPropertyName (){ return "seekst"; }
 	public void setSeekst (String value){ this.seekst = value;   }   
-	public String getSiekst (){ return this.seekst;   }  
+	public String getSeekst (){ return this.seekst;   }  
 	
 	
 	

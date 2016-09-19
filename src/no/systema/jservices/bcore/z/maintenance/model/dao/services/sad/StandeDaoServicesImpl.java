@@ -73,31 +73,34 @@ public class StandeDaoServicesImpl implements StandeDaoServices {
 	
 	public int insert(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
-		/*
+		
 		try{
 			
 			StandeDao dao = (StandeDao)daoObj;
 			StringBuffer sql = new StringBuffer();
-			//DEBUG --> logger.info("mydebug");
-			sql.append(" INSERT INTO standi ( siavd, sidl, sia4, sitdn, siekst, sitolk, s3039e, s3039eo1, s3039eo2, s0026, s0035, s0004, s0010, silv2, ");
-			sql.append(" sidty, sidp, siski, sikddk, sikns, sinas, siads1, siads2, siads3, siknk, sinak, sirg, siadk1, siadk2, siadk3, siktc, sikta, siktb, ");
-			sql.append(" sival3, sitst, sibel3, sivku, sift1, sift2, sift3, sift4, silka, sikdc, sitrid, silkt, sitrm, sign, sipos, silv, silvt, ");
-			sql.append(" sikdls, sils, siftg2, sibel1, sival1, sibel2, sival2, si07, sivkb, sintk, sikdh ");
+			
+			sql.append(" INSERT INTO stande ( seavd, sedl, sea4, setdn, seekst, setolk, s3039e, s3039eo1, s3039eo2, s0026, ");
+			sql.append(" s0035, s0004, s0010, selv2, sedty, sedp, seski, sekddk, sekns, senas, seads1, seads2, seads3, seknk, senak, serg, seadk1, seadk2, seadk3, ");
+			sql.append(" senad, setlf, sedst, sedt, seval1, setst, sebel1, sevku, seft1, seft2, seft3, ");
+			sql.append(" selka, selkb, sekdc, setrid, selkt, setrm, segn, sepos, sekdh, sekdft, selv, selvt, ");
+			sql.append(" sekdls, sels, sevkb, sentk ");
 			sql.append(" )" );
-			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
-			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ");
-			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,   ");
-			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ? ");
 			sql.append(" )" );
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSiavd(), dao.getSidl(), dao.getSia4(), dao.getSitdn(), dao.getSiekst(), dao.getSitolk(), 
-					dao.getS3039e(), dao.getS3039eo1(), dao.getS3039eo2(), dao.getS0026(), dao.getS0035(), dao.getS0004(), dao.getS0010(), dao.getSilv2(),
-					dao.getSidty(), dao.getSidp(), dao.getSiski(), dao.getSikddk(), dao.getSikns(), dao.getSinas(), dao.getSiads1(), dao.getSiads2(), dao.getSiads3(),
-					dao.getSiknk(), dao.getSinak(), dao.getSirg(), dao.getSiadk1(), dao.getSiadk2(), dao.getSiadk3(), dao.getSiktc(), dao.getSikta(), dao.getSiktb(),
-					dao.getSival3(), dao.getSitst(), dao.getSibel3(), dao.getSivku(), dao.getSift1(), dao.getSift2(), dao.getSift3(), dao.getSift4(),
-					dao.getSilka(), dao.getSikdc(), dao.getSitrid(), dao.getSilkt(), dao.getSitrm(), dao.getSign(), dao.getSipos(), dao.getSilv(), dao.getSilvt(),
-					dao.getSikdls(), dao.getSils(), dao.getSiftg2(), dao.getSibel1(), dao.getSival1(), dao.getSibel2(), dao.getSival2(), dao.getSi07(),
-					dao.getSivkb(), dao.getSintk(), dao.getSikdh()
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSeavd(), dao.getSedl(), dao.getSea4(), dao.getSetdn(), dao.getSeekst(), dao.getSetolk(),
+				dao.getS3039e(), dao.getS3039eo1(), dao.getS3039eo2(), dao.getS0026(),  dao.getS0035(), dao.getS0004(), dao.getS0010(), 
+				dao.getSelv2(), dao.getSedty(), dao.getSedp(), dao.getSeski(), dao.getSekddk(), dao.getSekns(), dao.getSenas(), dao.getSeads1(), 
+				dao.getSeads2(), dao.getSeads3(), dao.getSeknk(), dao.getSenak(), dao.getSerg(), dao.getSeadk1(), dao.getSeadk2(), dao.getSeadk3(),
+				dao.getSenad(), dao.getSetlf(), dao.getSedst(), dao.getSedt(), dao.getSeval1(), dao.getSetst(), dao.getSebel1(), 
+				dao.getSevku(), dao.getSeft1(), dao.getSeft2(), dao.getSeft3(),dao.getSelka(), dao.getSelkb(), dao.getSekdc(), dao.getSetrid(), dao.getSelkt(), 
+				dao.getSetrm(), dao.getSegn(), dao.getSepos(), dao.getSekdh(), dao.getSekdft(), dao.getSelv(), dao.getSelvt(), 
+				dao.getSekdls(), dao.getSels(), dao.getSevkb(), dao.getSentk() 
+				 
 			} );
 			
 		}catch(Exception e){
@@ -106,7 +109,7 @@ public class StandeDaoServicesImpl implements StandeDaoServices {
 			//Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
-		} */
+		} 
 		
 		return retval;
 	}
@@ -117,33 +120,31 @@ public class StandeDaoServicesImpl implements StandeDaoServices {
 	 */
 	public int update(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
-		/*
+		
 		try{
 			
 			StandeDao dao = (StandeDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			//sql.append(" UPDATE standi SET sidl = ? ");
-			sql.append(" UPDATE standi SET sidl = ?, sia4 = ?, sitdn = ?, siekst = ?, sitolk = ?, s3039e = ?, s3039eo1 = ?, s3039eo2 = ?, s0026 = ?, " );
-			sql.append(" s0035 = ?, s0004 = ?, s0010 = ?, silv2 = ?, sidty = ?, sidp = ?, siski = ?, sikddk = ?, sikns = ?, sinas = ?, siads1 = ?, ");
-			sql.append(" siads2 = ?, siads3 = ?, siknk = ?, sinak = ?, sirg = ?, siadk1 = ?, siadk2 = ?, siadk3 = ?, siktc = ?, sikta = ?, siktb = ?,  ");
-			sql.append(" sinad = ?, sitlf = ?, sidst = ?, sidt = ?, sival3 = ?, sitst = ?, sibel3 = ?, sivku = ?, sift1 = ?, sift2 = ?, sift3 = ?, sift4 = ?,  ");
-			sql.append(" silka = ?, sikdc = ?, sitrid = ?, silkt = ?, sitrm = ?, sign = ?, sipos = ?, silv = ?, silvt = ?, sikdls = ?, sils = ?, siftg2 = ?, ");
-			sql.append(" sibel1 = ?, sival1 = ? , sibel2 = ?, sival2 = ?, si07 = ?, sivkb = ?, sintk = ?, sikdh = ? ");
-			sql.append(" WHERE siavd = ? ");
+			sql.append(" UPDATE stande SET sedl = ?, sea4 = ?, setdn = ?, seekst = ?, setolk = ?, s3039e = ?, s3039eo1 = ?, s3039eo2 = ?, s0026 = ?, " );
+			sql.append(" s0035 = ?, s0004 = ?, s0010 = ?, selv2 = ?, sedty = ?, sedp = ?, seski = ?, sekddk = ?, sekns = ?, senas = ?, seads1 = ?, ");
+			sql.append(" seads2 = ?, seads3 = ?, seknk = ?, senak = ?, serg = ?, seadk1 = ?, seadk2 = ?, seadk3 = ?,  ");
+			sql.append(" senad = ?, setlf = ?, sedst = ?, sedt = ?, seval1 = ?, setst = ?, sebel1 = ?, sevku = ?, seft1 = ?, seft2 = ?, seft3 = ?, ");
+			sql.append(" selka = ?, selkb = ?, sekdc = ?, setrid = ?, selkt = ?, setrm = ?, segn = ?, sepos = ?, sekdh = ?, sekdft = ?, selv = ?, selvt = ?, ");
+			sql.append(" sekdls = ?, sels = ?, sevkb = ?, sentk = ? ");
+			sql.append(" WHERE seavd = ? ");
 			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSidl(), dao.getSia4(), dao.getSitdn(), dao.getSiekst(), dao.getSitolk(),
-				dao.getS3039e(), dao.getS3039eo1(), dao.getS3039eo2(), dao.getS0026(), dao.getS0035(), dao.getS0004(), dao.getS0010(), dao.getSilv2(), 
-				dao.getSidty(), dao.getSidp(), dao.getSiski(), dao.getSikddk(), dao.getSikns(), dao.getSinas(), dao.getSiads1(), dao.getSiads2(), dao.getSiads3(),
-				dao.getSiknk(), dao.getSinak(), dao.getSirg(), dao.getSiadk1(), dao.getSiadk2(), dao.getSiadk3(), dao.getSiktc(), dao.getSikta(), dao.getSiktb(),
-				dao.getSinad(), dao.getSitlf(), dao.getSidst(), dao.getSidt(), dao.getSival3(), dao.getSitst(), dao.getSibel3(), dao.getSivku(),  
-				dao.getSift1(), dao.getSift2(), dao.getSift3(), dao.getSift4(),
-				dao.getSilka(), dao.getSikdc(), dao.getSitrid(), dao.getSilkt(), dao.getSitrm(), dao.getSign(), dao.getSipos(), dao.getSilv(), dao.getSilvt(),
-				dao.getSikdls(), dao.getSils(), dao.getSiftg2(), dao.getSibel1(), dao.getSival1(), dao.getSibel2(), dao.getSival2(), dao.getSi07(),
-				dao.getSivkb(), dao.getSintk(), dao.getSikdh(),
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSedl(), dao.getSea4(), dao.getSetdn(), dao.getSeekst(), dao.getSetolk(),
+				dao.getS3039e(), dao.getS3039eo1(), dao.getS3039eo2(), dao.getS0026(),  dao.getS0035(), dao.getS0004(), dao.getS0010(), 
+				dao.getSelv2(), dao.getSedty(), dao.getSedp(), dao.getSeski(), dao.getSekddk(), dao.getSekns(), dao.getSenas(), dao.getSeads1(), 
+				dao.getSeads2(), dao.getSeads3(), dao.getSeknk(), dao.getSenak(), dao.getSerg(), dao.getSeadk1(), dao.getSeadk2(), dao.getSeadk3(),
+				dao.getSenad(), dao.getSetlf(), dao.getSedst(), dao.getSedt(), dao.getSeval1(), dao.getSetst(), dao.getSebel1(), 
+				dao.getSevku(), dao.getSeft1(), dao.getSeft2(), dao.getSeft3(),dao.getSelka(), dao.getSelkb(), dao.getSekdc(), dao.getSetrid(), dao.getSelkt(), 
+				dao.getSetrm(), dao.getSegn(), dao.getSepos(), dao.getSekdh(), dao.getSekdft(), dao.getSelv(), dao.getSelvt(), 
+				dao.getSekdls(), dao.getSels(), dao.getSevkb(), dao.getSentk(), 
 				//WHERE condition
-				dao.getSiavd() } );
+				dao.getSeavd() } );
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -152,7 +153,7 @@ public class StandeDaoServicesImpl implements StandeDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
-		*/
+		
 		return retval;
 	}
 	

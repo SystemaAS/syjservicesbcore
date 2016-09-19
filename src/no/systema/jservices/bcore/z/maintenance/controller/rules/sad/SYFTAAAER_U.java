@@ -55,12 +55,12 @@ public class SYFTAAAER_U {
 		//now some logical tests
 		//-----------------------
 		//(1) Validity of Exchanges ID
-		/*
-		if("J".equals(dao.getSitolk())){
+		
+		if("J".equals(dao.getSetolk())){
 			retval = this.vaidateExchangesId(dao);
 		}
 		//TODO ... more validations here
-		*/
+		
 		return retval;
 	}
 
@@ -114,6 +114,12 @@ public class SYFTAAAER_U {
 		}else{
 			dao.setSevku(ZERO);
 		}
+		if(dao.getSetst()!=null && !"".equals(dao.getSetst())){
+			String tmp = dao.getSetst().replace(",", ".");
+			dao.setSetst(tmp);
+		}else{
+			dao.setSetst(ZERO);
+		}
 		
 		//Integers
 		if(dao.getSedp()==null || "".equals(dao.getSedp())){
@@ -134,9 +140,6 @@ public class SYFTAAAER_U {
 			dao.setSeknk(ZERO);
 		}
 		
-		if(dao.getSebel3()==null || "".equals(dao.getSebel3())){
-			dao.setSebel3(ZERO);
-		}
 		
 		if(dao.getSekdh()==null || "".equals(dao.getSekdh())){
 			dao.setSekdh(ZERO);

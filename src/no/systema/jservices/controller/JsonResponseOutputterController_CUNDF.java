@@ -112,6 +112,9 @@ public class JsonResponseOutputterController_CUNDF {
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
 						logger.info("Before findByName ...");
 						list = this.cundfDaoServices.findByName(dao.getKnavn(), dao.getFirma(), dbErrorStackTrace);
+					}else{
+						logger.info("Before findByName ...");
+						list = this.cundfDaoServices.findByName(dao.getKnavn(), dbErrorStackTrace);
 					}
 				}else{
 					logger.info("Before getList ...");
