@@ -81,11 +81,13 @@
   <bean id="standiDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.StandiDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="standeDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.StandeDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
- 
+  <bean id="tristdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TristdDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  
   
   <!--///////////////////
         NativeExtractor 
