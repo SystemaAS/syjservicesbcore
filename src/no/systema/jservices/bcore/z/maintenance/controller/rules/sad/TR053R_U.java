@@ -54,11 +54,8 @@ public class TR053R_U {
 		//-----------------------
 		//now some logical tests
 		//-----------------------
-		//(1) Validity of Exchanges ID
-		/*
-		if("J".equals(dao.getSetolk())){
-			retval = this.vaidateExchangesId(dao);
-		}*/
+		//(1) Validity of Exchanges I
+		retval = this.vaidateExchangesId(dao);
 		//TODO ... more validations here
 		
 		return retval;

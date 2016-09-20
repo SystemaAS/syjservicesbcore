@@ -24,6 +24,22 @@ public class TristdDao implements Serializable, IDao {
 	public void setTiavd (String value){ this.tiavd = value;   }   
 	public String getTiavd (){ return this.tiavd;   }  
 	
+	private String koanvn = "";                                
+	public String getKoanvnPropertyName (){ return "koanvn"; }
+	public void setKoanvn (String value){ this.koanvn = value;   }   
+	public String getKoanvn (){ return this.koanvn;   }  
+	
+	private String koaknr = "";                                
+	public String getKoaknrPropertyName (){ return "koaknr"; }
+	public void setKoaknr (String value){ this.koaknr = value;   }   
+	public String getKoaknr (){ return this.koaknr;   }  
+	
+	private String syrg = "";                                
+	public String getSyrgPropertyName (){ return "syrg"; }
+	public void setSyrg (String value){ this.syrg = value;   }   
+	public String getSyrg (){ return this.syrg;   }  
+	
+	
 	private String titdn = "";                                
 	public String getTitdnPropertyName (){ return "titdn"; }
 	public void setTitdn (String value){ this.titdn = value;   }   
@@ -93,7 +109,7 @@ public class TristdDao implements Serializable, IDao {
 	private String titsb = "";     
 	public String getTitsbPropertyName (){ return "titsb"; }
 	public void setTitsb (String value){ this.titsb = value;   }   
-	public String gettitsb (){ return this.titsb;   }  
+	public String getTitsb (){ return this.titsb;   }  
 	
 	private String titarf = "";                                
 	public String getTitarfPropertyName (){ return "titarf"; }
@@ -170,6 +186,10 @@ public class TristdDao implements Serializable, IDao {
 	public void setTidk (String value){ this.tidk = value;   }   
 	public String getTidk (){ return this.tidk;   }  
 	
+	private String tialk = "";                                
+	public String getTialkPropertyName (){ return "tialk"; }
+	public void setTialk (String value){ this.tialk = value;   }   
+	public String getTialk (){ return this.tialk;   }  
 	
 	
 }

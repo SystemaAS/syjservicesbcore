@@ -51,7 +51,7 @@ public class TristdDaoServicesImpl implements TristdDaoServices {
 			
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			//WHERE
-			sql.append(" where tiavd = ?  ");
+			sql.append(" and tiavd = ?  ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new TristdMapper());
 			
@@ -79,23 +79,22 @@ public class TristdDaoServicesImpl implements TristdDaoServices {
 			TristdDao dao = (TristdDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			
-			sql.append(" INSERT INTO tristd ( tiavd ");
-			
-			//sql.append(" s0035, s0004, s0010, selv2, sedty, sedp, seski, sekddk, sekns, senas, seads1, seads2, seads3, seknk, senak, serg, seadk1, seadk2, seadk3, ");
-			//sql.append(" senad, setlf, sedst, sedt, seval1, setst, sebel1, sevku, seft1, seft2, seft3, ");
-			//sql.append(" selka, selkb, sekdc, setrid, selkt, setrm, segn, sepos, sekdh, sekdft, selv, selvt, ");
-			//sql.append(" sekdls, sels, sevkb, sentk ");
+			sql.append(" INSERT INTO tristd ( tiavd, tienkl, titdn, s0004, s0010, s0026, s0035, ");
+			sql.append(" tikn, titin, tina, tiad1, tisk, tips, tipn, tilk, tign, tignsk, titrnr, tialk, titsb, tiskb, ");
+			sql.append(" tialsk, tialss, tials, tiglsk, tiacts  ");
 			sql.append(" )" );
-			sql.append(" VALUES ( ? ");
-			//sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
-			//sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
-			//sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
-			//sql.append(" ?, ?, ?, ? ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ? ");
 			sql.append(" )" );
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getTiavd()
-				 
-			} );
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getTiavd(),
+				dao.getTienkl(), dao.getTitdn(), dao.getS0004(), dao.getS0010(), dao.getS0026(), dao.getS0035(),
+				dao.getTikn(), dao.getTitin(), dao.getTina(), dao.getTiad1(), dao.getTisk(), dao.getTips(), dao.getTipn(), dao.getTilk(),
+				dao.getTign(), dao.getTignsk(), dao.getTitrnr(),dao.getTialk(), dao.getTitsb(), dao.getTiskb(), 
+				dao.getTialsk(), dao.getTialss(), dao.getTials(), dao.getTiglsk(), dao.getTiacts()
+
+				 } );
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -121,12 +120,18 @@ public class TristdDaoServicesImpl implements TristdDaoServices {
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
 			
-			sql.append(" UPDATE tristd SET tign = ? ");
-			//sql.append(" sekdls = ?, sels = ?, sevkb = ?, sentk = ? ");
+			sql.append(" UPDATE tristd SET tienkl = ?, titdn = ?, s0004 = ?, s0010 = ?, s0026 = ?, s0035 = ?,  ");
+			sql.append(" tikn = ?, titin = ?, tina = ?, tiad1 = ?, tisk = ?, tips = ?, tipn = ?, tilk = ?, ");
+			sql.append(" tign = ?, tignsk = ?, titrnr = ?, tialk = ?, titsb = ?, tiskb = ?, ");
+			sql.append(" tialsk = ?, tialss = ?, tials = ?, tiglsk = ?, tiacts = ? ");
 			sql.append(" WHERE tiavd = ? ");
 			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getTign(), 
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
+				dao.getTienkl(), dao.getTitdn(), dao.getS0004(), dao.getS0010(), dao.getS0026(), dao.getS0035(),
+				dao.getTikn(), dao.getTitin(), dao.getTina(), dao.getTiad1(), dao.getTisk(), dao.getTips(), dao.getTipn(), dao.getTilk(),
+				dao.getTign(), dao.getTignsk(), dao.getTitrnr(),dao.getTialk(), dao.getTitsb(), dao.getTiskb(), 
+				dao.getTialsk(), dao.getTialss(), dao.getTials(), dao.getTiglsk(), dao.getTiacts(),
 				//WHERE condition
 				dao.getTiavd() } );
 			
@@ -177,8 +182,11 @@ public class TristdDaoServicesImpl implements TristdDaoServices {
 		
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append(" select a.* ");
-		sql.append(" from tristd a  ");
+		sql.append(" select a.*, b.koanvn, b.koaknr, c.syrg ");
+		sql.append(" from tristd a, kodta b, cundf c  ");
+		sql.append(" where a.tiavd = b.koaavd ");
+		sql.append(" and b.koaknr = c.kundnr ");
+		sql.append(" and b.koafir = c.firma ");
 		
 		
 		return sql.toString();

@@ -10,4 +10,6 @@ import java.util.*;
 public interface KodtaDaoServices extends IDaoServices { 
 	public List getListForAvailableAvdTvinnSadImport(StringBuffer errorStackTrace);
 	public List getListForAvailableAvdTvinnSadExport(StringBuffer errorStackTrace);
+	public List getListForAvailableAvdTvinnSadNctsImport(StringBuffer errorStackTrace);
+	public List getListForAvailableAvdTvinnSadNctsExport(StringBuffer errorStackTrace);
 }
