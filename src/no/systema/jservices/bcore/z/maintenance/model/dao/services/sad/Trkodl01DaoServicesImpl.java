@@ -5,8 +5,8 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.sad.TristdMapper;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TristdDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.sad.Trkodl01Mapper;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.Trkodl01Dao;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -28,13 +28,13 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 	 * @return
 	 */
 	public List getList(String code, StringBuffer errorStackTrace){
-		List<TristdDao> retval = new ArrayList<TristdDao>();
+		List<Trkodl01Dao> retval = new ArrayList<Trkodl01Dao>();
 		
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" where tkunik = ? ");
-			retval = this.jdbcTemplate.query( sql.toString() , new Object[] { code }, new TristdMapper());
+			retval = this.jdbcTemplate.query( sql.toString() , new Object[] { code }, new Trkodl01Mapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -49,7 +49,7 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 	 * 
 	 */
 	public List findById (String code, String id, StringBuffer errorStackTrace ){
-		List<TristdDao> retval = new ArrayList<TristdDao>();
+		List<Trkodl01Dao> retval = new ArrayList<Trkodl01Dao>();
 		try{
 			StringBuffer sql = new StringBuffer();
 			
@@ -58,7 +58,7 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 			sql.append(" where tkunik = ?  ");
 			sql.append(" and tkkode = ?  ");
 			
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { code, id }, new TristdMapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { code, id }, new Trkodl01Mapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -73,7 +73,7 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 	 * 
 	 */
 	public List getList(StringBuffer errorStackTrace){
-		List<TristdDao> retval = new ArrayList<TristdDao>();
+		List retval = new ArrayList();
 		// N/A
 		return retval;
 	}
@@ -81,7 +81,7 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 	 * 
 	 */
 	public List findById (String id, StringBuffer errorStackTrace ){
-		List<TristdDao> retval = new ArrayList<TristdDao>();
+		List retval = new ArrayList();
 		// N/A
 		return  retval;
 	}
