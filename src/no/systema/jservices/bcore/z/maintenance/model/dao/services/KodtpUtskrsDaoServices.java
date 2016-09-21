@@ -1,6 +1,6 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.util.*;
-
+import no.systema.jservices.model.dao.services.IDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDao;
 
 /**
