@@ -6,7 +6,8 @@ import org.apache.log4j.Logger;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TristdDao;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
-import no.systema.jservices.model.dao.entities.EdiiDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.Trkodl01DaoServices;
+
 
 
 /**
@@ -17,6 +18,7 @@ import no.systema.jservices.model.dao.entities.EdiiDao;
 public class TR053R_U {
 	private static Logger logger = Logger.getLogger(TR053R_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
+	private Trkodl01DaoServices trkodl01DaoServices;
 	
 	private StringBuffer validatorStackTrace = new StringBuffer();
 	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }
@@ -25,8 +27,9 @@ public class TR053R_U {
 	 * 
 	 * @param ediiDaoServices
 	 */
-	public TR053R_U(EdiiDaoServices ediiDaoServices){
+	public TR053R_U(EdiiDaoServices ediiDaoServices, Trkodl01DaoServices trkodl01DaoServices){
 		this.ediiDaoServices = ediiDaoServices;
+		this.trkodl01DaoServices = trkodl01DaoServices;
 	}
 
 	/**
@@ -56,6 +59,12 @@ public class TR053R_U {
 		//-----------------------
 		//(1) Validity of Exchanges I
 		retval = this.vaidateExchangesId(dao);
+		if(retval){
+			//(2) Validity Toldsted (tullkontor)
+			if(dao.getTitsb()!=null && !"".equals(dao.getTitsb())){
+				retval = this.vaidateTullkontorId(dao);
+			}
+		}
 		//TODO ... more validations here
 		
 		return retval;
@@ -132,18 +141,39 @@ public class TR053R_U {
 			if(s0004List!=null && s0004List.size()==1){ 
 				//OK 
 			}else{
-				this.validatorStackTrace.append(" UtvekslingsId Avd. er feil /" );
+				this.validatorStackTrace.append(" UtvekslingsId Avd. er ugyldig /" );
 			}
 			
 			if(s0010List!=null && s0010List.size()==1){
 				//OK
 			}else{
-				this.validatorStackTrace.append(" UtvekslingsId Tollvesenet er feil " );
+				this.validatorStackTrace.append(" UtvekslingsId Tollvesenet er ugyldig " );
 				
 			}
 			retval = false;
 			
 		}
+		
+		return retval;
+	}
+	/**
+	 * 
+	 * @param dao
+	 * @return
+	 */
+	public boolean vaidateTullkontorId(TristdDao dao){
+		boolean retval = true;
+		String UNIQUE_CODE_TULLKONTOR = "106";
+		List list = this.trkodl01DaoServices.findById(UNIQUE_CODE_TULLKONTOR, dao.getTitsb(), this.validatorStackTrace);
+		
+		if( list!=null && list.size()==1 ){
+			//OK
+			logger.info("AAAA");
+		}else{
+			logger.info("AAA");
+			this.validatorStackTrace.append(" Freml.tollsted er ugyldig " );
+			retval = false;
+		}	
 		
 		return retval;
 	}

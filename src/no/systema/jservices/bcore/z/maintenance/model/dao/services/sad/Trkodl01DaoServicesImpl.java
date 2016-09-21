@@ -50,15 +50,16 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 	 */
 	public List findById (String code, String id, StringBuffer errorStackTrace ){
 		List<Trkodl01Dao> retval = new ArrayList<Trkodl01Dao>();
+		String WILDCARD = "%";
 		try{
 			StringBuffer sql = new StringBuffer();
 			
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			//WHERE
 			sql.append(" where tkunik = ?  ");
-			sql.append(" and tkkode = ?  ");
+			sql.append(" and tkkode like ?  ");
 			
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { code, id }, new Trkodl01Mapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { code, WILDCARD + id + WILDCARD }, new Trkodl01Mapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
