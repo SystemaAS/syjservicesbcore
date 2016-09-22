@@ -55,7 +55,6 @@ public class SYFTAAAER_U {
 		//now some logical tests
 		//-----------------------
 		//(1) Validity of Exchanges ID
-		
 		if("J".equals(dao.getSetolk())){
 			retval = this.vaidateExchangesId(dao);
 		}

@@ -224,6 +224,11 @@ public class KodtvKodtwDao implements Serializable, IDao {
 	public void setKowxxx (String value){ this.kowxxx = value;   }   
 	public String getKowxxx (){ return this.kowxxx;   }              
 
+	private String kowxxx2 = ""; 
+	public String getKowxxx2PropertyName (){ return "kowxxx2"; }
+	public void setKowxxx2 (String value){ this.kowxxx2 = value;   }   
+	public String getKowxxx2 (){ return this.kowxxx2;   }              
+
 	private String kowkom = ""; 
 	public String getKowkomPropertyName (){ return "kowkom"; }
 	public void setKowkom (String value){ this.kowkom = value;   }   

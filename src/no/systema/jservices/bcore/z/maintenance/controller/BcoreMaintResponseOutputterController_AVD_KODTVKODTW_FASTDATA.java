@@ -30,10 +30,15 @@ import javax.servlet.http.HttpSession;
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.Kodtot2Dao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtpUtskrsDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtvKodtwDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.UtskrsDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.Kodtot2DaoServices;
+
+
+
 
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -174,12 +179,12 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYFA28R_U rulerLord = new SYFA28R_U();
+            SYFA28R_U rulerLord = new SYFA28R_U(this.kodtot2DaoServices);
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("D".equals(mode)){
-					/*
+					/* N/A
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
 						dmlRetval = this.kodtvKodtwDaoServices.delete(dao, dbErrorStackTrace);
@@ -300,5 +305,15 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 	public void setKodtpUtskrsDaoServices (KodtpUtskrsDaoServices value){ this.kodtpUtskrsDaoServices = value; }
 	public KodtpUtskrsDaoServices getKodtpUtskrsDaoServices(){ return this.kodtpUtskrsDaoServices; }
 
+	
+	@Qualifier ("kodtot2DaoServices")
+	private Kodtot2DaoServices kodtot2DaoServices;
+	@Autowired
+	@Required
+	public void setKodtot2DaoServices (Kodtot2DaoServices value){ this.kodtot2DaoServices = value; }
+	public Kodtot2DaoServices getKodtot2DaoServices(){ return this.kodtot2DaoServices; }
+
+	
+	
 }
 

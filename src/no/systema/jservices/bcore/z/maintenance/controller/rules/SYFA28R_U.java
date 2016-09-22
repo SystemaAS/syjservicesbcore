@@ -1,13 +1,26 @@
 package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
+import java.util.List;
+
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.Kodtot2DaoServices;
 /**
  * 
  * @author oscardelatorre
  * @date Aug 5, 2016
  */
 public class SYFA28R_U {
-
+	private Kodtot2DaoServices kodtot2DaoServices;
+	
+	private StringBuffer validatorStackTrace = new StringBuffer();
+	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }
+	/**
+	 * 
+	 * @param ediiDaoServices
+	 */
+	public SYFA28R_U(Kodtot2DaoServices kodtot2DaoServices){
+		this.kodtot2DaoServices = kodtot2DaoServices;
+	}
 	/**
 	 * 
 	 * @param dao
@@ -29,6 +42,16 @@ public class SYFA28R_U {
 		}else{
 			retval = false;
 		}
+		
+		//-----------------------
+		//now some logical tests
+		//-----------------------
+		if(retval){
+			//(1) Validate of Opp.type
+			retval = this.vaidateOppType(dao);
+			//TODO ... more validations here
+		}
+		
 		return retval;
 	}
 	/**
@@ -129,6 +152,24 @@ public class SYFA28R_U {
 			String tmp = value.replace(",", ".");
 			retval = tmp;
 		}
+		return retval;
+	}
+	/**
+	 * 
+	 * @param dao
+	 * @return
+	 */
+	public boolean vaidateOppType(KodtvKodtwDao dao){
+		boolean retval = true;
+		List list = this.kodtot2DaoServices.findById(dao.getKowxxx2(), this.validatorStackTrace);
+		
+		if( list!=null && list.size()==1 ){
+			//OK
+		}else{
+			this.validatorStackTrace.append(" Std Oppd.type er ugyldig " );
+			retval = false;
+		}	
+		
 		return retval;
 	}
 }
