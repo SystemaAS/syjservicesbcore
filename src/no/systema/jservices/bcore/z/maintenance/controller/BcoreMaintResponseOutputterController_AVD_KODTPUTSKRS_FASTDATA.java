@@ -137,7 +137,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTPUTSKRS_FASTDATA {
 	 * PGM:		SYFA28 Child (Del-2)
 	 * Member: 	MAINT AVD - Del-2 Faste data, Maintenance - SELECT LIST or SELECT SPECIFIC
 	 * 
-	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsSYFA28ChildR_U.do?user=OSCAR&kopavd=1&koplnr=1&mode=U/A/D
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA28ChildR_U.do?user=OSCAR&kopavd=1&koplnr=1&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
@@ -173,39 +173,18 @@ public class BcoreMaintResponseOutputterController_AVD_KODTPUTSKRS_FASTDATA {
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("D".equals(mode)){
-					/* N/A for this child
-					logger.info("Before DELETE ...");
-					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						dmlRetval = this.kodtpUtskrsDaoServices.delete(dao, dbErrorStackTrace);
-					}else{
-						//write JSON error output
-						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
-						status = "error";
-						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-					}
-					*/
+					//N/A for this child
+					
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode)){
-						List<KodtpUtskrsDao> list = new ArrayList<KodtpUtskrsDao>();
 						//must complete numeric values to avoid <null> on those
 						rulerLord.updateNumericFieldsIfNull(dao);
 						//do ADD
 						if("A".equals(mode)){
-							/* N/A for this child
-							logger.info("Before INSERT ...");
-							list = this.kodtpUtskrsDaoServices.findById(dao.getKopavd(), dao.getKoplnr(), dbErrorStackTrace);
-							//check if there is already such a code. If it does, stop the update
-							if(list!=null && list.size()>0){
-								//write JSON error output
-								errMsg = "ERROR on UPDATE: Record exists already";
-								status = "error";
-								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-							}else{
-								dmlRetval = this.kodtpUtskrsDaoServices.insert(dao, dbErrorStackTrace);
-							}
-							*/
+							//N/A for this child
+						
 						}else if("U".equals(mode)){
-							logger.info("Before UPDATE ...");
+							logger.info("Before UPDATE Child ...");
 							dmlRetval = this.kodtpUtskrsDaoServices.updateChild(dao, dbErrorStackTrace);
 						}
 						
@@ -246,6 +225,136 @@ public class BcoreMaintResponseOutputterController_AVD_KODTPUTSKRS_FASTDATA {
 		}
 		session.invalidate();
 		return sb.toString();
+	}
+	/**
+	 * 
+	 * Update Database DML operations
+	 * File: 	KODTP/UTSKRS
+	 * 
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicesbcore/syjsSYFA28DPTAvdR_U.do?user=OSCAR&=1&originalAvd=1&originalLnr=1&fromAvd=333&toAvd=333&mode=U/A/D
+	 *
+	 * @param session
+	 * @param request
+	 * @return
+	 * 
+	 */
+	@RequestMapping(value="syjsSYFA28DPTAvdR_U.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String syjsDuplicateR_U( HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();
+		
+		try{
+			logger.info("Inside syjsSYFA28DPTAvdR_U.do");
+			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
+			String user = request.getParameter("user");
+			String mode = request.getParameter("mode");
+			//Avd information
+			String originalAvd = request.getParameter("originalAvd");
+			String originalLnr = request.getParameter("originalLnr");
+			String fromAvd = request.getParameter("fromAvd");
+			String toAvd = request.getParameter("toAvd");
+			//get list of avd to update
+			List<String> targetAvdList = this.getTargetAvdList(fromAvd, toAvd);
+			
+			
+			//Check ALWAYS user in BRIDF
+            String userName = this.bridfDaoServices.findNameById(user);
+            //DEBUG --> logger.info("USERNAME:" + userName + "XX");
+            String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+			
+			//bind attributes is any
+			KodtpUtskrsDao dao = new KodtpUtskrsDao();
+			//rules
+            SYFA28ChildR_U rulerLord = new SYFA28ChildR_U();
+			//Start processing now
+			if(userName!=null && !"".equals(userName)){
+				int dmlRetval = 0;
+				//Get the source record to get all values
+				logger.info("Before SELECT ...");
+				if( (originalAvd!=null && !"".equals(originalAvd)) && (originalLnr!=null && !"".equals(originalLnr)) ){
+					logger.info("findById...");
+					List<KodtpUtskrsDao> tmpList = this.kodtpUtskrsDaoServices.findById(originalAvd, originalLnr, dbErrorStackTrace);
+					for (KodtpUtskrsDao record : tmpList){
+						dao = record;
+					}
+				}
+				//validate
+				if(rulerLord.isValidInput(dao, userName, mode)){
+					//must complete numeric values to avoid <null> on those
+					rulerLord.updateNumericFieldsIfNull(dao);
+					//update each avd
+					for(String targetAvd: targetAvdList){
+						//key values
+						dao.setKopavd(targetAvd);
+						dao.setKoplnr(originalLnr);
+						//UPDATE
+						dmlRetval = this.kodtpUtskrsDaoServices.updateChild(dao, dbErrorStackTrace);
+					}
+				}else{
+					//write JSON error output
+					errMsg = "ERROR on UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update";
+					status = "error";
+					dbErrorStackTrace.append(errMsg);
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}
+				//----------------------------------
+				//check returns from dml operations
+				//----------------------------------
+				if(dmlRetval<0){
+					//write JSON error output
+					errMsg = "ERROR on UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
+					status = "error";
+					dbErrorStackTrace.append(errMsg);
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}else{
+					//OK UPDATE
+					logger.info("UPDATE on Dupliser = OK");
+					sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
+				}
+				
+			}else{
+				//write JSON error output
+				errMsg = "ERROR on UPDATE";
+				status = "error";
+				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+			
+		}catch(Exception e){
+			//write std.output error output
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+		session.invalidate();
+		return sb.toString();
+	}
+	/**
+	 * 
+	 * @param fromAvd
+	 * @param toAvd
+	 * @return
+	 */
+	private List<String> getTargetAvdList(String fromAvd, String toAvd){
+		List<String> list = new ArrayList();
+		int lLimit = 0;
+		int uLimit = 0;
+		try{
+			lLimit = Integer.valueOf(fromAvd);
+			uLimit = Integer.valueOf(toAvd);
+			for (Integer x = lLimit; x<=uLimit; x++){
+				list.add(x.toString());
+			}
+			
+		}catch(Exception e){
+			//TODO
+		}
+		
+		return list;
 	}
 	
 	//----------------

@@ -62,28 +62,50 @@ public class SYFA28ChildR_U {
 		
 		if(dao.getKopcpl()==null || "".equals(dao.getKopcpl())){
 			dao.setKopcpl(ZERO);
+		}else{
+			dao.setKopcpl(dao.getKopcpl().trim());
 		}
+		
 		if(dao.getKopcpi()==null || "".equals(dao.getKopcpi())){
 			dao.setKopcpi(ZERO);
+		}else{
+			dao.setKopcpi(dao.getKopcpi().trim());
 		}
+		
 		if(dao.getKoplpp()==null || "".equals(dao.getKoplpp())){
 			dao.setKoplpp(ZERO);
+		}else{
+			dao.setKoplpp(dao.getKoplpp().trim());
 		}
+		
 		if(dao.getKoplpi()==null || "".equals(dao.getKoplpi())){
 			dao.setKoplpi(ZERO);
+		}else{
+			dao.setKoplpi(dao.getKoplpi().trim());
 		}
-		//
+
 		if(dao.getUtpcpl()==null || "".equals(dao.getUtpcpl())){
 			dao.setUtpcpl(ZERO);
+		}else{
+			dao.setUtpcpl(dao.getUtpcpl().trim());
 		}
+		
 		if(dao.getUtpcpi()==null || "".equals(dao.getUtpcpi())){
 			dao.setUtpcpi(ZERO);
+		}else{
+			dao.setUtpcpi(dao.getUtpcpi().trim());
 		}
+		
 		if(dao.getUtplpp()==null || "".equals(dao.getUtplpp())){
 			dao.setUtplpp(ZERO);
+		}else{
+			dao.setUtplpp(dao.getUtplpp().trim());
 		}
+		
 		if(dao.getUtplpi()==null || "".equals(dao.getUtplpi())){
 			dao.setUtplpi(ZERO);
+		}else{
+			dao.setUtplpi(dao.getUtplpi().trim());
 		}
 	}
 	

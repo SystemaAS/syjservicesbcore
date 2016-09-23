@@ -207,7 +207,7 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 	}
 	
 	/**
-	 * Updates KODTP (faste data Del-2)
+	 * Updates KODTP (faste data (Dokumenter - Del 2)
 	 */
 	public int updateChild(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
@@ -221,12 +221,14 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 			
 			sql.append(" WHERE kopavd = ? ");
 			sql.append(" AND koplnr = ? ");
-			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKopty(), dao.getKopnvn(), dao.getKophea(), dao.getKoplas(), dao.getKoplpi(), dao.getKopfm(), 
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] {
+					dao.getKopty(), dao.getKopnvn(), dao.getKophea(), dao.getKoplas(), dao.getKoplpi(), dao.getKopfm(), 
 					dao.getKopdraw(), dao.getKopoutb(), dao.getKopcopi(), dao.getKopfov1(), 
 					//WHERE
-					dao.getKopavd(), dao.getKoplnr() } );
+					dao.getKopavd(), dao.getKoplnr() 
+					
+					} );
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
