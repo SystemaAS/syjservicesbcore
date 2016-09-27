@@ -31,21 +31,14 @@ import javax.servlet.http.HttpSession;
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtpUtskrsDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.Kodtot2Dao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtpUtskrsDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtvKodtwDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.UtskrsDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.Kodtot2DaoServices;
-
-
-
 
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 //rules
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA28R_U;
-
-
 
 
 
@@ -179,7 +172,7 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYFA28R_U rulerLord = new SYFA28R_U(this.kodtot2DaoServices);
+            SYFA28R_U rulerLord = new SYFA28R_U();
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
@@ -226,9 +219,8 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 									}
 									//now do the batch insert
 									this.kodtpUtskrsDaoServices.insertBatch(utskrsListTarget, dbErrorStackTrace);
-									
 								}
-
+								
 							}
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
@@ -305,15 +297,6 @@ public class BcoreMaintResponseOutputterController_AVD_KODTVKODTW_FASTDATA {
 	public void setKodtpUtskrsDaoServices (KodtpUtskrsDaoServices value){ this.kodtpUtskrsDaoServices = value; }
 	public KodtpUtskrsDaoServices getKodtpUtskrsDaoServices(){ return this.kodtpUtskrsDaoServices; }
 
-	
-	@Qualifier ("kodtot2DaoServices")
-	private Kodtot2DaoServices kodtot2DaoServices;
-	@Autowired
-	@Required
-	public void setKodtot2DaoServices (Kodtot2DaoServices value){ this.kodtot2DaoServices = value; }
-	public Kodtot2DaoServices getKodtot2DaoServices(){ return this.kodtot2DaoServices; }
-
-	
 	
 }
 

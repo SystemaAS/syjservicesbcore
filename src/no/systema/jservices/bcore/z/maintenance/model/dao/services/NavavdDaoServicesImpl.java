@@ -62,7 +62,7 @@ public class NavavdDaoServicesImpl implements NavavdDaoServices {
 			sql.append(" VALUES ( ?, ? ) ");
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoaavd(), dao.getNavsg() } );
-			
+
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -85,12 +85,14 @@ public class NavavdDaoServicesImpl implements NavavdDaoServices {
 			KodtaDao dao = (KodtaDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
+			
 			sql.append(" UPDATE navavd SET navsg = ? ");
 			sql.append(" WHERE koaavd = ? ");
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getNavsg(), 
 				//WHERE
 				dao.getKoaavd() } );
+
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);

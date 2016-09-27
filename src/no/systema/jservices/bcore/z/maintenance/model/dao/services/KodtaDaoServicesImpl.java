@@ -177,8 +177,9 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	/**
 	 * 
 	 * @return
+	 * kodtasid table was included to get KSIDNR ???
 	 */
-	private String getSELECT_CLAUSE(){
+	private String getSELECT_CLAUSE_ORIG(){
 		
 		StringBuffer sql = new StringBuffer();
 		
@@ -196,7 +197,31 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		sql.append(" on a.koaavd = d.kodavd ");
 		return sql.toString();
 	}
-	
+	/**
+	 * 
+	 * @return
+	 */
+   private String getSELECT_CLAUSE(){
+		
+		StringBuffer sql = new StringBuffer();
+		
+		sql.append(" select a.koaavd, CHAR(a.koaknr) koaknr, CHAR(a.KOABÆR) koabaer, CHAR(a.koakon) koakon, ");
+		sql.append(" a.koafir, a.koanvn, CHAR(a.koaiat) koaiat, CHAR(a.koaia2) koaia2, a.koaie, a.koapos, a.koalk, ");
+		sql.append(" coalesce(b.navsg,'') navsg, ");
+		//sql.append(" coalesce(c.ksidnr,'') ksidnr, "); 
+		sql.append(" coalesce(d.kodus1,'') kodus1, coalesce(d.kodus2,'') kodus2,  ");
+		sql.append(" coalesce(d.kodus3,'') kodus3, coalesce(d.kodus4,'') kodus4, coalesce(d.kodus5,'') kodus5, coalesce(d.kodus6,'') kodus6 ");
+		 
+		sql.append(" from kodta AS a ");
+		sql.append(" full outer join navavd AS b ");
+		sql.append(" on a.koaavd = b.koaavd  ");
+		sql.append(" full outer join kodtd AS d ");
+		sql.append(" on a.koaavd = d.kodavd ");
+		//sql.append(" full outer join kodtasid AS c ");
+		//sql.append(" on a.koaavd = c.ksavd ");
+		
+		return sql.toString();
+	}
 	/**
 	 * 
 	 * @param dao
@@ -220,7 +245,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			
 			if(retval>=0){
 				this.navavdDaoServices.insert(dao, errorStackTrace);
-				this.kodtasidDaoServices.insert(dao, errorStackTrace);
+				//this.kodtasidDaoServices.insert(dao, errorStackTrace);
 				this.kodtdDaoServices.insert(dao, errorStackTrace);
 				
 			}
@@ -258,7 +283,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			
 			if(retval>=0){
 				this.updateChildNavAvd(daoObj, errorStackTrace);
-				this.updateChildKodtasid(daoObj, errorStackTrace);
+				//this.updateChildKodtasid(daoObj, errorStackTrace);
 				this.updateChildKodtd(daoObj, errorStackTrace);
 				
 			}
@@ -285,8 +310,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		try{
 			KodtaDao dao = (KodtaDao)daoObj;
 			int childRecord = this.navavdDaoServices.findById(dao.getKoaavd(), errorStackTrace);
-			//logger.info("EXISTS:" + childRecord);
-			
+			logger.info("EXISTS:" + childRecord);
 			if(childRecord>0){
 				logger.info("Navavd child update...");
 				retval = this.navavdDaoServices.update(dao, errorStackTrace);
@@ -317,7 +341,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		try{
 			KodtaDao dao = (KodtaDao)daoObj;
 			int childRecord = this.kodtasidDaoServices.findById(dao.getKoaavd(), errorStackTrace);
-			//logger.info("EXISTS:" + childRecord);
+			logger.info("EXISTS:" + childRecord);
 			
 			if(childRecord>0){
 				logger.info("Kodtasid child update...");
@@ -349,7 +373,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 		try{
 			KodtaDao dao = (KodtaDao)daoObj;
 			int childRecord = this.kodtdDaoServices.findById(dao.getKoaavd(), errorStackTrace);
-			//logger.info("EXISTS:" + childRecord);
+			logger.info("EXISTS:" + childRecord);
 			
 			if(childRecord>0){
 				logger.info("Kodtd child update...");
@@ -389,7 +413,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			//Delete children
 			if(retval>=0){
 				this.navavdDaoServices.delete(dao, errorStackTrace);
-				this.kodtasidDaoServices.delete(dao, errorStackTrace);
+				//this.kodtasidDaoServices.delete(dao, errorStackTrace);
 				this.kodtdDaoServices.delete(dao, errorStackTrace);
 			}
 			

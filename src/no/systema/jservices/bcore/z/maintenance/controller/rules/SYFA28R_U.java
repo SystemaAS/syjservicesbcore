@@ -14,13 +14,7 @@ public class SYFA28R_U {
 	
 	private StringBuffer validatorStackTrace = new StringBuffer();
 	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }
-	/**
-	 * 
-	 * @param ediiDaoServices
-	 */
-	public SYFA28R_U(Kodtot2DaoServices kodtot2DaoServices){
-		this.kodtot2DaoServices = kodtot2DaoServices;
-	}
+	
 	/**
 	 * 
 	 * @param dao
@@ -34,8 +28,7 @@ public class SYFA28R_U {
 			(mode!=null && !"".equals(mode)) ){
 			//check dao
 			if( (dao.getKovavd()!=null && !"".equals(dao.getKovavd())) ){
-					
-				
+				//OK	
 			}else{
 				retval = false;
 			}
@@ -47,8 +40,6 @@ public class SYFA28R_U {
 		//now some logical tests
 		//-----------------------
 		if(retval){
-			//(1) Validate of Opp.type
-			retval = this.vaidateOppType(dao);
 			//TODO ... more validations here
 		}
 		
@@ -154,22 +145,5 @@ public class SYFA28R_U {
 		}
 		return retval;
 	}
-	/**
-	 * 
-	 * @param dao
-	 * @return
-	 */
-	public boolean vaidateOppType(KodtvKodtwDao dao){
-		boolean retval = true;
-		List list = this.kodtot2DaoServices.findById(dao.getKowxxx2(), this.validatorStackTrace);
-		
-		if( list!=null && list.size()==1 ){
-			//OK
-		}else{
-			this.validatorStackTrace.append(" Std Oppd.type er ugyldig " );
-			retval = false;
-		}	
-		
-		return retval;
-	}
+	
 }
