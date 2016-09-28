@@ -126,7 +126,6 @@ public class KodtaTellDaoServicesImpl implements KodtaTellDaoServices {
 			//WHERE
 			dao.getTeavd() } );
 		
-		
 		return retval;
 	}
 	
