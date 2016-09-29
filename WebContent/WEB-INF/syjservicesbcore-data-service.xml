@@ -57,6 +57,11 @@
       <property name="navavdDaoServices"><ref bean="navavdDaoServices"/></property>
       <property name="kodtasidDaoServices"><ref bean="kodtasidDaoServices"/></property>
       <property name="kodtdDaoServices"><ref bean="kodtdDaoServices"/></property>
+      <property name="kodtaKodthDaoServices"><ref bean="kodtaKodthDaoServices"/></property>
+      <property name="kodtaTellDaoServices"><ref bean="kodtaTellDaoServices"/></property>
+      <property name="kodtvKodtwDaoServices"><ref bean="kodtvKodtwDaoServices"/></property>
+      <property name="kodtaHodeDaoServices"><ref bean="kodtaHodeDaoServices"/></property>
+      
   </bean>
   
   <bean id="kodtpUtskrsDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtpUtskrsDaoServicesImpl">

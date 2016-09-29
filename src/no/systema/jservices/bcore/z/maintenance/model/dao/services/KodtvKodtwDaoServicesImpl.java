@@ -239,19 +239,55 @@ public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
 	/**
 	 * DELETE
 	 */
-	
 	public int delete(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
+		//NA
+		return retval;
+	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public int deleteChildKodtv(Object daoObj, StringBuffer errorStackTrace){
+		int retval = 0;
 		try{
-			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
+			KodtvKodtwDao dao = (KodtvKodtwDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" DELETE from navavd ");
-			sql.append(" WHERE koaavd = ? ");
+			sql.append(" DELETE from kodtv ");
+			sql.append(" WHERE kovavd = ? ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKoaavd() } );
-			*/
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKovavd() } );
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		
+		return retval;
+	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public int deleteChildKodtw(Object daoObj, StringBuffer errorStackTrace){
+		int retval = 0;
+		try{
+			KodtvKodtwDao dao = (KodtvKodtwDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" DELETE from kodtw ");
+			sql.append(" WHERE kowavd = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKowavd() } );
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());

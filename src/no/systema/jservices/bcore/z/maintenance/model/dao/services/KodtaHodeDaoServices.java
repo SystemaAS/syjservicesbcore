@@ -11,4 +11,5 @@ import no.systema.jservices.model.dao.services.IDaoServices;
  */
 public interface KodtaHodeDaoServices extends IDaoServices { 
 	public List findById (String id, String lang, StringBuffer errorStackTrace );
+	public int deleteAllAvd(Object daoObj, StringBuffer errorStackTrace);
 }

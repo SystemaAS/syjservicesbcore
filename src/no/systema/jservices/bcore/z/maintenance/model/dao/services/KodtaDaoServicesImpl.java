@@ -3,10 +3,17 @@ import java.io.Writer;
 import java.util.*;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.KodtaMapper;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaHodeDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaKodthDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaTellDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -415,6 +422,26 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 				this.navavdDaoServices.delete(dao, errorStackTrace);
 				//this.kodtasidDaoServices.delete(dao, errorStackTrace);
 				this.kodtdDaoServices.delete(dao, errorStackTrace);
+				//child records
+				//(1)
+				KodtaKodthDao daoKodth = new KodtaKodthDao();
+				daoKodth.setKohavd(dao.getKoaavd());
+				this.kodtaKodthDaoServices.delete(daoKodth, errorStackTrace);
+				//(2)
+				KodtaTellDao daoTell = new KodtaTellDao();;
+				daoTell.setTeavd(dao.getKoaavd());
+				this.kodtaTellDaoServices.delete(daoTell, errorStackTrace);
+				//(3)FASTE DATA
+				KodtvKodtwDao daoKodTvTw = new KodtvKodtwDao();
+				daoKodTvTw.setKovavd(dao.getKoaavd());
+				daoKodTvTw.setKowavd(dao.getKoaavd());
+				this.kodtvKodtwDaoServices.deleteChildKodtv(daoKodTvTw, errorStackTrace);
+				this.kodtvKodtwDaoServices.deleteChildKodtw(daoKodTvTw, errorStackTrace);
+				//(4)Hode på dok
+				KodtaHodeDao daoKodTa = new KodtaHodeDao();
+				daoKodTa.setHoavd(dao.getKoaavd());
+				this.kodtaHodeDaoServices.deleteAllAvd(daoKodTa, errorStackTrace);
+				
 			}
 			
 		}catch(Exception e){
@@ -449,6 +476,21 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	public void setKodtdDaoServices( KodtdDaoServices kodtdDaoServices) {this.kodtdDaoServices = kodtdDaoServices;}          
 	public KodtdDaoServices getKodtdDaoServices() {return this.kodtdDaoServices;}                                    
 	
+	private KodtaKodthDaoServices kodtaKodthDaoServices = null;                                                            
+	public void setKodtaKodthDaoServices( KodtaKodthDaoServices kodtaKodthDaoServices) {this.kodtaKodthDaoServices = kodtaKodthDaoServices;}          
+	public KodtaKodthDaoServices getKodtaKodthDaoServices() {return this.kodtaKodthDaoServices;}                                    
+	
+	private KodtaTellDaoServices kodtaTellDaoServices = null;
+	public void setKodtaTellDaoServices (KodtaTellDaoServices kodtaTellDaoServices){ this.kodtaTellDaoServices = kodtaTellDaoServices; }
+	public KodtaTellDaoServices getKodtaTellDaoServices(){ return this.kodtaTellDaoServices; }
+
+	private KodtvKodtwDaoServices kodtvKodtwDaoServices = null;
+	public void setKodtvKodtwDaoServices (KodtvKodtwDaoServices kodtvKodtwDaoServices){ this.kodtvKodtwDaoServices = kodtvKodtwDaoServices; }
+	public KodtvKodtwDaoServices getKodtvKodtwDaoServices(){ return this.kodtvKodtwDaoServices; }
+	
+	private KodtaHodeDaoServices kodtaHodeDaoServices = null;
+	public void setKodtaHodeDaoServices (KodtaHodeDaoServices kodtaHodeDaoServices){ this.kodtaHodeDaoServices = kodtaHodeDaoServices; }
+	public KodtaHodeDaoServices getKodtaHodeDaoServices(){ return this.kodtaHodeDaoServices; }
 	
 	
 }
