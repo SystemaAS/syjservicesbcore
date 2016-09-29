@@ -125,6 +125,7 @@ public class JsonResponseOutputterController_EDIFTP {
 			e.printStackTrace(printWriter);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
+		session.invalidate();
 		return sb.toString();
 	}
 	
@@ -206,6 +207,7 @@ public class JsonResponseOutputterController_EDIFTP {
 			e.printStackTrace(printWriter);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
+		session.invalidate();
 		return sb.toString();
 	}
 	
