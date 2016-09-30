@@ -142,9 +142,9 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			StringBuffer sql = new StringBuffer();
 			sql.append(" select a.koaavd, a.koafir, a.koanvn, a.koaknr ");
 			sql.append(" from kodta AS a ");
-			sql.append(" left outer join tristdTODO AS b ");
-			sql.append(" on a.koaavd = b.tiavd ");
-			sql.append(" where b.tiavd is NULL ");
+			sql.append(" left outer join trustd AS b ");
+			sql.append(" on a.koaavd = b.thavd ");
+			sql.append(" where b.thavd is NULL ");
 			sql.append(" order by a.koaavd ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
