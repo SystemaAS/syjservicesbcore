@@ -106,6 +106,9 @@
   <bean id="trkodl01DaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.Trkodl01DaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="trustdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   
   
   <!--///////////////////
