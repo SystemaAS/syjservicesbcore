@@ -109,6 +109,9 @@
   <bean id="trustdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="trustdfvDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdfvDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   
   
   <!--///////////////////

@@ -52,8 +52,8 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.sad.TR003R_U;
  */
 
 @Controller
-public class BcoreMaintResponseOutputterControllerSadNctsImport_AVD_TRUSTD {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSadNctsImport_AVD_TRUSTD.class.getName());
+public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTD {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTD.class.getName());
 	
 	/**
 	 * FreeForm Source:

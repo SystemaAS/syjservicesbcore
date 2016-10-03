@@ -63,12 +63,57 @@ public class TR003R_U {
 		retval = this.vaidateExchangesId(dao);
 		if(retval){
 			//(2) Validity Toldsted (tullkontor)
-			/* TODO
-			if(dao.getTitsb()!=null && !"".equals(dao.getTitsb())){
-				retval = this.vaidateTullkontorId(dao);
+			if(dao.getThcats()!=null && !"".equals(dao.getThcats())){
+				retval = this.vaidateTullkontorId(dao.getThcats(), " C. Avg.tollsted er ugyldig ");
 			}
-			*/
+			if(retval){
+				if(dao.getThtsb()!=null && !"".equals(dao.getThtsb())){
+					retval = this.vaidateTullkontorId(dao.getThtsb	(), " 53. Bestemmelsestollsted er ugyldig ");
+				}
+			}
+			if(retval){
+				if(dao.getThtsd1()!=null && !"".equals(dao.getThtsd1())){
+					retval = this.vaidateTullkontorId(dao.getThtsd1(), " 51. Planlagte transitteringstollsteder (1) er ugyldig ");
+				}
+			}
+			if(retval){
+				if(dao.getThtsd2()!=null && !"".equals(dao.getThtsd2())){
+					retval = this.vaidateTullkontorId(dao.getThtsd2(), " 51. Planlagte transitteringstollsteder (2) er ugyldig ");
+				}
+			}
+			if(retval){
+				if(dao.getThtsd3()!=null && !"".equals(dao.getThtsd3())){
+					retval = this.vaidateTullkontorId(dao.getThtsd3(), " 51. Planlagte transitteringstollsteder (3) er ugyldig ");
+				}
+			}
+			if(retval){
+				if(dao.getThtsd4()!=null && !"".equals(dao.getThtsd4())){
+					retval = this.vaidateTullkontorId(dao.getThtsd4(), " 51. Planlagte transitteringstollsteder (4) er ugyldig ");
+				}
+			}
+			if(retval){
+				if(dao.getThtsd5()!=null && !"".equals(dao.getThtsd5())){
+					retval = this.vaidateTullkontorId(dao.getThtsd5(), " 51. Planlagte transitteringstollsteder (5) er ugyldig ");
+				}
+			}
+			if(retval){
+				if(dao.getThtsd6()!=null && !"".equals(dao.getThtsd6())){
+					retval = this.vaidateTullkontorId(dao.getThtsd6(), " 51. Planlagte transitteringstollsteder (6) er ugyldig ");
+				}
+			}
+			if(retval){
+				if(dao.getThtsd7()!=null && !"".equals(dao.getThtsd7())){
+					retval = this.vaidateTullkontorId(dao.getThtsd7(), " 51. Planlagte transitteringstollsteder (7) er ugyldig ");
+				}
+			}
+			if(retval){
+				if(dao.getThtsd8()!=null && !"".equals(dao.getThtsd8())){
+					retval = this.vaidateTullkontorId(dao.getThtsd8(), " 51. Planlagte transitteringstollsteder (8) er ugyldig ");
+				}
+			}
+			
 		}
+		
 		//TODO ... more validations here
 		
 		return retval;
@@ -169,6 +214,22 @@ public class TR003R_U {
 		if(dao.getThntk()==null || "".equals(dao.getThntk())){
 			dao.setThntk(ZERO);
 		}
+		//Sikkerhed
+		if(dao.getThsik()==null || "".equals(dao.getThsik())){
+			dao.setThsik(ZERO);
+		}
+		if(dao.getThtma()==null || "".equals(dao.getThtma())){
+			dao.setThtma(ZERO);
+		}
+		if(dao.getThknss()==null || "".equals(dao.getThknss())){
+			dao.setThknss(ZERO);
+		}
+		if(dao.getThknks()==null || "".equals(dao.getThknks())){
+			dao.setThknks(ZERO);
+		}
+		if(dao.getThknt()==null || "".equals(dao.getThknt())){
+			dao.setThknt(ZERO);
+		}
 		
 		//Dates
 		if(dao.getThdt()==null || "".equals(dao.getThdt())){
@@ -182,6 +243,9 @@ public class TR003R_U {
 		}
 		if(dao.getThtrdt()==null || "".equals(dao.getThtrdt())){
 			dao.setThtrdt(ZERO);
+		}
+		if(dao.getThdta()==null || "".equals(dao.getThdta())){
+			dao.setThdta(ZERO);
 		}
 		
 		
@@ -227,22 +291,21 @@ public class TR003R_U {
 	 * @param dao
 	 * @return
 	 */
-	public boolean vaidateTullkontorId(TrustdDao dao){
+	public boolean vaidateTullkontorId(String value, String errorMsg){
 		boolean retval = true;
-		/* TODO
 		
 		String UNIQUE_CODE_TULLKONTOR = "106";
-		List list = this.trkodl01DaoServices.findById(UNIQUE_CODE_TULLKONTOR, dao.getTitsb(), this.validatorStackTrace);
+		List list = this.trkodl01DaoServices.findById(UNIQUE_CODE_TULLKONTOR, value, this.validatorStackTrace);
 		
 		if( list!=null && list.size()==1 ){
 			//OK
 			//logger.info("AAAA");
 		}else{
 			//logger.info("AAA");
-			this.validatorStackTrace.append(" Freml.tollsted er ugyldig " );
+			this.validatorStackTrace.append(errorMsg);
 			retval = false;
 		}	
-		*/
+		
 		return retval;
 	}
 }
