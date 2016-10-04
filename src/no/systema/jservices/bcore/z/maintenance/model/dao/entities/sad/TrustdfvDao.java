@@ -128,13 +128,13 @@ public class TrustdfvDao implements Serializable, IDao {
 	
 	private String thpsss = "";                                
 	public String getThpsssPropertyName (){ return "thpsss"; }
-	public void sethpsss (String value){ this.thpsss = value;   }   
+	public void setThpsss (String value){ this.thpsss = value;   }   
 	public String getThpsss (){ return this.thpsss;   }  
 	
-	private String thllss = "";                                
-	public String getThllssPropertyName (){ return "thllss"; }
-	public void setThllss (String value){ this.thllss = value;   }   
-	public String getThllss (){ return this.thllss;   }  
+	private String thlkss = "";                                
+	public String getThlkssPropertyName (){ return "thlkss"; }
+	public void setThlkss (String value){ this.thlkss = value;   }   
+	public String getThlkss (){ return this.thlkss;   }  
 	
 	private String thskss = "";                                
 	public String getThskssPropertyName (){ return "thskss"; }

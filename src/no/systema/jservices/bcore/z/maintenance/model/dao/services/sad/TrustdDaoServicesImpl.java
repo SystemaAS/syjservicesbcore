@@ -78,24 +78,43 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 			
 			TrustdDao dao = (TrustdDao)daoObj;
 			StringBuffer sql = new StringBuffer();
-			/*
-			sql.append(" INSERT INTO trustd ( tiavd, tienkl, titdn, s0004, s0010, s0026, s0035, ");
-			sql.append(" tikn, titin, tina, tiad1, tisk, tips, tipn, tilk, tign, tignsk, titrnr, tialk, titsb, tiskb, ");
-			sql.append(" tialsk, tialss, tials, tiglsk, tiacts  ");
+			
+			sql.append(" INSERT INTO trustd ( thavd, thnttd, thntll, thfmll, thenkl, thtdn, s0004, s0010, s0026, s0035, thekst, ");
+			sql.append(" thkns, thnas, thtins, thads1, thsks, thpss, thpns, thlks, ");
+			sql.append(" thknk, thnak, thtink, thadk1, thskk, thpsk, thpnk, thlkk, ");
+			sql.append(" thtsd1, thtsd2, thtsd3, thtsd4, thtsd5, thtsd6, thtsd7, thtsd8, thtsb, ");
+			sql.append(" thgkd, thgft1, thgadk, thgbgi, thgbgu, thgft2,  thgpr, thgbl, thgvk, ");
+			sql.append(" thalk, thblk, thtaid, thtalk, thtask, thtgid, thtglk, thtgsk, ");
+			sql.append(" thtrm, thkdc, thlsd, thcats, thskfd, thdst, thdsk, thdkr, thddt, ");
+			
+			sql.append(" thtina, thnaa, thada1, thska, thpsa, thpna, thlka, ");
+			sql.append(" thdfkd, thdant, thdfsk ");
 			sql.append(" )" );
-			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ");
-			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
-			sql.append(" ?, ?, ?, ?, ? ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?,  ");
 			sql.append(" )" );
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getTiavd(),
-				dao.getTienkl(), dao.getTitdn(), dao.getS0004(), dao.getS0010(), dao.getS0026(), dao.getS0035(),
-				dao.getTikn(), dao.getTitin(), dao.getTina(), dao.getTiad1(), dao.getTisk(), dao.getTips(), dao.getTipn(), dao.getTilk(),
-				dao.getTign(), dao.getTignsk(), dao.getTitrnr(),dao.getTialk(), dao.getTitsb(), dao.getTiskb(), 
-				dao.getTialsk(), dao.getTialss(), dao.getTials(), dao.getTiglsk(), dao.getTiacts()
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getThavd(), 
+				dao.getThnttd(), dao.getThntll(), dao.getThfmll(), dao.getThenkl(), dao.getThtdn(), dao.getS0004(), dao.getS0010(), dao.getS0026(), dao.getS0035(), dao.getThekst(),
+				dao.getThkns(), dao.getThnas(), dao.getThtins(), dao.getThads1(), dao.getThsks(), dao.getThpss(), dao.getThpns(), dao.getThlks(),
+				dao.getThknk(), dao.getThnak(), dao.getThtink(), dao.getThadk1(), dao.getThskk(), dao.getThpsk(), dao.getThpnk(), dao.getThlkk(), 
+				dao.getThtsd1(),dao.getThtsd2(),dao.getThtsd3(),dao.getThtsd4(),dao.getThtsd5(),dao.getThtsd6(),dao.getThtsd7(),dao.getThtsd8(), dao.getThtsb(),
+				dao.getThgkd(), dao.getThgft1(), dao.getThgadk(), dao.getThgbgi(), dao.getThgbgu(), dao.getThgft2(), dao.getThgpr(), dao.getThgbl(), dao.getThgvk(), 
+				dao.getThalk(), dao.getThblk(), dao.getThtaid(), dao.getThtalk(), dao.getThtask(), dao.getThtgid(), dao.getThtglk(), dao.getThtgsk(),
+				dao.getThtrm(), dao.getThkdc(), dao.getThlsd(), dao.getThcats(), dao.getThskfd(), dao.getThdst(), dao.getThdsk(), dao.getThdkr(), dao.getThddt(),
+				
+				dao.getThtina(), dao.getThnaa(), dao.getThada1(), dao.getThska(), dao.getThpsa(), dao.getThpna(), dao.getThlka(),
+				dao.getThdfkd(), dao.getThdant(), dao.getThdfsk()
+			    } );
 
-				 } );
-			*/
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -119,22 +138,34 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 			TrustdDao dao = (TrustdDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			/*
-			sql.append(" UPDATE trustd SET tienkl = ?, titdn = ?, s0004 = ?, s0010 = ?, s0026 = ?, s0035 = ?,  ");
-			sql.append(" tikn = ?, titin = ?, tina = ?, tiad1 = ?, tisk = ?, tips = ?, tipn = ?, tilk = ?, ");
-			sql.append(" tign = ?, tignsk = ?, titrnr = ?, tialk = ?, titsb = ?, tiskb = ?, ");
-			sql.append(" tialsk = ?, tialss = ?, tials = ?, tiglsk = ?, tiacts = ? ");
-			sql.append(" WHERE tiavd = ? ");
+			
+			sql.append(" UPDATE trustd SET thnttd = ?, thntll = ?, thfmll = ?, thenkl = ?, thtdn = ?, s0004 = ?, s0010 = ?, s0026 = ?, s0035 = ?, thekst = ?, ");
+			sql.append(" thkns = ?, thnas = ?, thtins = ?, thads1 = ?, thsks = ?, thpss = ?, thpns = ?, thlks = ?, ");
+			sql.append(" thknk = ?, thnak = ?, thtink = ?, thadk1 = ?, thskk = ?, thpsk = ?, thpnk = ?, thlkk = ?, ");
+			sql.append(" thtsd1 = ?, thtsd2 = ?, thtsd3 = ?, thtsd4 = ?, thtsd5 = ?, thtsd6 = ?, thtsd7 = ?, thtsd8 = ?, thtsb = ?, ");
+			sql.append(" thgkd = ?, thgft1 = ?, thgadk = ?, thgbgi = ?, thgbgu = ?, thgft2 = ?, thgpr = ?, thgbl = ?, thgvk = ?, ");
+			sql.append(" thalk = ?, thblk = ?, thtaid = ?, thtalk = ?, thtask = ?, thtgid = ?, thtglk = ?, thtgsk = ?, ");
+			sql.append(" thtrm = ?, thkdc = ?, thlsd = ?, thcats = ?, thskfd = ?, thdst = ?, thdsk = ?, thdkr = ?, thddt = ?, ");
+			
+			sql.append(" thtina = ?, thnaa = ?, thada1 = ?, thska = ?, thpsa = ?, thpna = ?, thlka = ?, ");
+			sql.append(" thdfkd = ?, thdant = ?, thdfsk = ? ");
+			sql.append(" WHERE thavd = ? ");
 			
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
-				dao.getTienkl(), dao.getTitdn(), dao.getS0004(), dao.getS0010(), dao.getS0026(), dao.getS0035(),
-				dao.getTikn(), dao.getTitin(), dao.getTina(), dao.getTiad1(), dao.getTisk(), dao.getTips(), dao.getTipn(), dao.getTilk(),
-				dao.getTign(), dao.getTignsk(), dao.getTitrnr(),dao.getTialk(), dao.getTitsb(), dao.getTiskb(), 
-				dao.getTialsk(), dao.getTialss(), dao.getTials(), dao.getTiglsk(), dao.getTiacts(),
+				dao.getThnttd(), dao.getThntll(), dao.getThfmll(), dao.getThenkl(), dao.getThtdn(), dao.getS0004(),dao.getS0010(), dao.getS0026(), dao.getS0035(), dao.getThekst(),
+				dao.getThkns(), dao.getThnas(), dao.getThtins(), dao.getThads1(), dao.getThsks(), dao.getThpss(), dao.getThpns(), dao.getThlks(),
+				dao.getThknk(), dao.getThnak(), dao.getThtink(), dao.getThadk1(), dao.getThskk(), dao.getThpsk(), dao.getThpnk(), dao.getThlkk(), 
+				dao.getThtsd1(),dao.getThtsd2(),dao.getThtsd3(),dao.getThtsd4(),dao.getThtsd5(),dao.getThtsd6(),dao.getThtsd7(),dao.getThtsd8(), dao.getThtsb(),
+				dao.getThgkd(), dao.getThgft1(), dao.getThgadk(), dao.getThgbgi(), dao.getThgbgu(), dao.getThgft2(), dao.getThgpr(), dao.getThgbl(), dao.getThgvk(),
+				dao.getThalk(), dao.getThblk(), dao.getThtaid(), dao.getThtalk(), dao.getThtask(), dao.getThtgid(), dao.getThtglk(), dao.getThtgsk(),
+				dao.getThtrm(), dao.getThkdc(), dao.getThlsd(), dao.getThcats(), dao.getThskfd(), dao.getThdst(), dao.getThdsk(), dao.getThdkr(), dao.getThddt(),
+				
+				dao.getThtina(), dao.getThnaa(), dao.getThada1(), dao.getThska(), dao.getThpsa(), dao.getThpna(), dao.getThlka(),
+				dao.getThdfkd(), dao.getThdant(), dao.getThdfsk(), 
 				//WHERE condition
-				dao.getTiavd() } );
-			*/
+				dao.getThavd() } );
+			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());

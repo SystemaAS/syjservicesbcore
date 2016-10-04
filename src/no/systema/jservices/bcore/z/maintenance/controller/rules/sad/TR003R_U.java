@@ -5,6 +5,7 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdfvDao;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.Trkodl01DaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServices;
@@ -34,6 +35,7 @@ public class TR003R_U {
 		this.trkodl01DaoServices = trkodl01DaoServices;
 	}
 
+	
 	/**
 	 * 
 	 * @param dao
@@ -307,5 +309,82 @@ public class TR003R_U {
 		}	
 		
 		return retval;
+	}
+	
+	/**
+	 * Child record Sikkerhet
+	 * 
+	 * @param dao
+	 * @param user
+	 * @param mode
+	 * 
+	 * @return
+	 */
+	public boolean isValidInput(TrustdfvDao dao, String user, String mode ){
+		boolean retval = true;
+		
+		//starting point
+		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
+			//check dao
+			if( (dao.getThavd()!=null && !"".equals(dao.getThavd())) ){	
+				//OK
+			}else{
+				retval = false;
+			}
+		}else{
+			retval = false;
+		}
+		return retval;
+	}
+	/**
+	 * 
+	 * @param dao
+	 * @param user
+	 * @param mode
+	 * @return
+	 */
+	public boolean isValidInputForDelete(TrustdfvDao dao, String user, String mode){
+		boolean retval = true;
+		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
+			//check dao
+			if( (dao.getThavd()!=null && !"".equals(dao.getThavd())) ){	
+				//OK
+			}else{
+				retval = false;
+			}
+		}else{
+			retval = false;
+		}
+		return retval;
+	}
+	
+	public void adjustNumericFields(TrustdfvDao dao){
+		String ZERO = "0";
+		//TRUSTDFV
+		
+		//Integers
+		if(dao.getThsik()==null || "".equals(dao.getThsik())){
+			dao.setThsik(ZERO);
+		}
+		
+		if(dao.getThtma()==null || "".equals(dao.getThtma())){
+			dao.setThtma(ZERO);
+		}
+		if(dao.getThknss()==null || "".equals(dao.getThknss())){
+			dao.setThknss(ZERO);
+		}
+		if(dao.getThknks()==null || "".equals(dao.getThknks())){
+			dao.setThknks(ZERO);
+		}
+		if(dao.getThknt()==null || "".equals(dao.getThknt())){
+			dao.setThknt(ZERO);
+		}
+		
+		//Dates
+		if(dao.getThdta()==null || "".equals(dao.getThdta())){
+			dao.setThdta(ZERO);
+		}
+		
+		
 	}
 }

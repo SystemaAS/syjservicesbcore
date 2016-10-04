@@ -59,7 +59,7 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTDFV {
 	 * FreeForm Source:
 	 * 	 File: 		TRUSTDFV
 	 * 	 PGM:		TR003R 
-	 * 	 Member: 	MAINT - SAD NCTS IMPORT AVD - TRUSTDFV  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
+	 * 	 Member: 	MAINT - SAD NCTS EXPORT AVD - TRUSTDFV  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
 	 *  
 	 * 
 	 * @return
@@ -135,18 +135,17 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTDFV {
 	/**
 	 * 
 	 * Update Database DML operations
-	 * File: 	TrustD
-	 * PGM:		TR003R_U 
-	 * Member: 	MAINT SAD NCTS IMPORT - AVD , Maintenance - DML operations
+	 * File: 	TRUSTDFV
+	 * PGM:		TR003fvR_U 
+	 * Member: 	MAINT SAD NCTS EXPORT - AVD , Maintenance - DML operations
 	 * 
-	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsTR003R_U.do?user=OSCAR&thavd=1&mode=U/A/D
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicesbcore/syjsTR003fvR_U.do?user=OSCAR&thavd=1&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
 	 * @return
 	 * 
 	 */
-	/* NOT APPLICABLE
 	@RequestMapping(value="syjsTR003fvR_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsR_U( HttpSession session, HttpServletRequest request) {
@@ -168,7 +167,7 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTDFV {
 			
 			
 			//bind attributes is any
-			TrustdDao dao = new TrustdDao();
+			TrustdfvDao dao = new TrustdfvDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             
@@ -180,7 +179,7 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTDFV {
 				if("D".equals(mode)){
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						dmlRetval = this.trustdDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.trustdfvDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -189,13 +188,13 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTDFV {
 					}
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode )){
-						List<TrustdDao> list = new ArrayList<TrustdDao>();
+						List<TrustdfvDao> list = new ArrayList<TrustdfvDao>();
 						//must complete numeric values to avoid <null> on those
 						rulerLord.adjustNumericFields(dao);
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
-							list = this.trustdDaoServices.findById(dao.getThavd(), dbErrorStackTrace);
+							list = this.trustdfvDaoServices.findById(dao.getThavd(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output
@@ -204,12 +203,12 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTDFV {
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
 								logger.info("Before INSERT ...");
-								dmlRetval = this.trustdDaoServices.insert(dao, dbErrorStackTrace);
+								dmlRetval = this.trustdfvDaoServices.insert(dao, dbErrorStackTrace);
 							}
 							
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							dmlRetval = this.trustdDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = this.trustdfvDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{
@@ -251,7 +250,7 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTDFV {
 		session.invalidate();
 		return sb.toString();
 	}
-	*/
+	
 	//----------------
 	//WIRED SERVICES
 	//----------------
@@ -268,6 +267,7 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTDFV {
 	@Required
 	public void setBridfDaoServices (BridfDaoServices value){ this.bridfDaoServices = value; }
 	public BridfDaoServices getBridfDaoServices(){ return this.bridfDaoServices; }
+	
 	
 	@Qualifier ("ediiDaoServices")
 	private EdiiDaoServices ediiDaoServices;
