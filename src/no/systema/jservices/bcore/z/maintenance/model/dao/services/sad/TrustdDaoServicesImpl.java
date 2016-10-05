@@ -99,7 +99,7 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
 			
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ");
-			sql.append(" ?, ?, ?,  ");
+			sql.append(" ?, ?, ?  ");
 			sql.append(" )" );
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getThavd(), 

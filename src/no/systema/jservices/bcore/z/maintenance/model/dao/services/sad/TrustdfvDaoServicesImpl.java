@@ -85,7 +85,7 @@ public class TrustdfvDaoServicesImpl implements TrustdfvDaoServices {
 			sql.append(" thknks, thnaks, thtinks, thadks1, thskks, thpsks, thpnks, thlkks, ");
 			sql.append(" thknt, thnat, thtint, thadt1, thskt, thpst, thpnt, thlkt ");
 			sql.append(" )" );
-			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?  ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ");
 			sql.append("  ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append("  ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append("  ?, ?, ?, ?, ?, ?, ?, ?, ");
