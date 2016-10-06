@@ -11,7 +11,7 @@ import no.systema.main.util.*;
  * @date Sep 21, 2016
  * 
  */
-public class Trkodl01Dao implements Serializable, IDao {
+public class TrkodfDao implements Serializable, IDao {
 	private NumberFormatterLocaleAware numberFormatter = new NumberFormatterLocaleAware();
 	
 	private String tkunik = "";                             

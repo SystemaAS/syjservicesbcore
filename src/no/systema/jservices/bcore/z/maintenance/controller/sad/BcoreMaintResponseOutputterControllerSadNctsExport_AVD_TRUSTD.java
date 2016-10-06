@@ -31,7 +31,7 @@ import javax.servlet.http.HttpSession;
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.Trkodl01DaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrkodfDaoServices;
 
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
@@ -174,7 +174,7 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTD {
             binder.bind(request);
             
             //rules
-            TR003R_U rulerLord = new TR003R_U(this.ediiDaoServices, this.trkodl01DaoServices);
+            TR003R_U rulerLord = new TR003R_U(this.ediiDaoServices, this.trkodfDaoServices);
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
@@ -277,12 +277,12 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTD {
 	public void setEdiiDaoServices (EdiiDaoServices value){ this.ediiDaoServices = value; }
 	public EdiiDaoServices getEdiiDaoServices(){ return this.ediiDaoServices; }
 	
-	@Qualifier ("trkodl01DaoServices")
-	private Trkodl01DaoServices trkodl01DaoServices;
+	@Qualifier ("trkodfDaoServices")
+	private TrkodfDaoServices trkodfDaoServices;
 	@Autowired
 	@Required
-	public void setTrkodl01DaoServices (Trkodl01DaoServices value){ this.trkodl01DaoServices = value; }
-	public Trkodl01DaoServices getTrkodl01DaoServices(){ return this.trkodl01DaoServices; }
+	public void setTrkodfDaoServices (TrkodfDaoServices value){ this.trkodfDaoServices = value; }
+	public TrkodfDaoServices getTrkodfDaoServices(){ return this.trkodfDaoServices; }
 	
 	
 	

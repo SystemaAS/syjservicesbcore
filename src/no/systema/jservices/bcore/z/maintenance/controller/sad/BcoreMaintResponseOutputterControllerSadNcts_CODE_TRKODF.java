@@ -29,8 +29,8 @@ import javax.servlet.http.HttpSession;
 
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.Trkodl01Dao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.Trkodl01DaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrkodfDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrkodfDaoServices;
 
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
@@ -51,14 +51,14 @@ import no.systema.jservices.jsonwriter.JsonResponseWriter;
  */
 
 @Controller
-public class BcoreMaintResponseOutputterControllerSadNctsImport_CODE_TRKODL01 {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSadNctsImport_CODE_TRKODL01.class.getName());
+public class BcoreMaintResponseOutputterControllerSadNcts_CODE_TRKODF {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSadNcts_CODE_TRKODF.class.getName());
 	
 	/**
 	 * FreeForm Source:
-	 * 	 File: 		TRKOD01
+	 * 	 File: 		TRKODF
 	 * 	 PGM:		General (e.g TR053R for Tullkontor lista)
-	 * 	 Member: 	MAINT - SAD NCTS IMPORT  - TRKODL01  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
+	 * 	 Member: 	MAINT - SAD NCTS IMPORT  - TRKODF  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
 	 *  
 	 *  CODE file 
 	 *  TKUNIK = 012 - Countries
@@ -68,18 +68,18 @@ public class BcoreMaintResponseOutputterControllerSadNctsImport_CODE_TRKODL01 {
 	 *  
 	 * 
 	 * @return
-	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsTRKODL01R.do?user=OSCAR&tkunik=106
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsTRKODL01R.do?user=OSCAR&tkunik=106&tkkode=NO01011A
+	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsTRKODFR.do?user=OSCAR&tkunik=106
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsTRKODFR.do?user=OSCAR&tkunik=106&tkkode=NO01011A
 	 * 
 	 */
-	@RequestMapping(value="syjsTRKODL01R.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="syjsTRKODFR.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsRList( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.info("Inside syjsTRKODL01R.do");
+			logger.info("Inside syjsTRKODFR.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 	
@@ -93,7 +93,7 @@ public class BcoreMaintResponseOutputterControllerSadNctsImport_CODE_TRKODL01 {
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				//bind attributes is any
-				Trkodl01Dao dao = new Trkodl01Dao();
+				TrkodfDao dao = new TrkodfDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 	            binder.bind(request);
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
@@ -102,10 +102,10 @@ public class BcoreMaintResponseOutputterControllerSadNctsImport_CODE_TRKODL01 {
 				logger.info("Before SELECT ...");
 				if( (dao.getTkkode()!=null && !"".equals(dao.getTkkode())) ){
 					logger.info("findById...");
-					list = this.trkodl01DaoServices.findById(dao.getTkunik(), dao.getTkkode(), dbErrorStackTrace);
+					list = this.trkodfDaoServices.findById(dao.getTkunik(), dao.getTkkode(), dbErrorStackTrace);
 				}else{
 					logger.info("getList...");
-					list = this.trkodl01DaoServices.getList(dao.getTkunik(), dbErrorStackTrace);
+					list = this.trkodfDaoServices.getList(dao.getTkunik(), dbErrorStackTrace);
 				}
 				
 				//process result
@@ -142,12 +142,12 @@ public class BcoreMaintResponseOutputterControllerSadNctsImport_CODE_TRKODL01 {
 	//----------------
 	//WIRED SERVICES
 	//----------------
-	@Qualifier ("trkodl01DaoServices")
-	private Trkodl01DaoServices trkodl01DaoServices;
+	@Qualifier ("trkodfDaoServices")
+	private TrkodfDaoServices trkodfDaoServices;
 	@Autowired
 	@Required
-	public void setTrkodl01DaoServices (Trkodl01DaoServices value){ this.trkodl01DaoServices = value; }
-	public Trkodl01DaoServices getTrkodl01DaoServices(){ return this.trkodl01DaoServices; }
+	public void setTrkodfDaoServices (TrkodfDaoServices value){ this.trkodfDaoServices = value; }
+	public TrkodfDaoServices getTrkodfDaoServices(){ return this.trkodfDaoServices; }
 
 	
 	@Qualifier ("bridfDaoServices")

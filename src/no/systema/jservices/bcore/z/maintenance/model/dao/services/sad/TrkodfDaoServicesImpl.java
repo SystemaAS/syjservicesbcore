@@ -5,8 +5,8 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.sad.Trkodl01Mapper;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.Trkodl01Dao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.sad.TrkodfMapper;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrkodfDao;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -16,8 +16,8 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  * 
  */
-public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
-	private static Logger logger = Logger.getLogger(Trkodl01DaoServicesImpl.class.getName());
+public class TrkodfDaoServicesImpl implements TrkodfDaoServices {
+	private static Logger logger = Logger.getLogger(TrkodfDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	
@@ -28,13 +28,15 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 	 * @return
 	 */
 	public List getList(String code, StringBuffer errorStackTrace){
-		List<Trkodl01Dao> retval = new ArrayList<Trkodl01Dao>();
+		List<TrkodfDao> retval = new ArrayList<TrkodfDao>();
 		
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" where tkunik = ? ");
-			retval = this.jdbcTemplate.query( sql.toString() , new Object[] { code }, new Trkodl01Mapper());
+			sql.append(" order by tkunik ");
+			
+			retval = this.jdbcTemplate.query( sql.toString() , new Object[] { code }, new TrkodfMapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -49,7 +51,7 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 	 * 
 	 */
 	public List findById (String code, String id, StringBuffer errorStackTrace ){
-		List<Trkodl01Dao> retval = new ArrayList<Trkodl01Dao>();
+		List<TrkodfDao> retval = new ArrayList<TrkodfDao>();
 		String WILDCARD = "%";
 		try{
 			StringBuffer sql = new StringBuffer();
@@ -58,8 +60,9 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 			//WHERE
 			sql.append(" where tkunik = ?  ");
 			sql.append(" and tkkode like ?  ");
+			sql.append(" order by tkunik ");
 			
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { code, WILDCARD + id + WILDCARD }, new Trkodl01Mapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { code, WILDCARD + id + WILDCARD }, new TrkodfMapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -97,7 +100,7 @@ public class Trkodl01DaoServicesImpl implements Trkodl01DaoServices {
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append(" select * ");
-		sql.append(" from trkodl01  ");
+		sql.append(" from trkodf  ");
 	
 		return sql.toString();
 	}

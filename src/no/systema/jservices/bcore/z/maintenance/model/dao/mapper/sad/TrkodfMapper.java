@@ -3,7 +3,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.mapper.sad;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.Trkodl01Dao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrkodfDao;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -17,12 +17,12 @@ import java.util.List;
  * @date  Sep 21, 2016
  * 
  */
-public class Trkodl01Mapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(Trkodl01Mapper.class.getName());
+public class TrkodfMapper implements RowMapper {
+	private static Logger logger = Logger.getLogger(TrkodfMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	
-    	Trkodl01Dao dao = new Trkodl01Dao();
+    	TrkodfDao dao = new TrkodfDao();
     	try{
 	    	Class cl = Class.forName(dao.getClass().getCanonicalName());
 			Field[] fields = cl.getDeclaredFields();

@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdfvDao;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.Trkodl01DaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrkodfDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServices;
 
 
@@ -21,7 +21,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDao
 public class TR003R_U {
 	private static Logger logger = Logger.getLogger(TR003R_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
-	private Trkodl01DaoServices trkodl01DaoServices;
+	private TrkodfDaoServices trkodfDaoServices;
 	
 	private StringBuffer validatorStackTrace = new StringBuffer();
 	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }
@@ -30,9 +30,9 @@ public class TR003R_U {
 	 * 
 	 * @param ediiDaoServices
 	 */
-	public TR003R_U(EdiiDaoServices ediiDaoServices, Trkodl01DaoServices trkodl01DaoServices){
+	public TR003R_U(EdiiDaoServices ediiDaoServices, TrkodfDaoServices trkodfDaoServices){
 		this.ediiDaoServices = ediiDaoServices;
-		this.trkodl01DaoServices = trkodl01DaoServices;
+		this.trkodfDaoServices = trkodfDaoServices;
 	}
 
 	
@@ -297,7 +297,7 @@ public class TR003R_U {
 		boolean retval = true;
 		
 		String UNIQUE_CODE_TULLKONTOR = "106";
-		List list = this.trkodl01DaoServices.findById(UNIQUE_CODE_TULLKONTOR, value, this.validatorStackTrace);
+		List list = this.trkodfDaoServices.findById(UNIQUE_CODE_TULLKONTOR, value, this.validatorStackTrace);
 		
 		if( list!=null && list.size()==1 ){
 			//OK

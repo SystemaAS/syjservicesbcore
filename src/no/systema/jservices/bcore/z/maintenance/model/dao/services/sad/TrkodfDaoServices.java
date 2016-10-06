@@ -8,7 +8,7 @@ import no.systema.jservices.model.dao.services.IDaoServicesReadOnly;
  * @date Sep 20, 2016
  * 
  */
-public interface Trkodl01DaoServices extends IDaoServicesReadOnly { 
+public interface TrkodfDaoServices extends IDaoServicesReadOnly { 
 	public List getList(String code, StringBuffer errorStackTrace);
 	public List findById(String code, String id, StringBuffer errorStackTrace);
 }
