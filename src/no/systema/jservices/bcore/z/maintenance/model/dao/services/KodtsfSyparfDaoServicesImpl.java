@@ -51,14 +51,14 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 	 */
 	public List findById (String id, StringBuffer errorStackTrace ){
 		List<KodtsfSyparfDao> retval = new ArrayList<KodtsfSyparfDao>();
-		String WILDCARD = "%";
+		//String WILDCARD = "%";
 		try{
 			StringBuffer sql = new StringBuffer();
 			
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			//WHERE
-			sql.append(" where a.kosfsi like ?  ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + id + WILDCARD }, new KodtsfSyparfMapper());
+			sql.append(" where a.kosfsi = ?  ");
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new KodtsfSyparfMapper());
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -78,7 +78,7 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 		
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append(" select a.*, b.* ");
+		sql.append(" select a.*, coalesce(b.syuser,'') syuser ");
 		sql.append(" from kodtsf a ");
 		sql.append(" left outer join syparf as b  ");
 		sql.append(" on a.kosfsi = b.syvrda  ");
