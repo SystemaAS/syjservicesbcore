@@ -78,18 +78,18 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 			StandiDao dao = (StandiDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" INSERT INTO standi ( siavd, sidl, sia4, sitdn, siekst, sitolk, s3039e, s3039eo1, s3039eo2, s0026, s0035, s0004, s0010, silv2, ");
+			sql.append(" INSERT INTO standi ( siavd, sist,sidl, sia4, sitdn, siekst, sitolk, s3039e, s3039eo1, s3039eo2, s0026, s0035, s0004, s0010, silv2, ");
 			sql.append(" sidty, sidp, siski, sikddk, sikns, sinas, siads1, siads2, siads3, siknk, sinak, sirg, siadk1, siadk2, siadk3, siktc, sikta, siktb, ");
 			sql.append(" sival3, sitst, sibel3, sivku, sift1, sift2, sift3, sift4, silka, sikdc, sitrid, silkt, sitrm, sign, sipos, silv, silvt, ");
 			sql.append(" sikdls, sils, siftg2, sibel1, sival1, sibel2, sival2, si07, sivkb, sintk, sikdh ");
 			sql.append(" )" );
-			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,   ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ");
 			sql.append(" )" );
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSiavd(), dao.getSidl(), dao.getSia4(), dao.getSitdn(), dao.getSiekst(), dao.getSitolk(), 
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSiavd(), dao.getSist(), dao.getSidl(), dao.getSia4(), dao.getSitdn(), dao.getSiekst(), dao.getSitolk(), 
 					dao.getS3039e(), dao.getS3039eo1(), dao.getS3039eo2(), dao.getS0026(), dao.getS0035(), dao.getS0004(), dao.getS0010(), dao.getSilv2(),
 					dao.getSidty(), dao.getSidp(), dao.getSiski(), dao.getSikddk(), dao.getSikns(), dao.getSinas(), dao.getSiads1(), dao.getSiads2(), dao.getSiads3(),
 					dao.getSiknk(), dao.getSinak(), dao.getSirg(), dao.getSiadk1(), dao.getSiadk2(), dao.getSiadk3(), dao.getSiktc(), dao.getSikta(), dao.getSiktb(),
@@ -123,7 +123,7 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
 			//sql.append(" UPDATE standi SET sidl = ? ");
-			sql.append(" UPDATE standi SET sidl = ?, sia4 = ?, sitdn = ?, siekst = ?, sitolk = ?, s3039e = ?, s3039eo1 = ?, s3039eo2 = ?, s0026 = ?, " );
+			sql.append(" UPDATE standi SET sist = ?, sidl = ?, sia4 = ?, sitdn = ?, siekst = ?, sitolk = ?, s3039e = ?, s3039eo1 = ?, s3039eo2 = ?, s0026 = ?, " );
 			sql.append(" s0035 = ?, s0004 = ?, s0010 = ?, silv2 = ?, sidty = ?, sidp = ?, siski = ?, sikddk = ?, sikns = ?, sinas = ?, siads1 = ?, ");
 			sql.append(" siads2 = ?, siads3 = ?, siknk = ?, sinak = ?, sirg = ?, siadk1 = ?, siadk2 = ?, siadk3 = ?, siktc = ?, sikta = ?, siktb = ?,  ");
 			sql.append(" sinad = ?, sitlf = ?, sidst = ?, sidt = ?, sival3 = ?, sitst = ?, sibel3 = ?, sivku = ?, sift1 = ?, sift2 = ?, sift3 = ?, sift4 = ?,  ");
@@ -132,7 +132,7 @@ public class StandiDaoServicesImpl implements StandiDaoServices {
 			sql.append(" WHERE siavd = ? ");
 			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSidl(), dao.getSia4(), dao.getSitdn(), dao.getSiekst(), dao.getSitolk(),
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSist(), dao.getSidl(), dao.getSia4(), dao.getSitdn(), dao.getSiekst(), dao.getSitolk(),
 				dao.getS3039e(), dao.getS3039eo1(), dao.getS3039eo2(), dao.getS0026(), dao.getS0035(), dao.getS0004(), dao.getS0010(), dao.getSilv2(), 
 				dao.getSidty(), dao.getSidp(), dao.getSiski(), dao.getSikddk(), dao.getSikns(), dao.getSinas(), dao.getSiads1(), dao.getSiads2(), dao.getSiads3(),
 				dao.getSiknk(), dao.getSinak(), dao.getSirg(), dao.getSiadk1(), dao.getSiadk2(), dao.getSiadk3(), dao.getSiktc(), dao.getSikta(), dao.getSiktb(),
