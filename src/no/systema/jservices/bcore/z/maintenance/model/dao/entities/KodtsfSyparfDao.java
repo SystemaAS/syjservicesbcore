@@ -18,7 +18,7 @@ public class KodtsfSyparfDao implements Serializable, IDao {
 	public void setKosfst (String value){ this.kosfst = value;   }   
 	public String getKosfst (){ return this.kosfst;   }  
 
-	private String kosfun = "";                                
+	private String kosfun = "SF";                                
 	public String getKosfunPropertyName (){ return "kosfun"; }
 	public void setKosfun (String value){ this.kosfun = value;   }   
 	public String getKosfun (){ return this.kosfun;   }  
@@ -50,27 +50,27 @@ public class KodtsfSyparfDao implements Serializable, IDao {
 	public void setSyuser (String value){ this.syuser = value;   }   
 	public String getSyuser (){ return this.syuser;   }  
 	    
-	private String sykunr = "";                                
+	private String sykunr = "0";                                
 	public String getSykunrPropertyName (){ return "sykunr"; }
 	public void setSykunr (String value){ this.sykunr = value;   }   
 	public String getSykunr (){ return this.sykunr;   }  
 	
-	private String syavd = "";                                
+	private String syavd = "0";                                
 	public String getSyavdPropertyName (){ return "syavd"; }
 	public void setSyavd (String value){ this.syavd = value;   }   
 	public String getSyavd (){ return this.syavd;   }  
 	
-	private String sypaid = "";                                
+	private String sypaid = "USRID";                                
 	public String getSypaidPropertyName (){ return "sypaid"; }
 	public void setSypaid (String value){ this.sypaid = value;   }   
 	public String getSypaid (){ return this.sypaid;   }  
 	
-	private String sysort = "";                                
+	private String sysort = "0";                                
 	public String getSysortPropertyName (){ return "sysort"; }
 	public void setSysort (String value){ this.sysort = value;   }   
 	public String getSysort (){ return this.sysort;   }  
 	
-	private String syvrdn = "";                                
+	private String syvrdn = "0,00000";                                
 	public String getSyvrdnPropertyName (){ return "syvrdn"; }
 	public void setSyvrdn (String value){ this.syvrdn = value;   }   
 	public String getSyvrdn (){ return this.syvrdn;   }  

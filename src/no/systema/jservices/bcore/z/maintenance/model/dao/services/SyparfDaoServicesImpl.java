@@ -13,52 +13,26 @@ import no.systema.main.util.DbErrorMessageManager;
 /**
  * 
  * @author oscardelatorre
- * @date Okt 17, 2016
+ * @date Okt 18, 2016
  * 
  * 
  */
-public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
-	private static Logger logger = Logger.getLogger(KodtsfSyparfDaoServicesImpl.class.getName());
+public class SyparfDaoServicesImpl implements SyparfDaoServices {
+	private static Logger logger = Logger.getLogger(SyparfDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
-	
-	/**
-	 * 
-	 * @param code
-	 * @param errorStackTrace
-	 * @return
-	 */
-	public List getList(StringBuffer errorStackTrace){
-		List<KodtsfSyparfDao> retval = new ArrayList<KodtsfSyparfDao>();
-		
-		try{
-			StringBuffer sql = new StringBuffer();
-			sql.append(this.getSELECT_FROM_CLAUSE());
-			sql.append(" order by a.kosfsi  ");
-			retval = this.jdbcTemplate.query( sql.toString() , new KodtsfSyparfMapper());
-			
-		}catch(Exception e){
-			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
-			//Chop the message to comply to JSON-validation
-			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-			retval = null;
-		}
-		return retval;
-	}
 	/**
 	 * 
 	 */
-	public List findById (String id, StringBuffer errorStackTrace ){
-		List<KodtsfSyparfDao> retval = new ArrayList<KodtsfSyparfDao>();
-		//String WILDCARD = "%";
+	public int findById (String id, StringBuffer errorStackTrace ){
+		int retval = 0;
 		try{
 			StringBuffer sql = new StringBuffer();
-			
-			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" select count(syuser) ");
+			sql.append(" from syparf");
 			//WHERE
-			sql.append(" where a.kosfsi = ?  ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new KodtsfSyparfMapper());
+			sql.append(" where syvrda = ?  ");
+			retval = this.jdbcTemplate.queryForInt( sql.toString(), new Object[] { id });
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -69,43 +43,27 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 		return retval;
 	}
 
-	
-	/**
-	 * 
-	 * @return
-	 */
-	private String getSELECT_FROM_CLAUSE(){
-		
-		StringBuffer sql = new StringBuffer();
-		
-		sql.append(" select a.*, coalesce(b.syuser,'') syuser ");
-		sql.append(" from kodtsf a ");
-		sql.append(" left outer join syparf as b  ");
-		sql.append(" on a.kosfsi = b.syvrda  ");
-		
-		
-		return sql.toString();
-	}
-	
 	/**
 	 * INSERT
 	 */
 	public int insert(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
-
+		
 		try{
 			KodtsfSyparfDao dao = (KodtsfSyparfDao)daoObj;
+			//get counter
+			int syrecnCounter = this.getCounterFromTellge(errorStackTrace);
+			String syrecn = String.valueOf(syrecnCounter);
+			dao.setSyrecn(syrecn);
+			
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> 
 			logger.info("Inside insert");
-			sql.append(" INSERT INTO kodtsf ( kosfsi, kosfun, kosfnv ) ");
-			sql.append(" VALUES(?, ?, ?, ? ) ");
+			sql.append(" INSERT INTO syparf ( syrecn, syuser, syvrda, sypaid, sykunr, syavd, sysort, syvrdn ) ");
+			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ) ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKosfsi(), dao.getKosfun(), dao.getKosfnv() } );
-			
-			if(retval>=0){
-				//this.updateChildSyparf(daoObj, errorStackTrace);
-			}
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSyrecn(), dao.getSyuser(), dao.getSyvrda(), dao.getSypaid(),
+																dao.getSykunr(), dao.getSyavd(), dao.getSysort(), dao.getSyvrdn()  } );
 			
 		
 			
@@ -131,18 +89,13 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 			KodtsfSyparfDao dao = (KodtsfSyparfDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE kodtsf SET kosfun = ?, kosfnv = ? ");
-			sql.append(" WHERE kosfsi = ? ");
+			sql.append(" UPDATE syparf SET syuser = ? ");
+			sql.append(" WHERE syvrda = ? ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKosfun(), dao.getKosfnv(), 
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSyuser(), 
 				//WHERE
 				dao.getKosfsi() } );
 			
-			if(retval>=0){
-				this.updateChildSyparf(daoObj, errorStackTrace);
-				
-			}
-			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -155,50 +108,19 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 	}
 	
 	/**
-	 * 
-	 */
-	public int updateChildSyparf(Object daoObj, StringBuffer errorStackTrace){
-		int retval = 0;
-		
-		try{
-			KodtsfSyparfDao dao = (KodtsfSyparfDao)daoObj;
-			int childRecord = this.syparfDaoServices.findById(dao.getKosfsi(), errorStackTrace);
-			logger.info("EXISTS:" + childRecord);
-			
-			if(childRecord>0){
-				logger.info("syparf child update...");
-				retval = this.syparfDaoServices.update(dao, errorStackTrace);
-				
-			}else{
-				logger.info("syparf child insert...");
-				//retval = this.syparfDaoServices.insert(dao, errorStackTrace);
-			}
-			
-		}catch(Exception e){
-			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
-			//Chop the message to comply to JSON-validation
-			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-			retval = -1;
-		}
-		
-		return retval;
-	}
-	
-	/**
-	 * 
+	 * DELETE
 	 */
 	public int delete(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
-		/*
+
 		try{
-			Syparl3KodtsfDao dao = (Syparl3KodtsfDao)daoObj;
+			KodtsfSyparfDao dao = (KodtsfSyparfDao)daoObj;
 			StringBuffer sql = new StringBuffer();
-			//DEBUG --> logger.info("mydebug");
-			sql.append(" DELETE from kodtv ");
-			sql.append(" WHERE kovavd = ? ");
-			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKovavd() } );
+			sql.append(" DELETE from syparf ");
+			sql.append(" WHERE syvrda = ? ");
+			
+			retval = this.jdbcTemplate.queryForInt( sql.toString(), new Object[] { dao.getKosfsi() });
+			
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -207,7 +129,32 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
-		*/
+		
+		return retval;
+	}
+	
+	/**
+	 * 
+	 * @param errorStackTrace
+	 * @return
+	 */
+	private int getCounterFromTellge(StringBuffer errorStackTrace){
+		int retval = 0;
+		try{
+		StringBuffer sql = new StringBuffer();
+		sql.append(" SELECT geno from tellge ");
+		sql.append(" FROM tellge ");	
+		sql.append(" WHERE geco = 'SYPAR' ");	
+		
+		retval = this.jdbcTemplate.queryForInt( sql.toString());
+		
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
 		return retval;
 	}
 	
@@ -219,7 +166,6 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
 	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}                                    
 
-	private SyparfDaoServices syparfDaoServices = null;
-	public void setSyparfDaoServices ( SyparfDaoServices syparfDaoServices) { this.syparfDaoServices = syparfDaoServices; }
-	public SyparfDaoServices getSyparfDaoServices() { return this.syparfDaoServices; }
+	
+	
 }

@@ -50,8 +50,8 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA60R_U;
  */
 
 @Controller
-public class BcoreMaintResponseOutputterController_SIGN_SYPARL3_KODTSF {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_SIGN_SYPARL3_KODTSF.class.getName());
+public class BcoreMaintResponseOutputterController_SIGN_KODTSF_SYPARL3 {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_SIGN_KODTSF_SYPARL3.class.getName());
 	
 	/**
 	 * FreeForm Source:
@@ -174,7 +174,7 @@ public class BcoreMaintResponseOutputterController_SIGN_SYPARL3_KODTSF {
 				if("D".equals(mode)){
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						//TODO dmlRetval = this.syparl3KodtsfDaoServices.delete(dao, dbErrorStackTrace);
+						//TODO dmlRetval = this.kodtsfSyparfDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -199,12 +199,12 @@ public class BcoreMaintResponseOutputterController_SIGN_SYPARL3_KODTSF {
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
 								logger.info("Before INSERT ...");
-								dmlRetval = this.syparl3KodtsfDaoServices.insert(dao, dbErrorStackTrace);
+								dmlRetval = this.kodtsfSyparfDaoServices.insert(dao, dbErrorStackTrace);
 							}
 							*/
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							//TODO dmlRetval = this.syparl3KodtsfDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = this.kodtsfSyparfDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{
