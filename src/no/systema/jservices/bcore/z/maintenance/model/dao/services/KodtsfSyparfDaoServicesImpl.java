@@ -99,12 +99,12 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 			//DEBUG --> 
 			logger.info("Inside insert");
 			sql.append(" INSERT INTO kodtsf ( kosfsi, kosfun, kosfnv ) ");
-			sql.append(" VALUES(?, ?, ?, ? ) ");
+			sql.append(" VALUES(?, ?, ? ) ");
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKosfsi(), dao.getKosfun(), dao.getKosfnv() } );
 			
 			if(retval>=0){
-				//this.updateChildSyparf(daoObj, errorStackTrace);
+				this.updateChildSyparf(daoObj, errorStackTrace);
 			}
 			
 		
@@ -171,7 +171,7 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 				
 			}else{
 				logger.info("syparf child insert...");
-				//retval = this.syparfDaoServices.insert(dao, errorStackTrace);
+				retval = this.syparfDaoServices.insert(dao, errorStackTrace);
 			}
 			
 		}catch(Exception e){
@@ -190,15 +190,19 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 	 */
 	public int delete(Object daoObj, StringBuffer errorStackTrace){
 		int retval = 0;
-		/*
+		
 		try{
-			Syparl3KodtsfDao dao = (Syparl3KodtsfDao)daoObj;
+			KodtsfSyparfDao dao = (KodtsfSyparfDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" DELETE from kodtv ");
-			sql.append(" WHERE kovavd = ? ");
+			sql.append(" DELETE from kodtsf ");
+			sql.append(" WHERE kosfsi = ? ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKovavd() } );
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKosfsi() } );
+			//Delete children
+			if(retval>=0){
+				this.syparfDaoServices.delete(dao, errorStackTrace);
+			}
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -207,7 +211,7 @@ public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
-		*/
+		
 		return retval;
 	}
 	

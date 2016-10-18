@@ -174,7 +174,7 @@ public class BcoreMaintResponseOutputterController_SIGN_KODTSF_SYPARL3 {
 				if("D".equals(mode)){
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						//TODO dmlRetval = this.kodtsfSyparfDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.kodtsfSyparfDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -189,8 +189,8 @@ public class BcoreMaintResponseOutputterController_SIGN_KODTSF_SYPARL3 {
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
-							/* TODO
-							list = this.syparl3KodtsfDaoServices.findById(dao.getKosfsi(), dbErrorStackTrace);
+							
+							list = this.kodtsfSyparfDaoServices.findById(dao.getKosfsi(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output
@@ -201,7 +201,7 @@ public class BcoreMaintResponseOutputterController_SIGN_KODTSF_SYPARL3 {
 								logger.info("Before INSERT ...");
 								dmlRetval = this.kodtsfSyparfDaoServices.insert(dao, dbErrorStackTrace);
 							}
-							*/
+							
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
 							dmlRetval = this.kodtsfSyparfDaoServices.update(dao, dbErrorStackTrace);

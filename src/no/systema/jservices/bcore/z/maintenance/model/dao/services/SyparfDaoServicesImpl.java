@@ -58,14 +58,26 @@ public class SyparfDaoServicesImpl implements SyparfDaoServices {
 			
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> 
-			logger.info("Inside insert");
+			/*logger.info("Inside insert:" + dao.getSyrecn());
+			logger.info("getSyuser:" + dao.getSyuser());
+			logger.info("getSyvrda:" + dao.getKosfsi());
+			logger.info("getSypaid:" + dao.getSypaid());
+			logger.info("getSykunr:" + dao.getSykunr());
+			logger.info("getSyavd:" + dao.getSyavd());
+			logger.info("getSysort:" + dao.getSysort());
+			logger.info("getSyvrdn:" + dao.getSyvrdn());
+			*/
+			
 			sql.append(" INSERT INTO syparf ( syrecn, syuser, syvrda, sypaid, sykunr, syavd, sysort, syvrdn ) ");
 			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ) ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSyrecn(), dao.getSyuser(), dao.getSyvrda(), dao.getSypaid(),
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSyrecn(), dao.getSyuser(), dao.getKosfsi(), dao.getSypaid(),
 																dao.getSykunr(), dao.getSyavd(), dao.getSysort(), dao.getSyvrdn()  } );
 			
-		
+			if(retval>=0){
+				retval = this.setCounterFromTellge(syrecnCounter, null, errorStackTrace);
+			}
+			
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -119,7 +131,13 @@ public class SyparfDaoServicesImpl implements SyparfDaoServices {
 			sql.append(" DELETE from syparf ");
 			sql.append(" WHERE syvrda = ? ");
 			
-			retval = this.jdbcTemplate.queryForInt( sql.toString(), new Object[] { dao.getKosfsi() });
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKosfsi() });
+			
+			if(retval>=0){
+				//get counter
+				int syrecnCounter = this.getCounterFromTellge(errorStackTrace);
+				retval = this.setCounterFromTellge(syrecnCounter, "substract", errorStackTrace);
+			}
 			
 			
 		}catch(Exception e){
@@ -142,11 +160,47 @@ public class SyparfDaoServicesImpl implements SyparfDaoServices {
 		int retval = 0;
 		try{
 		StringBuffer sql = new StringBuffer();
-		sql.append(" SELECT geno from tellge ");
+		sql.append(" SELECT geno ");
 		sql.append(" FROM tellge ");	
 		sql.append(" WHERE geco = 'SYPAR' ");	
 		
 		retval = this.jdbcTemplate.queryForInt( sql.toString());
+		
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		return retval;
+	}
+	
+	/**
+	 * 
+	 * @param counter
+	 * @param substract
+	 * @param errorStackTrace
+	 * @return
+	 */
+	private int setCounterFromTellge(int counter, String substract, StringBuffer errorStackTrace){
+		int retval = 0;
+		int newCounter = counter;
+		if(substract!=null){
+			newCounter--;	
+		}else{
+			newCounter++;
+		}
+		
+		try{
+			String newCounterStr = String.valueOf(newCounter);
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> 
+			//logger.info("newCounter:" + newCounter);
+			sql.append(" UPDATE tellge SET GENO = ? ");
+			sql.append(" WHERE geco = 'SYPAR' ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { newCounterStr } );
 		
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);

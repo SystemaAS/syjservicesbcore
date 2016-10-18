@@ -70,7 +70,7 @@ public class KodtsfSyparfDao implements Serializable, IDao {
 	public void setSysort (String value){ this.sysort = value;   }   
 	public String getSysort (){ return this.sysort;   }  
 	
-	private String syvrdn = "0,00000";                                
+	private String syvrdn = "0";                                
 	public String getSyvrdnPropertyName (){ return "syvrdn"; }
 	public void setSyvrdn (String value){ this.syvrdn = value;   }   
 	public String getSyvrdn (){ return this.syvrdn;   }  
