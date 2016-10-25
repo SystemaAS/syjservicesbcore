@@ -3,41 +3,32 @@ package no.systema.jservices.bcore.z.maintenance.controller.sad;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.Field;
-import java.util.*;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Scope;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+//rules
+import no.systema.jservices.bcore.z.maintenance.controller.rules.sad.TR003R_U;
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrkodfDaoServices;
-
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServices;
+import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
-import no.systema.jservices.jsonwriter.JsonResponseWriter;
-//rules
-import no.systema.jservices.bcore.z.maintenance.controller.rules.sad.TR003R_U;
 
 
 /**
@@ -63,7 +54,7 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTD {
 	 *  
 	 * 
 	 * @return
-	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsTR003R.do?user=OSCAR
+	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsTR003R.do?user=OSCAR&id=TRUSTD or TRUSTD_FHV
 	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsTR003R.do?user=OSCAR&thavd=1
 	 * 
 	 */
@@ -77,7 +68,8 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTD {
 			logger.info("Inside syjsTR003R.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
-			String validAvd = request.getParameter("va");
+			//String validAvd = request.getParameter("va");
+			String id = request.getParameter("id");  //TRUSTD or TRUSTD_FHV, for correct selection
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
             //DEBUG --> logger.info("USERNAME:" + userName + "XX");
@@ -95,10 +87,19 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTD {
 	            List list = null;
 				//do SELECT
 				logger.info("Before SELECT ...");
-				if( (dao.getThavd()!=null && !"".equals(dao.getThavd())) ){
+				if ((dao.getThavd() != null && !"".equals(dao.getThavd()))) {
 					logger.info("findById...");
 					list = this.trustdDaoServices.findById(dao.getThavd(), dbErrorStackTrace);
-				}else{
+				}
+				else if ("TRUSTD".equals(id)) {
+					logger.info("getNctsExportList...");
+					list = this.trustdDaoServices.getNctsExportList(dbErrorStackTrace);
+				}
+				else if ("TRUSTD_FHV".equals(id)) {
+					logger.info("getNctsForhandsvarslingList...");
+					list = this.trustdDaoServices.getNctsForhandsvarslingList(dbErrorStackTrace);
+				} 
+				else if (id == null){
 					logger.info("getList...");
 					list = this.trustdDaoServices.getList(dbErrorStackTrace);
 				}
@@ -165,8 +166,6 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTD {
             String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
-			StringBuffer validatorStackTrace = new StringBuffer();
-			
 			
 			//bind attributes is any
 			TrustdDao dao = new TrustdDao();
@@ -283,7 +282,6 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTD {
 	@Required
 	public void setTrkodfDaoServices (TrkodfDaoServices value){ this.trkodfDaoServices = value; }
 	public TrkodfDaoServices getTrkodfDaoServices(){ return this.trkodfDaoServices; }
-	
 	
 	
 }

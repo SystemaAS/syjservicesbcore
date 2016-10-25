@@ -64,6 +64,51 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 		return retval;
 	}
 	
+
+	@Override
+	public List getNctsExportList(StringBuffer errorStackTrace) {
+		List<TrustdDao> retval = new ArrayList<TrustdDao>();
+		
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			//WHERE
+			sql.append(" and thdk NOT in ('ENTRY','EXIT','SS')  ");
+
+			retval = this.jdbcTemplate.query( sql.toString(), new TrustdMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = null;
+		}
+		return retval;
+		
+	}
+	@Override
+	public List getNctsForhandsvarslingList(StringBuffer errorStackTrace) {
+		List<TrustdDao> retval = new ArrayList<TrustdDao>();
+		
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			//WHERE
+			sql.append(" and thdk in ('ENTRY','EXIT','SS')  ");
+
+			retval = this.jdbcTemplate.query( sql.toString(), new TrustdMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = null;
+		}
+		return retval;
+	}                                    
+	
 	/**
 	 * 
 	 * @param dao
@@ -229,6 +274,6 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 	 */                                                                                                  
 	private JdbcTemplate jdbcTemplate = null;                                                            
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
-	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}                                    
+	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}
 
 }
