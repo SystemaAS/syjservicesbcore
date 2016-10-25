@@ -88,7 +88,7 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 			sql.append(" thtrm, thkdc, thlsd, thcats, thskfd, thdst, thdsk, thdkr, thddt, ");
 			
 			sql.append(" thtina, thnaa, thada1, thska, thpsa, thpna, thlka, ");
-			sql.append(" thdfkd, thdant, thdfsk ");
+			sql.append(" thdfkd, thdant, thdfsk, thdk ");
 			sql.append(" )" );
 			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ");
@@ -99,7 +99,7 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
 			
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ");
-			sql.append(" ?, ?, ?  ");
+			sql.append(" ?, ?, ?, ?  ");
 			sql.append(" )" );
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getThavd(), 
@@ -112,7 +112,7 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 				dao.getThtrm(), dao.getThkdc(), dao.getThlsd(), dao.getThcats(), dao.getThskfd(), dao.getThdst(), dao.getThdsk(), dao.getThdkr(), dao.getThddt(),
 				
 				dao.getThtina(), dao.getThnaa(), dao.getThada1(), dao.getThska(), dao.getThpsa(), dao.getThpna(), dao.getThlka(),
-				dao.getThdfkd(), dao.getThdant(), dao.getThdfsk()
+				dao.getThdfkd(), dao.getThdant(), dao.getThdfsk(), dao.getThdk()
 			    } );
 
 		}catch(Exception e){
@@ -148,7 +148,7 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 			sql.append(" thtrm = ?, thkdc = ?, thlsd = ?, thcats = ?, thskfd = ?, thdst = ?, thdsk = ?, thdkr = ?, thddt = ?, ");
 			
 			sql.append(" thtina = ?, thnaa = ?, thada1 = ?, thska = ?, thpsa = ?, thpna = ?, thlka = ?, ");
-			sql.append(" thdfkd = ?, thdant = ?, thdfsk = ? ");
+			sql.append(" thdfkd = ?, thdant = ?, thdfsk = ?, thdk = ? ");
 			sql.append(" WHERE thavd = ? ");
 			
 			//params
@@ -162,7 +162,7 @@ public class TrustdDaoServicesImpl implements TrustdDaoServices {
 				dao.getThtrm(), dao.getThkdc(), dao.getThlsd(), dao.getThcats(), dao.getThskfd(), dao.getThdst(), dao.getThdsk(), dao.getThdkr(), dao.getThddt(),
 				
 				dao.getThtina(), dao.getThnaa(), dao.getThada1(), dao.getThska(), dao.getThpsa(), dao.getThpna(), dao.getThlka(),
-				dao.getThdfkd(), dao.getThdant(), dao.getThdfsk(), 
+				dao.getThdfkd(), dao.getThdant(), dao.getThdfsk(), dao.getThdk(),
 				//WHERE condition
 				dao.getThavd() } );
 			
