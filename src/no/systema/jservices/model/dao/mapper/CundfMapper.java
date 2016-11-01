@@ -3,7 +3,7 @@ package no.systema.jservices.model.dao.mapper;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
-import no.systema.jservices.model.dao.entities.CusdfDao;
+import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.jservices.model.dao.services.CundfDaoServicesImpl;
 
 import java.sql.ResultSet;
@@ -19,7 +19,7 @@ public class CundfMapper implements RowMapper {
 	private static Logger logger = Logger.getLogger(CundfMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-    	CusdfDao dao = new CusdfDao();
+    	CundfDao dao = new CundfDao();
     	dao.setKundnr(rs.getString("kundnr"));
     	dao.setKnavn(rs.getString("knavn"));
     	dao.setAdr1(rs.getString("adr1"));

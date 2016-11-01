@@ -3,44 +3,28 @@ package no.systema.jservices.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.lang.reflect.Field;
-import java.util.*;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Scope;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-
+//rules
+import no.systema.jservices.controller.rules.SYCUNDFR_U;
+import no.systema.jservices.jsonwriter.JsonResponseWriter;
+import no.systema.jservices.model.dao.entities.CundfDao;
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.CundfDaoServices;
-import no.systema.jservices.model.dao.entities.CusdfDao;
-
-import no.systema.jservices.jsonwriter.JsonResponseWriter;
-//rules
-import no.systema.jservices.controller.rules.SYCUNDFR_U;
-
-
-
 
 
 /**
@@ -48,6 +32,9 @@ import no.systema.jservices.controller.rules.SYCUNDFR_U;
  * 
  * This class is the bridge and entry point to the syjservices-layer.
  * All communication to the outside world is done through this gateway.
+ * 
+ * 
+ * Listing Kunder and adding/updating/delete of Kunder int table: CUNDF
  * 
  * @author oscardelatorre
  * @date Aug 15, 2016
@@ -93,7 +80,7 @@ public class JsonResponseOutputterController_CUNDF {
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				//bind attributes is any
-				CusdfDao dao = new CusdfDao();
+				CundfDao dao = new CundfDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 	            binder.bind(request);
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
@@ -148,6 +135,111 @@ public class JsonResponseOutputterController_CUNDF {
 		}
 		session.invalidate();
 		return sb.toString();
+	}
+	
+
+	/**
+	 * 
+	 * Update Database DML operations
+	 * 	 File: 		CUNDF
+	 * 	 PGM:		VKIND
+	 * 
+	 * @Example UPDATE:
+	 *          http://gw.systema.no:8080/syjservicestn/syjsSYCUNDFR_U.do?user=OSCAR&mode=U&xxx=yyy...
+	 * 
+	 * @Example ADD:
+	 * 			http://gw.systema.no:8080/syjservicestn/syjsSYCUNDFR_U.do?user=OSCAR&mode=A&xxx=yyy....
+	 *
+	 * @param session
+	 * @param request
+	 * @return
+	 * 
+	 */
+	@RequestMapping(value="syjsSYCUNDFR_U.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String syjsCundf_U( HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();	
+
+		//TODO: Mycket kvar!!!
+		
+		
+		try{
+			logger.info("Inside syjsSYCUNDFR_U.do");
+			String user = request.getParameter("user");
+			String mode = request.getParameter("mode");
+			//Check ALWAYS user in BRIDF
+            String userName = this.bridfDaoServices.findNameById(user);
+            String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+			
+			//bind attributes is any
+			CundfDao dao = new CundfDao();
+			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
+            binder.bind(request);
+            //rules
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U();  //TODO: evolve....
+			//Start processing now
+			if(userName!=null && !"".equals(userName)){
+				int dmlRetval = 0;
+				if("D".equals(mode)){
+					if(rulerLord.isValidInputForDelete(dao, userName, mode)){ 
+						dmlRetval = this.cundfDaoServices.delete(dao, dbErrorStackTrace);
+					}else{
+						//write JSON error output
+						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
+						status = "error";
+						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+					}
+				}else{
+					if (rulerLord.isValidInput(dao, userName, mode)) {
+						//rulerLord.updateNumericFieldsIfNull(dao);  //TODO: Needed?
+						if ("A".equals(mode)) {
+							dmlRetval = this.cundfDaoServices.insert(dao, dbErrorStackTrace);
+						} else if ("U".equals(mode)) {
+							dmlRetval = this.cundfDaoServices.update(dao, dbErrorStackTrace);
+						}
+					} else {
+						// write JSON error output
+						errMsg = "ERROR on ADD/UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update";
+						status = "error";
+						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+					}
+				}
+				//----------------------------------
+				//check returns from dml operations
+				//----------------------------------
+				if(dmlRetval<0){
+					//write JSON error output
+					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
+					status = "error";
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}else{
+					//OK UPDATE
+					sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
+				}
+				
+			}else{
+				//write JSON error output
+				errMsg = "ERROR on ADD/UPDATE";
+				status = "error";
+				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+			
+		}catch(Exception e){
+			//write std.output error output
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+		session.invalidate();
+		
+		return sb.toString();
+		
+		
 	}
 	
 	

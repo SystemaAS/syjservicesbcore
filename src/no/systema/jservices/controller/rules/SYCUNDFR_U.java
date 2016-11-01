@@ -1,7 +1,7 @@
 package no.systema.jservices.controller.rules;
 
 
-import no.systema.jservices.model.dao.entities.CusdfDao;
+import no.systema.jservices.model.dao.entities.CundfDao;
 /**
  * 
  * @author oscardelatorre
@@ -16,7 +16,7 @@ public class SYCUNDFR_U {
 	 * @param mode
 	 * @return
 	 */
-	public boolean isValidInput(CusdfDao dao, String user, String mode){
+	public boolean isValidInput(CundfDao dao, String user, String mode){
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) &&
 			(mode!=null && !"".equals(mode)) ){
@@ -44,7 +44,7 @@ public class SYCUNDFR_U {
 	 * @param mode
 	 * @return
 	 */
-	public boolean isValidInputForDelete(CusdfDao dao, String user, String mode){
+	public boolean isValidInputForDelete(CundfDao dao, String user, String mode){
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
