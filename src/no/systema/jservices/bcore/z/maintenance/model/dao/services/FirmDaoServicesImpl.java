@@ -1,3 +1,6 @@
+
+
+
 package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
 import java.util.*;
@@ -27,7 +30,7 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select fifirm, fift ");
+			sql.append(" select * ");
 			sql.append(" from firm ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new FirmMapper());
@@ -49,7 +52,7 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 		try{
 			StringBuffer sql = new StringBuffer();
 			
-			sql.append(" select fifirm, fift ");
+			sql.append(" select * ");
 			sql.append(" from firm ");
 			//WHERE
 			sql.append(" where fifirm = ?  ");
