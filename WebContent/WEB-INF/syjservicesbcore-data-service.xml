@@ -24,6 +24,10 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   
+  <bean id="cundcDaoServices" class="no.systema.jservices.model.dao.services.CundcDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>  
+  
   <bean id="ediiDaoServices" class="no.systema.jservices.model.dao.services.EdiiDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
