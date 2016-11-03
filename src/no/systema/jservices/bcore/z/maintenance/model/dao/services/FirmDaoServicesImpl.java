@@ -30,8 +30,10 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select * ");
-			sql.append(" from firm ");
+			sql.append(" select a.*, b.* ");
+			sql.append(" from firm AS a ");
+			sql.append(" full outer join firfb AS b ");
+			sql.append(" on a.fifirm = b.fifirm ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new FirmMapper());
 			
