@@ -30,10 +30,8 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select a.*, b.* ");
-			sql.append(" from firm AS a ");
-			sql.append(" full outer join firfb AS b ");
-			sql.append(" on a.fifirm = b.fifirm ");
+			sql.append(this.getSELECT_CLAUSE());
+			
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new FirmMapper());
 			
@@ -53,11 +51,9 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 		List<FirmDao> retval = new ArrayList<FirmDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
-			
-			sql.append(" select * ");
-			sql.append(" from firm ");
+			sql.append(this.getSELECT_CLAUSE());
 			//WHERE
-			sql.append(" where fifirm = ?  ");
+			sql.append(" where a.fifirm = ?  ");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new FirmMapper());
 			
@@ -68,6 +64,25 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 		}
 		return retval;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	private String getSELECT_CLAUSE(){
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append(" select a.*, b.*, c.*, d.* ");
+		sql.append(" from FIRM AS a ");
+		sql.append(" full outer join FIRFB AS b ");
+		sql.append(" on a.fifirm = b.fifirm ");
+		sql.append(" full outer join FIRMKOS AS c ");
+		sql.append(" on a.fifirm = c.fifirm ");
+		sql.append(" full outer join FIRKU AS d ");
+		sql.append(" on a.fifirm = d.fifirm ");
+		
+		return sql.toString();
 	}
 	
 	/**

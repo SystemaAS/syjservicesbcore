@@ -305,10 +305,42 @@ public class FirmDao implements Serializable, IDao {
 	public String getFiidmxPropertyName (){ return "fiidmx"; }
 	public void setFiidmx (String value){ this.fiidmx = value;   }   
 	public String getFiidmx (){ return this.fiidmx;   }  
-	
 	//--------------
 	//END FIRFB-table
 	//--------------
 
+	//--------------
+	//FIRMKOS -table
+	//--------------
+	private String tillat = "";  
+	public String getTillatPropertyName (){ return "tillat"; }
+	public void setTillat (String value){ this.tillat = value;   }   
+	public String getTillat (){ return this.tillat;   }  
+	
+	private String interr = ""; 
+	public String getInterrPropertyName (){ return "interr"; }
+	public void setInterr (String value){ this.interr = value;   }   
+	public String getInterr (){ return this.interr;   }  
+	//END FIRMKOS
+	
+	//--------------
+	//FIRKU -table
+	//--------------
+	private String fikufr = ""; 
+	public String getFikufrPropertyName (){ return "fikufr"; }
+	public void setFikufr (String value){ this.fikufr = value;   }   
+	public String getFikufr (){ return this.fikufr;   }  
+	
+	private String fikuti = "";
+	public String getFikutiPropertyName (){ return "fikuti"; }
+	public void setFikuti (String value){ this.fikuti = value;   }   
+	public String getFikuti (){ return this.fikuti;   } 
+	
+	private String fikune = "";  
+	public String getFikunePropertyName (){ return "fikune"; }
+	public void setFikune (String value){ this.fikune = value;   }   
+	public String getFikune (){ return this.fikune;   } 
+	//END FIRKU
+	
 	
 }
