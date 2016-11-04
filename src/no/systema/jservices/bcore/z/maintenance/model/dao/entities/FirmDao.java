@@ -342,5 +342,78 @@ public class FirmDao implements Serializable, IDao {
 	public String getFikune (){ return this.fikune;   } 
 	//END FIRKU
 	
+	//--------------
+	//KODTV -table
+	//--------------
+	private String kovavd = "";  
+	public String getKovavdPropertyName (){ return "kovavd"; }
+	public void setKovavd (String value){ this.kovavd = value;   }   
+	public String getKovavd (){ return this.kovavd;   } 
+	
+	private String kovlkg = "";  
+	public String getKovlkgPropertyName (){ return "kovlkg"; }
+	public void setKovlkg (String value){ this.kovlkg = value;   }   
+	public String getKovlkg (){ return this.kovlkg;   } 
+	
+	private String kovkkg = "";  
+	public String getKovkkgPropertyName (){ return "kovkkg"; }
+	public void setKovkkg (String value){ this.kovkkg = value;   }   
+	public String getKovkkg (){ return this.kovkkg;   } 
+	
+	private String kovk1 = "";  
+	public String getKovk1PropertyName (){ return "kovk1"; }
+	public void setKovk1 (String value){ this.kovk1 = value;   }   
+	public String getKovk1 (){ return this.kovk1;   } 
+	
+	private String kovk2 = "";  
+	public String getKovk2PropertyName (){ return "kovk2"; }
+	public void setKovk2 (String value){ this.kovk2 = value;   }   
+	public String getKovk2 (){ return this.kovk2;   } 
+	
+	private String kovk3 = "";  
+	public String getKovk3PropertyName (){ return "kovk3"; }
+	public void setKovk3 (String value){ this.kovk3 = value;   }   
+	public String getKovk3 (){ return this.kovk3;   } 
+	
+	private String kovk4 = "";  
+	public String getKovk4PropertyName (){ return "kovk4"; }
+	public void setKovk4 (String value){ this.kovk4 = value;   }   
+	public String getKovk4 (){ return this.kovk4;   } 
+	
+	private String kovk5 = "";  
+	public String getKovk5PropertyName (){ return "kovk5"; }
+	public void setKovk5 (String value){ this.kovk5 = value;   }   
+	public String getKovk5 (){ return this.kovk5;   } 
+	
+	private String kovk6 = "";  
+	public String getKovk6PropertyName (){ return "kovk6"; }
+	public void setKovk6 (String value){ this.kovk6 = value;   }   
+	public String getKovk6 (){ return this.kovk6;   } 
+	
+	private String kovk7 = "";  
+	public String getKovk7PropertyName (){ return "kovk7"; }
+	public void setKovk7 (String value){ this.kovk7 = value;   }   
+	public String getKovk7 (){ return this.kovk7;   } 
+	
+	private String kovk8 = "";  
+	public String getKovk8PropertyName (){ return "kovk8"; }
+	public void setKovk8 (String value){ this.kovk8 = value;   }   
+	public String getKovk8 (){ return this.kovk8;   } 
+	
+	private String kovk9 = "";  
+	public String getKovk9PropertyName (){ return "kovk9"; }
+	public void setKovk9 (String value){ this.kovk9 = value;   }   
+	public String getKovk9 (){ return this.kovk9;   } 
+	
+	private String kovk10 = "";  
+	public String getKovk10PropertyName (){ return "kovk10"; }
+	public void setKovk10 (String value){ this.kovk10 = value;   }   
+	public String getKovk10 (){ return this.kovk10;   } 
+	
+	private String kovk11 = "";  
+	public String getKovk11PropertyName (){ return "kovk11"; }
+	public void setKovk11 (String value){ this.kovk11 = value;   }   
+	public String getKovk11 (){ return this.kovk11;   } 
+	
 	
 }
