@@ -414,6 +414,15 @@ public class FirmDao implements Serializable, IDao {
 	public String getKovk11PropertyName (){ return "kovk11"; }
 	public void setKovk11 (String value){ this.kovk11 = value;   }   
 	public String getKovk11 (){ return this.kovk11;   } 
+	//END KODTV
 	
+	//--------------
+	//FIRSTA -table
+	//--------------
+	private String fista = "";  
+	public String getKovavdPropertyName (){ return "kovavd"; }
+	public void setKovavd (String value){ this.kovavd = value;   }   
+	public String getKovavd (){ return this.kovavd;   } 
+	//END FIRSTA
 	
 }
