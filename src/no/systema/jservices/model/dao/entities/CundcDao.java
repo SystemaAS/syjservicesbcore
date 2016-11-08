@@ -7,6 +7,7 @@ public class CundcDao implements Serializable, IDao {
 	private String ccompn = "";   //key                  
 	private String cfirma = "";	  //key    
 	private String cconta = "";  //key
+	private String ccontaorg = "";
 	private String ctype ="";
 	private String cphone = "";
 	private String cmobil = "";
@@ -55,6 +56,20 @@ public class CundcDao implements Serializable, IDao {
 	public void setCconta(String ccconta) {
 		this.cconta = ccconta;
 	}
+	/**
+	 * Contact.ID Orginal
+	 * 
+	 * Used in where-clause, since cconta is updateable.
+	 *
+	 * @return
+	 */
+	public String getCcontaorg() {
+		return ccontaorg;
+	}
+	public void setCcontaorg(String ccontaorg) {
+		this.ccontaorg = ccontaorg;
+	}
+
 	/**
 	 * Contact.Type
 	 * 

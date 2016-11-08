@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,12 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-//rules
-import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA63R_U;
+import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaHodeDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaHodeDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundcDao;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
@@ -80,7 +79,10 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
 				//do SELECT
+	            
 				logger.info("Before SELECT ...");
+				logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+				
 				if ((dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))) {
 					if ((dao.getCconta() != null && !"".equals(dao.getCconta()))) {
 						logger.info("findById: ccompn, cfirma, cconta");
@@ -125,19 +127,18 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		return sb.toString();
 	}
 
-/*	*//**
-	 * TODO
+	/**
+	 * 
 	 * Update Database DML operations File: CUNDC
 	 * 
 	 * @Example UPDATE:
-	 *          http://gw.systema.no:8080/syjservicestn/syjsSYFA63R_U.do?user=OSCAR&koaavd=1&honet=E&mode=U/A/D
+	 *          http://gw.systema.no:8080/syjservicestn/syjsSYFA63R_U.do?user=OSCAR&cfirma=SY&ccompn=10&ccconta=1&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
 	 * @return
 	 * 
-	 *//*
-
+	 */
 	@RequestMapping(value = "syjsCUNDC_U.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String syjsR_U(HttpSession session, HttpServletRequest request) {
@@ -154,19 +155,23 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
-			// bind attributes is any
 			CundcDao dao = new CundcDao();
+			
+			
+			
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
+
+			logger.info("mode="+mode+", dao="+ReflectionToStringBuilder.toString(dao));
+			
 			// rules
-			SYFA63R_U rulerLord = new SYFA63R_U();  //TODO:
+			CUNDC_U rulerLord = new CUNDC_U(cundcDaoServices, sb, dbErrorStackTrace);
 			// Start processing now
 			if (userName != null && !"".equals(userName)) {
 				int dmlRetval = 0;
 				if ("D".equals(mode)) {
-					logger.info("Before DELETE ...");
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
-						dmlRetval = this.cundcDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = cundcDaoServices.delete(dao, dbErrorStackTrace);
 					} else {
 						// write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -175,33 +180,14 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 					}
 				} else {
 					if (rulerLord.isValidInput(dao, userName, mode)) {
-						List<KodtaHodeDao> list = new ArrayList<KodtaHodeDao>();
-						// must complete numeric values to avoid <null> on those
-						rulerLord.updateNumericFieldsIfNull(dao);
-						// do ADD
 						if ("A".equals(mode)) {
-							logger.info("Before INSERT ...");
-							list = this.cundcDaoServices.findById(dao.getKoaavd(), dao.getHonet(), dbErrorStackTrace);
-							// check if there is already such a code. If it
-							// does, stop the update
-							if (list != null && list.size() > 0) {
-								// write JSON error output
-								errMsg = "ERROR on UPDATE: Record exists already";
-								status = "error";
-								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-							} else {
-								logger.info("Before INSERT ...");
-								dmlRetval = this.cundcDaoServices.insert(dao, dbErrorStackTrace);
-							}
-
+							dmlRetval = cundcDaoServices.insert(dao, dbErrorStackTrace);
 						} else if ("U".equals(mode)) {
-							logger.info("Before UPDATE ...");
-							dmlRetval = this.cundcDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = cundcDaoServices.update(dao, dbErrorStackTrace);
 						}
-
 					} else {
 						// write JSON error output
-						errMsg = "ERROR on UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update";
+						errMsg = "ERROR on ADD/UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update";
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
@@ -211,7 +197,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				// ----------------------------------
 				if (dmlRetval < 0) {
 					// write JSON error output
-					errMsg = "ERROR on UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
+					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				} else {
@@ -237,7 +223,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		session.invalidate();
 		return sb.toString();
 	}
-*/
+
 	// ----------------
 	// WIRED SERVICES
 	// ----------------

@@ -14,6 +14,7 @@ public interface CundcDaoServices extends IDaoServices {
 	 * @param errorStackTrace
 	 * @return a List of {@link CundcDao}
 	 */
+
 	public List<CundcDao> findById(String ccompn, String cfirma, StringBuffer errorStackTrace);
 	/**
 	 * Retrieve specific record of CUNDC.
@@ -25,4 +26,15 @@ public interface CundcDaoServices extends IDaoServices {
 	 * @return
 	 */
 	public List<CundcDao> findById(String ccompn, String cfirma, String ccconta, StringBuffer errorStackTrace);
+	
+	
+	/**
+	 * Exist control on cfirma, ccompn and cconta
+	 * 
+	 * @param cfirma
+	 * @param ccompn
+	 * @param cconta
+	 * @return true or false
+	 */
+	public boolean exists(String cfirma, String ccompn, String cconta);
 }
