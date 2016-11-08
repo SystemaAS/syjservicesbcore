@@ -420,9 +420,168 @@ public class FirmDao implements Serializable, IDao {
 	//FIRSTA -table
 	//--------------
 	private String fista = "";  
-	public String getKovavdPropertyName (){ return "kovavd"; }
-	public void setKovavd (String value){ this.kovavd = value;   }   
-	public String getKovavd (){ return this.kovavd;   } 
+	public String getFistaPropertyName (){ return "fista"; }
+	public void setFista (String value){ this.fista = value;   }   
+	public String getFista (){ return this.fista;   }
+	
+	private String fistb = "";  
+	public String getFistbPropertyName (){ return "fistb"; }
+	public void setFistb (String value){ this.fistb = value;   }   
+	public String getFistb (){ return this.fistb;   }
+	
+	private String fistc = "";  
+	public String getFistcPropertyName (){ return "fistc"; }
+	public void setFistc (String value){ this.fistc = value;   }   
+	public String getFistc (){ return this.fistc;   }
+	
+	private String fistd = "";  
+	public String getFistdPropertyName (){ return "fistd"; }
+	public void setFistd (String value){ this.fistd = value;   }   
+	public String getFistd (){ return this.fistd;   }
+	
+	private String fiste = "";  
+	public String getFistePropertyName (){ return "fiste"; }
+	public void setFiste (String value){ this.fiste = value;   }   
+	public String getFiste (){ return this.fiste;   }
+	
+	private String fistf = "";  
+	public String getFistfPropertyName (){ return "fistf"; }
+	public void setFistf (String value){ this.fistf = value;   }   
+	public String getFistf (){ return this.fistf;   }
+	
+	private String fistg = "";  
+	public String getFistgPropertyName (){ return "fistg"; }
+	public void setFistg (String value){ this.fistg = value;   }   
+	public String getFistg (){ return this.fistg;   }
+	
+	private String fisth = "";  
+	public String getFisthPropertyName (){ return "fisth"; }
+	public void setFisth (String value){ this.fisth = value;   }   
+	public String getFisth (){ return this.fisth;   }
+	
+	private String fisti = "";  
+	public String getFistiPropertyName (){ return "fisti"; }
+	public void setFisti (String value){ this.fisti = value;   }   
+	public String getFisti (){ return this.fisti;   }
+	
+	private String fistj = "";  
+	public String getFistjPropertyName (){ return "fistj"; }
+	public void setFistj (String value){ this.fistj = value;   }   
+	public String getFistj (){ return this.fistj;   }
+	
+	private String fistk = "";  
+	public String getFistkPropertyName (){ return "fistk"; }
+	public void setFistk (String value){ this.fistk = value;   }   
+	public String getFistk (){ return this.fistk;   }
+	
+	private String fistl = "";  
+	public String getFistlPropertyName (){ return "fistl"; }
+	public void setFistl (String value){ this.fistl = value;   }   
+	public String getFistl (){ return this.fistl;   }
+	
+	private String fistm = "";  
+	public String getFistmPropertyName (){ return "fistm"; }
+	public void setFistm (String value){ this.fistm = value;   }   
+	public String getFistm (){ return this.fistm;   }
+	
+	private String fistn = "";  
+	public String getFistnPropertyName (){ return "fistn"; }
+	public void setFistn (String value){ this.fistn = value;   }   
+	public String getFistn (){ return this.fistn;   }
+	
+	private String fisto = "";  
+	public String getFistoPropertyName (){ return "fisto"; }
+	public void setFisto (String value){ this.fisto = value;   }   
+	public String getFisto (){ return this.fisto;   }
+	
+	private String fistp = "";  
+	public String getFistpPropertyName (){ return "fistp"; }
+	public void setFistp (String value){ this.fistp = value;   }   
+	public String getFistp (){ return this.fistp;   }
+	
+	private String fistq = "";  
+	public String getFistqPropertyName (){ return "fistq"; }
+	public void setFistq (String value){ this.fistq = value;   }   
+	public String getFistq (){ return this.fistq;   }
+	
+	private String fistr = "";  
+	public String getFistrPropertyName (){ return "fistr"; }
+	public void setFistr (String value){ this.fistr = value;   }   
+	public String getFistr (){ return this.fistr;   }
+	
+	private String fists = "";  
+	public String getFistsPropertyName (){ return "fists"; }
+	public void setFists (String value){ this.fists = value;   }   
+	public String getFists (){ return this.fists;   }
+	
+	private String fistt = "";  
+	public String getFisttPropertyName (){ return "fistt"; }
+	public void setFistt (String value){ this.fistt = value;   }   
+	public String getFistt (){ return this.fistt;   }
+	
+	private String fistu = "";  
+	public String getFistuPropertyName (){ return "fistu"; }
+	public void setFistu (String value){ this.fistu = value;   }   
+	public String getFistu (){ return this.fistu;   }
+	
+	private String fistv = "";  
+	public String getFistvPropertyName (){ return "fistv"; }
+	public void setFistv (String value){ this.fistv = value;   }   
+	public String getFistv (){ return this.fistv;   }
+	
+	private String fistw = "";  
+	public String getFistwPropertyName (){ return "fistw"; }
+	public void setFistw (String value){ this.fistw = value;   }   
+	public String getFistw (){ return this.fistw;   }
+	
+	private String fistx = "";  
+	public String getFistxPropertyName (){ return "fistx"; }
+	public void setFistx (String value){ this.fistx = value;   }   
+	public String getFistx (){ return this.fistx;   }
+	
+	private String fisty = "";  
+	public String getFistyPropertyName (){ return "fisty"; }
+	public void setFisty (String value){ this.fisty = value;   }   
+	public String getFisty (){ return this.fisty;   }
+	
+	private String fistz = "";  
+	public String getFistzPropertyName (){ return "fistz"; }
+	public void setFistz (String value){ this.fistz = value;   }   
+	public String getFistz (){ return this.fistz;   }
+	
+	private String fistnr = "";  
+	public String getFistnrPropertyName (){ return "fistnr"; }
+	public void setFistnr (String value){ this.fistnr = value;   }   
+	public String getFistnr (){ return this.fistnr;   }
 	//END FIRSTA
 	
+	
+	//-------------
+	//FIRTR table
+	//-------------
+	private String favreg = "";  
+	public String getFavregPropertyName (){ return "favreg"; }
+	public void setFavreg (String value){ this.fistnr = value;   }   
+	public String getFavreg (){ return this.fistnr;   }
+	
+	private String fibise = "";  
+	public String getFibisePropertyName (){ return "fibise"; }
+	public void setFibise (String value){ this.fibise = value;   }   
+	public String getFibise (){ return this.fibise;   }
+	
+	private String fferk = "";  
+	public String geFfferkPropertyName (){ return "fferk"; }
+	public void setFferk (String value){ this.fferk = value;   }   
+	public String getFferk (){ return this.fferk;   }
+	
+	private String fibrut = "";  
+	public String getFibrutPropertyName (){ return "fibrut"; }
+	public void setFibrut (String value){ this.fibrut = value;   }   
+	public String getFibrut (){ return this.fibrut;   }
+	
+	private String fikonv = "";  
+	public String getFikonvPropertyName (){ return "fikonv"; }
+	public void setFikonv(String value){ this.fikonv = value;   }   
+	public String getFikonv (){ return this.fikonv;   }
+
 }

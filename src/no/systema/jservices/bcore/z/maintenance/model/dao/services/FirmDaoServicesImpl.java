@@ -73,7 +73,7 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 	private String getSELECT_CLAUSE(){
 		
 		StringBuffer sql = new StringBuffer();
-		sql.append(" select a.*, b.*, c.*, d.*, e.* ");
+		sql.append(" select a.*, b.*, c.*, d.*, e.*, f.*, z.* ");
 		sql.append(" from FIRM AS a ");
 		sql.append(" full outer join FIRFB AS b ");
 		sql.append(" on a.fifirm = b.fifirm ");
@@ -81,8 +81,13 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 		sql.append(" on a.fifirm = c.fifirm ");
 		sql.append(" full outer join FIRKU AS d ");
 		sql.append(" on a.fifirm = d.fifirm ");
-		sql.append(" inner join KODTV AS e "); //no key in this table
-		sql.append(" on e.kovavd = 0 ");
+		sql.append(" full outer join FIRSTA AS e ");
+		sql.append(" on a.fifirm = e.fifirm ");
+		sql.append(" full outer join FIRTR AS f ");
+		sql.append(" on a.fifirm = f.fifirm ");
+		// no join ?
+		sql.append(" inner join KODTV AS z "); //no key in this table
+		sql.append(" on z.kovavd = 0 ");
 		
 		return sql.toString();
 	}
