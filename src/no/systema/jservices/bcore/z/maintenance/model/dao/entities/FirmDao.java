@@ -561,8 +561,8 @@ public class FirmDao implements Serializable, IDao {
 	//-------------
 	private String favreg = "";  
 	public String getFavregPropertyName (){ return "favreg"; }
-	public void setFavreg (String value){ this.fistnr = value;   }   
-	public String getFavreg (){ return this.fistnr;   }
+	public void setFavreg (String value){ this.favreg = value;   }   
+	public String getFavreg (){ return this.favreg;   }
 	
 	private String fibise = "";  
 	public String getFibisePropertyName (){ return "fibise"; }
