@@ -414,7 +414,18 @@ public class FirmDao implements Serializable, IDao {
 	public String getKovk11PropertyName (){ return "kovk11"; }
 	public void setKovk11 (String value){ this.kovk11 = value;   }   
 	public String getKovk11 (){ return this.kovk11;   } 
+	
+	private String kovomr = "";  
+	public String getKovomrPropertyName (){ return "kovomr"; }
+	public void setKovomr (String value){ this.kovomr = value;   }   
+	public String getKovomr (){ return this.kovomr;   } 
+	
+	private String kovpro = "";  
+	public String getKovproPropertyName (){ return "kovpro"; }
+	public void setKovpro (String value){ this.kovpro = value;   }   
+	public String getKovpro (){ return this.kovpro;   } 
 	//END KODTV
+	
 	
 	//--------------
 	//FIRSTA -table
@@ -583,5 +594,30 @@ public class FirmDao implements Serializable, IDao {
 	public String getFikonvPropertyName (){ return "fikonv"; }
 	public void setFikonv(String value){ this.fikonv = value;   }   
 	public String getFikonv (){ return this.fikonv;   }
-
+	//END FIRTR
+	
+	//-----------
+	//FIRML1
+	//-----------
+	private String l1firm = "";  
+	public String getL1firmPropertyName (){ return "l1firm"; }
+	public void setL1firm(String value){ this.l1firm = value;   }   
+	public String getL1firm (){ return this.l1firm;   }
+	
+	private String l1kjor = "";  
+	public String getL1kjorPropertyName (){ return "l1kjor"; }
+	public void setL1kjor(String value){ this.l1kjor = value;   }   
+	public String getL1kjor (){ return this.l1kjor;   }
+	
+	private String l1stdn = "";  
+	public String getL1stdnPropertyName (){ return "l1stdn"; }
+	public void setL1stdn(String value){ this.l1stdn = value;   }   
+	public String getL1stdn (){ return this.l1stdn;   }
+	
+	private String l1datn = "";  
+	public String getL1datnPropertyName (){ return "l1datn"; }
+	public void setL1datn(String value){ this.l1datn = value;   }   
+	public String getL1datn (){ return this.l1datn;   }
+	//END FIRML1
+	
 }
