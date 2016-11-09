@@ -148,12 +148,13 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" WHERE   ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
+			sql.append(" AND   ctype = ?");
 
 			
 /*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
 			logger.info("sql="+sql.toString());
 */			
-			retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dao.getCcompn(), dao.getCfirma(), dao.getCconta() });
+			retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dao.getCcompn(), dao.getCfirma(), dao.getCconta(), dao.getCtype() });
 
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
