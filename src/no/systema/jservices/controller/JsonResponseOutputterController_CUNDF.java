@@ -194,7 +194,7 @@ public class JsonResponseOutputterController_CUNDF {
 					}
 				}else{
 					if (rulerLord.isValidInput(dao, userName, mode)) {
-						//rulerLord.updateNumericFieldsIfNull(dao);  //TODO: Needed?
+						rulerLord.updateNumericFieldsIfNull(dao); 
 						if ("A".equals(mode)) {
 							dmlRetval = this.cundfDaoServices.insert(dao, dbErrorStackTrace);
 						} else if ("U".equals(mode)) {

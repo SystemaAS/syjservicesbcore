@@ -135,14 +135,19 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	
 	
 	@Override
-	//TODO: Under prototyping mode, more fields to be included!
 	public int update(Object daoObj, StringBuffer errorStackTrace) {
 		int retval = 0;
 		try {
 
 			CundfDao dao = (CundfDao) daoObj;
 			StringBuilder sql = new StringBuilder();
-			sql.append(" UPDATE cundf SET knavn = ?, syrg = ?, adr1 = ?, adr3 = ?, postnr = ?, syland = ? ");
+			sql.append(" UPDATE cundf SET knavn = ?, syrg = ?, adr1 = ?, adr3 = ?, postnr = ?, syland = ?, ");
+			sql.append(" dkund = ?,  kpers = ?, sonavn = ?, valkod = ?, spraak = ?, bankg = ?, postg = ?, fmot = ?, betbet = ?, ");
+			sql.append(" betmat = ?, sfakt = ?, kgrens = ?, tfaxnr = ?, syregn = ?, sykont = ?, sylikv = ?, syopdt = ?, syminu = ?, ");
+			sql.append(" syutlp = ?, sypoge = ?, systat = ?, syselg = ?, syiat1 = ?, syiat2 = ?, sycoty = ?, syfr01 = ?, syfr02 = ?, ");
+			sql.append(" syfr03 = ?, syfr04 = ?, syfr05 = ?, syfr06 = ?, sysalu = ?, syepos = ?, aknrku = ?, vatkku = ?, xxbre = ?, ");
+			sql.append(" xxlen = ?, xxinm3 = ?, xxinlm = ?, rnraku = ?, golk = ?, kundgr = ?, pnpbku = ?, adr21 = ?, eori = ? ");
+
 			sql.append(" WHERE kundnr = ? ");
 			sql.append(" AND firma = ? ");
 
@@ -152,6 +157,11 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 						dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
+						dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(),
+						dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(),
+						dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(),
+						dao.getSyfr03(), dao.getSyfr04(), dao.getSyfr05(), dao.getSyfr06(), dao.getSysalu(), dao.getSyepos(), dao.getAknrku(), dao.getVatkku(), dao.getXxbre(),
+						dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori(),
 						//id's
 						dao.getKundnr(),dao.getFirma()
 						} );
@@ -169,7 +179,6 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	private String getSELECT_FROM_CLAUSE(){
 		StringBuffer sql = new StringBuffer();
 		sql.append(" select kundnr, knavn, adr1, adr2, postnr, adr3, firma, syrg, syland, ");
-		//all columns...map to  CundfMapper as needed
 		sql.append(" dkund, kpers, sonavn, valkod, spraak, bankg, postg, fmot, betbet, ");
 		sql.append(" betmat, sfakt, kgrens, tfaxnr, syregn, sykont, sylikv, syopdt, syminu, ");
 		sql.append(" syutlp, sypoge, systat, syselg, syiat1, syiat2, sycoty, syfr01, syfr02, ");
