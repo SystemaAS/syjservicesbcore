@@ -83,9 +83,9 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
 
-			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
 			logger.info("update::sql="+sql.toString());
-			
+*/			
 			
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 						dao.getCconta(), dao.getCtype(), dao.getCphone(), dao.getCmobil(), dao.getCfax(), dao.getCemail(), dao.getClive(), 
@@ -117,9 +117,10 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 
 			sql.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ? ) ");
-			
-			logger.info("insert::sql="+sql.toString());
 
+/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+			logger.info("insert::sql="+sql.toString());
+*/
 			retval = this.jdbcTemplate.update(sql.toString(),
 					new Object[] { dao.getCcompn(), dao.getCfirma(), dao.getCconta(), dao.getCtype(), dao.getCphone(), dao.getCmobil(), dao.getCfax(),
 							dao.getCemail(), dao.getClive(), dao.getCprint(), dao.getSonavn(), dao.getCemne(), dao.getCavd(), dao.getCavdio(), dao.getCopd(),

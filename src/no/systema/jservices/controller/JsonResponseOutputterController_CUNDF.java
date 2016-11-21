@@ -86,25 +86,19 @@ public class JsonResponseOutputterController_CUNDF {
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
 				//do SELECT
-				logger.info("Before SELECT ...");
 				if(dao.getKundnr()!=null && !"".equals(dao.getKundnr())){
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
-						logger.info("Before findById ...");
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
 					}else{
-						logger.info("Before findById ...");
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
 					}
 				}else if (dao.getKnavn()!=null && !"".equals(dao.getKnavn())){
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
-						logger.info("Before findByName ...");
 						list = this.cundfDaoServices.findByName(dao.getKnavn(), dao.getFirma(), dbErrorStackTrace);
 					}else{
-						logger.info("Before findByName ...");
 						list = this.cundfDaoServices.findByName(dao.getKnavn(), dbErrorStackTrace);
 					}
 				}else{
-					logger.info("Before getList ...");
 					list = this.cundfDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result
@@ -142,7 +136,6 @@ public class JsonResponseOutputterController_CUNDF {
 	 * 
 	 * Update Database DML operations
 	 * 	 File: 		CUNDF
-	 * 	 PGM:		VKIND
 	 * 
 	 * @Example UPDATE:
 	 *          http://gw.systema.no:8080/syjservicestn/syjsSYCUNDFR_U.do?user=OSCAR&mode=U&xxx=yyy...

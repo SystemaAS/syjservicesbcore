@@ -10,40 +10,34 @@ import no.systema.jservices.model.dao.entities.CundfDao;
 public class SYCUNDFR_U {
 
 	/**
+	 * Validate null values and exist controls i db.
 	 * 
 	 * @param dao
 	 * @param user
 	 * @param mode
 	 * @return
 	 */
-	public boolean isValidInput(CundfDao dao, String user, String mode){
+	public boolean isValidInput(CundfDao dao, String user, String mode) {
 		boolean retval = true;
-		if( (user!=null && !"".equals(user)) &&
-			(mode!=null && !"".equals(mode)) ){
-			//check dao
-			/*TDO
-			if( (dao.getKoaavd()!=null && !"".equals(dao.getKoaavd())) &&
-				(dao.getKoanvn()!=null && !"".equals(dao.getKoanvn())) && 
-				(dao.getKoaknr()!=null && !"".equals(dao.getKoaknr())) &&
-				(dao.getKoafir()!=null && !"".equals(dao.getKoafir())) ){
-					
-				
-			}else{
-				retval = false;
-			}
-			*/
-		}else{
+		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
+			if ((dao.getFirma() != null && !"".equals(dao.getFirma())) && (dao.getKundnr() != null && !"".equals(dao.getKundnr()))
+					&& (dao.getPostnr() != null && !"".equals(dao.getPostnr())) && (dao.getSonavn() != null && !"".equals(dao.getSonavn()))
+					&& (dao.getBetbet() != null && !"".equals(dao.getBetbet())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
+				// Check språk
+/*				if (existInTrkodf(user, dao.getSpraak())) {
+					return false;
+				}
+*/			
+			} else{ 
+				  retval = false; 
+			 }
+			 
+		} else {
 			retval = false;
 		}
 		return retval;
 	}
-	/**
-	 * 
-	 * @param dao
-	 * @param user
-	 * @param mode
-	 * @return
-	 */
+
 	public boolean isValidInputForDelete(CundfDao dao, String user, String mode){
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
@@ -60,6 +54,15 @@ public class SYCUNDFR_U {
 		return retval;
 	}
 
+	/**
+	 * Conversion of data to fit in DB2-file
+	 * 
+	 * <li>Setting num to 0</li>
+	 * <li>Setting dec separator from , to . </li>
+	 * 
+	 * 
+	 * @param dao
+	 */
 	public void updateNumericFieldsIfNull(CundfDao dao){
 		String ZERO = "0";
 		if(dao.getFmot()==null || "".equals(dao.getFmot())){
@@ -123,5 +126,23 @@ public class SYCUNDFR_U {
 			dao.setXxlen(ZERO);
 		}	
 	}
+
+	
+//	Oklart vad språk hanteras, mail ligger hos Christer
+/*	private boolean existInTrkodf(String userName,  String tkKode) {
+		boolean exists = this.trkodfDaoServices.exists(TransitKoder..., tkKode);
+		if (!exists) {
+			return false;
+		} else {
+			errors.append(jsonWriter.setJsonSimpleErrorResult(userName,
+					messageSourceHelper.getMessage("systema.tvinn.sad.ncts.export.error.tkkode", new Object[] { tkKode, tkUnik.getTransitKode() }), "error", dbErrors));
+			return true;
+			
+		}
+	}	
+	*/
+	
+	
+	
 	
 }

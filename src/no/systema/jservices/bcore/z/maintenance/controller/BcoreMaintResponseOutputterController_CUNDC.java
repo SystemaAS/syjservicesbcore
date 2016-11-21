@@ -3,7 +3,6 @@ package no.systema.jservices.bcore.z.maintenance.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
-//Application
-//import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtaHodeDao;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundcDao;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
@@ -35,7 +31,7 @@ import no.systema.jservices.model.dao.services.CundcDaoServices;
  * This class is the bridge and entry point to the syjservices-layer. All
  * communication to the outside world is done through this gateway.
  * 
- * CUNDC is kontaktperson assiciated many-to-one to CUNDF Kunde
+ * CUNDC is kontaktperson/funksjon associated many-to-one to CUNDF Kunde
  * 
  * @author Fredrik Möller
  * @date Nov 3, 2016
@@ -154,16 +150,10 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
-
 			CundcDao dao = new CundcDao();
-			
-			
-			
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 
-			logger.info("mode="+mode+", dao="+ReflectionToStringBuilder.toString(dao));
-			
 			// rules
 			CUNDC_U rulerLord = new CUNDC_U(cundcDaoServices, sb, dbErrorStackTrace);
 			// Start processing now
