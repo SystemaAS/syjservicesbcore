@@ -35,12 +35,12 @@ public interface KofastDaoServices extends IDaoServices {
 	public List findById(FasteKoder kftyp,StringBuffer errorStackTrace);
 
 	/**
-	 * Get the defined header for kftyp
+	 * Exist control on FasteKoder (kftyp) and code
 	 * 
-	 * @param kftyp
-	 * @param errorStackTrace
-	 * @return
+	 * @param FasteKoder kftyp
+	 * @param String code
+	 * @return true or false
 	 */
-	public String getHeaderLabel(FasteKoder kftyp,  StringBuffer errorStackTrace);
+	public boolean exists(FasteKoder kftyp, String code);
 	
 }

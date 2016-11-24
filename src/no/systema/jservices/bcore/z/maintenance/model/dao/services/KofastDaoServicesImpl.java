@@ -1,8 +1,8 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -81,38 +81,26 @@ public class KofastDaoServicesImpl implements KofastDaoServices {
 		return retval;	}
 	
 	
-	//Behöcs denna?
+	@SuppressWarnings("unchecked")
 	@Override
-	public String getHeaderLabel(FasteKoder kftyp, StringBuffer errorStackTrace) {
-		List<KofastDao> retval = null;
-		String headerLabel = null;
-		try {
-			StringBuilder sql = new StringBuilder();
+	public boolean exists(FasteKoder kftyp, String kfkod) {
+		List<KofastDao> retval = new ArrayList<KofastDao>();
+		StringBuilder sql = new StringBuilder();
 
-			sql.append(this.getSELECT_FROM_CLAUSE());
-			sql.append(" WHERE kftyp = ?  ");
-			sql.append(" AND kfkod = ' DEFN' ");
+		sql.append(this.getSELECT_FROM_CLAUSE());
+		sql.append(" WHERE kftyp = ?  ");
+		sql.append(" AND kfkod = ?  ");
 
-			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { kftyp.toString() }, new GenericObjectMapper(new KofastDao()));
-			
-			logger.info("retval.size"+retval.size());
-			
-			for (KofastDao kofastDao : retval) {
-				headerLabel = kofastDao.getKftxt();
-			}
-			
 
-		} catch (Exception e) {
-			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
-			// Chop the message to comply to JSON-validation
-			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+		retval = this.jdbcTemplate.query(sql.toString(), new Object[] { kftyp.toString(), kfkod }, new GenericObjectMapper(new KofastDao()));
 
+		if (retval.size() == 0) {
+			return false;
+		} else {
+			return true;
 		}
-		return headerLabel;
 
 	}
-	
 
 	@Override
 	public int insert(Object dao, StringBuffer errorStackTrace) {
@@ -160,7 +148,6 @@ public class KofastDaoServicesImpl implements KofastDaoServices {
 	private JdbcTemplate jdbcTemplate = null;                                                            
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
 	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}
-
 
 
 }

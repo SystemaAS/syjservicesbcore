@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundcDao;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
@@ -157,7 +158,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			logger.info("mode="+mode);
 			
 			// rules
-			CUNDC_U rulerLord = new CUNDC_U(cundcDaoServices, sb, dbErrorStackTrace);
+			CUNDC_U rulerLord = new CUNDC_U(cundcDaoServices, kofastDaoServices,sb, dbErrorStackTrace);
 			// Start processing now
 			if (userName != null && !"".equals(userName)) {
 				int dmlRetval = 0;
@@ -232,6 +233,11 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		return this.cundcDaoServices;
 	}
 
+	@Qualifier("kofastDaoServices")
+	@Autowired
+	private KofastDaoServices kofastDaoServices;
+	
+	
 	@Qualifier("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
 

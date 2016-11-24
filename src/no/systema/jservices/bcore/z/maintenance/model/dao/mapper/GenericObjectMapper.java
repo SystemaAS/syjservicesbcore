@@ -34,7 +34,7 @@ public class GenericObjectMapper implements RowMapper {
 		this.className = daoObj.getClass().getName();
 	}
 
-	public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
+	public IDao mapRow(ResultSet rs, int rowNum) throws SQLException {
 		try {
 			Class<?> clazz = Class.forName(className);
 			dao = (IDao) clazz.newInstance();
