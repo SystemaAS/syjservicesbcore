@@ -1,6 +1,7 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.util.List;
 
+import no.systema.jservices.common.values.FasteKoder;
 import no.systema.jservices.model.dao.services.IDaoServices;
 /**
  * This Dao service also exists i bcode
@@ -22,6 +23,16 @@ public interface KofastDaoServices extends IDaoServices {
 	 * @return
 	 */
 	public List findById(FasteKoder kftyp, String kfkod, StringBuffer errorStackTrace);
+
+	/**
+	 * Retrieve  ktyp selection from FasteKoder
+	 * 
+	 * 
+	 * @param kftyp
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public List findById(FasteKoder kftyp,StringBuffer errorStackTrace);
 
 	/**
 	 * Get the defined header for kftyp

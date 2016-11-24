@@ -2,6 +2,7 @@ package no.systema.main.util;
 
 import java.util.Locale;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 
 import no.systema.main.context.JServicesAppContext;
@@ -14,11 +15,13 @@ import no.systema.main.context.JServicesAppContext;
  *
  */
 public class MessageSourceHelper {
+	private static final Logger logger = Logger.getLogger(MessageSourceHelper.class.getName());
 
 	private ApplicationContext context = null;
 
 	public MessageSourceHelper() {
 		context = JServicesAppContext.getApplicationContext();
+		logger.info("context="+context);
 	}
 	
 	

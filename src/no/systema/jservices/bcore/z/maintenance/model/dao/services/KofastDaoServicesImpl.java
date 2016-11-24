@@ -2,11 +2,13 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KofastDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
+import no.systema.jservices.common.values.FasteKoder;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -56,6 +58,28 @@ public class KofastDaoServicesImpl implements KofastDaoServices {
 		return retval;
 
 	}
+	
+	
+	@Override
+	public List<KofastDao> findById(FasteKoder kftyp, StringBuffer errorStackTrace) {
+		List<KofastDao> retval = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" WHERE kftyp = ?  ");
+			
+			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { kftyp.toString()}, new GenericObjectMapper(new KofastDao()));
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			// Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+
+		}
+		return retval;	}
+	
 	
 	//Behöcs denna?
 	@Override
@@ -136,6 +160,7 @@ public class KofastDaoServicesImpl implements KofastDaoServices {
 	private JdbcTemplate jdbcTemplate = null;                                                            
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
 	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}
+
 
 
 }

@@ -28,14 +28,15 @@ public class CUNDC_U {
 	}
 
 	public boolean isValidInput(CundcDao dao, String user, String mode) {
+		logger.info("isValidInput...");
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
 			// check dao
 			if ((dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))
 					&& (dao.getCconta() != null && !"".equals(dao.getCconta()))) {
 				// Check duplicate
-				if ("A".equals(mode) && existInCundc(user, dao.getCfirma() , dao.getCcompn(), dao.getCconta())) {
-					// TODO; kanske returnera false, return false;
+				if (existInCundc(user, dao.getCfirma() , dao.getCcompn(), dao.getCconta())) {
+					retval = false;
 				}
 				
 			} else {
@@ -45,6 +46,7 @@ public class CUNDC_U {
 			retval = false;
 		}
 		
+		logger.info("retval="+retval);
 		return retval;
 	}
 
@@ -69,13 +71,9 @@ public class CUNDC_U {
 		if (!exists) {
 			return false;
 		} else {
-/*			errors.append(jsonWriter.setJsonSimpleErrorResult(userName,
-					messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.warning.cconta", new Object[] { cconta, ccompn }), "warning", dbErrors));
-*/			
-			errors.append(jsonWriter.setJsonSimpleErrorResult(userName, "Kalle Anka", "error", dbErrors));
-//TODO: messageSourceHelper har ballat ur...?
+			errors.append(jsonWriter.setJsonSimpleErrorResult(userName,
+					messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.warning.cconta", new Object[] { cconta, ccompn }), "error", dbErrors));
 			return true;
-			
 		}
 	}	
 	

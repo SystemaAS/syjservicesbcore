@@ -20,11 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KofastDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.FasteKoder;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
+import no.systema.jservices.common.values.FasteKoder;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
-import no.systema.jservices.model.dao.services.CundcDaoServices;
 
 /**
  * Service Response Controller
@@ -49,6 +48,7 @@ public class BcoreMaintResponseOutputterController_KOFAST {
 	 * 
 	 * @return
 	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsKOFAST.do?user=OSCAR&kftyp=FUNKSJON&kfkod=ad
+	 * @Example SELECT list: http://gw.systema.no:8080/syjservicesbcore/syjsKOFAST.do?user=OSCAR&kftyp=FUNKSJON
 	 * 
 	 */
 	@RequestMapping(value="syjsKOFAST.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -74,13 +74,13 @@ public class BcoreMaintResponseOutputterController_KOFAST {
 	            binder.bind(request);
 	            List list = null;
 				logger.info("Before SELECT ...");
-				logger.info("dao="+ReflectionToStringBuilder.toString(dao));
-				
-				if ((dao.getKftyp() != null && !"".equals(dao.getKftyp())) && (dao.getKfkod() != null && !"".equals(dao.getKfkod()))) {
-					logger.info("findById...");
-					list = kofastDaoServices.findById(FasteKoder.valueOf(dao.getKftyp()), dao.getKfkod(), dbErrorStackTrace);
+				if (dao.getKftyp() != null && !"".equals(dao.getKftyp()) ) {
+					if (dao.getKfkod() != null && !"".equals(dao.getKfkod()) ) {
+						list = kofastDaoServices.findById(FasteKoder.valueOf(dao.getKftyp()), dao.getKfkod(), dbErrorStackTrace);
+					} else {
+						list = kofastDaoServices.findById(FasteKoder.valueOf(dao.getKftyp()), dbErrorStackTrace);
+					}
 				} else {
-					logger.info("getList...");
 					list = kofastDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result

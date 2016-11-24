@@ -154,6 +154,8 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 
+			logger.info("mode="+mode);
+			
 			// rules
 			CUNDC_U rulerLord = new CUNDC_U(cundcDaoServices, sb, dbErrorStackTrace);
 			// Start processing now
