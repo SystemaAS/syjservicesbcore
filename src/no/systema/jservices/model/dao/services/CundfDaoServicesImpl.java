@@ -151,10 +151,6 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			sql.append(" WHERE kundnr = ? ");
 			sql.append(" AND firma = ? ");
 
-			logger.info("sql="+sql.toString());
-			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
-			
-			
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 						dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
 						dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(),
