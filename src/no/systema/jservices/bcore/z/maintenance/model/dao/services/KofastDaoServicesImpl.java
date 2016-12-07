@@ -68,8 +68,8 @@ public class KofastDaoServicesImpl implements KofastDaoServices {
 
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" WHERE kftyp = ?  ");
-			
-			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { kftyp.toString()}, new GenericObjectMapper(new KofastDao()));
+
+			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { kftyp.toString() }, new GenericObjectMapper(new KofastDao()));
 
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -78,26 +78,33 @@ public class KofastDaoServicesImpl implements KofastDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 
 		}
-		return retval;	}
-	
+		return retval;
+	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean exists(FasteKoder kftyp, String kfkod) {
-		List<KofastDao> retval = new ArrayList<KofastDao>();
-		StringBuilder sql = new StringBuilder();
+	public boolean exists(FasteKoder kftyp, String kftxt, StringBuffer errorStackTrace) {
+		try {
+			List<KofastDao> retval = new ArrayList<KofastDao>();
+			StringBuilder sql = new StringBuilder();
 
-		sql.append(this.getSELECT_FROM_CLAUSE());
-		sql.append(" WHERE kftyp = ?  ");
-		sql.append(" AND kfkod = ?  ");
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" WHERE kftyp = ?  ");
+			sql.append(" AND kftxt = ?  ");
 
+			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { kftyp.toString(), kftxt }, new GenericObjectMapper(new KofastDao()));
 
-		retval = this.jdbcTemplate.query(sql.toString(), new Object[] { kftyp.toString(), kfkod }, new GenericObjectMapper(new KofastDao()));
-
-		if (retval.size() == 0) {
+			if (retval.size() == 0) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info("Exception=" + e);
+			// Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			return false;
-		} else {
-			return true;
 		}
 
 	}
@@ -128,18 +135,6 @@ public class KofastDaoServicesImpl implements KofastDaoServices {
 	
 		return sql.toString();
 	}
-
-	private String wildcard(String criteria) {
-		if (criteria == null){
-			return "%";
-		}
-		StringBuffer sb = new StringBuffer();
-		sb.append("%");
-		sb.append(criteria.toUpperCase());
-		sb.append("%");
-		return sb.toString();
-	}
-	
 
 	/**                                                                                                  
 	 * Wires jdbcTemplate                                                                                

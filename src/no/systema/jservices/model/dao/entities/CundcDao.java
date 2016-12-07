@@ -1,6 +1,8 @@
 package no.systema.jservices.model.dao.entities;
 import java.io.Serializable;
 
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.ArkvedkDao;
+
 @SuppressWarnings("serial")
 public class CundcDao implements Serializable, IDao {
 
@@ -22,6 +24,7 @@ public class CundcDao implements Serializable, IDao {
 	private String copd = "";
 	private String copdio = "";
 	private String cmerge = "";
+	private ArkvedkDao arkvedkDao = null;
 	
 	/**
 	 * Cust.No
@@ -224,7 +227,13 @@ public class CundcDao implements Serializable, IDao {
 	public void setCmerge(String cmerge) {
 		this.cmerge = cmerge;
 	}
-
+	public ArkvedkDao getArkvedkDao() {
+		return arkvedkDao;
+	}
+	public void setArkvedkDao(ArkvedkDao arkvedkDao) {
+		this.arkvedkDao = arkvedkDao;
+	}
+	
 	
 
 }

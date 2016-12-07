@@ -53,6 +53,40 @@ public class JsonResponseWriter {
 		
 		return sb.toString();
 	}
+
+	
+	/**
+	 * This method is enhanced with the capability to include child dao.
+	 * 
+	 * @param user
+	 * @param list a composite IDao list
+	 * @return A JSON String of the IDao list
+	 */
+	public String setJsonResult_Common_GetCompositeList(String user, List<IDao> list ){
+		StringBuffer sb = new StringBuffer();
+		//build the return JSON
+		sb.append(JsonConstants.JSON_START);
+		sb.append(this.setFieldQuotes("user") + ":" + this.setFieldQuotes(user) + ",");
+		sb.append(this.setFieldQuotes("errMsg") + ":" + this.setFieldQuotes("") + ",");
+		sb.append(this.setFieldQuotes("list") + ":");
+		sb.append(JsonConstants.JSON_OPEN_LIST);
+		int counter = 1;
+		for(IDao record : list){
+			if(counter>1){ sb.append(JsonConstants.JSON_RECORD_SEPARATOR); }
+			sb.append(JsonConstants.JSON_OPEN_LIST_RECORD);
+			//doIt
+			sb.append(new JsonWriterReflectionManager().getGettersFromRecordExtended(record));
+			//close the list
+			sb.append(JsonConstants.JSON_CLOSE_LIST_RECORD);
+			counter++;
+		}
+		sb.append(JsonConstants.JSON_CLOSE_LIST);
+		sb.append(JsonConstants.JSON_END);
+		
+		return sb.toString();
+	}
+	
+	
 	
 	
 	/**

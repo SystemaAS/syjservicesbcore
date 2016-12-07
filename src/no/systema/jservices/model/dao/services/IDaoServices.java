@@ -2,6 +2,8 @@ package no.systema.jservices.model.dao.services;
 
 import java.util.List;
 
+import no.systema.jservices.model.dao.entities.IDao;
+
 /**
  * Grandfather for all normal Dao services
  * @author oscardelatorre

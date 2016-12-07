@@ -38,12 +38,16 @@ public class CUNDC_U {
 			if ((dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))
 					&& (dao.getCconta() != null && !"".equals(dao.getCconta()))) {
 				// Check duplicate
-				if (existInCundc(user, dao.getCfirma(), dao.getCcompn(), dao.getCconta())) {
+				if ("A".equals(mode)  &&  existInCundc(user, dao.getCfirma(), dao.getCcompn(), dao.getCconta())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dao.getCconta(), dao.getCcompn() }), "error", dbErrors));
 					retval = false;
 				}
 				// Check funksjon (if prefixed with *)
 				if (dao.getCtype() != null && !"".equals(dao.getCtype())) {
 					if (dao.getCtype().startsWith("*") && !existInKofast(user, dao.getCtype())) {
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.ctype", new Object[] { dao.getCtype() }), "error", dbErrors));
 						retval = false;
 					}
 				}
@@ -76,26 +80,22 @@ public class CUNDC_U {
 	}
 
 	private boolean existInCundc(String userName, String cfirma, String ccompn, String cconta) {
-		boolean exists = this.cundcDaoServices.exists(cfirma, ccompn, cconta);
+		boolean exists = this.cundcDaoServices.exists(cfirma, ccompn, cconta, dbErrors);
 		if (!exists) {
 			return false;
 		} else {
-			errors.append(jsonWriter.setJsonSimpleErrorResult(userName,
-					messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { cconta, ccompn }), "error", dbErrors));
 			return true;
 		}
-	}	
+	}
 	
 	private boolean existInKofast(String userName, String ctype) {
-		boolean exists = this.kofastDaoServices.exists(FasteKoder.FUNKSJON, ctype);
+		boolean exists = this.kofastDaoServices.exists(FasteKoder.FUNKSJON, ctype.substring(1), dbErrors);
 		if (!exists) {
 			return false;
 		} else {
-			errors.append(jsonWriter.setJsonSimpleErrorResult(userName,
-					messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.ctype", new Object[] { ctype }), "error", dbErrors));
 			return true;
 		}
 
 	}
-	
+
 }

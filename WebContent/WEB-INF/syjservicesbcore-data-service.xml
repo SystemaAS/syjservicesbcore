@@ -19,51 +19,42 @@
   <bean id="dbConnectionTesterDaoServices" class="no.systema.jservices.model.dao.services.DbConnectionTesterDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="cundfDaoServices" class="no.systema.jservices.model.dao.services.CundfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="cundcDaoServices" class="no.systema.jservices.model.dao.services.CundcDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+      <property name="arktxtDaoServices"><ref bean="arktxtDaoServices"/></property>
+      <property name="arkvedkDaoServices"><ref bean="arkvedkDaoServices"/></property>
+      <property name="kofastDaoServices"><ref bean="kofastDaoServices"/></property>
   </bean>  
-
   <bean id="ediiDaoServices" class="no.systema.jservices.model.dao.services.EdiiDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="edissFtpLogDaoServices" class="no.systema.jservices.model.dao.services.EdissFtpLogDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   <bean id="edisssFtpLogDaoServices" class="no.systema.jservices.model.dao.services.EdisssFtpLogDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
-  
   <bean id="bridfDaoServices" class="no.systema.jservices.model.dao.services.BridfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="navavdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.NavavdDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="kodtasidDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtasidDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="kodtdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtdDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="kodtvKodtwDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtvKodtwDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="firmDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="kodtaDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
       <property name="navavdDaoServices"><ref bean="navavdDaoServices"/></property>
@@ -73,21 +64,16 @@
       <property name="kodtaTellDaoServices"><ref bean="kodtaTellDaoServices"/></property>
       <property name="kodtvKodtwDaoServices"><ref bean="kodtvKodtwDaoServices"/></property>
       <property name="kodtaHodeDaoServices"><ref bean="kodtaHodeDaoServices"/></property>
-      
   </bean>
-  
   <bean id="kodtpUtskrsDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtpUtskrsDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-
   <bean id="utskrsDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.UtskrsDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-
   <bean id="kodtaHodeDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaHodeDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
- 
   <bean id="kodtaKodthDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaKodthDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
@@ -97,19 +83,16 @@
   <bean id="kodtot2DaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.Kodtot2DaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-    <bean id="kofastDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServicesImpl">
+  <bean id="kofastDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>  
   <bean id="syparfDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.SyparfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
-      
   </bean>
   <bean id="KodtsfSyparfDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtsfSyparfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
       <property name="syparfDaoServices"><ref bean="syparfDaoServices"/></property>
   </bean>
-  
-  
   <bean id="standiDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.StandiDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
@@ -128,6 +111,14 @@
   <bean id="trustdfvDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdfvDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="arktxtDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.ArktxtDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  <bean id="arkvedkDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.ArkvedkDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  
+  
   
   
   <!--///////////////////

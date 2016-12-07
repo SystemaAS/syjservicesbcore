@@ -42,14 +42,19 @@ public class GenericObjectMapper implements RowMapper {
 			Class cl = Class.forName(dao.getClass().getCanonicalName());
 			Field[] fields = cl.getDeclaredFields();
 			List<Field> list = Arrays.asList(fields);
+			String name = null;
 			for (Field field : list) {
-				String name = (String) field.getName();
+				if (field.getType() != String.class) {
+					logger.info("Type is not of String.class");
+					break;
+				}
+				name = (String) field.getName();
 				try {
 					field.setAccessible(true);
 					field.set(dao, rs.getString(name));
 				} catch (Exception e) {
 					// Usually when no column matches the JavaBean property...
-					logger.info(e.getMessage() + e.toString());
+					logger.info(e.getMessage() + e.toString() + "name="+name);
 					continue;
 				}
 			}

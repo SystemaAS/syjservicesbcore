@@ -34,7 +34,8 @@ public interface CundcDaoServices extends IDaoServices {
 	 * @param cfirma
 	 * @param ccompn
 	 * @param cconta
+	 * @param errorStackTrace
 	 * @return true or false
 	 */
-	public boolean exists(String cfirma, String ccompn, String cconta);
+	public boolean exists(String cfirma, String ccompn, String cconta, StringBuffer errorStackTrace);
 }

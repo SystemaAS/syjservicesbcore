@@ -45,11 +45,11 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 
 	/**
 	 * FreeForm Source:
-	 * 	 File: 		CUNDC
+	 * 	 File: 		CUNDC and ARKVEDK
 	 * 
 	 * @return
 	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsCUNDC.do?user=OSCAR&cfirma=SY&ccompn=1
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsCUNDC.do?user=OSCAR&cfirma=SY&ccompn=10&ccconta=1
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsCUNDC.do?user=OSCAR&cfirma=SY&ccompn=10&cconta=1
 	 * 
 	 */
 	@RequestMapping(value="syjsCUNDC.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -97,7 +97,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				//process result
 				if (list!=null){
 					//write the final JSON output
-					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
+					sb.append(jsonWriter.setJsonResult_Common_GetCompositeList(userName, list));
 				}else{
 					//write JSON error output
 					errMsg = "ERROR on SELECT: list is NULL?  Try to check: <DaoServices>.getList";
@@ -155,7 +155,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 
-			logger.info("mode="+mode);
+			logger.info("mode="+mode+" userName="+userName);
 			
 			// rules
 			CUNDC_U rulerLord = new CUNDC_U(cundcDaoServices, kofastDaoServices,sb, dbErrorStackTrace);
@@ -179,6 +179,8 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 							dmlRetval = cundcDaoServices.update(dao, dbErrorStackTrace);
 						}
 					} else {
+						logger.info("dbErrorStackTrace="+dbErrorStackTrace);
+						logger.info("sb="+sb.toString());
 						// write JSON error output
 						errMsg = "ERROR on ADD/UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update";
 						status = "error";
@@ -190,6 +192,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				// ----------------------------------
 				if (dmlRetval < 0) {
 					// write JSON error output
+					logger.info("dbErrorStackTrace="+dbErrorStackTrace);
 					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));

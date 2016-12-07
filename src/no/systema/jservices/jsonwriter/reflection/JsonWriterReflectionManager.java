@@ -2,7 +2,10 @@ package no.systema.jservices.jsonwriter.reflection;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import no.systema.main.util.JsonSpecialCharactersManager;
@@ -54,4 +57,89 @@ public class JsonWriterReflectionManager {
 		
 		return jsonReflectionOutput.toString();
 	}
+
+	/**
+	 * This method is enhanced with the capability to include one-to-one child dao
+	 * 
+	 * @Example
+	 * class myDao implements IDao
+	 * ...
+	 * private String xx
+	 * private String yy 
+	 * private <b>ZzzDao</b> zzzDao 
+	 * ..
+	 * 
+	 * @param record
+	 * @return a JSON structure as String
+	 */
+	public String getGettersFromRecordExtended(IDao record){
+		StringBuilder jsonReflectionOutput = new StringBuilder();
+		try{
+			Class<?> recordClazz = record.getClass();
+			Method  theMethod = null;
+			Method  theChildMethod = null;
+			Class<?> returnType = null;
+			Class<?> childReturnType = null;
+			int counter = 1;
+			
+			for (Method method : recordClazz.getDeclaredMethods()) {
+				// only getters
+				String methodName = method.getName();
+				if (methodName.startsWith("get") && !methodName.endsWith("PropertyName")) {
+					theMethod = recordClazz.getDeclaredMethod(method.getName());
+					returnType = theMethod.getReturnType();
+					if (returnType.equals(String.class)) {
+						String field = theMethod.getName().replace("get", "").toLowerCase();
+						String value = (String) theMethod.invoke(record);
+						if (counter > 1) {
+							jsonReflectionOutput.append(JsonConstants.JSON_FIELD_SEPARATOR);
+						}
+						if (value != null) {
+							value = value.trim();
+						}
+
+						jsonReflectionOutput.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + this.jsonFixMgr.cleanRecord(value) + JsonConstants.JSON_QUOTES);
+
+					} else {
+						if (methodName.endsWith("Dao")) {
+							IDao childDao = (IDao) theMethod.invoke(record);
+							if (childDao != null) {
+								Class<?> childClazz = childDao.getClass();
+								for (Method childMethod : childClazz.getDeclaredMethods()) {
+									String childMethodName = childMethod.getName();
+									if (childMethodName.startsWith("get")) {
+										theChildMethod = childClazz.getDeclaredMethod(childMethod.getName());
+										childReturnType = theChildMethod.getReturnType();
+										if (childReturnType.equals(String.class)) {
+											String field = theChildMethod.getName().replace("get", "").toLowerCase();
+											String value = (String) theChildMethod.invoke(childDao);
+											if (counter > 1) {
+												jsonReflectionOutput.append(JsonConstants.JSON_FIELD_SEPARATOR);
+											}
+											if (value != null) {
+												value = value.trim();
+											}
+											jsonReflectionOutput.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + this.jsonFixMgr.cleanRecord(value) + JsonConstants.JSON_QUOTES);
+										}
+										
+									}
+								}
+							}
+						}
+					}
+					counter++;
+				}
+			}
+			
+		}catch(Exception e){
+			StringWriter errors = new StringWriter();
+			e.printStackTrace(new PrintWriter(errors));
+			logger.info(errors);
+		}
+
+		return jsonReflectionOutput.toString();
+	}
+
+
+
 }
