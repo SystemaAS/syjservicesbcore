@@ -52,7 +52,6 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 		IDao dao = null;
 		try {
 			ArkvedkDao queryDao = (ArkvedkDao) qDao;
-			
 			StringBuilder sql = new StringBuilder();
 
 			sql.append(this.getSELECT_FROM_CLAUSE());
@@ -60,10 +59,11 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 			sql.append(" AND    avkund = ? ");
 			sql.append(" AND    avtype = ? ");
 
-			logger.info("sql="+sql.toString());
+/*			logger.info("sql="+sql.toString());
 			logger.info("queryDao="+ReflectionToStringBuilder.toString(queryDao));
-			
+*/			
 			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { queryDao.getAvfirm(), queryDao.getAvkund(), queryDao.getAvtype()}, new GenericObjectMapper(new ArkvedkDao()));
+
 			dao = getIDao(retval);
 
 		} catch (Exception e) {

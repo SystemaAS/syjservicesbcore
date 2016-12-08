@@ -52,16 +52,13 @@ public class ArktxtDaoServicesImpl implements ArktxtDaoServices {
 		IDao dao = null;
 		try {
 			ArktxtDao queryDao = (ArktxtDao) qDao;
-			
 			StringBuilder sql = new StringBuilder();
 
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" WHERE artxt = ?  ");
 
-			logger.info("sql="+sql.toString());
-			logger.info("queryDao="+ReflectionToStringBuilder.toString(queryDao));
-			
 			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { queryDao.getArtxt()}, new GenericObjectMapper(new ArktxtDao()));
+
 			dao = getIDao(retval);
 
 		} catch (Exception e) {

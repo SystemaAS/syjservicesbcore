@@ -63,39 +63,29 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" and cfirma = ? ");
 			sql.append(" and cconta = ? ");
 
-			logger.info("findById::sql="+sql.toString());
+/*			logger.info("findById::sql="+sql.toString());
 			logger.info("ccompn="+ccompn+", cfirma="+cfirma+", ccconta="+ccconta);
-			
+*/			
 			simpleRetval = this.jdbcTemplate.query(sql.toString(), new Object[] { ccompn, cfirma, ccconta }, new GenericObjectMapper(new CundcDao()));
 
-			logger.info("retval.size="+simpleRetval.size());
-	
 			for (CundcDao dao : simpleRetval) {
-				logger.info("dao.getCtype()="+dao.getCtype());
 				// If exist in Kofast, it means NOT normal Kontaktperson, the other function, with prefix *
 				// The * i also stored in ctype, values could be 'Kalle Anka' or '*SAMLEFAKTURA SP '
 				if (dao.getCtype() != null) {
 					String cleanedCtype = dao.getCtype().substring(1); //Stored with * in CUNDC, without in KOFAST and ARKTXT
 					if (existInKofast(cleanedCtype, errorStackTrace)) {
-						// Convert txt to via ARKTXT
+						
 						ArktxtDao arktxtQueryDao = new ArktxtDao();
 						arktxtQueryDao.setArtxt(cleanedCtype);
 						ArktxtDao arktxtDao = (ArktxtDao) arktxtDaoServices.get(arktxtQueryDao, errorStackTrace);
-						
-						logger.info("arktxtDao=" + ReflectionToStringBuilder.toString(arktxtDao));
-						
-						// Search via artype
+
 						ArkvedkDao arkvedkQueryDao = new ArkvedkDao();
 						arkvedkQueryDao.setAvkund(ccompn);
 						arkvedkQueryDao.setAvfirm(cfirma);
 						arkvedkQueryDao.setAvtype(arktxtDao.getArtype());
-						
 						ArkvedkDao arkvedkDao = (ArkvedkDao) arkvedkDaoServices.get(arkvedkQueryDao, errorStackTrace);
 						
-						logger.info("arkvedkDao=" + ReflectionToStringBuilder.toString(arkvedkDao));
-						
 						dao.setArkvedkDao(arkvedkDao);
-						
 					}
 				}
 				
