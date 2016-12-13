@@ -110,7 +110,7 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 			// execute your business logic here
 		} catch (Exception ex) {
 			txManager.rollback(status);
-			throw ex;
+			//throw ex;
 		}
 		txManager.commit(status);
 

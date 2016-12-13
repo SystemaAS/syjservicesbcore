@@ -105,7 +105,7 @@ public class ArktxtDaoServicesImpl implements ArktxtDaoServices {
 			// execute your business logic here
 		} catch (Exception ex) {
 			txManager.rollback(status);
-			throw ex;
+			//throw ex;
 		}
 		txManager.commit(status);
 
