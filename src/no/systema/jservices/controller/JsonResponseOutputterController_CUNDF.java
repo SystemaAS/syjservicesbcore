@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
 //rules
 import no.systema.jservices.controller.rules.SYCUNDFR_U;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -154,9 +156,6 @@ public class JsonResponseOutputterController_CUNDF {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();	
 
-		//TODO: Mycket kvar!!!
-		
-		
 		try{
 			logger.info("Inside syjsSYCUNDFR_U.do");
 			String user = request.getParameter("user");
@@ -174,24 +173,26 @@ public class JsonResponseOutputterController_CUNDF {
             //rules
             SYCUNDFR_U rulerLord = new SYCUNDFR_U();  //TODO: evolve....
 			//Start processing now
-			if(userName!=null && !"".equals(userName)){
+			if (userName != null) {
 				int dmlRetval = 0;
-				if("D".equals(mode)){
-					if(rulerLord.isValidInputForDelete(dao, userName, mode)){ 
+				if ("D".equals(mode)) {
+					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
 						dmlRetval = this.cundfDaoServices.delete(dao, dbErrorStackTrace);
-					}else{
-						//write JSON error output
+					} else {
+						// write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
-				}else{
+				} else {
 					if (rulerLord.isValidInput(dao, userName, mode)) {
-						rulerLord.updateNumericFieldsIfNull(dao); 
+						rulerLord.updateNumericFieldsIfNull(dao);
 						if ("A".equals(mode)) {
-							dmlRetval = this.cundfDaoServices.insert(dao, dbErrorStackTrace);
+							addFieldsToDao(dao, dbErrorStackTrace);
+							dmlRetval = cundfDaoServices.insert(dao, dbErrorStackTrace);
+							logger.info("dmlRetval="+dmlRetval);
 						} else if ("U".equals(mode)) {
-							dmlRetval = this.cundfDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
 						}
 					} else {
 						// write JSON error output
@@ -200,21 +201,21 @@ public class JsonResponseOutputterController_CUNDF {
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
 				}
-				//----------------------------------
-				//check returns from dml operations
-				//----------------------------------
-				if(dmlRetval<0){
-					//write JSON error output
+				// ----------------------------------
+				// check returns from dml operations
+				// ----------------------------------
+				if (dmlRetval < 0) {
+					// write JSON error output
 					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-				}else{
-					//OK UPDATE
+				} else {
+					// OK UPDATE
 					sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
 				}
-				
-			}else{
-				//write JSON error output
+
+			} else {
+				// write JSON error output
 				errMsg = "ERROR on ADD/UPDATE";
 				status = "error";
 				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
@@ -236,6 +237,26 @@ public class JsonResponseOutputterController_CUNDF {
 	}
 	
 	
+	private void addFieldsToDao(CundfDao dao, StringBuffer dbErrorStackTrace) {
+		int knavnLength = dao.getKnavn().length();
+		if (knavnLength > 10) {
+			dao.setSonavn(dao.getKnavn().substring(0, 10));
+		} else {
+			dao.setSonavn(dao.getKnavn());
+		}
+
+		List<FirmDao> firmList = firmDaoServices.getList(dbErrorStackTrace);
+		FirmDao firmDao = null;
+		if (firmList.size() == 1) {
+			firmDao = firmList.get(0);
+		} else {
+			logger.info("ERROR: Incorrect number of rows i Firma!");
+			throw new IllegalArgumentException("Incorrect number of rows i Firma!");
+		}
+		dao.setFirma(firmDao.getFifirm());
+	}
+
+
 	//----------------
 	//WIRED SERVICES
 	//----------------
@@ -246,13 +267,19 @@ public class JsonResponseOutputterController_CUNDF {
 	public void setCundfDaoServices (CundfDaoServices value){ this.cundfDaoServices = value; }
 	public CundfDaoServices getCundfDaoServices(){ return this.cundfDaoServices; }
 
-
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
 	@Autowired
 	@Required
 	public void setBridfDaoServices (BridfDaoServices value){ this.bridfDaoServices = value; }
 	public BridfDaoServices getBridfDaoServices(){ return this.bridfDaoServices; }
+
+	@Qualifier ("firmDaoServices")
+	private FirmDaoServices firmDaoServices;
+	@Autowired
+	@Required
+	public void setFirmDaoServices (FirmDaoServices value){ this.firmDaoServices = value; }
+	public FirmDaoServices getFirmDaoServices(){ return this.firmDaoServices; }	
 	
 }
 

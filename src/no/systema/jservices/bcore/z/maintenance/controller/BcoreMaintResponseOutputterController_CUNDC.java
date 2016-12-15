@@ -173,6 +173,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 					}
 				} else {
 					if (rulerLord.isValidInput(dao, userName, mode)) {
+						adjustDao(dao);
 						if ("A".equals(mode)) {
 							dmlRetval = cundcDaoServices.insert(dao, dbErrorStackTrace);
 						} else if ("U".equals(mode)) {
@@ -218,6 +219,16 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		}
 		session.invalidate();
 		return sb.toString();
+	}
+
+	private void adjustDao(CundcDao dao) {
+		StringBuilder cavdDefault = new StringBuilder("00000000000000000000");
+		cavdDefault.append("00000000000000000000");
+		cavdDefault.append("00000000000000000000");
+		cavdDefault.append("00000000000000000000"); // 80
+		if (dao.getCavd() == null || "".equals(dao.getCavd())) {
+			dao.setCavd(cavdDefault.toString());
+		}
 	}
 
 	// ----------------

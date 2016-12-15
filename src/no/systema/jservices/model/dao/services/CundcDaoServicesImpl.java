@@ -39,7 +39,9 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" and ccompn = ? ");
 			sql.append(" and cfirma = ? ");
 			
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { ccompn, cfirma }, new CundcMapper());
+	//		retval = this.jdbcTemplate.query( sql.toString(), new Object[] { ccompn, cfirma }, new CundcMapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { ccompn, cfirma }, new GenericObjectMapper(new CundcDao()));
+
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -79,13 +81,15 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 						arktxtQueryDao.setArtxt(cleanedCtype);
 						ArktxtDao arktxtDao = (ArktxtDao) arktxtDaoServices.get(arktxtQueryDao, errorStackTrace);
 
-						ArkvedkDao arkvedkQueryDao = new ArkvedkDao();
-						arkvedkQueryDao.setAvkund(ccompn);
-						arkvedkQueryDao.setAvfirm(cfirma);
-						arkvedkQueryDao.setAvtype(arktxtDao.getArtype());
-						ArkvedkDao arkvedkDao = (ArkvedkDao) arkvedkDaoServices.get(arkvedkQueryDao, errorStackTrace);
-						
-						dao.setArkvedkDao(arkvedkDao);
+						if (arktxtDao != null) {
+							ArkvedkDao arkvedkQueryDao = new ArkvedkDao();
+							arkvedkQueryDao.setAvkund(ccompn);
+							arkvedkQueryDao.setAvfirm(cfirma);
+							arkvedkQueryDao.setAvtype(arktxtDao.getArtype());
+							ArkvedkDao arkvedkDao = (ArkvedkDao) arkvedkDaoServices.get(arkvedkQueryDao, errorStackTrace);
+							
+							dao.setArkvedkDao(arkvedkDao);
+						}
 					}
 				}
 				
@@ -161,14 +165,9 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 							dao.getCemail(), dao.getClive(), dao.getCprint(), dao.getSonavn(), dao.getCemne(), dao.getCavd(), dao.getCavdio(), dao.getCopd(),
 							dao.getCopdio(), dao.getCmerge() });
 	
-
-			
-			
-			
-			
 			//TODO: hantera i transaktion
-
-			if(retval>=0){
+			ArkvedkDao arkvedkDao = dao.getArkvedkDao();
+			if(retval>=0 && arkvedkDao != null){
 				arkvedkDaoServices.insert(dao, errorStackTrace);
 			}			
 			

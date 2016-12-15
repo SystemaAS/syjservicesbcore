@@ -20,8 +20,7 @@ public class SYCUNDFR_U {
 	public boolean isValidInput(CundfDao dao, String user, String mode) {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
-			if ((dao.getFirma() != null && !"".equals(dao.getFirma())) && (dao.getKundnr() != null && !"".equals(dao.getKundnr()))
-					&& (dao.getPostnr() != null && !"".equals(dao.getPostnr())) && (dao.getSonavn() != null && !"".equals(dao.getSonavn()))
+			if ((dao.getKundnr() != null && !"".equals(dao.getKundnr())) && (dao.getPostnr() != null && !"".equals(dao.getPostnr()))
 					&& (dao.getBetbet() != null && !"".equals(dao.getBetbet())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
 				// Check språk
 /*				if (existInTrkodf(user, dao.getSpraak())) {

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import no.systema.jservices.model.dao.entities.CundcDao;
 import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.jservices.model.dao.mapper.CundfMapper;
 import no.systema.main.util.DbErrorMessageManager;
@@ -171,6 +172,79 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 
 		return retval;
 	}
+
+	
+	@Override
+	public int insert(Object daoObj, StringBuffer errorStackTrace) {
+		int retval = 0;
+		
+		try {
+			CundfDao dao = (CundfDao) daoObj;
+			StringBuilder sql = new StringBuilder();
+			sql.append(" INSERT INTO cundf (firma, kundnr, knavn, syrg, adr1, adr3, postnr, syland, ");  //8
+			sql.append(" dkund ,  kpers , sonavn , valkod , spraak , bankg , postg , fmot , betbet , "); //9
+			sql.append(" betmat , sfakt , kgrens , tfaxnr , syregn , sykont , sylikv, syopdt , syminu , "); //9
+			sql.append(" syutlp , sypoge , systat , syselg , syiat1 , syiat2 , sycoty , syfr01, syfr02 , "); //9
+			sql.append(" syfr03 , syfr04 , syfr05 , syfr06 , sysalu , syepos , aknrku, vatkku , xxbre, "); //9
+			sql.append(" xxlen , xxinm3 , xxinlm , rnraku , golk , kundgr , pnpbku, adr21 , eori ) "); //9
+
+			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, "); //8
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); //9
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); //9
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); //9
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); //9
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? ) "); //9
+
+			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+			logger.info("insert::sql="+sql.toString());
+
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
+					dao.getFirma(), dao.getKundnr(), dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(),  //8
+					dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(), //9
+					dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(), //9
+					dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(), //9
+					dao.getSyfr03(), dao.getSyfr04(), dao.getSyfr05(), dao.getSyfr06(), dao.getSysalu(), dao.getSyepos(), dao.getAknrku(), dao.getVatkku(), dao.getXxbre(), //9
+					dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori()}); //9
+	
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			// Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		
+		return retval;
+	}
+	
+	
+	@Override
+	public int delete(Object daoObj, StringBuffer errorStackTrace) {
+		int retval = 0;
+		try {
+
+			CundfDao dao = (CundfDao) daoObj;
+			StringBuilder sql = new StringBuilder();
+			sql.append(" DELETE from cundf ");
+			sql.append(" WHERE kundnr = ? ");
+			sql.append(" AND firma = ? ");
+
+/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+			logger.info("sql="+sql.toString());
+*/			
+			retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dao.getKundnr(), dao.getFirma() });
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			// Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+
+		return retval;	}                                    
+	
 	
 	private String getSELECT_FROM_CLAUSE(){
 		StringBuffer sql = new StringBuffer();
@@ -195,19 +269,5 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
 	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}
 
-	@Override
-	public int insert(Object dao, StringBuffer errorStackTrace) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-
-
-	@Override
-	public int delete(Object dao, StringBuffer errorStackTrace) {
-		// TODO Auto-generated method stub
-		return 0;
-	}                                    
 
 }

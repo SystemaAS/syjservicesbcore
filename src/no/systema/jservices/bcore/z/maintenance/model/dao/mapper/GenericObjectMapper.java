@@ -28,6 +28,8 @@ public class GenericObjectMapper implements RowMapper {
 	 * This constructor passes the actual dao instanse to reflection-iteration
 	 * on fields.
 	 * 
+	 * Note: Only simple structure is supported, no composite is managed. That must be done outside rowmapper
+	 * 
 	 * @param daoObj, the actual dao
 	 */
 	public GenericObjectMapper(IDao daoObj) {
@@ -45,7 +47,7 @@ public class GenericObjectMapper implements RowMapper {
 			String name = null;
 			for (Field field : list) {
 				if (field.getType() != String.class) {
-					logger.info("Type is not of String.class");
+					//logger.info("Only type String.class is supported, type="+field.getType());
 					break;
 				}
 				name = (String) field.getName();
