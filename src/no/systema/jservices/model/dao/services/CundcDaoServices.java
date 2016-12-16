@@ -3,6 +3,7 @@ package no.systema.jservices.model.dao.services;
 import java.util.List;
 
 import no.systema.jservices.model.dao.entities.CundcDao;
+import no.systema.jservices.model.dao.entities.IDao;
 
 public interface CundcDaoServices extends IDaoServices { 
 	public List<CundcDao> getList(StringBuffer errorStackTrace);
@@ -16,26 +17,26 @@ public interface CundcDaoServices extends IDaoServices {
 	 */
 
 	public List<CundcDao> findById(String ccompn, String cfirma, StringBuffer errorStackTrace);
+
 	/**
-	 * Retrieve specific record of CUNDC.
+	 * Retrieve a IDao
 	 * 
-	 * @param ccompn, kundnummer
-	 * @param cfirma, firmanummer
-	 * @param ccconta, kontakt-id
+	 * @param qDao populated with query params.
 	 * @param errorStackTrace
-	 * @return
+	 * @return a {@link IDao} if found, else returning null
 	 */
-	public List<CundcDao> findById(String ccompn, String cfirma, String ccconta, StringBuffer errorStackTrace);
+	public IDao get(Object qDao , StringBuffer errorStackTrace);	
 	
 	
 	/**
-	 * Exist control on cfirma, ccompn and cconta
+	 * Exist control on cfirma, ccompn, cconta and ctype
 	 * 
 	 * @param cfirma
 	 * @param ccompn
 	 * @param cconta
+	 * @param ctype 
 	 * @param errorStackTrace
 	 * @return true or false
 	 */
-	public boolean exists(String cfirma, String ccompn, String cconta, StringBuffer errorStackTrace);
+	public boolean exists(String cfirma, String ccompn, String cconta, String ctype, StringBuffer errorStackTrace);
 }

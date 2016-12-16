@@ -35,10 +35,10 @@ public class CUNDC_U {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
 			// check dao
-			if ((dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))
-					&& (dao.getCconta() != null && !"".equals(dao.getCconta()))) {
+			if ( (dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))
+					&& (dao.getCconta() != null && !"".equals(dao.getCconta())) && (dao.getCtype() != null && !"".equals(dao.getCtype())) ) {
 				// Check duplicate
-				if ("A".equals(mode)  &&  existInCundc(user, dao.getCfirma(), dao.getCcompn(), dao.getCconta())) {
+				if ("A".equals(mode)  &&  existInCundc(user, dao.getCfirma(), dao.getCcompn(), dao.getCconta(), dao.getCtype())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dao.getCconta(), dao.getCcompn() }), "error", dbErrors));
 					retval = false;
@@ -67,8 +67,8 @@ public class CUNDC_U {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
 			// check dao
-			if ((dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))
-					&& (dao.getCconta() != null && !"".equals(dao.getCconta()))) {
+			if ( (dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))
+					&& (dao.getCconta() != null && !"".equals(dao.getCconta())) && (dao.getCtype() != null && !"".equals(dao.getCtype())) ) {
 				// OK
 			} else {
 				retval = false;
@@ -79,8 +79,8 @@ public class CUNDC_U {
 		return retval;
 	}
 
-	private boolean existInCundc(String userName, String cfirma, String ccompn, String cconta) {
-		boolean exists = this.cundcDaoServices.exists(cfirma, ccompn, cconta, dbErrors);
+	private boolean existInCundc(String userName, String cfirma, String ccompn, String cconta, String ctype) {
+		boolean exists = this.cundcDaoServices.exists(cfirma, ccompn, cconta, ctype ,dbErrors);
 		if (!exists) {
 			return false;
 		} else {

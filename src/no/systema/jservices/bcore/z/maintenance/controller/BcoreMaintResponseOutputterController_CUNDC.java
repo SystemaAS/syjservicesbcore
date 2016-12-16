@@ -3,6 +3,7 @@ package no.systema.jservices.bcore.z.maintenance.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 	 * 
 	 * @return
 	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsCUNDC.do?user=OSCAR&cfirma=SY&ccompn=1
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsCUNDC.do?user=OSCAR&cfirma=SY&ccompn=10&cconta=1
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsCUNDC.do?user=OSCAR&cfirma=SY&ccompn=10&cconta=EMMA-XML&ctype=*Advisering SjøX
 	 * 
 	 */
 	@RequestMapping(value="syjsCUNDC.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -70,24 +71,27 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
-				CundcDao dao = new CundcDao();
-				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
+				CundcDao queryDao = new CundcDao();
+				ServletRequestDataBinder binder = new ServletRequestDataBinder(queryDao);
 	            binder.bind(request);
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
 				//do SELECT
 	            
 				logger.info("Before SELECT ...");
-				logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+				logger.info("dao="+ReflectionToStringBuilder.toString(queryDao));
 				
-				if ((dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))) {
-					if ((dao.getCconta() != null && !"".equals(dao.getCconta()))) {
-						logger.info("findById: ccompn, cfirma, cconta");
-						list = this.cundcDaoServices.findById(dao.getCcompn(), dao.getCfirma(), dao.getCconta(), dbErrorStackTrace);
-
+				if ((queryDao.getCfirma() != null && !"".equals(queryDao.getCfirma())) && (queryDao.getCcompn() != null && !"".equals(queryDao.getCcompn()))) {
+					if ( queryDao.getCconta() != null && !"".equals(queryDao.getCconta()) && queryDao.getCtype() != null && !"".equals(queryDao.getCtype()) ) {
+						logger.info("findById: ccompn, cfirma, cconta, ctype");
+						CundcDao dao = (CundcDao)this.cundcDaoServices.get(queryDao, dbErrorStackTrace);
+						if (dao != null) {
+							list = new ArrayList<CundcDao>();
+							list.add(dao);
+						}
 					} else {
 						logger.info("findById: ccompn, cfirma");
-						list = this.cundcDaoServices.findById(dao.getCcompn(), dao.getCfirma(), dbErrorStackTrace);
+						list = this.cundcDaoServices.findById(queryDao.getCcompn(), queryDao.getCfirma(), dbErrorStackTrace);
 					}
 
 				} else {

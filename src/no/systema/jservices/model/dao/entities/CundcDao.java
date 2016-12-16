@@ -10,7 +10,7 @@ public class CundcDao implements Serializable, IDao {
 	private String cfirma = "";	  //key    
 	private String cconta = "";  //key
 	private String ccontaorg = "";
-	private String ctype ="";
+	private String ctype =""; //key
 	private String cphone = "";
 	private String cmobil = "";
 	private String cfax = "";

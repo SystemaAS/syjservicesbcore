@@ -15,6 +15,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.ArkvedkDaoSer
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
 import no.systema.jservices.common.values.FasteKoder;
 import no.systema.jservices.model.dao.entities.CundcDao;
+import no.systema.jservices.model.dao.entities.IDao;
 import no.systema.jservices.model.dao.mapper.CundcMapper;
 import no.systema.main.util.DbErrorMessageManager;
 
@@ -53,7 +54,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		return retval;
 	}
 
-	@Override
+/*	@Override
 	public List<CundcDao> findById(String ccompn, String cfirma, String ccconta, StringBuffer errorStackTrace) {
 		List<CundcDao> simpleRetval = new ArrayList<CundcDao>();
 		List<CundcDao> compositeRetval = new ArrayList<CundcDao>();
@@ -65,9 +66,9 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" and cfirma = ? ");
 			sql.append(" and cconta = ? ");
 
-/*			logger.info("findById::sql="+sql.toString());
+			logger.info("findById::sql="+sql.toString());
 			logger.info("ccompn="+ccompn+", cfirma="+cfirma+", ccconta="+ccconta);
-*/			
+			
 			simpleRetval = this.jdbcTemplate.query(sql.toString(), new Object[] { ccompn, cfirma, ccconta }, new GenericObjectMapper(new CundcDao()));
 
 			for (CundcDao dao : simpleRetval) {
@@ -107,7 +108,61 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		
 		return compositeRetval;
 	}
+*/
 	
+	@Override
+	public IDao get(Object qDao, StringBuffer errorStackTrace) {
+		CundcDao queryDao = (CundcDao) qDao;
+		CundcDao dao = null;
+
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" and ccompn = ? ");
+			sql.append(" and cfirma = ? ");
+			sql.append(" and cconta = ? ");
+			sql.append(" and ctype = ? ");
+
+			logger.info("findById::sql=" + sql.toString());
+			logger.info("ccompn=" + queryDao.getCcompn() + ", cfirma=" + queryDao.getCfirma() + ", ccconta=" + queryDao.getCconta() + ", ctype="
+					+ queryDao.getCtype());
+
+			dao = this.jdbcTemplate.queryForObject(sql.toString(),
+					new Object[] { queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta(), queryDao.getCtype() },
+					new GenericObjectMapper(new CundcDao()));
+
+			logger.info("dao=" + ReflectionToStringBuilder.toString(dao));
+
+			// If exist in Kofast, it means NOT normal Kontaktperson, the other
+			// function, with prefix *
+			// The * i also stored in ctype, values could be 'Kalle Anka' or
+			// '*SAMLEFAKTURA SP '
+			if (dao.getCtype() != null) {
+				String cleanedCtype = dao.getCtype().substring(1); // Stored with * in CUNDC, without in KOFAST and ARKTXT
+				if (existInKofast(cleanedCtype, errorStackTrace)) {
+					ArktxtDao arktxtQueryDao = new ArktxtDao();
+					arktxtQueryDao.setArtxt(cleanedCtype);
+					ArktxtDao arktxtDao = (ArktxtDao) arktxtDaoServices.get(arktxtQueryDao, errorStackTrace);
+					if (arktxtDao != null) {
+						ArkvedkDao arkvedkQueryDao = new ArkvedkDao();
+						arkvedkQueryDao.setAvkund(dao.getCcompn());
+						arkvedkQueryDao.setAvfirm(dao.getCfirma());
+						arkvedkQueryDao.setAvtype(arktxtDao.getArtype());
+						ArkvedkDao arkvedkDao = (ArkvedkDao) arkvedkDaoServices.get(arkvedkQueryDao, errorStackTrace);
+
+						dao.setArkvedkDao(arkvedkDao);
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(e);
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+		}
+
+		return dao;
+	}	
 	
 	@Override
 	public int update(Object daoObj, StringBuffer errorStackTrace) {
@@ -215,7 +270,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	}
 
 	@Override
-	public boolean exists(String cfirma, String ccompn, String cconta, StringBuffer errorStackTrace) {
+	public boolean exists(String cfirma, String ccompn, String cconta, String ctype, StringBuffer errorStackTrace) {
 		try {
 			List<CundcDao> retval = new ArrayList<CundcDao>();
 
@@ -225,13 +280,9 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" AND   ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
+			sql.append(" AND   ctype = ?");
 
-			/*
-			 * logger.info("exists::sql=" + sql.toString()); logger.info(
-			 * "sql params::ccompn=" + ccompn + ",cfirma=" + cfirma + ",cconta="
-			 * + cconta);
-			 */
-			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { ccompn, cfirma, cconta }, new CundcMapper());
+			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { ccompn, cfirma, cconta, ctype }, new CundcMapper());
 
 			if (retval.size() == 0) {
 				return false;
@@ -242,7 +293,6 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
-			// Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			return false;
 		}
@@ -255,6 +305,22 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		return null;
 	}                                    
 
+
+	private IDao getIDao(List<CundcDao> retval) {
+		CundcDao dao = null;
+		if (retval.size() > 1) {  //Sanity check
+			throw new IllegalArgumentException("Query resulted in more than one row. retval="+retval.size());
+		}
+		if (retval.size() == 1) {
+			dao = retval.get(0);
+		} else {
+			//returning null
+		}
+		
+		return dao;
+	}	
+	
+	
 	
 	private boolean existInKofast(String ctype,  StringBuffer errorStackTrace) {
 		boolean exists = this.kofastDaoServices.exists(FasteKoder.FUNKSJON, ctype, errorStackTrace);
@@ -295,8 +361,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	
 	private KofastDaoServices kofastDaoServices = null;                                                            
 	public void setKofastDaoServices( KofastDaoServices kofastDaoServices) {this.kofastDaoServices = kofastDaoServices;}          
-	public KofastDaoServices getKofastDaoServices() {return this.kofastDaoServices;}      
-	
-	
+	public KofastDaoServices getKofastDaoServices() {return this.kofastDaoServices;}
+
 	
 }
