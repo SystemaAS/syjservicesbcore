@@ -127,7 +127,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			logger.info("ccompn=" + queryDao.getCcompn() + ", cfirma=" + queryDao.getCfirma() + ", ccconta=" + queryDao.getCconta() + ", ctype="
 					+ queryDao.getCtype());
 
-			dao = this.jdbcTemplate.queryForObject(sql.toString(),
+			dao = (CundcDao) this.jdbcTemplate.queryForObject(sql.toString(),
 					new Object[] { queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta(), queryDao.getCtype() },
 					new GenericObjectMapper(new CundcDao()));
 
