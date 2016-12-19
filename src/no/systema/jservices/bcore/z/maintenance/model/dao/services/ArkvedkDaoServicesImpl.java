@@ -6,11 +6,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.ArkvedkDao;
@@ -94,7 +89,7 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 
 	//TODO, Hook från Controller till insert, med transaktion
 	
-	@Override
+/*	@Override
 	public int insert(Object dao, StringBuffer errorStackTrace) {
 
 		// :::Alt 1::://
@@ -124,7 +119,7 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 		});
 
 		//With return
-/*        return transactionTemplate.execute(new TransactionCallback() {
+        return transactionTemplate.execute(new TransactionCallback() {
             // the code in this method executes in a transactional context
             public Object doInTransaction(TransactionStatus status) {
                 updateOperation1();
@@ -132,18 +127,71 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
             }
         });		
 		
-*/		
+		
 		
 		throw new RuntimeException("Not implemented");
 	}
+*/
 
+	@Override
+	public int insert(Object daoObj, StringBuffer errorStackTrace) {
+		int retval = 0;
+		
+		try {
+			ArkvedkDao dao = (ArkvedkDao) daoObj;
+			StringBuilder sql = new StringBuilder();
+			sql.append(" INSERT INTO arkvedk (avfirm, avkund, avtype, avkved )");
+			sql.append(" VALUES( ?, ?, ?, ? ) ");
 
+			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+			logger.info("insert::sql="+sql.toString());
+
+			retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dao.getAvfirm(), dao.getAvkund(), dao.getAvtype(), dao.getAvkved()});
+			
+			
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			// Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		
+		return retval;	
+		
+	}	
 	
 	@Override
-	public int update(Object dao, StringBuffer errorStackTrace) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Not implemented");
+	public int update(Object daoObj, StringBuffer errorStackTrace) {
+		int retval = 0;
+		try {
+
+			ArkvedkDao dao = (ArkvedkDao) daoObj;
+			StringBuilder sql = new StringBuilder();
+			sql.append(" UPDATE arkvedk SET avkved = ? ");
+			sql.append(" WHERE  avfirm = ?  ");
+			sql.append(" AND    avkund = ? ");
+			sql.append(" AND    avtype = ? ");
+
+			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+			logger.info("update::sql="+sql.toString());
+
+			retval = this.jdbcTemplate.update(sql.toString(),
+					new Object[] { dao.getAvkved(),
+							// id's
+							dao.getAvfirm(), dao.getAvkund(), dao.getAvtype() });
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString()); // Chop the message to comply to
+											// JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+
+		return retval;
 	}
+	
 
 	@Override
 	public int delete(Object dao, StringBuffer errorStackTrace) {

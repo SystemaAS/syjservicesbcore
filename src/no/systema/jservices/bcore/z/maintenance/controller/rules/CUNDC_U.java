@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
 import no.systema.jservices.common.values.FasteKoder;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
-import no.systema.jservices.model.dao.entities.CundcDao;
+import no.systema.jservices.model.dao.entities.CundcDto;
 import no.systema.jservices.model.dao.services.CundcDaoServices;
 import no.systema.main.util.MessageSourceHelper;
 
@@ -31,23 +31,23 @@ public class CUNDC_U {
 		this.dbErrors = dbErrorStackTrace;
 	}
 
-	public boolean isValidInput(CundcDao dao, String user, String mode) {
+	public boolean isValidInput(CundcDto dto, String user, String mode) {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
-			// check dao
-			if ( (dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))
-					&& (dao.getCconta() != null && !"".equals(dao.getCconta())) && (dao.getCtype() != null && !"".equals(dao.getCtype())) ) {
+			// check dto
+			if ( (dto.getCfirma() != null && !"".equals(dto.getCfirma())) && (dto.getCcompn() != null && !"".equals(dto.getCcompn()))
+					&& (dto.getCconta() != null && !"".equals(dto.getCconta())) && (dto.getCtype() != null && !"".equals(dto.getCtype())) ) {
 				// Check duplicate
-				if ("A".equals(mode)  &&  existInCundc(user, dao.getCfirma(), dao.getCcompn(), dao.getCconta(), dao.getCtype())) {
+				if ("A".equals(mode)  &&  existInCundc(user, dto.getCfirma(), dto.getCcompn(), dto.getCconta(), dto.getCtype())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dao.getCconta(), dao.getCcompn() }), "error", dbErrors));
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dto.getCconta(), dto.getCcompn() }), "error", dbErrors));
 					retval = false;
 				}
 				// Check funksjon (if prefixed with *)
-				if (dao.getCtype() != null && !"".equals(dao.getCtype())) {
-					if (dao.getCtype().startsWith("*") && !existInKofast(user, dao.getCtype())) {
+				if (dto.getCtype() != null && !"".equals(dto.getCtype())) {
+					if (dto.getCtype().startsWith("*") && !existInKofast(user, dto.getCtype())) {
 						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.ctype", new Object[] { dao.getCtype() }), "error", dbErrors));
+								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.ctype", new Object[] { dto.getCtype() }), "error", dbErrors));
 						retval = false;
 					}
 				}
@@ -63,12 +63,12 @@ public class CUNDC_U {
 	}
 
 
-	public boolean isValidInputForDelete(CundcDao dao, String user, String mode) {
+	public boolean isValidInputForDelete(CundcDto dto, String user, String mode) {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
 			// check dao
-			if ( (dao.getCfirma() != null && !"".equals(dao.getCfirma())) && (dao.getCcompn() != null && !"".equals(dao.getCcompn()))
-					&& (dao.getCconta() != null && !"".equals(dao.getCconta())) && (dao.getCtype() != null && !"".equals(dao.getCtype())) ) {
+			if ( (dto.getCfirma() != null && !"".equals(dto.getCfirma())) && (dto.getCcompn() != null && !"".equals(dto.getCcompn()))
+					&& (dto.getCconta() != null && !"".equals(dto.getCconta())) && (dto.getCtype() != null && !"".equals(dto.getCtype())) ) {
 				// OK
 			} else {
 				retval = false;

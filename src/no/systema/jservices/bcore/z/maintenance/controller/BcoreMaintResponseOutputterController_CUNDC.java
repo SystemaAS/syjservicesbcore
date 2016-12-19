@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundcDao;
+import no.systema.jservices.model.dao.entities.CundcDto;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.CundcDaoServices;
 
@@ -155,20 +157,23 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
-			CundcDao dao = new CundcDao();
-			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
-			binder.bind(request);
 
-			logger.info("mode="+mode+" userName="+userName);
 			
+			CundcDto dto = new CundcDto();
+			ServletRequestDataBinder binder = new ServletRequestDataBinder(dto);
+			binder.bind(request);
+			
+			logger.info("mode="+mode+" userName="+userName);
+			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
+
 			// rules
 			CUNDC_U rulerLord = new CUNDC_U(cundcDaoServices, kofastDaoServices,sb, dbErrorStackTrace);
 			// Start processing now
 			if (userName != null && !"".equals(userName)) {
 				int dmlRetval = 0;
 				if ("D".equals(mode)) {
-					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
-						dmlRetval = cundcDaoServices.delete(dao, dbErrorStackTrace);
+					if (rulerLord.isValidInputForDelete(dto, userName, mode)) {
+						dmlRetval = cundcDaoServices.delete(dto, dbErrorStackTrace);
 					} else {
 						// write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -176,12 +181,12 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
 				} else {
-					if (rulerLord.isValidInput(dao, userName, mode)) {
-						adjustDao(dao);
+					if (rulerLord.isValidInput(dto, userName, mode)) {
+						adjustDao(dto);
 						if ("A".equals(mode)) {
-							dmlRetval = cundcDaoServices.insert(dao, dbErrorStackTrace);
+							dmlRetval = cundcDaoServices.insert(dto, dbErrorStackTrace);
 						} else if ("U".equals(mode)) {
-							dmlRetval = cundcDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = cundcDaoServices.update(dto, dbErrorStackTrace);
 						}
 					} else {
 						logger.info("dbErrorStackTrace="+dbErrorStackTrace);
@@ -225,13 +230,13 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		return sb.toString();
 	}
 
-	private void adjustDao(CundcDao dao) {
+	private void adjustDao(CundcDto dto) {
 		StringBuilder cavdDefault = new StringBuilder("00000000000000000000");
 		cavdDefault.append("00000000000000000000");
 		cavdDefault.append("00000000000000000000");
 		cavdDefault.append("00000000000000000000"); // 80
-		if (dao.getCavd() == null || "".equals(dao.getCavd())) {
-			dao.setCavd(cavdDefault.toString());
+		if (dto.getCavd() == null || "".equals(dto.getCavd())) {
+			dto.setCavd(cavdDefault.toString());
 		}
 	}
 
