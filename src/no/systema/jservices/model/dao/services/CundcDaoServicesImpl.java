@@ -67,7 +67,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" and cconta = ? ");
 			sql.append(" and ctype = ? ");
 
-			logger.info("findById::sql=" + sql.toString());
+			logger.info("get::sql=" + sql.toString());
 			logger.info("ccompn=" + queryDao.getCcompn() + ", cfirma=" + queryDao.getCfirma() + ", ccconta=" + queryDao.getCconta() + ", ctype="
 					+ queryDao.getCtype());
 
@@ -75,7 +75,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 					new Object[] { queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta(), queryDao.getCtype() },
 					new GenericObjectMapper(new CundcDao()));
 
-			logger.info("dao=" + ReflectionToStringBuilder.toString(dao));
+			logger.info("result dao=" + ReflectionToStringBuilder.toString(dao));
 
 			// If exist in Kofast, it means NOT normal Kontaktperson, the other
 			// function, with prefix *
@@ -133,7 +133,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			
 			
 			//TODO: Lägg till transaktion
-			if (retval>=0 && hasArkvedk(dto)) {
+			if (retval>=0) {
 				ArkvedkDao arkvedkDao = createArkvedkDao(dto, errorStackTrace);
 				if (arkvedkDao != null) {
 					arkvedkDaoServices.update(arkvedkDao, errorStackTrace);
@@ -175,9 +175,12 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			
 			
 			//TODO: hantera i transaktion
-			if (retval>=0 && hasArkvedk(dto)) {
+			if (retval>=0) {
 				ArkvedkDao arkvedkDao = createArkvedkDao(dto, errorStackTrace);
-				if (arkvedkDao != null) {
+				logger.info("created arkvedkDao="+arkvedkDao);
+				boolean exist = arkvedkDaoServices.exists(arkvedkDao, errorStackTrace);
+				logger.info("arkvedkDao exist="+exist);
+				if (arkvedkDao != null && !exist) {
 					arkvedkDaoServices.insert(arkvedkDao, errorStackTrace);
 				}
 			}
@@ -261,7 +264,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	}                                    
 
 
-	private boolean hasArkvedk(CundcDto dto) {
+/*	private boolean hasArkvedk(CundcDto dto) {
 		if (dto.getAvkved1() != null || dto.getAvkved2() != null || dto.getAvkved3() != null|| dto.getAvkved4() != null|| dto.getAvkved5() != null
 		 || dto.getAvkved6() != null || dto.getAvkved7() != null || dto.getAvkved8() != null|| dto.getAvkved9() != null|| dto.getAvkved10() != null
 		 || dto.getAvkved11() != null || dto.getAvkved12() != null || dto.getAvkved13() != null|| dto.getAvkved14() != null|| dto.getAvkved15() != null		
@@ -273,7 +276,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			return false;
 		}
 		
-	}
+	}*/
 
 	private ArkvedkDao createArkvedkDao(CundcDto dto, StringBuffer errorStackTrace) {
 		ArkvedkDao arkvedkDao = new ArkvedkDao();
@@ -308,58 +311,54 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	private String concatAvkved(CundcDto dto) {
 		StringBuilder avkved = new StringBuilder();
 		
-		avkved.append(dto.getAvkved1());
-		avkved.append(dto.getAvkved2());
-		avkved.append(dto.getAvkved3());
-		avkved.append(dto.getAvkved4());
-		avkved.append(dto.getAvkved5());
-		avkved.append(dto.getAvkved6());
-		avkved.append(dto.getAvkved7());
-		avkved.append(dto.getAvkved8());
-		avkved.append(dto.getAvkved9());
-		avkved.append(dto.getAvkved10());
-		avkved.append(dto.getAvkved11());
-		avkved.append(dto.getAvkved12());
-		avkved.append(dto.getAvkved13());
-		avkved.append(dto.getAvkved14());
-		avkved.append(dto.getAvkved15());
-		avkved.append(dto.getAvkved16());
-		avkved.append(dto.getAvkved17());
-		avkved.append(dto.getAvkved18());
-		avkved.append(dto.getAvkved19());
-		avkved.append(dto.getAvkved20());
-		avkved.append(dto.getAvkved21());
-		avkved.append(dto.getAvkved22());
-		avkved.append(dto.getAvkved23());
-		avkved.append(dto.getAvkved24());
-		avkved.append(dto.getAvkved25());
-		avkved.append(dto.getAvkved26());
-		avkved.append(dto.getAvkved27());
-		avkved.append(dto.getAvkved28());
-		avkved.append(dto.getAvkved29());
-		avkved.append(dto.getAvkved30());
+		avkved.append(spaceFiller(dto.getAvkved1()));
+		avkved.append(spaceFiller(dto.getAvkved2()));
+		avkved.append(spaceFiller(dto.getAvkved3()));
+		avkved.append(spaceFiller(dto.getAvkved4()));
+		avkved.append(spaceFiller(dto.getAvkved5()));
+		avkved.append(spaceFiller(dto.getAvkved6()));
+		avkved.append(spaceFiller(dto.getAvkved7()));
+		avkved.append(spaceFiller(dto.getAvkved8()));
+		avkved.append(spaceFiller(dto.getAvkved9()));
+		avkved.append(spaceFiller(dto.getAvkved10()));
+		avkved.append(spaceFiller(dto.getAvkved11()));
+		avkved.append(spaceFiller(dto.getAvkved12()));
+		avkved.append(spaceFiller(dto.getAvkved13()));
+		avkved.append(spaceFiller(dto.getAvkved14()));
+		avkved.append(spaceFiller(dto.getAvkved15()));
+		avkved.append(spaceFiller(dto.getAvkved16()));
+		avkved.append(spaceFiller(dto.getAvkved17()));
+		avkved.append(spaceFiller(dto.getAvkved18()));
+		avkved.append(spaceFiller(dto.getAvkved19()));
+		avkved.append(spaceFiller(dto.getAvkved20()));
+		avkved.append(spaceFiller(dto.getAvkved21()));
+		avkved.append(spaceFiller(dto.getAvkved22()));
+		avkved.append(spaceFiller(dto.getAvkved23()));
+		avkved.append(spaceFiller(dto.getAvkved24()));
+		avkved.append(spaceFiller(dto.getAvkved25()));
+		avkved.append(spaceFiller(dto.getAvkved26()));
+		avkved.append(spaceFiller(dto.getAvkved27()));
+		avkved.append(spaceFiller(dto.getAvkved28()));
+		avkved.append(spaceFiller(dto.getAvkved29()));
+		avkved.append(spaceFiller(dto.getAvkved30()));
 		
 		return avkved.toString();
 	}
 
-	
-	
-	private IDao getIDao(List<CundcDao> retval) {
-		CundcDao dao = null;
-		if (retval.size() > 1) {  //Sanity check
-			throw new IllegalArgumentException("Query resulted in more than one row. retval="+retval.size());
-		}
-		if (retval.size() == 1) {
-			dao = retval.get(0);
+
+	private String spaceFiller(String avkved) {
+		String filledAvkved = null;
+		String TWO_SPACES = "  ";
+		
+		if (avkved != null && !"".equals(avkved)) {
+			filledAvkved = avkved;
 		} else {
-			//returning null
+			filledAvkved = TWO_SPACES;
 		}
 		
-		return dao;
-	}	
-	
-	
-	
+		return filledAvkved;
+	}
+
 	private boolean existInKofast(String ctype,  StringBuffer errorStackTrace) {
 		boolean exists = this.kofastDaoServices.exists(FasteKoder.FUNKSJON, ctype, errorStackTrace);
 		if (!exists) {

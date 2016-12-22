@@ -1,5 +1,6 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -10,6 +11,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.ArkvedkDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
+import no.systema.jservices.model.dao.entities.CundcDao;
 import no.systema.jservices.model.dao.entities.IDao;
 import no.systema.main.util.DbErrorMessageManager;
 
@@ -194,6 +196,33 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 	
 
 	@Override
+	public boolean exists(ArkvedkDao arkvedkDao, StringBuffer errorStackTrace) {
+		try {
+			List<CundcDao> retval = new ArrayList<CundcDao>();
+			StringBuilder sql = new StringBuilder();
+
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" WHERE  avfirm = ?  ");
+			sql.append(" AND    avkund = ? ");
+			sql.append(" AND    avtype = ? ");
+
+			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { arkvedkDao.getAvfirm(), arkvedkDao.getAvkund(), arkvedkDao.getAvtype()}, new GenericObjectMapper(new ArkvedkDao()));
+
+			if (retval.size() == 0) {
+				return false;
+			} else {
+				return true;
+			}
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			return false;
+		}
+	}	
+	
+	@Override
 	public int delete(Object dao, StringBuffer errorStackTrace) {
 		// TODO Auto-generated method stub
 		throw new RuntimeException("Not implemented");
@@ -223,7 +252,8 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 	
 	private TransactionTemplate transactionTemplate  = null;
 	public void setTransactionTemplate( TransactionTemplate txManager) {this.transactionTemplate = transactionTemplate;}          
-	public TransactionTemplate getTransactionTemplate() {return this.transactionTemplate;}	
+	public TransactionTemplate getTransactionTemplate() {return this.transactionTemplate;}
+
 	
 /*	<bean id="sharedTransactionTemplate"
 			class="org.springframework.transaction.support.TransactionTemplate">
