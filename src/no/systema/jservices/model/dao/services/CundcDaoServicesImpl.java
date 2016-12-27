@@ -167,19 +167,22 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
 			logger.info("insert::sql="+sql.toString());
 
+			StringBuilder copd = new StringBuilder();
+			copd.append(spaceFiller(dto.getCopd1()));
+			copd.append(spaceFiller(dto.getCopd2()));
+			copd.append(spaceFiller(dto.getCopd3()));
+			copd.append(spaceFiller(dto.getCopd4()));
+			copd.append(spaceFiller(dto.getCopd5()));
+			
 			retval = this.jdbcTemplate.update(sql.toString(),
 					new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta(), dto.getCtype(), dto.getCphone(), dto.getCmobil(),
-							dto.getCemail(), dto.getClive(), dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), dto.getCopd(),
+							dto.getCemail(), dto.getClive(), dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), copd,
 							dto.getCopdio(), dto.getCmerge() });
-	
-			
 			
 			//TODO: hantera i transaktion
 			if (retval>=0) {
 				ArkvedkDao arkvedkDao = createArkvedkDao(dto, errorStackTrace);
-				logger.info("created arkvedkDao="+arkvedkDao);
 				boolean exist = arkvedkDaoServices.exists(arkvedkDao, errorStackTrace);
-				logger.info("arkvedkDao exist="+exist);
 				if (arkvedkDao != null && !exist) {
 					arkvedkDaoServices.insert(arkvedkDao, errorStackTrace);
 				}
@@ -232,9 +235,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	public boolean exists(String cfirma, String ccompn, String cconta, String ctype, StringBuffer errorStackTrace) {
 		try {
 			List<CundcDao> retval = new ArrayList<CundcDao>();
-
 			StringBuilder sql = new StringBuilder();
-
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" AND   ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
@@ -263,20 +264,6 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		throw new IllegalArgumentException("Not implemented!");
 	}                                    
 
-
-/*	private boolean hasArkvedk(CundcDto dto) {
-		if (dto.getAvkved1() != null || dto.getAvkved2() != null || dto.getAvkved3() != null|| dto.getAvkved4() != null|| dto.getAvkved5() != null
-		 || dto.getAvkved6() != null || dto.getAvkved7() != null || dto.getAvkved8() != null|| dto.getAvkved9() != null|| dto.getAvkved10() != null
-		 || dto.getAvkved11() != null || dto.getAvkved12() != null || dto.getAvkved13() != null|| dto.getAvkved14() != null|| dto.getAvkved15() != null		
-		 || dto.getAvkved16() != null || dto.getAvkved17() != null || dto.getAvkved18() != null|| dto.getAvkved19() != null|| dto.getAvkved20() != null		
-		 || dto.getAvkved21() != null || dto.getAvkved22() != null || dto.getAvkved23() != null|| dto.getAvkved24() != null|| dto.getAvkved25() != null		
-		 || dto.getAvkved26() != null || dto.getAvkved27() != null || dto.getAvkved28() != null|| dto.getAvkved29() != null|| dto.getAvkved30() != null	) {
-			return true;
-		} else {
-			return false;
-		}
-		
-	}*/
 
 	private ArkvedkDao createArkvedkDao(CundcDto dto, StringBuffer errorStackTrace) {
 		ArkvedkDao arkvedkDao = new ArkvedkDao();
@@ -346,17 +333,17 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	}
 
 
-	private String spaceFiller(String avkved) {
-		String filledAvkved = null;
+	private String spaceFiller(String toFill) {
+		String filled = null;
 		String TWO_SPACES = "  ";
 		
-		if (avkved != null && !"".equals(avkved)) {
-			filledAvkved = avkved;
+		if (toFill != null && !"".equals(toFill)) {
+			filled = toFill;
 		} else {
-			filledAvkved = TWO_SPACES;
+			filled = TWO_SPACES;
 		}
 		
-		return filledAvkved;
+		return filled;
 	}
 
 	private boolean existInKofast(String ctype,  StringBuffer errorStackTrace) {
