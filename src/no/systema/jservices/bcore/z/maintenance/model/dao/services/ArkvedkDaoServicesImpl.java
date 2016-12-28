@@ -175,9 +175,9 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 			sql.append(" AND    avkund = ? ");
 			sql.append(" AND    avtype = ? ");
 
-			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
 			logger.info("update::sql="+sql.toString());
-
+*/
 			retval = this.jdbcTemplate.update(sql.toString(),
 					new Object[] { dao.getAvkved(),
 							// id's

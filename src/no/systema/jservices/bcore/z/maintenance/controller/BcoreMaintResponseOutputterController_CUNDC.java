@@ -4,13 +4,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -76,28 +74,20 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				CundcDao queryDao = new CundcDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(queryDao);
 	            binder.bind(request);
-	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
-				//do SELECT
-	            
-				logger.info("Before SELECT ...");
-				logger.info("dao="+ReflectionToStringBuilder.toString(queryDao));
 				
 				if ((queryDao.getCfirma() != null && !"".equals(queryDao.getCfirma())) && (queryDao.getCcompn() != null && !"".equals(queryDao.getCcompn()))) {
 					if ( queryDao.getCconta() != null && !"".equals(queryDao.getCconta()) && queryDao.getCtype() != null && !"".equals(queryDao.getCtype()) ) {
-						logger.info("findById: ccompn, cfirma, cconta, ctype");
 						CundcDao dao = (CundcDao)this.cundcDaoServices.get(queryDao, dbErrorStackTrace);
 						if (dao != null) {
 							list = new ArrayList<CundcDao>();
 							list.add(dao);
 						}
 					} else {
-						logger.info("findById: ccompn, cfirma");
 						list = this.cundcDaoServices.findById(queryDao.getCcompn(), queryDao.getCfirma(), dbErrorStackTrace);
 					}
 
 				} else {
-					logger.info("getList...");
 					list = this.cundcDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result
@@ -158,14 +148,9 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
-			
 			CundcDto dto = new CundcDto();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dto);
 			binder.bind(request);
-			
-			logger.info("mode="+mode+" userName="+userName);
-			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
-
 			// rules
 			CUNDC_U rulerLord = new CUNDC_U(cundcDaoServices, kofastDaoServices,sb, dbErrorStackTrace);
 			// Start processing now
@@ -189,8 +174,6 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 							dmlRetval = cundcDaoServices.update(dto, dbErrorStackTrace);
 						}
 					} else {
-						logger.info("dbErrorStackTrace="+dbErrorStackTrace);
-						logger.info("sb="+sb.toString());
 						// write JSON error output
 						errMsg = "ERROR on ADD/UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update";
 						status = "error";
@@ -202,7 +185,6 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				// ----------------------------------
 				if (dmlRetval < 0) {
 					// write JSON error output
-					logger.info("dbErrorStackTrace="+dbErrorStackTrace);
 					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));

@@ -42,7 +42,7 @@ public class CUNDC_U {
 			if ( (dto.getCfirma() != null && !"".equals(dto.getCfirma())) && (dto.getCcompn() != null && !"".equals(dto.getCcompn()))
 					&& (dto.getCconta() != null && !"".equals(dto.getCconta())) && (dto.getCtype() != null && !"".equals(dto.getCtype())) ) {
 				// Check duplicate
-				if ("A".equals(mode)  &&  existInCundc(user, dto.getCfirma(), dto.getCcompn(), dto.getCconta(), dto.getCtype())) {
+				if ("A".equals(mode)  &&  existInCundc(dto.getCfirma(), dto.getCcompn(), dto.getCconta(), dto.getCtype())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dto.getCconta(), dto.getCcompn() }), "error", dbErrors));
 					retval = false;
@@ -88,7 +88,7 @@ public class CUNDC_U {
 		return retval;
 	}
 
-	private boolean existInCundc(String userName, String cfirma, String ccompn, String cconta, String ctype) {
+	private boolean existInCundc(String cfirma, String ccompn, String cconta, String ctype) {
 		boolean exists = this.cundcDaoServices.exists(cfirma, ccompn, cconta, ctype ,dbErrors);
 		if (!exists) {
 			return false;

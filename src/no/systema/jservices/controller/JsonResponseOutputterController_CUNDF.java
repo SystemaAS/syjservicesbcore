@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
 //rules
 import no.systema.jservices.controller.rules.SYCUNDFR_U;
@@ -171,7 +172,7 @@ public class JsonResponseOutputterController_CUNDF {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U();  //TODO: evolve....
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(cundfDaoServices, sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
@@ -190,7 +191,6 @@ public class JsonResponseOutputterController_CUNDF {
 						if ("A".equals(mode)) {
 							addFieldsToDao(dao, dbErrorStackTrace);
 							dmlRetval = cundfDaoServices.insert(dao, dbErrorStackTrace);
-							logger.info("dmlRetval="+dmlRetval);
 						} else if ("U".equals(mode)) {
 							dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
 						}
@@ -211,7 +211,7 @@ public class JsonResponseOutputterController_CUNDF {
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				} else {
 					// OK UPDATE
-					sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
+					sb.append(jsonWriter.setJsonSimpleValidResult(userName, dao, status));
 				}
 
 			} else {
@@ -232,8 +232,6 @@ public class JsonResponseOutputterController_CUNDF {
 		session.invalidate();
 		
 		return sb.toString();
-		
-		
 	}
 	
 	
@@ -253,7 +251,13 @@ public class JsonResponseOutputterController_CUNDF {
 			logger.info("ERROR: Incorrect number of rows i Firma!");
 			throw new IllegalArgumentException("Incorrect number of rows i Firma!");
 		}
+
 		dao.setFirma(firmDao.getFifirm());
+		
+		if (dao.getKundnr() == null) {
+			dao.setKundnr(firkuDaoServices.getNextFikune(dbErrorStackTrace));
+		}
+		
 	}
 
 
@@ -280,6 +284,13 @@ public class JsonResponseOutputterController_CUNDF {
 	@Required
 	public void setFirmDaoServices (FirmDaoServices value){ this.firmDaoServices = value; }
 	public FirmDaoServices getFirmDaoServices(){ return this.firmDaoServices; }	
-	
+
+	@Qualifier ("firkuDaoServices")
+	private FirkuDaoServices firkuDaoServices;
+	@Autowired
+	@Required
+	public void setFirkuDaoServices (FirkuDaoServices value){ this.firkuDaoServices = value; }
+	public FirkuDaoServices getFirkuDaoServices(){ return this.firkuDaoServices; }	
+
 }
 

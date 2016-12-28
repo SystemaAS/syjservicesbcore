@@ -7,6 +7,9 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.ArkvedkDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.model.dao.entities.CundcDao;
 import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.jservices.model.dao.mapper.CundfMapper;
@@ -127,7 +130,6 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
-			//Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = null;
 		}
@@ -197,7 +199,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 
 			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
 			logger.info("insert::sql="+sql.toString());
-
+			
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 					dao.getFirma(), dao.getKundnr(), dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(),  //8
 					dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(), //9
@@ -217,7 +219,6 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		
 		return retval;
 	}
-	
 	
 	@Override
 	public int delete(Object daoObj, StringBuffer errorStackTrace) {
@@ -244,6 +245,30 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}
 
 		return retval;	}                                    
+
+	@Override
+	public boolean exists(String kundNr, StringBuffer errorStackTrace) {
+		try {
+			List<CundfDao> retval = new ArrayList<CundfDao>();
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" AND  kundnr = ? ");
+
+			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { kundNr }, new GenericObjectMapper(new CundfDao()));
+
+			if (retval.size() == 0) {
+				return false;
+			} else {
+				return true;
+			}
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			return false;
+		}
+	}    	
 	
 	
 	private String getSELECT_FROM_CLAUSE(){
@@ -268,6 +293,5 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	private JdbcTemplate jdbcTemplate = null;                                                            
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
 	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}
-
 
 }

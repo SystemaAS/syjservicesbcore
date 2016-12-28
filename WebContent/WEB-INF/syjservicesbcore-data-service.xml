@@ -117,7 +117,9 @@
   <bean id="arkvedkDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.ArkvedkDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
+   <bean id="firkuDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   
   
   
