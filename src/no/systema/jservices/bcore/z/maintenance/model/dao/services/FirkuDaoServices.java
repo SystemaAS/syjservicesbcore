@@ -23,6 +23,6 @@ public interface FirkuDaoServices extends IDaoServices {
 	 * @param errorStackTrace
 	 * @return next valid fikune as String, and incrementing with one, for next
 	 */
-	public String getNextFikune(StringBuffer errorStackTrace);
+	public String getFikune(StringBuffer errorStackTrace);
 	
 }

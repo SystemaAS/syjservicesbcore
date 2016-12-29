@@ -181,7 +181,7 @@ public class JsonResponseOutputterController_CUNDF {
 						dmlRetval = this.cundfDaoServices.delete(dao, dbErrorStackTrace);
 					} else {
 						// write JSON error output
-						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
+						errMsg = "ERROR on DELETE: invalid rulerLord";
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
@@ -196,7 +196,7 @@ public class JsonResponseOutputterController_CUNDF {
 						}
 					} else {
 						// write JSON error output
-						errMsg = "ERROR on ADD/UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update";
+						errMsg = "ERROR on ADD/UPDATE: invalid rulerLord, error="+sb.toString();
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
@@ -254,8 +254,9 @@ public class JsonResponseOutputterController_CUNDF {
 
 		dao.setFirma(firmDao.getFifirm());
 		
-		if (dao.getKundnr() == null) {
-			dao.setKundnr(firkuDaoServices.getNextFikune(dbErrorStackTrace));
+		if (dao.getKundnr() != null && dao.getKundnr().length() == 0) {
+			String kundNr = firkuDaoServices.getFikune(dbErrorStackTrace);
+			dao.setKundnr(kundNr);
 		}
 		
 	}

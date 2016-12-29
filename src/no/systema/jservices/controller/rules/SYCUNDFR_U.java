@@ -36,8 +36,7 @@ public class SYCUNDFR_U {
 	public boolean isValidInput(CundfDao dao, String user, String mode) {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
-			if ((dao.getKundnr() != null && !"".equals(dao.getKundnr())) && (dao.getPostnr() != null && !"".equals(dao.getPostnr()))
-					&& (dao.getBetbet() != null && !"".equals(dao.getBetbet())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
+			if ((dao.getPostnr() != null && !"".equals(dao.getPostnr())) && (dao.getBetbet() != null && !"".equals(dao.getBetbet())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
 				if ("A".equals(mode)  &&  existInCundf(dao.getKundnr() )) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.kundnr", new Object[] { dao.getKundnr()}), "error", dbErrors));
@@ -50,10 +49,14 @@ public class SYCUNDFR_U {
 				}
 */			
 			} else{ 
-				  retval = false; 
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.mandatory", null), "error", dbErrors));
+				retval = false; 
 			 }
 			 
 		} else {
+			errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+					messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.mandatory", null), "error", dbErrors));
 			retval = false;
 		}
 		return retval;

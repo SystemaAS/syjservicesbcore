@@ -43,8 +43,6 @@ public class FirkuDaoServicesImpl implements FirkuDaoServices {
 
 			dao = this.jdbcTemplate.queryForObject(sql.toString(), new GenericObjectMapper(new FirkuDao()));
 
-			logger.info("dao=" + ReflectionToStringBuilder.toString(dao));
-
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
@@ -69,10 +67,10 @@ public class FirkuDaoServicesImpl implements FirkuDaoServices {
 			StringBuilder sql = new StringBuilder();
 			sql.append(" UPDATE firku SET fikune = ? ");
 
-			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
 			logger.info("update::sql="+sql.toString());
-
-			retval = this.jdbcTemplate.update(sql.toString(),new Object[] { dao.getFikune(), dao.getFifirm()});
+*/
+			retval = this.jdbcTemplate.update(sql.toString(),new Object[] { dao.getFikune()});
 
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -92,23 +90,25 @@ public class FirkuDaoServicesImpl implements FirkuDaoServices {
 	
 
 	@Override
-	public String getNextFikune(StringBuffer errorStackTrace) {
+	public String getFikune(StringBuffer errorStackTrace) {
+		String fikune;
 		int nextFikune;
-		FirkuDao dao = (FirkuDao) get(errorStackTrace);
-		nextFikune = new Integer(dao.getFikune()) + 1;
-		
-		FirkuDao newDao = SerializationUtils.clone(dao);
-		newDao.setFikune(Integer.toString(nextFikune));
-		
-		update(dao, errorStackTrace);
 
-		return Integer.toString(nextFikune);
+		FirkuDao existingDao = (FirkuDao) get(errorStackTrace);
+		fikune = existingDao.getFikune();
+		nextFikune = new Integer(existingDao.getFikune()) + 1;
+
+		FirkuDao updateDao = SerializationUtils.clone(existingDao);
+		updateDao.setFikune(Integer.toString(nextFikune));
+		update(updateDao, errorStackTrace);
+		
+		return fikune;
 	}
 	
 	private String getSELECT_FROM_CLAUSE(){
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" select fifirm, fikufr, fikuti, fikune ");
+		sql.append(" select fu.fifirm, fikufr, fikuti, fikune ");
 		sql.append(" FROM firku fu, firm f ");
 		sql.append(" WHERE fu.fifirm = f.fifirm ");
 		
