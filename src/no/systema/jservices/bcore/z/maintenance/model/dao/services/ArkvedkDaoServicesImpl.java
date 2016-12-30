@@ -29,7 +29,8 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 	@Override
 	public List getList(StringBuffer errorStackTrace) {
 		// TODO Auto-generated method stub
-		throw new RuntimeException("Not implemented");
+		//throw new RuntimeException("Not implemented");
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

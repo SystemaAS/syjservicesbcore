@@ -178,7 +178,7 @@ public class JsonResponseOutputterController_CUNDF {
 				int dmlRetval = 0;
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
-						dmlRetval = this.cundfDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.cundfDaoServices.cascadeDelete(dao, dbErrorStackTrace);
 					} else {
 						// write JSON error output
 						errMsg = "ERROR on DELETE: invalid rulerLord";

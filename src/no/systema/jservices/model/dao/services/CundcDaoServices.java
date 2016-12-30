@@ -39,4 +39,14 @@ public interface CundcDaoServices extends IDaoServices {
 	 * @return true or false
 	 */
 	public boolean exists(String cfirma, String ccompn, String cconta, String ctype, StringBuffer errorStackTrace);
+	
+	
+	/**
+	 * Delete all kontakts for firma and kunde
+	 * 
+	 * @param cfirma
+	 * @param ccompn
+	 * @param errorStackTrace
+	 */
+	public void deleteAll(String cfirma, String ccompn, StringBuffer errorStackTrace);
 }

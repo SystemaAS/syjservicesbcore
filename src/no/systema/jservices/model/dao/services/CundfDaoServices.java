@@ -18,4 +18,14 @@ public interface CundfDaoServices extends IDaoServices {
 	 */
 	public boolean exists(String kundNr, StringBuffer errorStackTrace);
 	
+	
+	/**
+	 * Cascade delete, with Transaction support. Using {@link TransactionTemplate}
+	 * 
+	 * @param daoObj, dao to be deleted
+	 * @param errorStackTrace
+	 * @return int, if < 0 , somethings wrong
+	 */
+	public int cascadeDelete(Object daoObj, StringBuffer errorStackTrace);
+	
 }

@@ -6,11 +6,11 @@ import java.util.List;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.ArkvedkDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
-import no.systema.jservices.model.dao.entities.CundcDao;
 import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.jservices.model.dao.mapper.CundfMapper;
 import no.systema.main.util.DbErrorMessageManager;
@@ -20,10 +20,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	private static Logger logger = Logger.getLogger(CundfDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
-	/**
-	 * 
-	 * @return
-	 */
+	@Override
 	public List<CundfDao> getList(){
 		/*String sql = "select knavn, adr1, adr2, postnr, adr3 from syspedf/cundf  where knavn like ?";
 		String paramKnavn = "B%";
@@ -34,18 +31,14 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		return this.jdbcTemplate.query( sql, new CundfMapper());
 	}
 	
-	/**
-	 * 
-	 */
+	@Override
 	public List<CundfDao> getList(StringBuffer errorStackTrace){
 		
 		String sql = this.getSELECT_FROM_CLAUSE();
 		return this.jdbcTemplate.query( sql, new CundfMapper());
 	}
 	
-	/**
-	 * 
-	 */
+	@Override
 	public List findById(String id, StringBuffer errorStackTrace){
 		List<CundfDao> retval = new ArrayList<CundfDao>();
 		try{
@@ -63,9 +56,8 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}
 		return retval;
 	}
-	/**
-	 * 
-	 */
+	
+	@Override
 	public List findById(String id, String firm, StringBuffer errorStackTrace){
 		List<CundfDao> retval = new ArrayList<CundfDao>();
 		try{
@@ -84,9 +76,8 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}
 		return retval;
 	}
-	/**
-	 * 
-	 */
+	
+	@Override
 	public List findByName(String name, String firm, StringBuffer errorStackTrace){
 		String WILDCARD = "%";
 		String nameStr = "";
@@ -109,12 +100,8 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}
 		return retval;
 	}
-	/**
-	 * 
-	 * @param name
-	 * @param errorStackTrace
-	 * @return
-	 */
+	
+	@Override
 	public List findByName(String name, StringBuffer errorStackTrace){
 		String WILDCARD = "%";
 		String nameStr = "";
@@ -220,31 +207,52 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		return retval;
 	}
 	
+	/**
+	 * 
+	 * Note: This method must NOT be called as public, use cascadeDelete instead
+	 * 
+	 */
 	@Override
 	public int delete(Object daoObj, StringBuffer errorStackTrace) {
 		int retval = 0;
+
+		CundfDao dao = (CundfDao) daoObj;
+		StringBuilder sql = new StringBuilder();
+		sql.append(" DELETE from cundf ");
+		sql.append(" WHERE kundnr = ? ");
+		sql.append(" AND firma = ? ");
+
+		retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dao.getKundnr(), dao.getFirma() });
+
+		return retval;
+
+	}                                  
+
+
+	@Override
+	public int cascadeDelete(final Object daoObj, final StringBuffer errorStackTrace) {
+		int retval = 0;
 		try {
-
-			CundfDao dao = (CundfDao) daoObj;
-			StringBuilder sql = new StringBuilder();
-			sql.append(" DELETE from cundf ");
-			sql.append(" WHERE kundnr = ? ");
-			sql.append(" AND firma = ? ");
-
-/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
-			logger.info("sql="+sql.toString());
-*/			
-			retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dao.getKundnr(), dao.getFirma() });
-
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
+					deleteCundc((CundfDao) daoObj, errorStackTrace);
+					delete(daoObj, errorStackTrace);
+				}
+			});
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
-			// Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
 
-		return retval;	}                                    
+		return retval;
+	}
+	
+	private void deleteCundc(CundfDao cundfDao, StringBuffer errorStackTrace) {
+		cundcDaoServices.deleteAll(cundfDao.getFirma(), cundfDao.getKundnr(), errorStackTrace);
+	}
 
 	@Override
 	public boolean exists(String kundNr, StringBuffer errorStackTrace) {
@@ -293,5 +301,17 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	private JdbcTemplate jdbcTemplate = null;                                                            
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
 	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}
+
+	private TransactionTemplate transactionTemplate = null;                                                            
+	public void setTransactionTemplate( TransactionTemplate transactionTemplate) {this.transactionTemplate = transactionTemplate;}          
+	public TransactionTemplate getTransactionTemplate() {return this.transactionTemplate;}
+	
+	private CundcDaoServices cundcDaoServices = null;                                                            
+	public void setCundcDaoServices( CundcDaoServices cundcDaoServices) {this.cundcDaoServices = cundcDaoServices;}          
+	public CundcDaoServices getCundcDaoServices() {return this.cundcDaoServices;}
+
+	//TODO: Add more children...
+
+
 
 }

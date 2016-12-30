@@ -215,9 +215,9 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" AND   ctype = ?");
 
 			
-/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+			logger.info("dao="+ReflectionToStringBuilder.toString(dto));
 			logger.info("sql="+sql.toString());
-*/			
+			
 			retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta(), dto.getCtype() });
 
 		} catch (Exception e) {
@@ -231,6 +231,28 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		return retval;
 	}
 
+
+	@Override
+	public void deleteAll(String cfirma, String ccompn, StringBuffer errorStackTrace) {
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append(" DELETE from cundc ");
+			sql.append(" WHERE  ccompn = ? ");
+			sql.append(" AND   cfirma = ? ");
+
+			logger.info("sql=" + sql.toString());
+
+			jdbcTemplate.update(sql.toString(), new Object[] { ccompn, cfirma });
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			// Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+		}
+	}
+	
 	@Override
 	public boolean exists(String cfirma, String ccompn, String cconta, String ctype, StringBuffer errorStackTrace) {
 		try {
@@ -386,6 +408,5 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	private KofastDaoServices kofastDaoServices = null;                                                            
 	public void setKofastDaoServices( KofastDaoServices kofastDaoServices) {this.kofastDaoServices = kofastDaoServices;}          
 	public KofastDaoServices getKofastDaoServices() {return this.kofastDaoServices;}
-
 	
 }
