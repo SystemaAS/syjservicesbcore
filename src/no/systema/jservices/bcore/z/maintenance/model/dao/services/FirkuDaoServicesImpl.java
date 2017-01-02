@@ -41,7 +41,7 @@ public class FirkuDaoServicesImpl implements FirkuDaoServices {
 			StringBuilder sql = new StringBuilder();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 
-			dao = this.jdbcTemplate.queryForObject(sql.toString(), new GenericObjectMapper(new FirkuDao()));
+			dao = (IDao)this.jdbcTemplate.queryForObject(sql.toString(), new GenericObjectMapper(new FirkuDao()));
 
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
