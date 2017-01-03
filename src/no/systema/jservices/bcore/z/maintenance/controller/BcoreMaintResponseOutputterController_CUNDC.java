@@ -79,15 +79,20 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				if ((queryDao.getCfirma() != null && !"".equals(queryDao.getCfirma())) && (queryDao.getCcompn() != null && !"".equals(queryDao.getCcompn()))) {
 					if ( queryDao.getCconta() != null && !"".equals(queryDao.getCconta()) && queryDao.getCtype() != null && !"".equals(queryDao.getCtype()) ) {
 						CundcDao dao = (CundcDao)this.cundcDaoServices.get(queryDao, dbErrorStackTrace);
+						logger.info("cundcDaoServices.get , specific..");
 						if (dao != null) {
 							list = new ArrayList<CundcDao>();
 							list.add(dao);
 						}
 					} else {
+						logger.info("cundcDaoServices.findById , a list..");
 						list = this.cundcDaoServices.findById(queryDao.getCcompn(), queryDao.getCfirma(), dbErrorStackTrace);
+						logger.info("list="+list.size());
 					}
 
 				} else {
+					logger.info("cundcDaoServices.getList should not be reach...");
+				
 					list = this.cundcDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result
