@@ -229,26 +229,40 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	}                                  
 
 
+/*	@Override
+	public int delete(Object daoObj, StringBuffer errorStackTrace) {
+		throw new RuntimeException("For testing, to force rollback in cascadeDelete");
+
+	}   
+*/	
 	@Override
 	public int cascadeDelete(final Object daoObj, final StringBuffer errorStackTrace) {
 		int retval = 0;
 		try {
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				@Override
-				protected void doInTransactionWithoutResult(TransactionStatus arg0) {
-					deleteCundc((CundfDao) daoObj, errorStackTrace);
-					delete(daoObj, errorStackTrace);
+				protected void doInTransactionWithoutResult(TransactionStatus ts) {
+					try {
+						deleteCundc((CundfDao) daoObj, errorStackTrace);
+						delete(daoObj, errorStackTrace);
+					} catch (Exception e) {
+						logger.info("Setting cascadeDelete() to rollback only.");
+						ts.setRollbackOnly();
+						throw e;
+					}
 				}
 			});
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
+			e.printStackTrace();
+			logger.info(e);
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
 
 		return retval;
 	}
+
 	
 	private void deleteCundc(CundfDao cundfDao, StringBuffer errorStackTrace) {
 		cundcDaoServices.deleteAll(cundfDao.getFirma(), cundfDao.getKundnr(), errorStackTrace);

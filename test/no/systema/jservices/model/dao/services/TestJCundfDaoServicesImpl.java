@@ -1,0 +1,116 @@
+package no.systema.jservices.model.dao.services;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import no.systema.jservices.model.dao.entities.CundcDto;
+import no.systema.jservices.model.dao.entities.CundfDao;
+
+public class TestJCundfDaoServicesImpl {
+
+	CundfDaoServices cundfDaoServices = null;
+	CundcDaoServices cundcDaoServices = null;
+
+	StringBuffer errorStackTrace = new StringBuffer();
+	ApplicationContext context = null;
+	CundfDao cundfDao = null;
+	CundcDto cundcDto = null;
+	
+	String kundnr = null;
+	String firma = null;
+
+	
+	@Before
+	public void setUp() throws Exception {
+		context = new ClassPathXmlApplicationContext("classpath:syjservicesbcore-data-service-mod.xml");
+		cundfDaoServices = (CundfDaoServices) context.getBean("cundfDaoServices");
+		cundcDaoServices = (CundcDaoServices) context.getBean("cundcDaoServices");
+		kundnr = "222";
+		firma = "SY";
+	}
+	
+	//@Test
+	public final void testCreate() {
+		createCundfWithCundc();
+		assertTrue(cundfDaoServices.exists(kundnr, errorStackTrace));
+	}
+	
+	
+	@Test
+	public final void testDeleteWithRollback() {
+		createCundfWithCundc();
+		
+		//Handpalaggning neeeded. Fix cundfDaoServices.delete in code.
+		//Rememeber to manually delete kundnr : 222
+		
+		assertTrue(cundfDaoServices.exists(cundfDao.getKundnr(), errorStackTrace));
+		assertTrue(cundcDaoServices.exists(firma, kundnr, "kontakt", "funksjon", errorStackTrace));
+
+		int retval = cundfDaoServices.cascadeDelete(cundfDao, errorStackTrace);
+		assertTrue("retval should be -1", retval == -1);
+		
+		assertTrue(cundfDaoServices.exists(kundnr, errorStackTrace));
+		assertTrue(cundcDaoServices.exists(firma, kundnr, "kontakt", "funksjon", errorStackTrace));
+		
+	}	
+
+	//@Test
+	public final void testCreateAndDelete() {
+		createCundfWithCundc();
+		
+		assertTrue(cundfDaoServices.exists(cundfDao.getKundnr(), errorStackTrace));
+		assertTrue(cundcDaoServices.exists(firma, kundnr, "kontakt", "funksjon", errorStackTrace));
+
+		cundfDaoServices.cascadeDelete(cundfDao, errorStackTrace);
+
+		assertFalse(cundfDaoServices.exists(kundnr, errorStackTrace));
+		assertFalse(cundcDaoServices.exists(firma, kundnr, "kontakt", "funksjon", errorStackTrace));
+	}		
+	
+	private void createCundfWithCundc() {
+		
+		assertFalse("Kundnr "+kundnr+" should not exist.",cundfDaoServices.exists(kundnr, errorStackTrace));
+		cundfDao = new CundfDao();
+		cundcDto = new CundcDto();
+		
+		cundfDao.setKundnr(kundnr);
+		cundfDao.setFirma(firma);
+		cundfDao.setKnavn("firmanamn");
+		cundfDao.setSonavn("firmanamn");
+		cundfDao.setPostnr("40");
+		cundfDao.setFmot("0");
+		cundfDao.setKgrens("0");
+		cundfDao.setSyregn("0");
+		cundfDao.setSykont("0");
+		cundfDao.setSyminu("0");
+		cundfDao.setSyutlp("0");
+		cundfDao.setSyutlp("0");
+		cundfDao.setSysalu("0");
+		cundfDao.setXxbre("0");
+		cundfDao.setXxlen("0");
+		cundfDao.setXxinm3("0");
+		cundfDao.setXxinlm("0");
+		cundfDao.setBetbet("0");
+		cundfDao.setSyiat1("0");
+		cundfDao.setSyiat2("0");
+		cundfDao.setAknrku("0");
+		
+		cundfDaoServices.insert(cundfDao, errorStackTrace);
+		assertTrue(cundfDaoServices.exists(kundnr, errorStackTrace));
+
+		assertFalse(cundcDaoServices.exists(firma, kundnr, "kontakt", "funksjon",errorStackTrace));
+		cundcDto.setCcompn(kundnr);
+		cundcDto.setCfirma(firma);
+		cundcDto.setCconta("kontakt");
+		cundcDto.setCtype("funksjon");
+
+		cundcDaoServices.insert(cundcDto, errorStackTrace);
+		assertTrue(cundcDaoServices.exists(firma, kundnr, "kontakt", "funksjon",errorStackTrace));
+
+	}
+
+}
