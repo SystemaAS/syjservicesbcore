@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.ArkvedkDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
@@ -28,22 +27,14 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 	
 	@Override
 	public List getList(StringBuffer errorStackTrace) {
-		// TODO Auto-generated method stub
-		//throw new RuntimeException("Not implemented");
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
 	@Override
 	public List findById(String id, StringBuffer errorStackTrace) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Not implemented");
+		throw new UnsupportedOperationException("Not implemented");
 	}
 
-	
-	
-	//TODO, Hook från Controller till get
-	
-	
 	@Override
 	public IDao get(Object qDao, StringBuffer errorStackTrace) {
 		List<ArkvedkDao> retval = null;
@@ -90,51 +81,6 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 		return dao;
 	}
 
-	//TODO, Hook från Controller till insert, med transaktion
-	
-/*	@Override
-	public int insert(Object dao, StringBuffer errorStackTrace) {
-
-		// :::Alt 1::://
-
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		// explicitly setting the transaction name is something that can only be
-		// done programmatically
-		def.setName("SomeTxName");
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-
-		TransactionStatus status = txManager.getTransaction(def);
-		try {
-			// execute your business logic here
-		} catch (Exception ex) {
-			txManager.rollback(status);
-			//throw ex;
-		}
-		txManager.commit(status);
-
-		// :::Alt 2:::// Recommended by Spring
-		//No return
-		transactionTemplate.execute(new TransactionCallbackWithoutResult() {
-			protected void doInTransactionWithoutResult(TransactionStatus status) {
-				// updateOperation1();
-				// updateOperation2();
-			}
-		});
-
-		//With return
-        return transactionTemplate.execute(new TransactionCallback() {
-            // the code in this method executes in a transactional context
-            public Object doInTransaction(TransactionStatus status) {
-                updateOperation1();
-                return resultOfUpdateOperation2();
-            }
-        });		
-		
-		
-		
-		throw new RuntimeException("Not implemented");
-	}
-*/
 
 	@Override
 	public int insert(Object daoObj, StringBuffer errorStackTrace) {
@@ -225,8 +171,7 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 	
 	@Override
 	public int delete(Object dao, StringBuffer errorStackTrace) {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("Not implemented");
+		throw new UnsupportedOperationException("Not implemented");
 	}
 	
 
@@ -251,24 +196,4 @@ public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
 	public void setDataSourceTransactionManager( DataSourceTransactionManager txManager) {this.txManager = txManager;}          
 	public DataSourceTransactionManager getDataSourceTransactionManager() {return this.txManager;}
 	
-	private TransactionTemplate transactionTemplate  = null;
-	public void setTransactionTemplate( TransactionTemplate txManager) {this.transactionTemplate = transactionTemplate;}          
-	public TransactionTemplate getTransactionTemplate() {return this.transactionTemplate;}
-
-	
-/*	<bean id="sharedTransactionTemplate"
-			class="org.springframework.transaction.support.TransactionTemplate">
-			<property name="isolationLevelName" value="ISOLATION_READ_UNCOMMITTED" />
-			<property name="timeout" value="30" />
-		</bean>*/
-	
-	
-/*	   <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-       <!-- (this dependency is defined somewhere else) -->
-       <property name="dataSource" ref="dataSource"/>
-   </bean>
-*/	
-	
-	
-
 }

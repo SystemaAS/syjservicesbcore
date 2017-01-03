@@ -37,7 +37,7 @@ public class JsonWriterReflectionManager {
 					if(returnType.equals(String.class)){
 						String field = theMethod.getName().replace("get", "").toLowerCase();
 						String value = (String)theMethod.invoke(record);
-						//logger.info(fieldName + "XX" + value);
+						//logger.info(field + " " + value);
 						if(counter>1){ jsonReflectionOutput.append(JsonConstants.JSON_FIELD_SEPARATOR ); }
 						//trim when not null
 						if(value!=null){ value = value.trim(); }
@@ -91,6 +91,7 @@ public class JsonWriterReflectionManager {
 					if (returnType.equals(String.class)) {
 						String field = theMethod.getName().replace("get", "").toLowerCase();
 						String value = (String) theMethod.invoke(record);
+						//logger.info("["+field+"]:["+value+"]");
 						if (counter > 1) {
 							jsonReflectionOutput.append(JsonConstants.JSON_FIELD_SEPARATOR);
 						}
@@ -99,7 +100,7 @@ public class JsonWriterReflectionManager {
 						}
 
 						jsonReflectionOutput.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + this.jsonFixMgr.cleanRecord(value) + JsonConstants.JSON_QUOTES);
-
+						counter ++;
 					} else {
 						if (methodName.endsWith("Dao")) {
 							IDao childDao = (IDao) theMethod.invoke(record);
@@ -120,6 +121,7 @@ public class JsonWriterReflectionManager {
 												value = value.trim();
 											}
 											jsonReflectionOutput.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + this.jsonFixMgr.cleanRecord(value) + JsonConstants.JSON_QUOTES);
+											counter ++;
 										}
 										
 									}
@@ -127,7 +129,6 @@ public class JsonWriterReflectionManager {
 							}
 						}
 					}
-					counter++;
 				}
 			}
 			

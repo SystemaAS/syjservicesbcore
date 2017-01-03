@@ -42,6 +42,8 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { ccompn, cfirma }, new GenericObjectMapper(new CundcDao()));
 
+			logger.info("retval.size"+retval.size());
+			
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -122,7 +124,6 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
 			logger.info("update::sql="+sql.toString());
 			
-			
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 						dto.getCconta(), dto.getCtype(), dto.getCphone(), dto.getCmobil(), dto.getCemail(), dto.getClive(), 
 						dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), dto.getCopd(),
@@ -131,8 +132,6 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 						dto.getCcompn(),dto.getCfirma(), dto.getCcontaorg()
 						} );
 			
-			
-			//TODO: Lägg till transaktion
 			if (retval>=0) {
 				ArkvedkDao arkvedkDao = createArkvedkDao(dto, errorStackTrace);
 				if (arkvedkDao != null) {
@@ -179,7 +178,6 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 							dto.getCemail(), dto.getClive(), dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), copd,
 							dto.getCopdio(), dto.getCmerge() });
 			
-			//TODO: hantera i transaktion
 			if (retval>=0) {
 				ArkvedkDao arkvedkDao = createArkvedkDao(dto, errorStackTrace);
 				boolean exist = arkvedkDaoServices.exists(arkvedkDao, errorStackTrace);
