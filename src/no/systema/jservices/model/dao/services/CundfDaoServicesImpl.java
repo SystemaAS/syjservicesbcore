@@ -228,6 +228,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 
 	}                                  
 
+
 /*	@Override
 	public int delete(Object daoObj, StringBuffer errorStackTrace) {
 		throw new RuntimeException("For testing, to force rollback in cascadeDelete");
@@ -261,6 +262,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 
 		return retval;
 	}
+
 	
 	private void deleteCundc(CundfDao cundfDao, StringBuffer errorStackTrace) {
 		cundcDaoServices.deleteAll(cundfDao.getFirma(), cundfDao.getKundnr(), errorStackTrace);
@@ -284,8 +286,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(e);
-			e.printStackTrace();
+			logger.info(writer.toString());
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			return false;
 		}

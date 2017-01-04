@@ -135,7 +135,7 @@
         Db stuff, to be albe to run beans outside container.
         Requirement to run, dependency to:
         - tomcat-dbcp.jar
-        - tomcat-juli.jar
+        -tomcat-juli.jar
       /////////////////
    -->
 

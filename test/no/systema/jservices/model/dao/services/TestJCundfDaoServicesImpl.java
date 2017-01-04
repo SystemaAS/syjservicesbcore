@@ -58,7 +58,7 @@ public class TestJCundfDaoServicesImpl {
 		
 	}	
 
-	@Test
+	//@Test
 	public final void testCreateAndDelete() {
 		createCundfWithCundc();
 		
