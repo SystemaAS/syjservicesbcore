@@ -247,7 +247,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 					} catch (Exception e) {
 						logger.info("Setting cascadeDelete() to rollback only.");
 						ts.setRollbackOnly();
-						throw e;
+						//throw e;
 					}
 				}
 			});

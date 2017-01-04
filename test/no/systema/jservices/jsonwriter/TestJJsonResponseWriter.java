@@ -37,7 +37,7 @@ public class TestJJsonResponseWriter {
 
     
     private List<IDao> getCundcDaoList() {
-    	List<IDao> cundcList = new ArrayList<>();
+    	List<IDao> cundcList = new ArrayList();
     	CundcDao dao1 = new CundcDao();
     	dao1.setCcompn("1");
     	dao1.setCconta("Username");

@@ -7,6 +7,7 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.FirmMapper;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
@@ -191,4 +192,8 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
 	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}                                    
 
+	private TransactionTemplate transactionTemplate = null;                                                            
+	public void setTransactionTemplate( TransactionTemplate transactionTemplate) {this.transactionTemplate = transactionTemplate;}          
+	public TransactionTemplate getTransactionTemplate() {return this.transactionTemplate;}
+	
 }
