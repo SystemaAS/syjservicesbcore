@@ -56,6 +56,7 @@
   </bean>
   <bean id="firmDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+      <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>
   </bean>
   <bean id="kodtaDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.KodtaDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>

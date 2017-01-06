@@ -62,7 +62,7 @@ public class BcoreMaintResponseOutputterController_FIRM {
 	 * FreeForm Source:
 	 * 	 File: 		FIRM
 	 * 	 PGM:		SYFA30 ?	
-	 * 	 Member: 	MAINT - AVD - Maintenance - SELECT LIST or SELECT SPECIFIC
+	 * 	 Member: 	MAINT - FIRM - Maintenance - SELECT LIST or SELECT SPECIFIC
 	 *  
 	 * 
 	 * @return
@@ -136,18 +136,18 @@ public class BcoreMaintResponseOutputterController_FIRM {
 	/**
 	 * 
 	 * Update Database DML operations
-	 * File: 	KODTA, subtables: NAVAVD, KODTASID
-	 * PGM:		SYFA14
-	 * Member: 	MAINT AVD Maintenance - SELECT LIST or SELECT SPECIFIC
+	 * File: 	FIRM, subtables: ...
+	 * PGM:		SYFA30
+	 * Member: 	MAINT FIRM Maintenance - SELECT LIST or SELECT SPECIFIC
 	 * 
-	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsSYFA4R_U.do?user=OSCAR&mode=U/A/D
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsSYFIRMR_U.do?user=OSCAR&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
 	 * @return
 	 * 
 	 */
-	/*
+
 	@RequestMapping(value="syjsSYFIRMR_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsR_U( HttpSession session, HttpServletRequest request) {
@@ -155,7 +155,7 @@ public class BcoreMaintResponseOutputterController_FIRM {
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.info("Inside syjsSYFA14R_U.do");
+			logger.info("Inside syjsSYFIRMR_U.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
@@ -167,18 +167,18 @@ public class BcoreMaintResponseOutputterController_FIRM {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 			
 			//bind attributes is any
-			KodtaDao dao = new KodtaDao();
+			FirmDao dao = new FirmDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYFA14R_U rulerLord = new SYFA14R_U();
+            SYFIRMR_U rulerLord = new SYFIRMR_U();
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("D".equals(mode)){
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						dmlRetval = this.kodtaDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.firmDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -187,14 +187,14 @@ public class BcoreMaintResponseOutputterController_FIRM {
 					}
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode)){
-						List<KodtaDao> list = new ArrayList<KodtaDao>();
+						List<FirmDao> list = new ArrayList<FirmDao>();
 						//must complete numeric values to avoid <null> on those
 						rulerLord.updateNumericFieldsIfNull(dao);
 						
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
-							list = this.kodtaDaoServices.findById(dao.getKoaavd(), dbErrorStackTrace);
+							list = this.firmDaoServices.findById(dao.getFifirm(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output
@@ -202,11 +202,12 @@ public class BcoreMaintResponseOutputterController_FIRM {
 								status = "error";
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
-								dmlRetval = this.kodtaDaoServices.insert(dao, dbErrorStackTrace);
+								logger.info("Before INSERT (not active yet!)...");
+								//dmlRetval = this.firmDaoServices.insert(dao, dbErrorStackTrace);
 							}
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							dmlRetval = this.kodtaDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = this.firmDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{
@@ -247,7 +248,7 @@ public class BcoreMaintResponseOutputterController_FIRM {
 		session.invalidate();
 		return sb.toString();
 	}
-	*/
+	
 	//----------------
 	//WIRED SERVICES
 	//----------------

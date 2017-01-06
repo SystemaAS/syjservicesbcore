@@ -7,7 +7,10 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.FirmMapper;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
@@ -130,29 +133,136 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 	/**
 	 * UPDATE
 	 */
-	public int update(Object daoObj, StringBuffer errorStackTrace){
+	public int update(final Object daoObj, final StringBuffer errorStackTrace){
 		int retval = 0;
-		
 		try{
-			/* TODO
-			KodtaDao dao = (KodtaDao)daoObj;
-			StringBuffer sql = new StringBuffer();
-			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE firm SET xxx = ? ");
-			sql.append(" WHERE xxx = ? ");
-			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getXXX(), 
-				//WHERE
-				dao.getKoaavd() } );
-			*/
+			//DEBUG logger.info("transactionTemplate:"  + transactionTemplate);
+			retval = transactionTemplate.execute(new TransactionCallback<Integer>() {
+				@Override
+				public Integer doInTransaction(TransactionStatus transactionStatus) {
+					int retvalue = 0;
+					try{
+						updateFirm(daoObj, errorStackTrace);
+						updateFirfb(daoObj, errorStackTrace);
+						updateFirmkos(daoObj, errorStackTrace);
+						
+					}catch(Exception e){
+						logger.info("Setting update to rollback only.");
+						transactionStatus.setRollbackOnly();
+						//
+						Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+						//logger.info(writer.toString());
+						//Chop the message to comply to JSON-validation
+						errorStackTrace.append(dbErrorMessageMgr.getJsonValidDbException(writer));
+						retvalue = -1;
+					}
+					return retvalue;
+				}
+			});
+			
 		}catch(Exception e){
-			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			Writer writer = dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());
 			//Chop the message to comply to JSON-validation
-			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			errorStackTrace.append(dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
-		
+		return retval;
+	}
+	
+	
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 * @throws Exception (Important Note: this throws MUST be in place in order to obey the transaction manager caller method). Hence the ability to Rollback  
+	 */
+	private int updateFirm(Object daoObj, StringBuffer errorStackTrace) throws Exception{
+		int retval = 0;
+		try{
+			FirmDao dao = (FirmDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug fikdul: " + dao.getFikdul() + " fifirm:" + dao.getFifirm());
+			
+			sql.append(" UPDATE firm SET fift = ?, fikdul = ?, filtb = ?, filfb = ?, fiups = ?, fiupm = ?, ");
+			sql.append(" fikdt = ?, fiatk = ?, fiurli = ?, fiurle = ?, fiurfi = ?, fiurfe = ?, fiurfl = ?, " );
+			sql.append(" fiurbi = ?, fiurbe = ?, fiurbl = ?, fiursi = ?, fiurse = ?, fimvas = ?, fivalk = ?, ficurr = ?, fitax = ?, fidtfm = ?, fideci = ?, fiecon = ?, fiavte = ?, ");
+			sql.append(" fikont = ?, filand = ?, fitdvi = ?, fistfn = ?, fistfe = ?, fistft = ?, file12 = ?, file22 = ?, file11 = ?, file21 = ?, file31 = ?, file41 = ?, fitran = ?, ");
+			sql.append(" fikrtn = ?, fitax2 = ?, fitaxd = ?, fisadk = ?, filibf = ?, filibo = ?, innutl = ?, zipcod = ? ");
+			//WHERE
+			sql.append(" WHERE fifirm = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getFift(), dao.getFikdul(), dao.getFiltb(), dao.getFilfb(), dao.getFiups(), dao.getFiupm(), 
+				dao.getFikdt(), dao.getFiatk(), dao.getFiurli(), dao.getFiurle(), dao.getFiurfi(), dao.getFiurfe(), dao.getFiurfl(), 
+				dao.getFiurbi(), dao.getFiurbe(), dao.getFiurbl(), dao.getFiursi(), dao.getFiurse(), dao.getFimvas(), dao.getFivalk(), dao.getFicurr(), dao.getFitax(), dao.getFidtfm(), dao.getFideci(), dao.getFiecon(), dao.getFiavte(), 
+				dao.getFikont(), dao.getFiland(), dao.getFitdvi(), dao.getFistfn(), dao.getFistfe(), dao.getFistft(), dao.getFile12(), dao.getFile22(), dao.getFile11(), dao.getFile21(), dao.getFile31(), dao.getFile41(), dao.getFitran(), 
+				dao.getFikrtn(), dao.getFitax2(), dao.getFitaxd(), dao.getFisadk(), dao.getFilibf(), dao.getFilibo(), dao.getInnutl(), dao.getZipcod(),  
+				
+				//WHERE
+				dao.getFifirm() } );
+			
+		}catch(Exception e){
+			logger.info(e.toString());
+			//Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+			//logger.info(writer.toString());
+			throw e;
+		}	
+		return retval;
+	}
+	/**
+	 * FIRFB
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 * 
+	 */
+	private int updateFirfb(Object daoObj, StringBuffer errorStackTrace) throws Exception{
+		int retval = 0;
+		try{
+			FirmDao dao = (FirmDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" UPDATE firfb SET fifbnr = ?, fitpnr = ?, firecn = ?, firecm = ?, fisnla = ?, fisnle = ?, fiidla = ?, fiidle = ?, fiidnr = ?, fiidmx = ?  ");
+			sql.append(" WHERE fifirm = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getFifbnr(), dao.getFitpnr(), dao.getFirecn(), dao.getFirecm(), 
+				dao.getFisnla(), dao.getFisnle(), dao.getFiidla(), dao.getFiidle(), dao.getFiidnr(), dao.getFiidmx(), 
+				//WHERE
+				dao.getFifirm() } );
+		}catch(Exception e){
+			logger.info(e.toString());
+			//Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+			//logger.info(writer.toString());
+			throw e;
+		}
+		return retval;
+	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 * @throws Exception
+	 */
+	private int updateFirmkos(Object daoObj, StringBuffer errorStackTrace) throws Exception{
+		int retval = 0;
+		try{
+			FirmDao dao = (FirmDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" UPDATE firmkos SET tillat = ?, interr = ?  ");
+			sql.append(" WHERE fifirm = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getTillat(), dao.getInterr(), 
+				//WHERE
+				dao.getFifirm() } );
+		}catch(Exception e){
+			logger.info(e.toString());
+			//Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+			//logger.info(writer.toString());
+			throw e;
+		}
 		return retval;
 	}
 	
