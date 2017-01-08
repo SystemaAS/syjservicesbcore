@@ -145,6 +145,8 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 						updateFirm(daoObj, errorStackTrace);
 						updateFirfb(daoObj, errorStackTrace);
 						updateFirmkos(daoObj, errorStackTrace);
+						//TODO ... rest of child tables
+						
 						
 					}catch(Exception e){
 						logger.info("Setting update to rollback only.");
