@@ -40,7 +40,7 @@ public class TestJCundfDaoServicesImpl {
 	}
 	
 	
-	@Test
+	//@Test
 	public final void testDeleteWithRollback() {
 		createCundfWithCundc();
 		

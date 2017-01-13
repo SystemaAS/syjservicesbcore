@@ -220,6 +220,9 @@ public class CundfDao implements Serializable, IDao {
 	public void setEori (String value){ this.eori = value;   }   
 	public String getEori (){ return this.eori;   }              
 	
+	private String aktkod = "";                                
+	public void setAktkod (String value){ this.aktkod = value;   }   
+	public String getAktkod (){ return this.aktkod;   }              
 	
 
 }
