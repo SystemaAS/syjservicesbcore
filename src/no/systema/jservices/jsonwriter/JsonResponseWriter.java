@@ -53,6 +53,33 @@ public class JsonResponseWriter {
 		
 		return sb.toString();
 	}
+	/**
+	 * 
+	 * @param field
+	 * @param fieldValue
+	 * @return
+	 */
+	public String setJsonResult_Common_GetField(String field, String fieldValue ){
+		StringBuffer sb = new StringBuffer();
+		//build the return JSON
+		sb.append(JsonConstants.JSON_START);
+		sb.append(this.setFieldQuotes("user") + ":" + this.setFieldQuotes("none") + ",");
+		sb.append(this.setFieldQuotes("errMsg") + ":" + this.setFieldQuotes("") + ",");
+		sb.append(this.setFieldQuotes("list") + ":");
+		sb.append(JsonConstants.JSON_OPEN_LIST);
+		if(fieldValue!=null){
+			sb.append(JsonConstants.JSON_OPEN_LIST_RECORD);
+			//doIt
+			sb.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + this.jsonFixMgr.cleanRecord(fieldValue) + JsonConstants.JSON_QUOTES);;
+			//close the list
+			sb.append(JsonConstants.JSON_CLOSE_LIST_RECORD);
+
+		}
+		sb.append(JsonConstants.JSON_CLOSE_LIST);
+		sb.append(JsonConstants.JSON_END);
+		
+		return sb.toString();
+	}
 
 	
 	/**
