@@ -38,7 +38,7 @@ public class FirmLoginDaoServicesImpl implements FirmLoginDaoServices {
 			name = (String)jdbcTemplate.queryForObject( sql, String.class);
 			
 		}catch(Exception e){
-			//nothing
+			logger.info(e.toString());
 		}
 		return name;
 	}

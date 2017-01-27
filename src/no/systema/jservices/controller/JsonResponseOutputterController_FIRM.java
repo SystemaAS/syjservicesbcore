@@ -105,7 +105,7 @@ public class JsonResponseOutputterController_FIRM {
 					sb.append(jsonWriter.setJsonResult_Common_GetField("fifirm", companyCode));
 				}else{
 					//write JSON error output
-					errMsg = "ERROR on SELECT: list is NULL?  Try to check: <DaoServices>.getList";
+					errMsg = "ERROR on SELECT: list is NULL?  Try to check: <DaoServices>.getCompanyCode";
 					status = "error";
 					logger.info("After SELECT:" + " " + status + errMsg );
 					sb.append(jsonWriter.setJsonSimpleErrorResult("none User", errMsg, status, dbErrorStackTrace));

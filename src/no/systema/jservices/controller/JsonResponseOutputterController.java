@@ -66,7 +66,7 @@ public class JsonResponseOutputterController {
 	
 	/**
 	 * Test request for db table CUNDF
-	 * http://localhost:8080/syjservicestn/syjsJS001.do?user=OSCAR
+	 * http://localhost:8080/syjservicesbcore/syjsJS001.do?user=OSCAR
 	 * @return
 	 * 
 	 * 
@@ -111,7 +111,7 @@ public class JsonResponseOutputterController {
 	
 	/**
 	 * Test call for db connection = OK
-	 * http://localhost:8080/syjservices/syjsdbconn.do?user=OSCAR
+	 * http://localhost:8080/syjservicesbcore/syjsdbconn.do?user=OSCAR
 	 * @return
 	 */
 	@RequestMapping(value="syjsdbconn.do", method={RequestMethod.GET, RequestMethod.POST})
