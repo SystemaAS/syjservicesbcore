@@ -27,15 +27,17 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		final Object[] params = new Object[]{ paramKnavn }; 
         return this.jdbcTemplate.query( sql, params, new CundfMapper());
         */
-		String sql = this.getSELECT_FROM_CLAUSE();
-		return this.jdbcTemplate.query( sql, new CundfMapper());
+		//String sql = this.getSELECT_FROM_CLAUSE();
+		//return this.jdbcTemplate.query( sql, new CundfMapper());
+		return new ArrayList<CundfDao>();
 	}
 	
 	@Override
 	public List<CundfDao> getList(StringBuffer errorStackTrace){
-		
-		String sql = this.getSELECT_FROM_CLAUSE();
-		return this.jdbcTemplate.query( sql, new CundfMapper());
+		//Too much data. Must be at least one filter condition
+		//OBSOLETE-->String sql = this.getSELECT_FROM_CLAUSE();
+		//OBSOLETE-->return this.jdbcTemplate.query( sql, new CundfMapper());
+		return new ArrayList<CundfDao>();
 	}
 	
 	@Override

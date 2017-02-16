@@ -145,8 +145,11 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 						updateFirm(daoObj, errorStackTrace);
 						updateFirfb(daoObj, errorStackTrace);
 						updateFirmkos(daoObj, errorStackTrace);
-						//TODO ... rest of child tables
-						
+						updateFirku(daoObj, errorStackTrace);
+						updateFirsta(daoObj, errorStackTrace);
+						updateKodtv(daoObj, errorStackTrace);
+						updateFirml1(daoObj, errorStackTrace);
+						updateFirtr(daoObj, errorStackTrace);
 						
 					}catch(Exception e){
 						logger.info("Setting update to rollback only.");
@@ -267,7 +270,157 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 		}
 		return retval;
 	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 * @throws Exception
+	 */
+	private int updateFirku(Object daoObj, StringBuffer errorStackTrace) throws Exception{
+		int retval = 0;
+		try{
+			FirmDao dao = (FirmDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" UPDATE firku SET fikufr = ?, fikuti = ?, fikune = ?  ");
+			sql.append(" WHERE fifirm = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getFikufr(), dao.getFikuti(), dao.getFikune(),
+				//WHERE
+				dao.getFifirm() } );
+		}catch(Exception e){
+			logger.info(e.toString());
+			//Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+			//logger.info(writer.toString());
+			throw e;
+		}
+		return retval;
+	}
 	
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 * @throws Exception
+	 */
+	private int updateFirsta(Object daoObj, StringBuffer errorStackTrace) throws Exception{
+		int retval = 0;
+		try{
+			FirmDao dao = (FirmDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" UPDATE firsta SET fista = ?, fistb = ?, fistc = ?, fistd = ?, fiste = ?, fistf = ?,  ");
+			sql.append(" fistg = ?, fisth = ?, fisti = ?, fistj = ?, fistk = ?, fistl = ?,  ");
+			sql.append(" fistm = ?, fistn = ?, fisto = ?, fistp = ?, fistq = ?, fistr = ?,  ");
+			sql.append(" fists = ?, fistt = ?, fistu = ?, fistv = ?, fistw = ?, fistx = ?,  ");
+			sql.append(" fisty = ?, fistz = ?, fistnr = ?  ");
+			
+			sql.append(" WHERE fifirm = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getFista(), dao.getFistb(), dao.getFistc(), dao.getFistd(), dao.getFiste(), dao.getFistf(),
+				dao.getFistg(), dao.getFisth(), dao.getFisti(), dao.getFistj(), dao.getFistk(), dao.getFistl(),
+				dao.getFistm(), dao.getFistn(), dao.getFisto(), dao.getFistp(), dao.getFistq(), dao.getFistr(),
+				dao.getFists(), dao.getFistt(), dao.getFistu(), dao.getFistv(), dao.getFistw(), dao.getFistx(),
+				dao.getFisty(), dao.getFistz(), dao.getFistnr(),
+				
+				//WHERE
+				dao.getFifirm() } );
+		}catch(Exception e){
+			logger.info(e.toString());
+			//Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+			//logger.info(writer.toString());
+			throw e;
+		}
+		return retval;
+	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 * @throws Exception
+	 */
+	private int updateKodtv(Object daoObj, StringBuffer errorStackTrace) throws Exception{
+		int retval = 0;
+		try{
+			FirmDao dao = (FirmDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" UPDATE kodtv SET kovpro = ?  ");
+			sql.append(" WHERE kovavd = 0 ");
+			sql.append(" AND kovuni = 'V' ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getKovpro() } );
+			
+		}catch(Exception e){
+			logger.info(e.toString());
+			//Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+			//logger.info(writer.toString());
+			throw e;
+		}
+		return retval;
+	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 * @throws Exception
+	 */
+	private int updateFirml1(Object daoObj, StringBuffer errorStackTrace) throws Exception{
+		int retval = 0;
+		try{
+			FirmDao dao = (FirmDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			sql.append(" UPDATE firml1 SET l1kjor = ?, l1stdn = ?, l1datn = ?  ");
+			sql.append(" WHERE l1firm = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getL1kjor(), dao.getL1stdn(), dao.getL1datn(),
+				//WHERE
+				dao.getFifirm() } );
+			
+			
+		}catch(Exception e){
+			logger.info(e.toString());
+			//Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+			//logger.info(writer.toString());
+			throw e;
+		}
+		return retval;
+	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 * @throws Exception
+	 */
+	private int updateFirtr(Object daoObj, StringBuffer errorStackTrace) throws Exception{
+		int retval = 0;
+		try{
+			FirmDao dao = (FirmDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug"); 
+			sql.append(" UPDATE firtr SET favreg = ?, fibise = ?, fferk = ?, fibrut = ?, fikonv = ?    ");
+			sql.append(" WHERE fifirm = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getFavreg(), dao.getFibise(), dao.getFferk(),
+				dao.getFibrut(), dao.getFikonv(),
+				//WHERE
+				dao.getFifirm() } );
+			
+			
+		}catch(Exception e){
+			logger.info(e.toString());
+			//Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+			//logger.info(writer.toString());
+			throw e;
+		}
+		return retval;
+	}
 	/**
 	 * DELETE
 	 */
