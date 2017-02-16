@@ -46,10 +46,6 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   
-<<<<<<< HEAD
-=======
-  
->>>>>>> branch 'master' of https://github.com/SystemaAS/syjservicesbcore.git
   <bean id="navavdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.NavavdDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
