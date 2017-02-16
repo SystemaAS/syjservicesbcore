@@ -1,6 +1,8 @@
 package no.systema.jservices.controller.rules;
 
 
+import no.systema.jservices.common.dao.ValufDao;
+import no.systema.jservices.common.dao.services.ValufDaoService;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.jservices.model.dao.services.CundfDaoServices;
@@ -15,12 +17,14 @@ public class SYCUNDFR_U {
 	private JsonResponseWriter jsonWriter = new JsonResponseWriter();
 	private MessageSourceHelper messageSourceHelper = new MessageSourceHelper();
 	private CundfDaoServices cundfDaoServices = null;
+	private ValufDaoService valufDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
 
-	public SYCUNDFR_U(CundfDaoServices cundfDaoServices,  StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		this.cundfDaoServices = cundfDaoServices;
+		this.valufDaoService = valufDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
 	}	
@@ -36,13 +40,19 @@ public class SYCUNDFR_U {
 	public boolean isValidInput(CundfDao dao, String user, String mode) {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
-			if ((dao.getPostnr() != null && !"".equals(dao.getPostnr())) && (dao.getBetbet() != null && !"".equals(dao.getBetbet())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
+			//if ((dao.getPostnr() != null && !"".equals(dao.getPostnr())) && (dao.getBetbet() != null && !"".equals(dao.getBetbet())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
+			if ((dao.getKundnr() != null && !"".equals(dao.getKundnr())) && (dao.getKnavn() != null && !"".equals(dao.getKnavn())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
 				if ("A".equals(mode)  &&  existInCundf(dao.getKundnr() )) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.kundnr", new Object[] { dao.getKundnr()}), "error", dbErrors));
 					retval = false;
 				}
-
+				if (!existInValuf(dao.getValkod())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.valkod", new Object[] { dao.getValkod()}), "error", dbErrors));
+					retval = false;					
+				}
+	
 				// Check språk
 /*				if (existInTrkodf(user, dao.getSpraak())) {
 					return false;
@@ -161,6 +171,18 @@ public class SYCUNDFR_U {
 			return true;
 		}
 	}
+	
+	
+	private boolean existInValuf(String valkod) {
+		ValufDao qDao = new ValufDao();
+		qDao.setValkod(valkod);
+		boolean exists = valufDaoService.existInFirma(qDao);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}	
 
 //	Oklart vad språk hanteras, mail ligger hos Christer
 /*	private boolean existInTrkodf(String userName,  String tkKode) {

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
+import no.systema.jservices.common.dao.services.ValufDaoService;
 //rules
 import no.systema.jservices.controller.rules.SYCUNDFR_U;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -172,7 +173,7 @@ public class JsonResponseOutputterController_CUNDF {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U(cundfDaoServices, sb, dbErrorStackTrace); 
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(cundfDaoServices, valufDaoService, sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
@@ -293,5 +294,13 @@ public class JsonResponseOutputterController_CUNDF {
 	public void setFirkuDaoServices (FirkuDaoServices value){ this.firkuDaoServices = value; }
 	public FirkuDaoServices getFirkuDaoServices(){ return this.firkuDaoServices; }	
 
+	@Qualifier ("valufDaoService")
+	private ValufDaoService valufDaoService;
+	@Autowired
+	@Required
+	public void setValufDaoService (ValufDaoService value){ this.valufDaoService = value; }
+	public ValufDaoService getValufDaoService(){ return this.valufDaoService; }		
+	
+	
 }
 
