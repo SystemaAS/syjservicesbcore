@@ -2,6 +2,7 @@ package no.systema.jservices.controller.rules;
 
 
 import no.systema.jservices.common.dao.ValufDao;
+import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundfDao;
@@ -18,13 +19,15 @@ public class SYCUNDFR_U {
 	private MessageSourceHelper messageSourceHelper = new MessageSourceHelper();
 	private CundfDaoServices cundfDaoServices = null;
 	private ValufDaoService valufDaoService = null;
+	private KodtlkDaoService kodtlkDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
 
-	public SYCUNDFR_U(CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		this.cundfDaoServices = cundfDaoServices;
 		this.valufDaoService = valufDaoService;
+		this.kodtlkDaoService = kodtlkDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
 	}	
@@ -51,12 +54,13 @@ public class SYCUNDFR_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.valkod", new Object[] { dao.getValkod()}), "error", dbErrors));
 					retval = false;					
 				}
-	
-				// Check språk
-/*				if (existInTrkodf(user, dao.getSpraak())) {
-					return false;
-				}
-*/			
+
+				if ( (dao.getSyland() != null  && !"".equals(dao.getSyland()) ) && !existInKodtlk(dao.getSyland())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syland", new Object[] { dao.getSyland()}), "error", dbErrors));
+					retval = false;					
+				}				
+				
 			} else{ 
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 						messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.mandatory", null), "error", dbErrors));
@@ -183,21 +187,13 @@ public class SYCUNDFR_U {
 		}
 	}	
 
-//	Oklart vad språk hanteras, mail ligger hos Christer
-/*	private boolean existInTrkodf(String userName,  String tkKode) {
-		boolean exists = this.trkodfDaoServices.exists(TransitKoder..., tkKode);
+	private boolean existInKodtlk(String syland) {
+		boolean exists = kodtlkDaoService.landKodeExist(syland);
 		if (!exists) {
 			return false;
 		} else {
-			errors.append(jsonWriter.setJsonSimpleErrorResult(userName,
-					messageSourceHelper.getMessage("systema.tvinn.sad.ncts.export.error.tkkode", new Object[] { tkKode, tkUnik.getTransitKode() }), "error", dbErrors));
 			return true;
-			
 		}
-	}	
-	*/
-	
-	
-	
+	}		
 	
 }
