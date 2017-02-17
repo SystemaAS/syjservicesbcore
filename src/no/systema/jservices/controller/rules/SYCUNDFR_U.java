@@ -3,6 +3,7 @@ package no.systema.jservices.controller.rules;
 
 import no.systema.jservices.common.dao.ValufDao;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
+import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundfDao;
@@ -20,14 +21,16 @@ public class SYCUNDFR_U {
 	private CundfDaoServices cundfDaoServices = null;
 	private ValufDaoService valufDaoService = null;
 	private KodtlkDaoService kodtlkDaoService = null;
+	private KodtotyDaoService kodtotyDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
 
-	public SYCUNDFR_U(CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		this.cundfDaoServices = cundfDaoServices;
 		this.valufDaoService = valufDaoService;
 		this.kodtlkDaoService = kodtlkDaoService;
+		this.kodtotyDaoService = kodtotyDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
 	}	
@@ -59,7 +62,14 @@ public class SYCUNDFR_U {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syland", new Object[] { dao.getSyland()}), "error", dbErrors));
 					retval = false;					
-				}				
+				}	
+				
+				if ( (dao.getSyopdt() != null  && !"".equals(dao.getSyopdt()) ) && !existInKodtoty(dao.getSyopdt())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syopdt", new Object[] { dao.getSyopdt()}), "error", dbErrors));
+					retval = false;					
+				}	
+				
 				
 			} else{ 
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -195,5 +205,16 @@ public class SYCUNDFR_U {
 			return true;
 		}
 	}		
+
+	private boolean existInKodtoty(String syopdt) {
+		boolean exists = kodtotyDaoService.oppdragsTypeExist(syopdt);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}		
+	
+	
 	
 }

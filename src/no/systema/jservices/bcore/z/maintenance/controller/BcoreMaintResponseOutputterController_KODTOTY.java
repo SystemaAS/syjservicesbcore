@@ -17,31 +17,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import no.systema.jservices.common.dao.KodtlkDao;
-import no.systema.jservices.common.dao.services.KodtlkDaoService;
+import no.systema.jservices.common.dao.KodtotyDao;
+import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
-public class BcoreMaintResponseOutputterController_KODTLK {
-	private static final Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_KODTLK.class.getName());
+public class BcoreMaintResponseOutputterController_KODTOTY {
+	private static final Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_KODTOTY.class.getName());
 
 	
 	/**
 	 * FreeForm Source:
-	 * File: 	KODTLK
+	 * File: 	KODTOTY
 	 * 
-	 * @return
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsKODTLK.do?user=OSCAR
-	 * @Example SELECT list: http://gw.systema.no:8080/syjservicesbcore/syjsKODTLK.do?user=OSCAR
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsKODTOTY.do?user=OSCAR
 	 * 
 	 */
-	@RequestMapping(value="syjsKODTLK.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="syjsKODTOTY.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String brreg(HttpSession session, HttpServletRequest request) {
-		JsonResponseWriter2<KodtlkDao> jsonWriter = new JsonResponseWriter2<KodtlkDao>();
+		JsonResponseWriter2<KodtotyDao> jsonWriter = new JsonResponseWriter2<KodtotyDao>();
 		StringBuffer sb = new StringBuffer();
-		List<KodtlkDao> kodtlkDaoList = null;
+		List<KodtotyDao> kodtotyDaoList = null;
 		
 		try {
 			String user = request.getParameter("user");
@@ -52,13 +50,13 @@ public class BcoreMaintResponseOutputterController_KODTLK {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
 			if ((userName != null && !"".equals(userName))) {
-				kodtlkDaoList = kodtlkDaoService.getLandKoder();
-				if (kodtlkDaoList != null) {
-						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, kodtlkDaoList));
+				kodtotyDaoList = kodtotyDaoService.getOppdragstyper();
+				if (kodtotyDaoList != null) {
+						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, kodtotyDaoList));
 				} else {
-					errMsg = "ERROR on SELECT: Can not find KodtlkDao list";
+					errMsg = "ERROR on SELECT: Can not find KodtotyDao list";
 					status = "error";
-					logger.info(status + errMsg);
+					logger.info( status + errMsg);
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				}
 
@@ -89,12 +87,12 @@ public class BcoreMaintResponseOutputterController_KODTLK {
 	public void setBridfDaoServices (BridfDaoServices value){ this.bridfDaoServices = value; }
 	public BridfDaoServices getBridfDaoServices(){ return this.bridfDaoServices; }	
 
-	@Qualifier ("kodtlkDaoService")
-	private KodtlkDaoService kodtlkDaoService;
+	@Qualifier ("kodtotyDaoService")
+	private KodtotyDaoService kodtotyDaoService;
 	@Autowired
 	@Required
-	public void setKodtlkDaoService (KodtlkDaoService value){ this.kodtlkDaoService = value; }
-	public KodtlkDaoService getKodtlkDaoService(){ return this.kodtlkDaoService; }		
+	public void setKodtotyDaoService (KodtotyDaoService value){ this.kodtotyDaoService = value; }
+	public KodtotyDaoService getKodtotyDaoService(){ return this.kodtotyDaoService; }		
 	
 	
 }

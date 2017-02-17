@@ -22,6 +22,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
+import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
 //rules
 import no.systema.jservices.controller.rules.SYCUNDFR_U;
@@ -174,7 +175,7 @@ public class JsonResponseOutputterController_CUNDF {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U(cundfDaoServices, valufDaoService, kodtlkDaoService ,sb, dbErrorStackTrace); 
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService ,sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
@@ -308,6 +309,13 @@ public class JsonResponseOutputterController_CUNDF {
 	@Required
 	public void setKodtlkDaoService (KodtlkDaoService value){ this.kodtlkDaoService = value; }
 	public KodtlkDaoService getKodtlkDaoService(){ return this.kodtlkDaoService; }		
+	
+	@Qualifier ("kodtotyDaoService")
+	private KodtotyDaoService kodtotyDaoService;
+	@Autowired
+	@Required
+	public void setKodtotyDaoService (KodtotyDaoService value){ this.kodtotyDaoService = value; }
+	public KodtotyDaoService getKodtotyDaoService(){ return this.kodtotyDaoService; }			
 	
 }
 
