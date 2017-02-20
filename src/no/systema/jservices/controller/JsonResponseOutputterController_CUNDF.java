@@ -193,7 +193,7 @@ public class JsonResponseOutputterController_CUNDF {
 					if (rulerLord.isValidInput(dao, userName, mode)) {
 						rulerLord.updateNumericFieldsIfNull(dao);
 						if ("A".equals(mode)) {
-							addFieldsToDao(dao, dbErrorStackTrace);
+							addFieldsToDaoWhenNew(dao, dbErrorStackTrace);
 							dmlRetval = cundfDaoServices.insert(dao, dbErrorStackTrace);
 						} else if ("U".equals(mode)) {
 							dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
@@ -239,7 +239,7 @@ public class JsonResponseOutputterController_CUNDF {
 	}
 	
 	
-	private void addFieldsToDao(CundfDao dao, StringBuffer dbErrorStackTrace) {
+	private void addFieldsToDaoWhenNew(CundfDao dao, StringBuffer dbErrorStackTrace) {
 		int knavnLength = dao.getKnavn().length();
 		if (knavnLength > 10) {
 			dao.setSonavn(dao.getKnavn().substring(0, 10));
@@ -262,6 +262,8 @@ public class JsonResponseOutputterController_CUNDF {
 			String kundNr = firkuDaoServices.getFikune(dbErrorStackTrace);
 			dao.setKundnr(kundNr);
 		}
+		
+		dao.setAktkod("I");  //Always set to Adressekunde when new.
 		
 	}
 
