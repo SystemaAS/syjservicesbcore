@@ -1,7 +1,9 @@
 package no.systema.jservices.controller.rules;
 
 
+import no.systema.jservices.common.dao.KodtlikDao;
 import no.systema.jservices.common.dao.ValufDao;
+import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
@@ -21,15 +23,17 @@ public class SYCUNDFR_U {
 	private CundfDaoServices cundfDaoServices = null;
 	private ValufDaoService valufDaoService = null;
 	private KodtlkDaoService kodtlkDaoService = null;
+	private KodtlikDaoService kodtlikDaoService = null;
 	private KodtotyDaoService kodtotyDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
 
-	public SYCUNDFR_U(CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		this.cundfDaoServices = cundfDaoServices;
 		this.valufDaoService = valufDaoService;
 		this.kodtlkDaoService = kodtlkDaoService;
+		this.kodtlikDaoService = kodtlikDaoService;
 		this.kodtotyDaoService = kodtotyDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
@@ -67,6 +71,12 @@ public class SYCUNDFR_U {
 				if ( (dao.getSyopdt() != null  && !"".equals(dao.getSyopdt()) ) && !existInKodtoty(dao.getSyopdt())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syopdt", new Object[] { dao.getSyopdt()}), "error", dbErrors));
+					retval = false;					
+				}	
+
+				if ( (dao.getSylikv() != null  && !"".equals(dao.getSylikv()) ) && !existInKodtlik(dao.getSylikv())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.sylikv", new Object[] { dao.getSylikv()}), "error", dbErrors));
 					retval = false;					
 				}	
 				
@@ -215,6 +225,16 @@ public class SYCUNDFR_U {
 		}
 	}		
 	
-	
+	private boolean existInKodtlik(String sylikv) {
+		KodtlikDao qDao = new KodtlikDao();
+		qDao.setKlikod(sylikv);
+		boolean exists = kodtlikDaoService.exist(qDao);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}	
+		
 	
 }

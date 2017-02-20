@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
+import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
@@ -175,7 +176,7 @@ public class JsonResponseOutputterController_CUNDF {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U(cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService ,sb, dbErrorStackTrace); 
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
@@ -309,6 +310,13 @@ public class JsonResponseOutputterController_CUNDF {
 	@Required
 	public void setKodtlkDaoService (KodtlkDaoService value){ this.kodtlkDaoService = value; }
 	public KodtlkDaoService getKodtlkDaoService(){ return this.kodtlkDaoService; }		
+
+	@Qualifier ("kodtlikDaoService")
+	private KodtlikDaoService kodtlikDaoService;
+	@Autowired
+	@Required
+	public void setKodtlikDaoService (KodtlikDaoService value){ this.kodtlikDaoService = value; }
+	public KodtlikDaoService getKodtlikDaoService(){ return this.kodtlikDaoService; }			
 	
 	@Qualifier ("kodtotyDaoService")
 	private KodtotyDaoService kodtotyDaoService;
