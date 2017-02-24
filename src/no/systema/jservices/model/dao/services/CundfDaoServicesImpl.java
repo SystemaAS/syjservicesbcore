@@ -245,6 +245,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus ts) {
 					try {
+						//TODO Delete fratxt
 						deleteCundc((CundfDao) daoObj, errorStackTrace);
 						delete(daoObj, errorStackTrace);
 					} catch (Exception e) {
