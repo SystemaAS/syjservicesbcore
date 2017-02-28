@@ -8,19 +8,24 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
 import no.systema.jservices.common.dao.FratxtDao;
 import no.systema.jservices.common.dao.KodtlkDao;
 import no.systema.jservices.common.dao.services.FratxtDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
+import no.systema.jservices.jsonwriter.JsonResponseWriter;
+import no.systema.jservices.model.dao.entities.CundcDto;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
@@ -30,16 +35,15 @@ public class BcoreMaintResponseOutputterController_FRATXT {
 	
 	/**
 	 * FreeForm Source:
-	 * File: 	KODTLK
+	 * File: 	FRATXT
 	 * 
 	 * @return
 	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsFRATXT.do?user=OSCAR&fxknr=24&delsys=A
-	 * @Example SELECT list: http://gw.systema.no:8080/syjservicesbcore/syjsKODTLK.do?user=OSCAR
 	 * 
 	 */
 	@RequestMapping(value="syjsFRATXT.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public String brreg(HttpSession session, HttpServletRequest request) {
+	public String doFratxt(HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter2<FratxtDao> jsonWriter = new JsonResponseWriter2<FratxtDao>();
 		StringBuffer sb = new StringBuffer();
 		List<FratxtDao> fratxtDaoList = null;
@@ -86,6 +90,83 @@ public class BcoreMaintResponseOutputterController_FRATXT {
 
 	}
 
+	/**
+	 * 
+	 * This method is responsible for checking mode of record.
+	 * 
+	 * Using {@link FratxtDaoService} for check if exist
+	 * 
+	 * 
+	 * Update Database DML operations File: FRATXT
+	 * 
+	 * @Example UPDATE:
+	 *          http://gw.systema.no:8080/syjservicesbcore/syjsFRATXT_U.do?user=OSCAR&fxknr=24&fxlnr=20&delsys=A&fxtxt=updatedtext&mode=U
+	 *
+	 * @param session
+	 * @param request
+	 * @return
+	 * 
+	 */
+	@RequestMapping(value = "syjsFRATXT_U.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String syjsFRATXT_U(HttpSession session, HttpServletRequest request) {	
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();
+
+		try {
+			logger.info("Inside syjsFRATXT_U.do");
+			String user = request.getParameter("user");
+			String mode = request.getParameter("mode");
+			// Check ALWAYS user in BRIDF
+			String userName = this.bridfDaoServices.findNameById(user);
+			String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+
+			FratxtDao dao = new FratxtDao();
+			FratxtDao resultDao = new FratxtDao();
+			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
+			binder.bind(request);
+			
+			if (userName != null && !"".equals(userName)) {
+				if ("D".equals(mode)) {
+					fratxtDaoService.delete(dao);
+				} else if ("A".equals(mode)) {
+					if (fratxtDaoService.exist(dao)) {
+						resultDao = fratxtDaoService.update(dao);
+					} else {
+						resultDao = fratxtDaoService.create(dao);
+					}
+				}
+				if (resultDao == null) {
+					errMsg = "ERROR on UPDATE";
+					status = "error";
+					dbErrorStackTrace.append("Could not add/update dao=" + ReflectionToStringBuilder.toString(dao));
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				} else {
+					// OK UPDATE
+					sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
+				}
+
+			} else {
+				// write JSON error output
+				errMsg = "ERROR on UPDATE";
+				status = "error";
+				dbErrorStackTrace.append("request input parameters are invalid: <user>");
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+
+		} catch (Exception e) {
+			// write std.output error output
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+		session.invalidate();
+		return sb.toString();
+		
+	}
 	
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
