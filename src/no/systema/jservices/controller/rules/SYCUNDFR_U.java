@@ -50,7 +50,7 @@ public class SYCUNDFR_U {
 	public boolean isValidInput(CundfDao dao, String user, String mode) {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
-			if ((dao.getKundnr() != null && !"".equals(dao.getKundnr())) && (dao.getKnavn() != null && !"".equals(dao.getKnavn())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
+			if ( (dao.getKnavn() != null && !"".equals(dao.getKnavn())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
 				if ("A".equals(mode)  &&  existInCundf(dao.getKundnr() )) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.kundnr", new Object[] { dao.getKundnr()}), "error", dbErrors));
