@@ -21,8 +21,9 @@
   </bean>
   <bean id="cundfDaoServices" class="no.systema.jservices.model.dao.services.CundfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
-       <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>
+      <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>
       <property name="cundcDaoServices"><ref bean="cundcDaoServices"/></property>
+      <property name="fratxtDaoService"><ref bean="fratxtDaoService"/></property>
   </bean>
   <bean id="cundcDaoServices" class="no.systema.jservices.model.dao.services.CundcDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>

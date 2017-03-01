@@ -11,6 +11,7 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
+import no.systema.jservices.common.dao.services.FratxtDaoService;
 import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.jservices.model.dao.mapper.CundfMapper;
 import no.systema.main.util.DbErrorMessageManager;
@@ -186,9 +187,9 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); //9
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "); //10
 
-			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
 			logger.info("insert::sql="+sql.toString());
-			
+*/			
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 					dao.getFirma(), dao.getKundnr(), dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(),  //8
 					dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(), //9
@@ -245,7 +246,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus ts) {
 					try {
-						//TODO Delete fratxt
+						deleteFratxt((CundfDao) daoObj, errorStackTrace);
 						deleteCundc((CundfDao) daoObj, errorStackTrace);
 						delete(daoObj, errorStackTrace);
 					} catch (Exception e) {
@@ -269,6 +270,15 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	
 	private void deleteCundc(CundfDao cundfDao, StringBuffer errorStackTrace) {
 		cundcDaoServices.deleteAll(cundfDao.getFirma(), cundfDao.getKundnr(), errorStackTrace);
+	}
+	
+	private void deleteFratxt(CundfDao cundfDao, StringBuffer errorStackTrace) {
+		try {
+			fratxtDaoService.deleteAll(cundfDao.getKundnr());
+		} catch (Exception e) {
+			logger.info("Error:", e);
+			errorStackTrace.append(e.getMessage());
+		}
 	}
 
 	@Override
@@ -327,6 +337,10 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	public void setCundcDaoServices( CundcDaoServices cundcDaoServices) {this.cundcDaoServices = cundcDaoServices;}          
 	public CundcDaoServices getCundcDaoServices() {return this.cundcDaoServices;}
 
+	private FratxtDaoService fratxtDaoService = null;                                                            
+	public void setFratxtDaoService( FratxtDaoService fratxtDaoService) {this.fratxtDaoService = fratxtDaoService;}          
+	public FratxtDaoService getFratxtDaoService() {return this.fratxtDaoService;}
+	
 	//TODO: Add more children...
 
 
