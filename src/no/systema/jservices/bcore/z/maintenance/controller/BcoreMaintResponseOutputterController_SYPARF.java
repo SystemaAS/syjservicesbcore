@@ -18,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KofastDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
 import no.systema.jservices.common.dao.SyparfDao;
 import no.systema.jservices.common.dao.services.FratxtDaoService;
 import no.systema.jservices.common.dao.services.SyparfDaoService;
+import no.systema.jservices.common.dto.SyparfDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
+import no.systema.jservices.common.values.FasteKoder;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
@@ -41,9 +45,9 @@ public class BcoreMaintResponseOutputterController_SYPARF {
 	@RequestMapping(value="syjsSYPARF.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String doSyparf(HttpSession session, HttpServletRequest request) {
-		JsonResponseWriter2<SyparfDao> jsonWriter = new JsonResponseWriter2<SyparfDao>();
+		JsonResponseWriter2<SyparfDto> jsonWriter = new JsonResponseWriter2<SyparfDto>();
 		StringBuffer sb = new StringBuffer();
-		List<SyparfDao> syparfDaoList = new ArrayList<SyparfDao>();
+		List<SyparfDto> syparfDtoList = new ArrayList<SyparfDto>();
 		String sykunr = request.getParameter("sykunr");
 		String syrecn = request.getParameter("syrecn");
 		
@@ -57,13 +61,13 @@ public class BcoreMaintResponseOutputterController_SYPARF {
 
 			if ( (userName != null && !"".equals(userName) ) && (sykunr != null && !"".equals(sykunr)) ) {
 				if (syrecn != null && !"".equals(syrecn)) {
-					SyparfDao dao = syparfDaoService.find(sykunr, syrecn);
-					syparfDaoList.add(dao);
+					SyparfDto dto = fetchRecord(sykunr, syrecn);
+					syparfDtoList.add(dto);
 				} else {
-					syparfDaoList = syparfDaoService.findAll(sykunr);
+					syparfDtoList = fetchList(sykunr);
 				}
-				if (syparfDaoList != null) {
-						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, syparfDaoList));
+				if (syparfDtoList != null) {
+						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, syparfDtoList));
 				} else {
 					errMsg = "ERROR on SELECT: Can not find SyparfDao list";
 					status = "error";
@@ -87,6 +91,54 @@ public class BcoreMaintResponseOutputterController_SYPARF {
 		session.invalidate();
 		return sb.toString();
 
+	}
+
+	private SyparfDto fetchRecord(String sykunr, String syrecn) {
+		SyparfDao dao =(SyparfDao) syparfDaoService.find(sykunr, syrecn);
+		SyparfDto dto = getDto(dao);
+		
+		return dto;
+	}
+
+
+	private List<SyparfDto> fetchList(String sykunr) {
+		List<SyparfDao> syparfDaoList = new ArrayList<SyparfDao>(); //from DaoServcie
+		List<SyparfDto> syparfDtoList = new ArrayList<SyparfDto>(); //dto to GUI
+		SyparfDto syparfDto = null; //dto to GUI
+		syparfDaoList = (List<SyparfDao>) syparfDaoService.findAll(sykunr);
+		for (SyparfDao syparfDao : syparfDaoList) {
+			syparfDto = getDto(syparfDao);
+			syparfDtoList.add(syparfDto);
+		}
+		
+		return syparfDtoList;
+	}	
+	
+	private SyparfDto getDto(SyparfDao dao) {
+		SyparfDto dto = new SyparfDto();
+		dto.setSykunr(dao.getSykunr());
+		dto.setSyavd(dao.getSyavd());
+		dto.setSypaid(dao.getSypaid());
+		dto.setSypaidDesc(getSytpaidDesc(dao.getSypaid()));
+		dto.setSyrecn(dao.getSyrecn());
+		dto.setSysort(dao.getSysort());
+		dto.setSyuser(dao.getSyuser());
+		dto.setSyvrda(dao.getSyvrda());
+		dto.setSyvrdn(dao.getSyvrdn());
+		return dto;
+	}
+	
+
+	private String getSytpaidDesc(String sypaid) {
+		List<KofastDao> list= kofastDaoServices.findById(FasteKoder.SYPAR, sypaid, null);
+		KofastDao dao = null;
+		if (list.size() == 1) {
+			dao = list.get(0);
+			return dao.getKftxt();
+		} else {
+			logger.info("error....");
+		}
+		return null;
 	}
 
 	/**
@@ -181,5 +233,11 @@ public class BcoreMaintResponseOutputterController_SYPARF {
 	public void setSyparfDaoService(SyparfDaoService value){ this.syparfDaoService = value; }
 	public SyparfDaoService getSyparfDaoService(){ return this.syparfDaoService; }		
 	
+	@Qualifier ("kofastDaoServices")
+	private KofastDaoServices kofastDaoServices;
+	@Autowired
+	@Required
+	public void setKofastDaoServices(KofastDaoServices value){ this.kofastDaoServices = value; }
+	public KofastDaoServices getKofastDaoServices(){ return this.kofastDaoServices; }	
 	
 }
