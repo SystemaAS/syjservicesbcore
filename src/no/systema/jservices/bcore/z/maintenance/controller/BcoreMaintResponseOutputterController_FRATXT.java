@@ -50,8 +50,6 @@ public class BcoreMaintResponseOutputterController_FRATXT {
 		String fxknr = request.getParameter("fxknr");
 		String delsys = request.getParameter("delsys");
 		
-		logger.info("fxknr="+fxknr+", delsys="+delsys);
-		
 		try {
 			String user = request.getParameter("user");
 			// Check ALWAYS user in BRIDF
