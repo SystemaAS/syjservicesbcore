@@ -36,8 +36,16 @@ public class SYPARF_U {
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
 			// check dto
 			if ( (dto.getSypaid() != null && !"".equals(dto.getSypaid()) ) 
+				&& (dto.getSykunr() != null && !"".equals(dto.getSykunr()) )  	
 				&& (dto.getSyvrdn() != null && !"".equals(dto.getSyvrdn()) )  
 				&& (dto.getSyvrda() != null && !"".equals(dto.getSyvrda()) ))  {
+				
+				if ("U".equals(mode) && (dto.getSyrecn() == null && "".equals(dto.getSyrecn())) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.mandatory", null), "error", dbErrors));
+					retval = false;
+				}
+				
 				if (!existInKofast(dto.getSypaid())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.params.error.sypaid", new Object[] { dto.getSypaid() }), "error",
@@ -60,10 +68,9 @@ public class SYPARF_U {
 	public boolean isValidInputForDelete(SyparfDto dto, String user, String mode) {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
-			// check dao
-			if ( (dto.getSypaid() != null && !"".equals(dto.getSypaid()) ) 
-					&& (dto.getSyvrdn() != null && !"".equals(dto.getSyvrdn()) )  
-					&& (dto.getSyvrda() != null && !"".equals(dto.getSyvrda()) ))  {
+			// check dto
+			if ( (dto.getSykunr() != null && !"".equals(dto.getSykunr()) ) 
+					&& (dto.getSyrecn() != null && !"".equals(dto.getSyrecn()) )) { 
 				// OK
 			} else {
 				retval = false;
@@ -80,6 +87,19 @@ public class SYPARF_U {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	public void updateNumericFieldsIfNull(SyparfDto dto) {
+		String ZERO = "0";
+		if(dto.getSysort()==null || "".equals(dto.getSysort())){
+			dto.setSysort(ZERO);
+		}
+		if(dto.getSyavd()==null || "".equals(dto.getSyavd())){
+			dto.setSyavd(ZERO);
+		}		
+		if(dto.getSyvrdn()==null || "".equals(dto.getSyvrdn())){
+			dto.setSyvrdn(ZERO);
 		}
 	}
 

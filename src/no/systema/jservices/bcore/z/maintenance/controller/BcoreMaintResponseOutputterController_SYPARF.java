@@ -143,6 +143,7 @@ public class BcoreMaintResponseOutputterController_SYPARF {
 					}
 				} else {
 					if (rulerLord.isValidInput(dto, userName, mode)) {
+						rulerLord.updateNumericFieldsIfNull(dto);
 						if ("A".equals(mode)) {
 							resultDao = syparfDaoService.create(dto);
 						} else if ("U".equals(mode)) {
