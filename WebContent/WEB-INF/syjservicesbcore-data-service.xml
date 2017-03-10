@@ -24,6 +24,7 @@
       <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>
       <property name="cundcDaoServices"><ref bean="cundcDaoServices"/></property>
       <property name="fratxtDaoService"><ref bean="fratxtDaoService"/></property>
+      <property name="syparfDaoService"><ref bean="syparfDaoService"/></property>
   </bean>
   <bean id="cundcDaoServices" class="no.systema.jservices.model.dao.services.CundcDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>

@@ -3,7 +3,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.TransactionStatus;
@@ -11,7 +10,9 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
+import no.systema.jservices.common.dao.SyparfDao;
 import no.systema.jservices.common.dao.services.FratxtDaoService;
+import no.systema.jservices.common.dao.services.SyparfDaoService;
 import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.jservices.model.dao.mapper.CundfMapper;
 import no.systema.main.util.DbErrorMessageManager;
@@ -246,6 +247,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus ts) {
 					try {
+						deleteSyparf((CundfDao) daoObj, errorStackTrace);
 						deleteFratxt((CundfDao) daoObj, errorStackTrace);
 						deleteCundc((CundfDao) daoObj, errorStackTrace);
 						delete(daoObj, errorStackTrace);
@@ -280,6 +282,15 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			errorStackTrace.append(e.getMessage());
 		}
 	}
+	
+	private void deleteSyparf(CundfDao cundfDao, StringBuffer errorStackTrace) {
+		try {
+			syparfDaoService.deleteAll(cundfDao.getKundnr());
+		} catch (Exception e) {
+			logger.info("Error:", e);
+			errorStackTrace.append(e.getMessage());
+		}
+	}	
 
 	@Override
 	public boolean exists(String kundNr, StringBuffer errorStackTrace) {
@@ -340,6 +351,11 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	private FratxtDaoService fratxtDaoService = null;                                                            
 	public void setFratxtDaoService( FratxtDaoService fratxtDaoService) {this.fratxtDaoService = fratxtDaoService;}          
 	public FratxtDaoService getFratxtDaoService() {return this.fratxtDaoService;}
+	
+	private SyparfDaoService syparfDaoService = null;                                                            
+	public void setSyparfDaoService( SyparfDaoService syparfDaoService) {this.syparfDaoService = syparfDaoService;}          
+	public SyparfDaoService getSyparfDaoService() {return this.syparfDaoService;}	
+	
 	
 	//TODO: Add more children...
 
