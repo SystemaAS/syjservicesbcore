@@ -9,17 +9,20 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import no.systema.jservices.bcore.z.maintenance.controller.rules.SADVARE_U;
 import no.systema.jservices.common.dao.SadvareDao;
-import no.systema.jservices.common.dao.services.FratxtDaoService;
 import no.systema.jservices.common.dao.services.SadvareDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
@@ -88,65 +91,60 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 
 
 	/**
-	 * 
-	 * This method is responsible for checking mode of record.
-	 * 
-	 * Using {@link FratxtDaoService} for check if exist
-	 * 
-	 * 
-	 * Update Database DML operations File: FRATXT
+	 * Update Database DML operations File: SADVARE
 	 * 
 	 * @Example UPDATE:
-	 *          http://gw.systema.no:8080/syjservicesbcore/syjsSYPARF_U.do?user=OSCAR&sykunr=24&syrecn=59&sysort=15&syvrdn=1,5&syvrda=alfaupdate&mode=U/A/D
+	 *          http://gw.systema.no:8080/syjservicesbcore/syjsSADVARE_U.do?user=OSCAR&levenr=24&varenr=59&varebe=alfaupdate...and many more...&mode=U/A/D
 	 *
-	 * @param session
-	 * @param request
-	 * @return
-	 * 
 	 */
-	/*
-	@RequestMapping(value = "syjsSYPARF_U.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "syjsSADVARE_U.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String syjsSYPARF_U(HttpSession session, HttpServletRequest request) {
-		JsonResponseWriter2<SyparfDao> jsonWriter = new JsonResponseWriter2<SyparfDao>();
+		JsonResponseWriter2<SadvareDao> jsonWriter = new JsonResponseWriter2<SadvareDao>();
 		StringBuffer sb = new StringBuffer();
+		String userName = null;
+		String errMsg = null;
+		String status = null;
+		StringBuffer dbErrorStackTrace = null;
 
 		try {
-			logger.info("Inside syjsSYPARF_U.do");
+			logger.info("Inside syjsSADVARE_U.do");
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
 			// Check ALWAYS user in BRIDF
-			String userName = this.bridfDaoServices.findNameById(user);
-			String errMsg = "";
-			String status = "ok";
-			StringBuffer dbErrorStackTrace = new StringBuffer();
+			userName = this.bridfDaoServices.findNameById(user);
+			errMsg = "";
+			status = "ok";
+			dbErrorStackTrace = new StringBuffer();
 
-			SyparfDto dto = new SyparfDto();
-			SyparfDao resultDao = new SyparfDao();
-			ServletRequestDataBinder binder = new ServletRequestDataBinder(dto);
+			SadvareDao dao = new SadvareDao();
+			SadvareDao resultDao = new SadvareDao();
+			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
+			
+			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
 
-			SYPARF_U rulerLord = new SYPARF_U(kofastDaoServices, sb, dbErrorStackTrace);
+			SADVARE_U rulerLord = new SADVARE_U(null, sb, dbErrorStackTrace);
 			
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
-					if (rulerLord.isValidInputForDelete(dto, userName, mode)) {
-						syparfDaoService.delete(dto);
+					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
+						sadvareDaoService.delete(dao);
 					}
 				} else {
-					if (rulerLord.isValidInput(dto, userName, mode)) {
-						rulerLord.updateNumericFieldsIfNull(dto);
+					if (rulerLord.isValidInput(dao, userName, mode)) {
+						rulerLord.updateNumericFieldsIfNull(dao);
 						if ("A".equals(mode)) {
-							resultDao = syparfDaoService.create(dto);
+							resultDao = sadvareDaoService.create(dao);
 						} else if ("U".equals(mode)) {
-							resultDao = syparfDaoService.update(dto);
+							resultDao = sadvareDaoService.update(dao);
 						}
 					} 
 				}
 				if (resultDao == null) {
 					errMsg = "ERROR on UPDATE";
 					status = "error";
-					dbErrorStackTrace.append("Could not add/update dao=" + ReflectionToStringBuilder.toString(dto));
+					dbErrorStackTrace.append("Could not add/update dao=" + ReflectionToStringBuilder.toString(dao));
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				} else {
 					// OK UPDATE
@@ -160,20 +158,29 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 				dbErrorStackTrace.append("request input parameters are invalid: <user>");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 			}
+			
+			
 
 		} catch (Exception e) {
-			// write std.output error output
-			Writer writer = new StringWriter();
-			PrintWriter printWriter = new PrintWriter(writer);
-			e.printStackTrace(printWriter);
-			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+			if (e instanceof BadSqlGrammarException) {
+				errMsg = "ERROR on UPDATE";
+				status = "error";
+				logger.info("getLocalizedMessage="+e.getCause().getLocalizedMessage());
+				logger.info("getMessage="+e.getCause().getMessage());
+				dbErrorStackTrace.append(e.getCause());
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status,dbErrorStackTrace));
+			} else {
+				Writer writer = new StringWriter();
+				PrintWriter printWriter = new PrintWriter(writer);
+				e.printStackTrace(printWriter);
+				return "ERROR [JsonResponseOutputterController]" + writer.toString();
+			}
 		}
 		session.invalidate();
 		return sb.toString();
 
 	}
 
-*/
 	private SadvareDao fetchRecord(String levenr, String varenr) {
 		SadvareDao dao = (SadvareDao) sadvareDaoService.find(levenr, varenr);
 		return dao;
