@@ -116,16 +116,12 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 			errMsg = "";
 			status = "ok";
 			dbErrorStackTrace = new StringBuffer();
-
 			SadvareDao dao = new SadvareDao();
 			SadvareDao resultDao = new SadvareDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
-
 			SADVARE_U rulerLord = new SADVARE_U(null, sb, dbErrorStackTrace);
-			
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
@@ -148,7 +144,7 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				} else {
 					// OK UPDATE
-					//TODO sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
+					sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
 				}
 
 			} else {
@@ -158,8 +154,6 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 				dbErrorStackTrace.append("request input parameters are invalid: <user>");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 			}
-			
-			
 
 		} catch (Exception e) {
 			if (e instanceof BadSqlGrammarException) {
