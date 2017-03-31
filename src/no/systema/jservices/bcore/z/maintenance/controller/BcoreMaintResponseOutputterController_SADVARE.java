@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SADVARE_U;
 import no.systema.jservices.common.dao.SadvareDao;
+import no.systema.jservices.common.dao.services.Kodts7DaoService;
 import no.systema.jservices.common.dao.services.SadvareDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
@@ -121,7 +122,7 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			SADVARE_U rulerLord = new SADVARE_U(null, sb, dbErrorStackTrace);
+			SADVARE_U rulerLord = new SADVARE_U(kodts7DaoService, sb, dbErrorStackTrace);
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
@@ -164,6 +165,7 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 				dbErrorStackTrace.append(e.getCause());
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status,dbErrorStackTrace));
 			} else {
+				logger.info("Error:", e);
 				Writer writer = new StringWriter();
 				PrintWriter printWriter = new PrintWriter(writer);
 				e.printStackTrace(printWriter);
@@ -211,5 +213,20 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 	public SadvareDaoService getSadvareDaoService() {
 		return this.sadvareDaoService;
 	}
+	
+	@Qualifier("kodts7DaoService")
+	private Kodts7DaoService kodts7DaoService;
+
+	@Autowired
+	@Required
+	public void setKodts7DaoService(Kodts7DaoService value) {
+		this.kodts7DaoService = value;
+	}
+
+	public Kodts7DaoService getKodts7DaoService() {
+		return this.kodts7DaoService;
+	}	
+	
+	
 
 }
