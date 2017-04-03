@@ -2,8 +2,14 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
 import org.apache.log4j.Logger;
 
+import no.systema.jservices.common.dao.Kodts5Dao;
 import no.systema.jservices.common.dao.SadvareDao;
+import no.systema.jservices.common.dao.TariDao;
+import no.systema.jservices.common.dao.services.Kodts2DaoService;
+import no.systema.jservices.common.dao.services.Kodts5DaoService;
+import no.systema.jservices.common.dao.services.Kodts6DaoService;
 import no.systema.jservices.common.dao.services.Kodts7DaoService;
+import no.systema.jservices.common.dao.services.TariDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.main.util.MessageSourceHelper;
 
@@ -17,12 +23,20 @@ public class SADVARE_U {
 	private JsonResponseWriter2<SadvareDao> jsonWriter = new JsonResponseWriter2<SadvareDao>();
 	private MessageSourceHelper messageSourceHelper = new MessageSourceHelper();
 	private Kodts7DaoService kodts7DaoService = null;
+	private Kodts2DaoService kodts2DaoService = null;
+	private Kodts5DaoService kodts5DaoService = null;
+	private Kodts6DaoService kodts6DaoService = null;
+	private TariDaoService tariDaoService = null;
 
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
-	public SADVARE_U(Kodts7DaoService kodts7DaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SADVARE_U(Kodts7DaoService kodts7DaoService, Kodts2DaoService kodts2DaoService, TariDaoService tariDaoService, Kodts5DaoService kodts5DaoService, Kodts6DaoService kodts6DaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		this.kodts7DaoService = kodts7DaoService;
+		this.kodts2DaoService = kodts2DaoService;
+		this.kodts5DaoService = kodts5DaoService;
+		this.kodts6DaoService = kodts6DaoService;
+		this.tariDaoService = tariDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
 	}
@@ -33,11 +47,37 @@ public class SADVARE_U {
 			if ((dao.getLevenr() != null && !"".equals(dao.getLevenr()))
 					&& (dao.getVarenr() != null && !"".equals(dao.getVarenr()))
 					&& (dao.getVarebe() != null && !"".equals(dao.getVarebe()))) {
+				//Verdi fast.
 				if ( (dao.getW2vf() != null && !"".equals(dao.getW2vf()) ) &&  !existInKodts7(dao.getW2vf()) ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.w2vf",new Object[] { dao.getW2vf() }),"error", dbErrors));
 					retval = false;
 				}
+				//Land
+				if ( (dao.getW2lk() != null && !"".equals(dao.getW2lk()) ) &&  !existInKodts2(dao.getW2lk()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.w2lk",new Object[] { dao.getW2lk() }),"error", dbErrors));
+					retval = false;
+				}
+				//Varenr
+				if ( (dao.getW2vnti() != null && !"".equals(dao.getW2vnti()) ) &&  !existInTari(dao.getW2vnti()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.w2vnti",new Object[] { dao.getW2vnti() }),"error", dbErrors));
+					retval = false;
+				}			
+				//Tollned
+				if ( (dao.getW2tn() != null && !"".equals(dao.getW2tn()) ) &&  !existInKodts5(dao.getW2tn()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.w2tn",new Object[] { dao.getW2tn() }),"error", dbErrors));
+					retval = false;
+				}	
+				//Preferense
+				if ( (dao.getW2pre() != null && !"".equals(dao.getW2pre()) ) &&  !existInKodts6(dao.getW2pre()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.w2pre",new Object[] { dao.getW2pre() }),"error", dbErrors));
+					retval = false;
+				}	
+				
 			} else {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 						messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.mandatory", null),"error", dbErrors));
@@ -52,15 +92,6 @@ public class SADVARE_U {
 		return retval;
 	}
 
-	private boolean existInKodts7(String w2vf) {
-		int w2vfInt = Integer.parseInt(w2vf);
-		boolean exists = kodts7DaoService.vfKodeExist(w2vfInt);
-		if (!exists) {
-			return false;
-		} else {
-			return true;
-		}
-	}
 
 	public boolean isValidInputForDelete(SadvareDao dao, String user, String mode) {
 		boolean retval = true;
@@ -207,4 +238,57 @@ public class SADVARE_U {
 
 	}
 
+	
+	private boolean existInKodts7(String w2vf) {
+		int w2vfInt = Integer.parseInt(w2vf);
+		boolean exists = kodts7DaoService.vfKodeExist(w2vfInt);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	private boolean existInKodts2(String w2lk) {
+		boolean exists = kodts2DaoService.lkKodeExist(w2lk);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	private boolean existInKodts6(String w2pre) {
+		boolean exists = kodts6DaoService.preKodeExist(w2pre);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}		
+	
+	private boolean existInTari(String w2vnti) {
+		TariDao qDao = new TariDao();
+		qDao.setTatanr(Integer.valueOf(w2vnti));
+		boolean exists = tariDaoService.exist(qDao);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}		
+	
+	private boolean existInKodts5(String w2tn) {
+		Kodts5Dao qDao = new Kodts5Dao();
+		qDao.setKs5uni("S5");
+		qDao.setKs5tln(w2tn);
+		boolean exists = kodts5DaoService.exist(qDao);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}		
+	
+	
 }

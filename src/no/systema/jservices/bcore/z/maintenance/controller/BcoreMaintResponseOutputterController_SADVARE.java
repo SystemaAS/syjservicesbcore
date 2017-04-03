@@ -23,8 +23,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SADVARE_U;
 import no.systema.jservices.common.dao.SadvareDao;
+import no.systema.jservices.common.dao.services.Kodts2DaoService;
+import no.systema.jservices.common.dao.services.Kodts5DaoService;
+import no.systema.jservices.common.dao.services.Kodts6DaoService;
 import no.systema.jservices.common.dao.services.Kodts7DaoService;
 import no.systema.jservices.common.dao.services.SadvareDaoService;
+import no.systema.jservices.common.dao.services.TariDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
@@ -100,7 +104,7 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 	 */
 	@RequestMapping(value = "syjsSADVARE_U.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String syjsSYPARF_U(HttpSession session, HttpServletRequest request) {
+	public String syjsSADVARE_U(HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter2<SadvareDao> jsonWriter = new JsonResponseWriter2<SadvareDao>();
 		StringBuffer sb = new StringBuffer();
 		String userName = null;
@@ -122,7 +126,7 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			SADVARE_U rulerLord = new SADVARE_U(kodts7DaoService, sb, dbErrorStackTrace);
+			SADVARE_U rulerLord = new SADVARE_U(kodts7DaoService, kodts2DaoService,tariDaoService,kodts5DaoService,kodts6DaoService ,sb, dbErrorStackTrace);
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
@@ -227,6 +231,58 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 		return this.kodts7DaoService;
 	}	
 	
-	
+	@Qualifier("kodts2DaoService")
+	private Kodts2DaoService kodts2DaoService;
 
+	@Autowired
+	@Required
+	public void setKodts2DaoService(Kodts2DaoService value) {
+		this.kodts2DaoService = value;
+	}
+
+	public Kodts2DaoService getKodts2DaoService() {
+		return this.kodts2DaoService;
+	}
+	
+	@Qualifier("kodts5DaoService")
+	private Kodts5DaoService kodts5DaoService;
+
+	@Autowired
+	@Required
+	public void setKodts5DaoService(Kodts5DaoService value) {
+		this.kodts5DaoService = value;
+	}
+
+	public Kodts5DaoService getKodts5DaoService() {
+		return this.kodts5DaoService;
+	}
+	
+	@Qualifier("kodts6DaoService")
+	private Kodts6DaoService kodts6DaoService;
+
+	@Autowired
+	@Required
+	public void setKodts6DaoService(Kodts6DaoService value) {
+		this.kodts6DaoService = value;
+	}
+
+	public Kodts6DaoService getKodts6DaoService() {
+		return this.kodts6DaoService;
+	}		
+
+	@Qualifier("tariDaoService")
+	private TariDaoService tariDaoService;
+
+	@Autowired
+	@Required
+	public void setTariDaoService(TariDaoService value) {
+		this.tariDaoService = value;
+	}
+
+	public TariDaoService getTariDaoService() {
+		return this.tariDaoService;
+	}		
+	
+	
+	
 }
