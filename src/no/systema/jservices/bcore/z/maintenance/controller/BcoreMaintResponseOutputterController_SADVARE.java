@@ -27,6 +27,8 @@ import no.systema.jservices.common.dao.services.Kodts2DaoService;
 import no.systema.jservices.common.dao.services.Kodts5DaoService;
 import no.systema.jservices.common.dao.services.Kodts6DaoService;
 import no.systema.jservices.common.dao.services.Kodts7DaoService;
+import no.systema.jservices.common.dao.services.Kodts8DaoService;
+import no.systema.jservices.common.dao.services.KodtsaDaoService;
 import no.systema.jservices.common.dao.services.SadvareDaoService;
 import no.systema.jservices.common.dao.services.TariDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
@@ -126,7 +128,8 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			SADVARE_U rulerLord = new SADVARE_U(kodts7DaoService, kodts2DaoService,tariDaoService,kodts5DaoService,kodts6DaoService ,sb, dbErrorStackTrace);
+			SADVARE_U rulerLord = new SADVARE_U(kodts7DaoService, kodts2DaoService, tariDaoService, kodts5DaoService,
+					kodts6DaoService, kodts8DaoService,kodtsaDaoService, sb, dbErrorStackTrace);
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
@@ -270,6 +273,34 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 		return this.kodts6DaoService;
 	}		
 
+	@Qualifier("kodts8DaoService")
+	private Kodts8DaoService kodts8DaoService;
+
+	@Autowired
+	@Required
+	public void setKodts8DaoService(Kodts8DaoService value) {
+		this.kodts8DaoService = value;
+	}
+
+	public Kodts8DaoService getKodts8DaoService() {
+		return this.kodts8DaoService;
+	}	
+	
+	
+	@Qualifier("kodtsaDaoService")
+	private KodtsaDaoService kodtsaDaoService;
+
+	@Autowired
+	@Required
+	public void setKodtsaDaoService(KodtsaDaoService value) {
+		this.kodtsaDaoService = value;
+	}
+
+	public KodtsaDaoService getKodtsaDaoService() {
+		return this.kodtsaDaoService;
+	}		
+	
+	
 	@Qualifier("tariDaoService")
 	private TariDaoService tariDaoService;
 

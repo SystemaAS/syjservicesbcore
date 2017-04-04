@@ -3,12 +3,16 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 import org.apache.log4j.Logger;
 
 import no.systema.jservices.common.dao.Kodts5Dao;
+import no.systema.jservices.common.dao.Kodts8Dao;
+import no.systema.jservices.common.dao.KodtsaDao;
 import no.systema.jservices.common.dao.SadvareDao;
 import no.systema.jservices.common.dao.TariDao;
 import no.systema.jservices.common.dao.services.Kodts2DaoService;
 import no.systema.jservices.common.dao.services.Kodts5DaoService;
 import no.systema.jservices.common.dao.services.Kodts6DaoService;
 import no.systema.jservices.common.dao.services.Kodts7DaoService;
+import no.systema.jservices.common.dao.services.Kodts8DaoService;
+import no.systema.jservices.common.dao.services.KodtsaDaoService;
 import no.systema.jservices.common.dao.services.TariDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.main.util.MessageSourceHelper;
@@ -26,16 +30,23 @@ public class SADVARE_U {
 	private Kodts2DaoService kodts2DaoService = null;
 	private Kodts5DaoService kodts5DaoService = null;
 	private Kodts6DaoService kodts6DaoService = null;
+	private Kodts8DaoService kodts8DaoService = null;
+	private KodtsaDaoService kodtsaDaoService = null;
 	private TariDaoService tariDaoService = null;
 
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
-	public SADVARE_U(Kodts7DaoService kodts7DaoService, Kodts2DaoService kodts2DaoService, TariDaoService tariDaoService, Kodts5DaoService kodts5DaoService, Kodts6DaoService kodts6DaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SADVARE_U(Kodts7DaoService kodts7DaoService, Kodts2DaoService kodts2DaoService,
+			TariDaoService tariDaoService, Kodts5DaoService kodts5DaoService, Kodts6DaoService kodts6DaoService,
+			Kodts8DaoService kodts8DaoService, KodtsaDaoService kodtsaDaoService, StringBuffer sb,
+			StringBuffer dbErrorStackTrace) {
 		this.kodts7DaoService = kodts7DaoService;
 		this.kodts2DaoService = kodts2DaoService;
 		this.kodts5DaoService = kodts5DaoService;
 		this.kodts6DaoService = kodts6DaoService;
+		this.kodts8DaoService = kodts8DaoService;
+		this.kodtsaDaoService = kodtsaDaoService;
 		this.tariDaoService = tariDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
@@ -75,6 +86,82 @@ public class SADVARE_U {
 				if ( (dao.getW2pre() != null && !"".equals(dao.getW2pre()) ) &&  !existInKodts6(dao.getW2pre()) ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.w2pre",new Object[] { dao.getW2pre() }),"error", dbErrors));
+					retval = false;
+				}	
+				//Enhet 1..7
+				if ( (dao.getW2eh01() != null && !"".equals(dao.getW2eh01()) ) &&  !existInKodtsa(dao.getW2eh01()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.enhet",new Object[] { dao.getW2eh01() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2eh02() != null && !"".equals(dao.getW2eh02()) ) &&  !existInKodtsa(dao.getW2eh02()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.enhet",new Object[] { dao.getW2eh02() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2eh03() != null && !"".equals(dao.getW2eh03()) ) &&  !existInKodtsa(dao.getW2eh03()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.enhet",new Object[] { dao.getW2eh03() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2eh04() != null && !"".equals(dao.getW2eh04()) ) &&  !existInKodtsa(dao.getW2eh04()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.enhet",new Object[] { dao.getW2eh04() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2eh05() != null && !"".equals(dao.getW2eh05()) ) &&  !existInKodtsa(dao.getW2eh05()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.enhet",new Object[] { dao.getW2eh05() }),"error", dbErrors));
+					retval = false;
+				}	if ( (dao.getW2eh06() != null && !"".equals(dao.getW2eh06()) ) &&  !existInKodtsa(dao.getW2eh06()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.enhet",new Object[] { dao.getW2eh06() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2eh07() != null && !"".equals(dao.getW2eh07()) ) &&  !existInKodtsa(dao.getW2eh07()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.enhet",new Object[] { dao.getW2eh07() }),"error", dbErrors));
+					retval = false;
+				}	
+				//Avgkode 1..8  //sekvens(asv) valideras i espedsg validator
+				if ( (dao.getW2akd1() != null && !"".equals(dao.getW2akd1()) ) &&  !existInKodts8(dao.getW2akd1(), dao.getW2asv1()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.avgkode",new Object[] { dao.getW2akd1(), dao.getW2asv1() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2akd2() != null && !"".equals(dao.getW2akd2()) ) &&  !existInKodts8(dao.getW2akd2(), dao.getW2asv2()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.avgkode",new Object[] { dao.getW2akd2(), dao.getW2asv2() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2akd3() != null && !"".equals(dao.getW2akd3()) ) &&  !existInKodts8(dao.getW2akd3(), dao.getW2asv3()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.avgkode",new Object[] { dao.getW2akd3(), dao.getW2asv3() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2akd4() != null && !"".equals(dao.getW2akd4()) ) &&  !existInKodts8(dao.getW2akd4(), dao.getW2asv4()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.avgkode",new Object[] { dao.getW2akd4(), dao.getW2asv4() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2akd5() != null && !"".equals(dao.getW2akd5()) ) &&  !existInKodts8(dao.getW2akd5(), dao.getW2asv5()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.avgkode",new Object[] { dao.getW2akd5(), dao.getW2asv5() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2akd6() != null && !"".equals(dao.getW2akd6()) ) &&  !existInKodts8(dao.getW2akd6(), dao.getW2asv6()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.avgkode",new Object[] { dao.getW2akd6(), dao.getW2asv6() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2akd7() != null && !"".equals(dao.getW2akd7()) ) &&  !existInKodts8(dao.getW2akd7(), dao.getW2asv7()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.avgkode",new Object[] { dao.getW2akd7(), dao.getW2asv7() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2akd8() != null && !"".equals(dao.getW2akd8()) ) &&  !existInKodts8(dao.getW2akd8(), dao.getW2asv8()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.avgkode",new Object[] { dao.getW2akd8(), dao.getW2asv8() }),"error", dbErrors));
 					retval = false;
 				}	
 				
@@ -265,6 +352,17 @@ public class SADVARE_U {
 		} else {
 			return true;
 		}
+	}
+	
+	private boolean existInKodtsa(String enhet) {
+		KodtsaDao qDao = new KodtsaDao();
+		qDao.setKsakd(enhet);
+		boolean exists = kodtsaDaoService.exist(qDao);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
 	}		
 	
 	private boolean existInTari(String w2vnti) {
@@ -283,6 +381,18 @@ public class SADVARE_U {
 		qDao.setKs5uni("S5");
 		qDao.setKs5tln(w2tn);
 		boolean exists = kodts5DaoService.exist(qDao);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}		
+
+	private boolean existInKodts8(String avgkode, String sekvens) {
+		Kodts8Dao qDao = new Kodts8Dao();
+		qDao.setKs8avg(avgkode);
+		qDao.setKs8skv(sekvens);
+		boolean exists = kodts8DaoService.exist(qDao);
 		if (!exists) {
 			return false;
 		} else {
