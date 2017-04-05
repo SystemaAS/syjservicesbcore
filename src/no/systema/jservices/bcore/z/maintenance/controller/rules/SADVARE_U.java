@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import no.systema.jservices.common.dao.Kodts5Dao;
 import no.systema.jservices.common.dao.Kodts8Dao;
 import no.systema.jservices.common.dao.KodtsaDao;
+import no.systema.jservices.common.dao.KodtsbDao;
 import no.systema.jservices.common.dao.SadvareDao;
 import no.systema.jservices.common.dao.TariDao;
 import no.systema.jservices.common.dao.services.Kodts2DaoService;
@@ -13,6 +14,7 @@ import no.systema.jservices.common.dao.services.Kodts6DaoService;
 import no.systema.jservices.common.dao.services.Kodts7DaoService;
 import no.systema.jservices.common.dao.services.Kodts8DaoService;
 import no.systema.jservices.common.dao.services.KodtsaDaoService;
+import no.systema.jservices.common.dao.services.KodtsbDaoService;
 import no.systema.jservices.common.dao.services.TariDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.main.util.MessageSourceHelper;
@@ -32,6 +34,7 @@ public class SADVARE_U {
 	private Kodts6DaoService kodts6DaoService = null;
 	private Kodts8DaoService kodts8DaoService = null;
 	private KodtsaDaoService kodtsaDaoService = null;
+	private KodtsbDaoService kodtsbDaoService = null;
 	private TariDaoService tariDaoService = null;
 
 	private StringBuffer errors = null;
@@ -39,7 +42,7 @@ public class SADVARE_U {
 
 	public SADVARE_U(Kodts7DaoService kodts7DaoService, Kodts2DaoService kodts2DaoService,
 			TariDaoService tariDaoService, Kodts5DaoService kodts5DaoService, Kodts6DaoService kodts6DaoService,
-			Kodts8DaoService kodts8DaoService, KodtsaDaoService kodtsaDaoService, StringBuffer sb,
+			Kodts8DaoService kodts8DaoService, KodtsaDaoService kodtsaDaoService, KodtsbDaoService kodtsbDaoService, StringBuffer sb,
 			StringBuffer dbErrorStackTrace) {
 		this.kodts7DaoService = kodts7DaoService;
 		this.kodts2DaoService = kodts2DaoService;
@@ -47,6 +50,7 @@ public class SADVARE_U {
 		this.kodts6DaoService = kodts6DaoService;
 		this.kodts8DaoService = kodts8DaoService;
 		this.kodtsaDaoService = kodtsaDaoService;
+		this.kodtsbDaoService = kodtsbDaoService;
 		this.tariDaoService = tariDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
@@ -164,6 +168,58 @@ public class SADVARE_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.avgkode",new Object[] { dao.getW2akd8(), dao.getW2asv8() }),"error", dbErrors));
 					retval = false;
 				}	
+				//Kommref 1..10
+				if ( (dao.getW2cre1() != null && !"".equals(dao.getW2cre1()) ) &&  !existInKodtsb(dao.getW2cre1()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre1() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2cre2() != null && !"".equals(dao.getW2cre2()) ) &&  !existInKodtsb(dao.getW2cre2()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre2() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2cre3() != null && !"".equals(dao.getW2cre3()) ) &&  !existInKodtsb(dao.getW2cre3()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre3() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2cre4() != null && !"".equals(dao.getW2cre4()) ) &&  !existInKodtsb(dao.getW2cre4()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre4() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2cre5() != null && !"".equals(dao.getW2cre5()) ) &&  !existInKodtsb(dao.getW2cre5()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre5() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2cre6() != null && !"".equals(dao.getW2cre6()) ) &&  !existInKodtsb(dao.getW2cre6()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre6() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2cre7() != null && !"".equals(dao.getW2cre7()) ) &&  !existInKodtsb(dao.getW2cre7()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre7() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2cre8() != null && !"".equals(dao.getW2cre8()) ) &&  !existInKodtsb(dao.getW2cre8()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre8() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2cre9() != null && !"".equals(dao.getW2cre9()) ) &&  !existInKodtsa(dao.getW2cre9()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre9() }),"error", dbErrors));
+					retval = false;
+				}	
+				if ( (dao.getW2cre10() != null && !"".equals(dao.getW2cre10()) ) &&  !existInKodtsb(dao.getW2cre10()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre10() }),"error", dbErrors));
+					retval = false;
+				}	
+				
 				
 			} else {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -364,6 +420,17 @@ public class SADVARE_U {
 			return true;
 		}
 	}		
+
+	private boolean existInKodtsb(String kommref) {
+		KodtsbDao qDao = new KodtsbDao();
+		qDao.setKsbkd(kommref);
+		boolean exists = kodtsbDaoService.exist(qDao);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}	
 	
 	private boolean existInTari(String w2vnti) {
 		TariDao qDao = new TariDao();
