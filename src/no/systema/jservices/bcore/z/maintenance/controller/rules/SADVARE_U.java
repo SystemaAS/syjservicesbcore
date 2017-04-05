@@ -15,6 +15,7 @@ import no.systema.jservices.common.dao.services.Kodts7DaoService;
 import no.systema.jservices.common.dao.services.Kodts8DaoService;
 import no.systema.jservices.common.dao.services.KodtsaDaoService;
 import no.systema.jservices.common.dao.services.KodtsbDaoService;
+import no.systema.jservices.common.dao.services.KodtvalfDaoService;
 import no.systema.jservices.common.dao.services.TariDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.main.util.MessageSourceHelper;
@@ -35,6 +36,7 @@ public class SADVARE_U {
 	private Kodts8DaoService kodts8DaoService = null;
 	private KodtsaDaoService kodtsaDaoService = null;
 	private KodtsbDaoService kodtsbDaoService = null;
+	private KodtvalfDaoService kodtvalfDaoService = null;
 	private TariDaoService tariDaoService = null;
 
 	private StringBuffer errors = null;
@@ -42,7 +44,7 @@ public class SADVARE_U {
 
 	public SADVARE_U(Kodts7DaoService kodts7DaoService, Kodts2DaoService kodts2DaoService,
 			TariDaoService tariDaoService, Kodts5DaoService kodts5DaoService, Kodts6DaoService kodts6DaoService,
-			Kodts8DaoService kodts8DaoService, KodtsaDaoService kodtsaDaoService, KodtsbDaoService kodtsbDaoService, StringBuffer sb,
+			Kodts8DaoService kodts8DaoService, KodtsaDaoService kodtsaDaoService, KodtsbDaoService kodtsbDaoService, KodtvalfDaoService kodtvalfDaoService, StringBuffer sb,
 			StringBuffer dbErrorStackTrace) {
 		this.kodts7DaoService = kodts7DaoService;
 		this.kodts2DaoService = kodts2DaoService;
@@ -51,6 +53,7 @@ public class SADVARE_U {
 		this.kodts8DaoService = kodts8DaoService;
 		this.kodtsaDaoService = kodtsaDaoService;
 		this.kodtsbDaoService = kodtsbDaoService;
+		this.kodtvalfDaoService = kodtvalfDaoService;
 		this.tariDaoService = tariDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
@@ -217,6 +220,12 @@ public class SADVARE_U {
 				if ( (dao.getW2cre10() != null && !"".equals(dao.getW2cre10()) ) &&  !existInKodtsb(dao.getW2cre10()) ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.kommref",new Object[] { dao.getW2cre10() }),"error", dbErrors));
+					retval = false;
+				}	
+				//Valutakod
+				if ( (dao.getW2val() != null && !"".equals(dao.getW2val()) ) &&  !existInKodtvalf(dao.getW2val()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sadvare.error.w2val",new Object[] { dao.getW2val() }),"error", dbErrors));
 					retval = false;
 				}	
 				
@@ -466,6 +475,15 @@ public class SADVARE_U {
 			return true;
 		}
 	}		
+	
+	private boolean existInKodtvalf(String kvakod) {
+		boolean exists = kodtvalfDaoService.kvaKodeExist(kvakod);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 	
 	
 }

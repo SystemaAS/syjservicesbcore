@@ -30,6 +30,7 @@ import no.systema.jservices.common.dao.services.Kodts7DaoService;
 import no.systema.jservices.common.dao.services.Kodts8DaoService;
 import no.systema.jservices.common.dao.services.KodtsaDaoService;
 import no.systema.jservices.common.dao.services.KodtsbDaoService;
+import no.systema.jservices.common.dao.services.KodtvalfDaoService;
 import no.systema.jservices.common.dao.services.SadvareDaoService;
 import no.systema.jservices.common.dao.services.TariDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
@@ -130,7 +131,7 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 			binder.bind(request);
 			
 			SADVARE_U rulerLord = new SADVARE_U(kodts7DaoService, kodts2DaoService, tariDaoService, kodts5DaoService,
-					kodts6DaoService, kodts8DaoService,kodtsaDaoService, kodtsbDaoService , sb, dbErrorStackTrace);
+					kodts6DaoService, kodts8DaoService,kodtsaDaoService, kodtsbDaoService, kodtvalfDaoService ,sb, dbErrorStackTrace);
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
@@ -312,6 +313,19 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 
 	public KodtsbDaoService getKodtsbDaoService() {
 		return this.kodtsbDaoService;
+	}		
+	
+	@Qualifier("kodtvalfDaoService")
+	private KodtvalfDaoService kodtvalfDaoService;
+
+	@Autowired
+	@Required
+	public void setKodtvalfDaoService(KodtvalfDaoService value) {
+		this.kodtvalfDaoService = value;
+	}
+
+	public KodtvalfDaoService getKodtvalfDaoService() {
+		return this.kodtvalfDaoService;
 	}		
 	
 	
