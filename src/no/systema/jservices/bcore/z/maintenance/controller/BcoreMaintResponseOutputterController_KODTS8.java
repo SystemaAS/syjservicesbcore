@@ -49,7 +49,7 @@ public class BcoreMaintResponseOutputterController_KODTS8 {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
 			if ((userName != null && !"".equals(userName))) {
-				kodts8DaoList = kodts8DaoService.findAll(null);
+				kodts8DaoList = kodts8DaoService.getKoder();
 				if (kodts8DaoList != null) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, kodts8DaoList));
 				} else {
