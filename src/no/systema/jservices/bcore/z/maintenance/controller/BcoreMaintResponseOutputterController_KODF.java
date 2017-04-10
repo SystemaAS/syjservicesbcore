@@ -1,4 +1,4 @@
-package no.systema.jservices.bcore.z.maintenance.controller.sad;
+package no.systema.jservices.bcore.z.maintenance.controller;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -49,13 +49,13 @@ import no.systema.jservices.jsonwriter.JsonResponseWriter;
  */
 
 @Controller
-public class BcoreMaintResponseOutputterControllerSadNcts_CODE_TRKODF {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSadNcts_CODE_TRKODF.class.getName());
+public class BcoreMaintResponseOutputterController_KODF {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_KODF.class.getName());
 	
 	/**
 	 * FreeForm Source:
 	 * 	 File: 		TRKODF
-	 * 	 PGM:		General (e.g TR053R for Tullkontor lista)
+	 * 	 PGM:		General (e.g TR053R for Tullkontor lista, DKX001R for maintenance Danish)
 	 * 	 Member: 	MAINT - SAD NCTS IMPORT  - TRKODF  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
 	 *  
 	 *  CODE file 
