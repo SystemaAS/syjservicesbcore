@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.common.dao.ArktxtDao;
+import no.systema.jservices.common.dao.services.ArkextDaoService;
 import no.systema.jservices.common.dao.services.ArktxtDaoService;
+import no.systema.jservices.common.dto.ArktxtDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
@@ -40,9 +42,9 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 	@RequestMapping(value = "syjsARKTXT.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String doArktxt(HttpSession session, HttpServletRequest request) {
-		JsonResponseWriter2<ArktxtDao> jsonWriter = new JsonResponseWriter2<ArktxtDao>();
+		JsonResponseWriter2<ArktxtDto> jsonWriter = new JsonResponseWriter2<ArktxtDto>();
 		StringBuffer sb = new StringBuffer();
-		List<ArktxtDao> arktxtDaoList = new ArrayList<ArktxtDao>();
+		List<ArktxtDto> arktxtDtoList = new ArrayList<ArktxtDto>();
 		String artype = request.getParameter("artype");
 
 		try {
@@ -54,15 +56,13 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 			if ((userName != null && !"".equals(userName))) {
 				if (artype != null && !"".equals(artype)) {
-					ArktxtDao qDao = new ArktxtDao();
-					qDao.setArtype(artype);
-					ArktxtDao resultDao = arktxtDaoService.find(qDao);
-					arktxtDaoList.add(resultDao);
+					ArktxtDto dto = fetchRecord(artype);
+					arktxtDtoList.add(dto);				
 				} else {
-					arktxtDaoList = arktxtDaoService.findAll(null);
+					arktxtDtoList = fetchList();
 				}
-				if (arktxtDaoList != null) {
-					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, arktxtDaoList));
+				if (arktxtDtoList != null) {
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, arktxtDtoList));
 				} else {
 					errMsg = "ERROR on SELECT: Can not find ArktxtDao list";
 					status = "error";
@@ -88,6 +88,70 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 
 	}
 
+	
+	private ArktxtDto fetchRecord(String  artype) {
+		ArktxtDao qDao = new ArktxtDao();
+		qDao.setArtype(artype);
+		ArktxtDao resultDao = arktxtDaoService.find(qDao);
+		ArktxtDto dto = getDto(resultDao);
+
+		return dto;
+	}
+
+	private List<ArktxtDto> fetchList() {
+		List<ArktxtDao> arktxtDaoList = new ArrayList<ArktxtDao>(); // from DaoServcie
+		List<ArktxtDto> arktxtDtoList = new ArrayList<ArktxtDto>(); // dto to GUI
+		ArktxtDto arktxtDto = null; // dto to GUI
+		arktxtDaoList = (List<ArktxtDao>) arktxtDaoService.findAll(null);
+		for (ArktxtDao arktxtDao : arktxtDaoList) {
+			arktxtDto = getDto(arktxtDao);
+			arktxtDtoList.add(arktxtDto);
+		}
+
+		return arktxtDtoList;
+	}
+
+	private ArktxtDto getDto(ArktxtDao dao) {
+		ArktxtDto dto = new ArktxtDto();
+		dto.setArtype(dao.getArtype());
+		dto.setArtxt(dao.getArtxt());
+		dto.setArkjn(dao.getArkjn());
+		dto.setArksnd(dao.getArksnd());
+		dto.setArklag(dao.getArklag());
+		dto.setArkved(dao.getArkved());
+		dto.setArslab(dao.getArslab());
+		dto.setArsban(dao.getArsban());
+		dto.setArmrg(dao.getArmrg());
+		dto.setArvedl(dao.getArvedl());	
+		dto.setArsfsk(dao.getArsfsk());	
+		dto.setArscts(dao.getArscts());	
+		dto.setArsrle(dao.getArsrle());	
+		dto.setArsrst(dao.getArsrst());	
+		dto.setArsrpa(dao.getArsrpa());	
+		dto.setArsrno(dao.getArsrno());	
+		
+		return dto;
+	}
+
+	/* TODO
+	private String getArklagDesc(String arklag) {
+		List<KofastDao> list = kofastDaoServices.findById(FasteKoder.SYPAR, sypaid, null);
+		KofastDao dao = null;
+		if (list != null && list.size() == 1) {
+			dao = list.get(0);
+			return dao.getKftxt();
+		} else {
+			logger.info("Error: Something wrong when selecting kftxt from KOFAST on SYPAR");
+		}
+		return null;
+	}	
+	
+	*/
+	
+	
+	
+	
+	
 
 	/**
 	 * 
@@ -196,4 +260,23 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		return this.arktxtDaoService;
 	}
 
+	@Qualifier("arkextDaoService")
+	private ArkextDaoService arkextDaoService;
+
+	@Autowired
+	@Required
+	public void setArkextDaoServicee(ArkextDaoService value) {
+		this.arkextDaoService = value;
+	}
+
+	public ArkextDaoService getArkextDaoService() {
+		return this.arkextDaoService;
+	}
+	
+	
+	
+	
+	
+	
+	
 }

@@ -199,7 +199,7 @@ public class SYCUNDFR_U {
 	private boolean existInValuf(String valkod) {
 		ValufDao qDao = new ValufDao();
 		qDao.setValkod(valkod);
-		boolean exists = valufDaoService.existInFirma(qDao);
+		boolean exists = valufDaoService.exist(qDao);
 		if (!exists) {
 			return false;
 		} else {
