@@ -49,8 +49,8 @@ import no.systema.jservices.jsonwriter.JsonResponseWriter;
  */
 
 @Controller
-public class BcoreMaintResponseOutputterController_KODF {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_KODF.class.getName());
+public class BcoreMaintResponseOutputterController_TRKODF {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_TRKODF.class.getName());
 	
 	/**
 	 * FreeForm Source:
