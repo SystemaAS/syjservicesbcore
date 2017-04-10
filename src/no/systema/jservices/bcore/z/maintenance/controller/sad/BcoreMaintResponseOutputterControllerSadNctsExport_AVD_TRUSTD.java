@@ -24,7 +24,7 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.sad.TR003R_U;
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrkodfDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.TrkodfDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.services.BridfDaoServices;

@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdfvDao;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrkodfDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.TrkodfDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServices;
 
 

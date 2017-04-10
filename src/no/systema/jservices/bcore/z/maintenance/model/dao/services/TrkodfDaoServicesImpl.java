@@ -1,4 +1,4 @@
-package no.systema.jservices.bcore.z.maintenance.model.dao.services.sad;
+package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
 import java.util.*;
 

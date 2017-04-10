@@ -1,4 +1,4 @@
-package no.systema.jservices.bcore.z.maintenance.model.dao.services.sad;
+package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.util.*;
 
 import no.systema.jservices.model.dao.services.IDaoServicesReadOnly;

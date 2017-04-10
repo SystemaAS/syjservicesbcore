@@ -30,8 +30,8 @@ import javax.servlet.http.HttpSession;
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TristdDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.TrkodfDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TristdDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrkodfDaoServices;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;

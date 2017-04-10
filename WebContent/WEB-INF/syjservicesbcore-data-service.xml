@@ -102,6 +102,9 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
       <property name="syparfDaoServices"><ref bean="syparfDaoServices"/></property>
   </bean>
+  <bean id="trkodfDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.TrkodfDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   <bean id="standiDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.StandiDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
@@ -109,9 +112,6 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   <bean id="tristdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TristdDaoServicesImpl">
-      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
-  </bean>
-  <bean id="trkodfDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrkodfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   <bean id="trustdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServicesImpl">
