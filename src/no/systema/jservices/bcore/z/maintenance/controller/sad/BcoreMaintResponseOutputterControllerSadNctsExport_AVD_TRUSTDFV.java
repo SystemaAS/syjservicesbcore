@@ -56,9 +56,9 @@ public class BcoreMaintResponseOutputterControllerSadNctsExport_AVD_TRUSTDFV {
 	
 	/**
 	 * FreeForm Source:
-	 * 	 File: 		TRUSTDFV
-	 * 	 PGM:		TR003R 
-	 * 	 Member: 	MAINT - SAD NCTS EXPORT AVD - TRUSTDFV  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
+	 * 	File: 		TRUSTDFV
+	 * 	PGM:		TR003R 
+	 * 	Member: 	MAINT - SAD NCTS EXPORT AVD - TRUSTDFV  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
 	 *  
 	 * 
 	 * @return

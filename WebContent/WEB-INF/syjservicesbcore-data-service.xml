@@ -129,8 +129,12 @@
    <bean id="firkuDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
-  
+  <bean id="dkxstdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.skat.DkxstdDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  <bean id="dkxstdfvDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.skat.DkxstdfvDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   
   <!--///////////////////
         NativeExtractor 
