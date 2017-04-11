@@ -292,7 +292,7 @@ public class DKX003R_U {
 	 */
 	public boolean vaidateTullkontorId(String value, String errorMsg){
 		boolean retval = true;
-		/* TODO 106 in Norway but in Denmark ???
+		
 		String UNIQUE_CODE_TULLKONTOR = "106";
 		List list = this.dkxkodfDaoServices.findById(UNIQUE_CODE_TULLKONTOR, value, this.validatorStackTrace);
 		
@@ -304,7 +304,7 @@ public class DKX003R_U {
 			this.validatorStackTrace.append(errorMsg);
 			retval = false;
 		}	
-		*/
+		
 		return retval;
 	}
 	
