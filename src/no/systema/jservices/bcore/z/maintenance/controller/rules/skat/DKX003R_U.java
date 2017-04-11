@@ -7,10 +7,7 @@ import org.apache.log4j.Logger;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DkxstdDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DkxstdfvDao;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.TrkodfDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServices;
-
-
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.DkxkodfDaoServices;
 
 
 /**
@@ -21,7 +18,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDao
 public class DKX003R_U {
 	private static Logger logger = Logger.getLogger(DKX003R_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
-	private TrkodfDaoServices trkodfDaoServices;
+	private DkxkodfDaoServices dkxkodfDaoServices;
 	
 	private StringBuffer validatorStackTrace = new StringBuffer();
 	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }
@@ -30,9 +27,9 @@ public class DKX003R_U {
 	 * 
 	 * @param ediiDaoServices
 	 */
-	public DKX003R_U(EdiiDaoServices ediiDaoServices, TrkodfDaoServices trkodfDaoServices){
+	public DKX003R_U(EdiiDaoServices ediiDaoServices, DkxkodfDaoServices dkxkodfDaoServices){
 		this.ediiDaoServices = ediiDaoServices;
-		this.trkodfDaoServices = trkodfDaoServices;
+		this.dkxkodfDaoServices = dkxkodfDaoServices;
 	}
 
 	
@@ -295,9 +292,9 @@ public class DKX003R_U {
 	 */
 	public boolean vaidateTullkontorId(String value, String errorMsg){
 		boolean retval = true;
-		
+		/* TODO 106 in Norway but in Denmark ???
 		String UNIQUE_CODE_TULLKONTOR = "106";
-		List list = this.trkodfDaoServices.findById(UNIQUE_CODE_TULLKONTOR, value, this.validatorStackTrace);
+		List list = this.dkxkodfDaoServices.findById(UNIQUE_CODE_TULLKONTOR, value, this.validatorStackTrace);
 		
 		if( list!=null && list.size()==1 ){
 			//OK
@@ -307,7 +304,7 @@ public class DKX003R_U {
 			this.validatorStackTrace.append(errorMsg);
 			retval = false;
 		}	
-		
+		*/
 		return retval;
 	}
 	
