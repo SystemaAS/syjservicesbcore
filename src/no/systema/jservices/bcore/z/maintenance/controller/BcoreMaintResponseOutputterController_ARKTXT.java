@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import no.systema.jservices.common.dao.ArkextDao;
 import no.systema.jservices.common.dao.ArktxtDao;
 import no.systema.jservices.common.dao.services.ArkextDaoService;
 import no.systema.jservices.common.dao.services.ArktxtDaoService;
@@ -93,7 +94,7 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		ArktxtDao qDao = new ArktxtDao();
 		qDao.setArtype(artype);
 		ArktxtDao resultDao = arktxtDaoService.find(qDao);
-		ArktxtDto dto = getDto(resultDao);
+		ArktxtDto dto = getDto(resultDao, true);
 
 		return dto;
 	}
@@ -104,20 +105,23 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		ArktxtDto arktxtDto = null; // dto to GUI
 		arktxtDaoList = (List<ArktxtDao>) arktxtDaoService.findAll(null);
 		for (ArktxtDao arktxtDao : arktxtDaoList) {
-			arktxtDto = getDto(arktxtDao);
+			arktxtDto = getDto(arktxtDao, false);
 			arktxtDtoList.add(arktxtDto);
 		}
 
 		return arktxtDtoList;
 	}
 
-	private ArktxtDto getDto(ArktxtDao dao) {
+	private ArktxtDto getDto(ArktxtDao dao, boolean getDesc) {
 		ArktxtDto dto = new ArktxtDto();
 		dto.setArtype(dao.getArtype());
 		dto.setArtxt(dao.getArtxt());
 		dto.setArkjn(dao.getArkjn());
 		dto.setArksnd(dao.getArksnd());
 		dto.setArklag(dao.getArklag());
+		if (getDesc) {
+			dto.setArklagDesc(getArklagDesc(dao.getArklag()));
+		}
 		dto.setArkved(dao.getArkved());
 		dto.setArslab(dao.getArslab());
 		dto.setArsban(dao.getArsban());
@@ -133,24 +137,18 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		return dto;
 	}
 
-	/* TODO
+	
 	private String getArklagDesc(String arklag) {
-		List<KofastDao> list = kofastDaoServices.findById(FasteKoder.SYPAR, sypaid, null);
-		KofastDao dao = null;
-		if (list != null && list.size() == 1) {
-			dao = list.get(0);
-			return dao.getKftxt();
+		ArkextDao dao = new ArkextDao();
+		dao.setArcext(arklag);
+		ArkextDao resultDao  = arkextDaoService.find(dao);
+		if (resultDao != null) {
+			return resultDao.getArcane();
 		} else {
-			logger.info("Error: Something wrong when selecting kftxt from KOFAST on SYPAR");
+			return null;
+			
 		}
-		return null;
 	}	
-	
-	*/
-	
-	
-	
-	
 	
 
 	/**
@@ -273,9 +271,7 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		return this.arkextDaoService;
 	}
 	
-	
-	
-	
+		
 	
 	
 	
