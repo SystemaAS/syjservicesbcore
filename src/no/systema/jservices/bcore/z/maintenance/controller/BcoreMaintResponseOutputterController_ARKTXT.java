@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.ARKTXT_U;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
 import no.systema.jservices.common.dao.ArkextDao;
 import no.systema.jservices.common.dao.ArktxtDao;
 import no.systema.jservices.common.dao.services.ArkextDaoService;
@@ -131,7 +131,7 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			ARKTXT_U rulerLord = new ARKTXT_U(arktxtDaoService, arkextDaoService, sb, dbErrorStackTrace);
+			ARKTXT_U rulerLord = new ARKTXT_U(arktxtDaoService, arkextDaoService, kofastDaoServices, sb, dbErrorStackTrace);
 			
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
@@ -277,5 +277,15 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		return this.arkextDaoService;
 	}
 	
+	@Qualifier("kofastDaoServices")
+	private KofastDaoServices kofastDaoServices;
+	@Autowired
+	@Required
+	public void setKofastDaoServices(KofastDaoServices value) {
+		this.kofastDaoServices = value;
+	}
+	public KofastDaoServices getKofastDaoServices() {
+		return this.kofastDaoServices;
+	}	
 	
 }
