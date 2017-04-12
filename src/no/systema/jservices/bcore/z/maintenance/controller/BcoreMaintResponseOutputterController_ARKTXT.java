@@ -9,15 +9,19 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import no.systema.jservices.bcore.z.maintenance.controller.rules.ARKTXT_U;
 import no.systema.jservices.common.dao.ArkextDao;
 import no.systema.jservices.common.dao.ArktxtDao;
 import no.systema.jservices.common.dao.services.ArkextDaoService;
@@ -90,6 +94,86 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 	}
 
 	
+	/**
+	 * 
+	 * Update Database DML operations File: ARKTXT
+	 * 
+	 * @Example UPDATE:
+	 *          http://gw.systema.no:8080/syjservicesbcore/syjsARKTXT_U.do?user=OSCAR&artype=ZH&artxt=kalle&mode=U/A/D
+	 *
+	 * @param session
+	 * @param request
+	 * @return
+	 * 
+	 */
+	@RequestMapping(value = "syjsARKTXT_U.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String syjsARKTXT_U(HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter2<ArktxtDto> jsonWriter = new JsonResponseWriter2<ArktxtDto>();
+		StringBuffer sb = new StringBuffer();
+		String userName = null;
+		String errMsg = null;
+		String status = null;
+		StringBuffer dbErrorStackTrace = null;
+		
+		try {
+			logger.info("Inside syjsARKTXT_U.do");
+			String user = request.getParameter("user");
+			String mode = request.getParameter("mode");
+			// Check ALWAYS user in BRIDF
+			userName = this.bridfDaoServices.findNameById(user);
+			errMsg = "";
+			status = "ok";
+			dbErrorStackTrace = new StringBuffer();
+
+			ArktxtDao dao = new ArktxtDao();
+			ArktxtDao resultDao = null;
+			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
+			binder.bind(request);
+			
+			ARKTXT_U rulerLord = new ARKTXT_U(arktxtDaoService, arkextDaoService, sb, dbErrorStackTrace);
+			
+			if (userName != null && !"".equals(userName)) {
+				if ("D".equals(mode)) {
+					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
+						arktxtDaoService.delete(dao);
+					}
+				} else {
+					if (rulerLord.isValidInput(dao, userName, mode)) {
+					//	adjustDao(dao);
+						if ("A".equals(mode)) {
+							resultDao = arktxtDaoService.create(dao);
+						} else if ("U".equals(mode)) {
+							resultDao = arktxtDaoService.update(dao);
+						}
+						if (resultDao == null) {
+							errMsg = "ERROR on UPDATE ";
+							status = "error";
+							dbErrorStackTrace.append("Could not create/update dao=" + ReflectionToStringBuilder.toString(dao));
+							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+						} 
+					} 
+				}
+			} else {
+				// write JSON error output
+				errMsg = "ERROR on UPDATE ";
+				status = "error";
+				dbErrorStackTrace.append("request input parameters are invalid: <user>");
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+
+		} catch (Exception e) {
+			logger.info("Error:", e);
+			errMsg = "ERROR on UPDATE ";
+			status = "error";
+			dbErrorStackTrace.append(e.getLocalizedMessage());
+			sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status,dbErrorStackTrace));
+		}
+		session.invalidate();
+		return sb.toString();
+
+	}
+
 	private ArktxtDto fetchRecord(String  artype) {
 		ArktxtDao qDao = new ArktxtDao();
 		qDao.setArtype(artype);
@@ -150,129 +234,48 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		}
 	}	
 	
-
-	/**
-	 * 
-	 * Update Database DML operations File: ARKTXT
-	 * 
-	 * @Example UPDATE:
-	 *          http://gw.systema.no:8080/syjservicesbcore/syjsARKTXT_U.do?user=OSCAR&artype=ZH&artxt=kalle&mode=U/A/D
-	 *
-	 * @param session
-	 * @param request
-	 * @return
-	 * 
-	 */
-//	@RequestMapping(value = "syjsARKTXT_U.do", method = { RequestMethod.GET, RequestMethod.POST })
-//	@ResponseBody
-//	public String syjsSYPARF_U(HttpSession session, HttpServletRequest request) {
-//		JsonResponseWriter2<SyparfDao> jsonWriter = new JsonResponseWriter2<SyparfDao>();
-//		StringBuffer sb = new StringBuffer();
-//
-//		try {
-//			logger.info("Inside syjsARKTXT_U.do");
-//			String user = request.getParameter("user");
-//			String mode = request.getParameter("mode");
-//			// Check ALWAYS user in BRIDF
-//			String userName = this.bridfDaoServices.findNameById(user);
-//			String errMsg = "";
-//			String status = "ok";
-//			StringBuffer dbErrorStackTrace = new StringBuffer();
-//
-//			SyparfDto dto = new SyparfDto();
-//			SyparfDao resultDao = new SyparfDao();
-//			ServletRequestDataBinder binder = new ServletRequestDataBinder(dto);
-//			binder.bind(request);
-//
-//			SYPARF_U rulerLord = new SYPARF_U(kofastDaoServices, sb, dbErrorStackTrace);
-//			
-//			if (userName != null && !"".equals(userName)) {
-//				if ("D".equals(mode)) {
-//					if (rulerLord.isValidInputForDelete(dto, userName, mode)) {
-//						arktxtDaoService.delete(dto);
-//					}
-//				} else {
-//					if (rulerLord.isValidInput(dto, userName, mode)) {
-//						rulerLord.updateNumericFieldsIfNull(dto);
-//						if ("A".equals(mode)) {
-//							resultDao = syparfDaoService.create(dto);
-//						} else if ("U".equals(mode)) {
-//							resultDao = syparfDaoService.update(dto);
-//						}
-//					} 
-//				}
-//				if (resultDao == null) {
-//					errMsg = "ERROR on UPDATE";
-//					status = "error";
-//					dbErrorStackTrace.append("Could not add/update dao=" + ReflectionToStringBuilder.toString(dto));
-//					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-//				} else {
-//					// OK UPDATE
-//					//TODO sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
-//				}
-//
-//			} else {
-//				// write JSON error output
-//				errMsg = "ERROR on UPDATE";
-//				status = "error";
-//				dbErrorStackTrace.append("request input parameters are invalid: <user>");
-//				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-//			}
-//
-//		} catch (Exception e) {
-//			// write std.output error output
-//			Writer writer = new StringWriter();
-//			PrintWriter printWriter = new PrintWriter(writer);
-//			e.printStackTrace(printWriter);
-//			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+//	private void adjustDao(ArktxtDao dao) {
+//		StringBuilder arkvedDefault = new StringBuilder("00000000000000000000");
+//		arkvedDefault.append("00000000000000000000");
+//		arkvedDefault.append("00000000000000000000"); //60
+//		if (dao.getArkved() == null || "".equals(dao.getArkved())) {
+//			dao.setArkved(arkvedDefault.toString());
 //		}
-//		session.invalidate();
-//		return sb.toString();
-//
-//	}
-
-
+//	}	
+	
+	
 	@Qualifier("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
-
 	@Autowired
 	@Required
 	public void setBridfDaoServices(BridfDaoServices value) {
 		this.bridfDaoServices = value;
 	}
-
 	public BridfDaoServices getBridfDaoServices() {
 		return this.bridfDaoServices;
 	}
 
 	@Qualifier("arktxtDaoService")
 	private ArktxtDaoService arktxtDaoService;
-
 	@Autowired
 	@Required
 	public void setArktxtDaoService(ArktxtDaoService value) {
 		this.arktxtDaoService = value;
 	}
-
 	public ArktxtDaoService getArktxtDaoService() {
 		return this.arktxtDaoService;
 	}
 
 	@Qualifier("arkextDaoService")
 	private ArkextDaoService arkextDaoService;
-
 	@Autowired
 	@Required
 	public void setArkextDaoServicee(ArkextDaoService value) {
 		this.arkextDaoService = value;
 	}
-
 	public ArkextDaoService getArkextDaoService() {
 		return this.arkextDaoService;
 	}
-	
-		
-	
 	
 	
 }
