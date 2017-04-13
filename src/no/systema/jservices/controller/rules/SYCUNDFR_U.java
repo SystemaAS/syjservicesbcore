@@ -1,6 +1,8 @@
 package no.systema.jservices.controller.rules;
 
 
+import javax.servlet.http.HttpServletRequest;
+
 import no.systema.jservices.common.dao.KodtlikDao;
 import no.systema.jservices.common.dao.ValufDao;
 import no.systema.jservices.common.dao.services.KodtlikDaoService;
@@ -19,7 +21,7 @@ import no.systema.main.util.MessageSourceHelper;
 public class SYCUNDFR_U {
 
 	private JsonResponseWriter jsonWriter = new JsonResponseWriter();
-	private MessageSourceHelper messageSourceHelper = new MessageSourceHelper();
+	private MessageSourceHelper messageSourceHelper = null;
 	private CundfDaoServices cundfDaoServices = null;
 	private ValufDaoService valufDaoService = null;
 	private KodtlkDaoService kodtlkDaoService = null;
@@ -29,7 +31,8 @@ public class SYCUNDFR_U {
 	private StringBuffer dbErrors = null;
 
 
-	public SYCUNDFR_U(CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(HttpServletRequest request, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+		messageSourceHelper = new MessageSourceHelper(request);
 		this.cundfDaoServices = cundfDaoServices;
 		this.valufDaoService = valufDaoService;
 		this.kodtlkDaoService = kodtlkDaoService;

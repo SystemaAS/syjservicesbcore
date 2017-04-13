@@ -130,7 +130,7 @@ public class BcoreMaintResponseOutputterController_SADVARE {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			SADVARE_U rulerLord = new SADVARE_U(kodts7DaoService, kodts2DaoService, tariDaoService, kodts5DaoService,
+			SADVARE_U rulerLord = new SADVARE_U(request, kodts7DaoService, kodts2DaoService, tariDaoService, kodts5DaoService,
 					kodts6DaoService, kodts8DaoService,kodtsaDaoService, kodtsbDaoService, kodtvalfDaoService ,sb, dbErrorStackTrace);
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {

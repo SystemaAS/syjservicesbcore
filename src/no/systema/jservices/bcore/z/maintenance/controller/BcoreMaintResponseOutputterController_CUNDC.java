@@ -157,7 +157,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dto);
 			binder.bind(request);
 			// rules
-			CUNDC_U rulerLord = new CUNDC_U(cundcDaoServices, kofastDaoServices,sb, dbErrorStackTrace);
+			CUNDC_U rulerLord = new CUNDC_U(request,cundcDaoServices, kofastDaoServices,sb, dbErrorStackTrace);
 			// Start processing now
 			if (userName != null && !"".equals(userName)) {
 				int dmlRetval = 0;

@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -157,12 +158,15 @@ public class JsonResponseOutputterController_CUNDF {
 	 */
 	@RequestMapping(value="syjsSYCUNDFR_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public String syjsCundf_U( HttpSession session, HttpServletRequest request) {
+	public String syjsCundf_U( HttpSession session, HttpServletRequest request, Locale locale) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();	
 
 		try{
 			logger.info("Inside syjsSYCUNDFR_U.do");
+			
+			logger.info("locale="+locale);
+			
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
 			//Check ALWAYS user in BRIDF
@@ -176,7 +180,7 @@ public class JsonResponseOutputterController_CUNDF {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U(cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, sb, dbErrorStackTrace); 
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;

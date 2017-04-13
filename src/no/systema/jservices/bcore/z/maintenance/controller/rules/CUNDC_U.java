@@ -2,6 +2,8 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
@@ -19,7 +21,7 @@ import no.systema.main.util.MessageSourceHelper;
 public class CUNDC_U {
 	private static Logger logger = Logger.getLogger(CUNDC_U.class.getName());
 	private JsonResponseWriter jsonWriter = new JsonResponseWriter();
-	private MessageSourceHelper messageSourceHelper = new MessageSourceHelper();
+	private MessageSourceHelper messageSourceHelper = null;
 	private CundcDaoServices cundcDaoServices = null;
 	private KofastDaoServices kofastDaoServices = null;
 	
@@ -28,7 +30,8 @@ public class CUNDC_U {
 	private boolean ID_CHECK = true;
 
 
-	public CUNDC_U(CundcDaoServices cundcDaoServices, KofastDaoServices kofastDaoServices, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public CUNDC_U(HttpServletRequest request, CundcDaoServices cundcDaoServices, KofastDaoServices kofastDaoServices, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+		messageSourceHelper = new MessageSourceHelper(request);
 		this.cundcDaoServices = cundcDaoServices;
 		this.kofastDaoServices = kofastDaoServices;
 		this.errors = sb;

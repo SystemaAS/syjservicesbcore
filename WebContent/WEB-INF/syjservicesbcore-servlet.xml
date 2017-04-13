@@ -95,6 +95,17 @@ http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 			</list>
 	  </property>
 	</bean>
+
+	<mvc:interceptors> 
+		<bean id="localeChangeInterceptor"
+			class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+			<property name="paramName" value="lang" />
+		</bean>
+	</mvc:interceptors>
+ 	
+ 	<bean id="localeResolver"
+ 		class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		<property name="defaultLocale" value="no" />
+	</bean>
 	
-	 
 </beans>

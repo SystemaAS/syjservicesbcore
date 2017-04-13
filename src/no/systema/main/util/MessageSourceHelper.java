@@ -2,8 +2,11 @@ package no.systema.main.util;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 
 import no.systema.main.context.JServicesAppContext;
 
@@ -18,23 +21,25 @@ public class MessageSourceHelper {
 	private static final Logger logger = Logger.getLogger(MessageSourceHelper.class.getName());
 
 	private ApplicationContext context = null;
+	private Locale locale = null;
 
-	public MessageSourceHelper() {
+	public MessageSourceHelper(HttpServletRequest request) {
 		context = JServicesAppContext.getApplicationContext();
-		logger.info("context="+context);
+		CookieLocaleResolver localeResolver = (CookieLocaleResolver) context.getBean("localeResolver");
+		locale = localeResolver.resolveLocale(request);
 	}
 	
 	
 	/**
 	 * Decode key/id into messages from message.properties.
-	 * Using Locale default
+	 * Using locale from CookieLocaleResolver
 	 * 
 	 * @param id, key in message.properties
 	 * @param params
 	 * @return decoded message
 	 */
 	public String getMessage(String id, Object[] params) {
-		return context.getMessage(id, params, Locale.getDefault());
+		return context.getMessage(id, params, locale);
 	}
 	
 }

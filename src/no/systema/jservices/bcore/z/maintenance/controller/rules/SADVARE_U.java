@@ -1,5 +1,7 @@
 package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 
 import no.systema.jservices.common.dao.Kodts5Dao;
@@ -28,7 +30,7 @@ import no.systema.main.util.MessageSourceHelper;
 public class SADVARE_U {
 	private static Logger logger = Logger.getLogger(SADVARE_U.class.getName());
 	private JsonResponseWriter2<SadvareDao> jsonWriter = new JsonResponseWriter2<SadvareDao>();
-	private MessageSourceHelper messageSourceHelper = new MessageSourceHelper();
+	private MessageSourceHelper messageSourceHelper = null;
 	private Kodts7DaoService kodts7DaoService = null;
 	private Kodts2DaoService kodts2DaoService = null;
 	private Kodts5DaoService kodts5DaoService = null;
@@ -42,10 +44,11 @@ public class SADVARE_U {
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
-	public SADVARE_U(Kodts7DaoService kodts7DaoService, Kodts2DaoService kodts2DaoService,
+	public SADVARE_U(HttpServletRequest request, Kodts7DaoService kodts7DaoService, Kodts2DaoService kodts2DaoService,
 			TariDaoService tariDaoService, Kodts5DaoService kodts5DaoService, Kodts6DaoService kodts6DaoService,
 			Kodts8DaoService kodts8DaoService, KodtsaDaoService kodtsaDaoService, KodtsbDaoService kodtsbDaoService, KodtvalfDaoService kodtvalfDaoService, StringBuffer sb,
 			StringBuffer dbErrorStackTrace) {
+		messageSourceHelper = new MessageSourceHelper(request);
 		this.kodts7DaoService = kodts7DaoService;
 		this.kodts2DaoService = kodts2DaoService;
 		this.kodts5DaoService = kodts5DaoService;

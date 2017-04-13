@@ -134,7 +134,7 @@ public class BcoreMaintResponseOutputterController_SYPARF {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dto);
 			binder.bind(request);
 
-			SYPARF_U rulerLord = new SYPARF_U(kofastDaoServices, sb, dbErrorStackTrace);
+			SYPARF_U rulerLord = new SYPARF_U(request, kofastDaoServices, sb, dbErrorStackTrace);
 			
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {

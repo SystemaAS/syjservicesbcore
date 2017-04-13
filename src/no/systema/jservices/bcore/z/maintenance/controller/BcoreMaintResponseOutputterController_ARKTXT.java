@@ -37,7 +37,7 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 	/**
 	 * FreeForm Source: File: ARKTXT
 	 * 
-	 * @return
+	 * @return 
 	 * @Example SELECT
 	 *          specific:http://gw.systema.no:8080/syjservicesbcore/syjsARKTXT.do?user=OSCAR&artype=fa
 	 * @Example SELECT list:
@@ -131,7 +131,7 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			ARKTXT_U rulerLord = new ARKTXT_U(arktxtDaoService, arkextDaoService, kofastDaoServices, sb, dbErrorStackTrace);
+			ARKTXT_U rulerLord = new ARKTXT_U(request,arktxtDaoService, arkextDaoService, kofastDaoServices, sb, dbErrorStackTrace);
 			
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
@@ -140,7 +140,6 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 					}
 				} else {
 					if (rulerLord.isValidInput(dao, userName, mode)) {
-					//	adjustDao(dao);
 						if ("A".equals(mode)) {
 							resultDao = arktxtDaoService.create(dao);
 						} else if ("U".equals(mode)) {
@@ -233,16 +232,6 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 			
 		}
 	}	
-	
-//	private void adjustDao(ArktxtDao dao) {
-//		StringBuilder arkvedDefault = new StringBuilder("00000000000000000000");
-//		arkvedDefault.append("00000000000000000000");
-//		arkvedDefault.append("00000000000000000000"); //60
-//		if (dao.getArkved() == null || "".equals(dao.getArkved())) {
-//			dao.setArkved(arkvedDefault.toString());
-//		}
-//	}	
-	
 	
 	@Qualifier("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;

@@ -3,6 +3,8 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
@@ -23,7 +25,7 @@ import no.systema.main.util.MessageSourceHelper;
 public class ARKTXT_U {
 	private static Logger logger = Logger.getLogger(ARKTXT_U.class.getName());
 	private JsonResponseWriter2<ArktxtDto> jsonWriter = new JsonResponseWriter2<ArktxtDto>();
-	private MessageSourceHelper messageSourceHelper = new MessageSourceHelper();
+	private MessageSourceHelper messageSourceHelper = null;
 	private ArktxtDaoService arktxtDaoService = null;
 	private ArkextDaoService arkextDaoService = null;
 	private KofastDaoServices kofastDaoServices = null;
@@ -31,7 +33,8 @@ public class ARKTXT_U {
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
-	public ARKTXT_U(ArktxtDaoService arktxtDaoService, ArkextDaoService arkextDaoService, KofastDaoServices kofastDaoServices, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public ARKTXT_U(HttpServletRequest request, ArktxtDaoService arktxtDaoService, ArkextDaoService arkextDaoService, KofastDaoServices kofastDaoServices, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+		messageSourceHelper = new MessageSourceHelper(request);
 		this.arktxtDaoService = arktxtDaoService;
 		this.arkextDaoService = arkextDaoService;
 		this.kofastDaoServices = kofastDaoServices;
@@ -69,7 +72,6 @@ public class ARKTXT_U {
 		return retval;
 	}
 
-
 	public boolean isValidInputForDelete(ArktxtDao dao, String user, String mode) {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
@@ -83,7 +85,6 @@ public class ARKTXT_U {
 		}
 		return retval;
 	}
-
 
 	private boolean existInKofast(String arkved, StringBuilder arkvedResult) {
 		boolean exists = false;
@@ -128,11 +129,6 @@ public class ARKTXT_U {
 			return true;
 		}
 	}
-
-	private boolean existInXXX(String yyy) {
-		//TODO
-		return true;
-	}	
 
 	private boolean exist(ArktxtDao dao) {
 		boolean exists = arktxtDaoService.exist(dao);

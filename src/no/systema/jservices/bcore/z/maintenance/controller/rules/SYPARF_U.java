@@ -2,6 +2,8 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KofastDao;
@@ -19,13 +21,14 @@ import no.systema.main.util.MessageSourceHelper;
 public class SYPARF_U {
 	private static Logger logger = Logger.getLogger(SYPARF_U.class.getName());
 	private JsonResponseWriter2<SyparfDto> jsonWriter = new JsonResponseWriter2<SyparfDto>();
-	private MessageSourceHelper messageSourceHelper = new MessageSourceHelper();
+	private MessageSourceHelper messageSourceHelper = null;
 	private KofastDaoServices kofastDaoServices = null;
 	
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
-	public SYPARF_U(KofastDaoServices kofastDaoServices, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYPARF_U(HttpServletRequest request, KofastDaoServices kofastDaoServices, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+		messageSourceHelper = new MessageSourceHelper(request);
 		this.kofastDaoServices = kofastDaoServices;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
