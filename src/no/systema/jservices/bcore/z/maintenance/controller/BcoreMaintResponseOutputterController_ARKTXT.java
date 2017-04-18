@@ -202,6 +202,7 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		dto.setArkjn(dao.getArkjn());
 		dto.setArksnd(dao.getArksnd());
 		dto.setArklag(dao.getArklag());
+		dto.setArkdag(dao.getArkdag());
 		if (getDesc) {
 			dto.setArklagDesc(getArklagDesc(dao.getArklag()));
 		}

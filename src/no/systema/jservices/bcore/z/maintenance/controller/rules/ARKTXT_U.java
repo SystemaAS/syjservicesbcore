@@ -58,7 +58,7 @@ public class ARKTXT_U {
 					retval = false;
 				}
 				//Vedlegg
-				if (dao.getArkved() != null && !"".equals(dao.getArkved()) && !existInKofast(dao.getArkved(),arkvedResult)) {
+				if (hasValue(dao.getArkved()) && !existInKofast(dao.getArkved(),arkvedResult)) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,messageSourceHelper.getMessage("systema.bcore.kunderegister.arktxt.error.arkved",new Object[] { arkvedResult }),"error", dbErrors));
 					retval = false;				
 				}
@@ -86,8 +86,21 @@ public class ARKTXT_U {
 		return retval;
 	}
 
+	private boolean hasValue(String arkved) {
+		if (arkved != null) {
+			arkved = arkved.trim();
+			if (arkved.length() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+	
 	private boolean existInKofast(String arkved, StringBuilder arkvedResult) {
-		boolean exists = false;
+		boolean exists = true;
 		List<String> arkvedList = splitEqually(arkved, 2);
 		List list = null;
 		for (String value : arkvedList) {
@@ -100,7 +113,9 @@ public class ARKTXT_U {
 					exists = false;
 					arkvedResult.append(" " + value);
 				}
-			}
+			} 
+			logger.info("exist="+exists);
+			
 		}
 		if (!exists) {
 			return false;
