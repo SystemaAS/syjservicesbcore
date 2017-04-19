@@ -39,7 +39,7 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 	 * 
 	 * @return 
 	 * @Example SELECT
-	 *          specific:http://gw.systema.no:8080/syjservicesbcore/syjsARKTXT.do?user=OSCAR&artype=fa
+	 *          specific:http://gw.systema.no:8080/syjservicesbcore/syjsARKTXT.do?user=OSCAR&artype=fa&showupload=J
 	 * @Example SELECT list:
 	 *          http://gw.systema.no:8080/syjservicesbcore/syjsARKTXT.do?user=OSCAR
 	 * 
@@ -51,6 +51,7 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		StringBuffer sb = new StringBuffer();
 		List<ArktxtDto> arktxtDtoList = new ArrayList<ArktxtDto>();
 		String artype = request.getParameter("artype");
+		String showupload = request.getParameter("showupload");
 
 		try {
 			String user = request.getParameter("user");
@@ -63,8 +64,11 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 				if (artype != null && !"".equals(artype)) {
 					ArktxtDto dto = fetchRecord(artype);
 					arktxtDtoList.add(dto);				
-				} else {
-					arktxtDtoList = fetchList();
+				} else if (showupload != null) {  // equals J
+					arktxtDtoList = fetchAllUploadBane();
+				}
+				else {
+					arktxtDtoList = fetchAll();
 				}
 				if (arktxtDtoList != null) {
 					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, arktxtDtoList));
@@ -182,7 +186,7 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		return dto;
 	}
 
-	private List<ArktxtDto> fetchList() {
+	private List<ArktxtDto> fetchAll() {
 		List<ArktxtDao> arktxtDaoList = new ArrayList<ArktxtDao>(); // from DaoServcie
 		List<ArktxtDto> arktxtDtoList = new ArrayList<ArktxtDto>(); // dto to GUI
 		ArktxtDto arktxtDto = null; // dto to GUI
@@ -195,6 +199,19 @@ public class BcoreMaintResponseOutputterController_ARKTXT {
 		return arktxtDtoList;
 	}
 
+	private List<ArktxtDto> fetchAllUploadBane() {
+		List<ArktxtDao> arktxtDaoList = new ArrayList<ArktxtDao>(); // from DaoServcie
+		List<ArktxtDto> arktxtDtoList = new ArrayList<ArktxtDto>(); // dto to GUI
+		ArktxtDto arktxtDto = null; // dto to GUI
+		arktxtDaoList = (List<ArktxtDao>) arktxtDaoService.getAllUploadbane();
+		for (ArktxtDao arktxtDao : arktxtDaoList) {
+			arktxtDto = getDto(arktxtDao, false);
+			arktxtDtoList.add(arktxtDto);
+		}
+
+		return arktxtDtoList;
+	}	
+	
 	private ArktxtDto getDto(ArktxtDao dao, boolean getDesc) {
 		ArktxtDto dto = new ArktxtDto();
 		dto.setArtype(dao.getArtype());
