@@ -58,8 +58,13 @@ public class ARKTXT_U {
 					retval = false;
 				}
 				//Vedlegg
-				if (hasValue(dao.getArkved()) && !existInKofast(dao.getArkved(),arkvedResult)) {
+				if (hasValue(dao.getArkved()) && !existInArktxt(dao.getArkved(),arkvedResult)) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,messageSourceHelper.getMessage("systema.bcore.kunderegister.arktxt.error.arkved",new Object[] { arkvedResult }),"error", dbErrors));
+					retval = false;				
+				}
+				//Opplastningsbane
+				if (hasValue(dao.getArsban()) && !existInKofast(dao.getArsban())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,messageSourceHelper.getMessage("systema.bcore.kunderegister.arktxt.error.arsban",new Object[] { dao.getArsban() }),"error", dbErrors));
 					retval = false;				
 				}
 			} else {
@@ -99,23 +104,31 @@ public class ARKTXT_U {
 		}
 	}
 	
-	private boolean existInKofast(String arkved, StringBuilder arkvedResult) {
+	private boolean existInKofast(String arsban) {
+		boolean	exists = this.kofastDaoServices.exists(FasteKoder.ARKIVU, arsban, dbErrors);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	private boolean existInArktxt(String arkved, StringBuilder arkvedResult) {
 		boolean exists = true;
 		List<String> arkvedList = splitEqually(arkved, 2);
-		List list = null;
+		ArktxtDao qDao = null;
 		for (String value : arkvedList) {
 			value = value.trim();
 			if (value.length() > 0) {
-				list = kofastDaoServices.findById(FasteKoder.ARKIVU, value, dbErrors);
-				if (list != null && list.size() > 0) {
+				qDao = new ArktxtDao();
+				qDao.setArtype(value);
+				if (exist(qDao)) {
 					exists = true;
 				} else {
 					exists = false;
 					arkvedResult.append(" " + value);
 				}
 			} 
-			logger.info("exist="+exists);
-			
 		}
 		if (!exists) {
 			return false;
@@ -123,16 +136,8 @@ public class ARKTXT_U {
 			return true;
 		}
 
-	}
-	
-	private List<String> splitEqually(String text, int size) {
-		List<String> ret = new ArrayList<String>((text.length() + size - 1) / size);
-		for (int start = 0; start < text.length(); start += size) {
-			ret.add(text.substring(start, Math.min(text.length(), start + size)));
-		}
-
-		return ret;
 	}	
+	
 	
 	private boolean existInArkext(String arklag) {
 		ArkextDao qDao = new ArkextDao();
@@ -154,4 +159,12 @@ public class ARKTXT_U {
 		}
 	}
 	
+	private List<String> splitEqually(String text, int size) {
+		List<String> ret = new ArrayList<String>((text.length() + size - 1) / size);
+		for (int start = 0; start < text.length(); start += size) {
+			ret.add(text.substring(start, Math.min(text.length(), start + size)));
+		}
+		
+		return ret;
+	}	
 }
