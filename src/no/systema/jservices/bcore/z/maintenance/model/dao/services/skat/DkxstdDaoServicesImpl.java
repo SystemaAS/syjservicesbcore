@@ -128,7 +128,10 @@ public class DkxstdDaoServicesImpl implements DkxstdDaoServices {
 			sql.append(" thkns, thnas, thtins, thads1, thsks, thpss, thpns, thlks, ");
 			sql.append(" thknk, thnak, thtink, thadk1, thskk, thpsk, thpnk, thlkk, ");
 			sql.append(" thtsd1, thtsd2, thtsd3, thtsd4, thtsd5, thtsd6, thtsd7, thtsd8, thtsb, ");
-			sql.append(" thgkd, thgft1, thgadk, thgbgi, thgbgu, thgft2,  thgpr, thgbl, thgvk, ");
+			sql.append(" thgkd, thgft1, thgadk, thgbgi, thgbgu, thgft2,  ");
+			//TODO- CB must update the file with YBC-changes: --> sql.append(" thgpr = ?, ");
+			//sql.append(" thgpr, ");
+			sql.append(" thgbl, thgvk, ");
 			sql.append(" thalk, thblk, thtaid, thtalk, thtask, thtgid, thtglk, thtgsk, ");
 			sql.append(" thtrm, thkdc, thlsd, thcats, thskfd, thdst, thdsk, thdkr, thddt, ");
 			
@@ -138,7 +141,9 @@ public class DkxstdDaoServicesImpl implements DkxstdDaoServices {
 			sql.append(" VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ");
-			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ");
+			//sql.append(" ?, ");
+			sql.append(" ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
@@ -152,7 +157,9 @@ public class DkxstdDaoServicesImpl implements DkxstdDaoServices {
 				dao.getThkns(), dao.getThnas(), dao.getThtins(), dao.getThads1(), dao.getThsks(), dao.getThpss(), dao.getThpns(), dao.getThlks(),
 				dao.getThknk(), dao.getThnak(), dao.getThtink(), dao.getThadk1(), dao.getThskk(), dao.getThpsk(), dao.getThpnk(), dao.getThlkk(), 
 				dao.getThtsd1(),dao.getThtsd2(),dao.getThtsd3(),dao.getThtsd4(),dao.getThtsd5(),dao.getThtsd6(),dao.getThtsd7(),dao.getThtsd8(), dao.getThtsb(),
-				dao.getThgkd(), dao.getThgft1(), dao.getThgadk(), dao.getThgbgi(), dao.getThgbgu(), dao.getThgft2(), dao.getThgpr(), dao.getThgbl(), dao.getThgvk(), 
+				dao.getThgkd(), dao.getThgft1(), dao.getThgadk(), dao.getThgbgi(), dao.getThgbgu(), dao.getThgft2(), 
+				//dao.getThgpr(), 
+				dao.getThgbl(), dao.getThgvk(), 
 				dao.getThalk(), dao.getThblk(), dao.getThtaid(), dao.getThtalk(), dao.getThtask(), dao.getThtgid(), dao.getThtglk(), dao.getThtgsk(),
 				dao.getThtrm(), dao.getThkdc(), dao.getThlsd(), dao.getThcats(), dao.getThskfd(), dao.getThdst(), dao.getThdsk(), dao.getThdkr(), dao.getThddt(),
 				
@@ -188,7 +195,9 @@ public class DkxstdDaoServicesImpl implements DkxstdDaoServices {
 			sql.append(" thkns = ?, thnas = ?, thtins = ?, thads1 = ?, thsks = ?, thpss = ?, thpns = ?, thlks = ?, ");
 			sql.append(" thknk = ?, thnak = ?, thtink = ?, thadk1 = ?, thskk = ?, thpsk = ?, thpnk = ?, thlkk = ?, ");
 			sql.append(" thtsd1 = ?, thtsd2 = ?, thtsd3 = ?, thtsd4 = ?, thtsd5 = ?, thtsd6 = ?, thtsd7 = ?, thtsd8 = ?, thtsb = ?, ");
-			sql.append(" thgkd = ?, thgft1 = ?, thgadk = ?, thgbgi = ?, thgbgu = ?, thgft2 = ?, thgpr = ?, thgbl = ?, thgvk = ?, ");
+			sql.append(" thgkd = ?, thgft1 = ?, thgadk = ?, thgbgi = ?, thgbgu = ?, thgft2 = ?, ");
+			//TODO- CB must update the file with YBC-changes: --> sql.append(" thgpr = ?, ");
+			sql.append(" thgbl = ?, thgvk = ?, ");
 			sql.append(" thalk = ?, thblk = ?, thtaid = ?, thtalk = ?, thtask = ?, thtgid = ?, thtglk = ?, thtgsk = ?, ");
 			sql.append(" thtrm = ?, thkdc = ?, thlsd = ?, thcats = ?, thskfd = ?, thdst = ?, thdsk = ?, thdkr = ?, thddt = ?, ");
 			
@@ -202,7 +211,9 @@ public class DkxstdDaoServicesImpl implements DkxstdDaoServices {
 				dao.getThkns(), dao.getThnas(), dao.getThtins(), dao.getThads1(), dao.getThsks(), dao.getThpss(), dao.getThpns(), dao.getThlks(),
 				dao.getThknk(), dao.getThnak(), dao.getThtink(), dao.getThadk1(), dao.getThskk(), dao.getThpsk(), dao.getThpnk(), dao.getThlkk(), 
 				dao.getThtsd1(),dao.getThtsd2(),dao.getThtsd3(),dao.getThtsd4(),dao.getThtsd5(),dao.getThtsd6(),dao.getThtsd7(),dao.getThtsd8(), dao.getThtsb(),
-				dao.getThgkd(), dao.getThgft1(), dao.getThgadk(), dao.getThgbgi(), dao.getThgbgu(), dao.getThgft2(), dao.getThgpr(), dao.getThgbl(), dao.getThgvk(),
+				dao.getThgkd(), dao.getThgft1(), dao.getThgadk(), dao.getThgbgi(), dao.getThgbgu(), dao.getThgft2(), 
+				//dao.getThgpr(), 
+				dao.getThgbl(), dao.getThgvk(),
 				dao.getThalk(), dao.getThblk(), dao.getThtaid(), dao.getThtalk(), dao.getThtask(), dao.getThtgid(), dao.getThtglk(), dao.getThtgsk(),
 				dao.getThtrm(), dao.getThkdc(), dao.getThlsd(), dao.getThcats(), dao.getThskfd(), dao.getThdst(), dao.getThdsk(), dao.getThdkr(), dao.getThddt(),
 				
