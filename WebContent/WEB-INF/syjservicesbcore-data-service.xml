@@ -138,6 +138,9 @@
   <bean id="dkxkodfDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.DkxkodfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="kosttDaoServices" class="no.systema.jservices.model.dao.services.KosttDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   <!--///////////////////
         NativeExtractor 
       ///////////////////
