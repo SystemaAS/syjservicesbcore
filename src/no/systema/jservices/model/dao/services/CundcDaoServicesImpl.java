@@ -116,7 +116,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			CundcDto dto = (CundcDto) daoObj;
 			StringBuilder sql = new StringBuilder();
 			sql.append(" UPDATE cundc SET cconta= ?, ctype = ?, cphone = ?, cmobil = ?, cemail = ?, clive = ?, ");
-			sql.append(" cprint = ?, sonavn= ?, cemne = ?, cavd = ?, cavdio = ?, copd = ?, copdio = ?, cmerge = ?");
+			sql.append(" cprint = ?, sonavn= ?, cemne = ?, cavd = ?, cavdio = ?, copd = ?, copdio = ?, cmerge = ?, cfax = ?");
 			sql.append(" WHERE ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
@@ -127,7 +127,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 						dto.getCconta(), dto.getCtype(), dto.getCphone(), dto.getCmobil(), dto.getCemail(), dto.getClive(), 
 						dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), dto.getCopd(),
-						dto.getCopdio(), dto.getCmerge(),
+						dto.getCopdio(), dto.getCmerge(),dto.getCfax(),
 						//id's
 						dto.getCcompn(),dto.getCfirma(), dto.getCcontaorg()
 						} );
@@ -158,10 +158,10 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			CundcDto dto = (CundcDto) dtoObj;
 			StringBuilder sql = new StringBuilder();
 			sql.append(" INSERT INTO cundc (ccompn, cfirma, cconta, ctype, cphone, cmobil, cemail, clive, ");
-			sql.append(" cprint, sonavn, cemne, cavd, cavdio, copd, copdio, cmerge ) ");
+			sql.append(" cprint, sonavn, cemne, cavd, cavdio, copd, copdio, cmerge, cfax ) ");
 
 			sql.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
-			sql.append(" ?, ?, ?, ?, ?, ?, ? ) ");
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ? ) ");
 
 			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
 			logger.info("insert::sql="+sql.toString());
@@ -176,7 +176,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			retval = this.jdbcTemplate.update(sql.toString(),
 					new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta(), dto.getCtype(), dto.getCphone(), dto.getCmobil(),
 							dto.getCemail(), dto.getClive(), dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), copd,
-							dto.getCopdio(), dto.getCmerge() });
+							dto.getCopdio(), dto.getCmerge(), dto.getCfax() });
 			
 			if (retval>=0) {
 				ArkvedkDao arkvedkDao = createArkvedkDao(dto, errorStackTrace);

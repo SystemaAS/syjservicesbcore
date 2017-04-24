@@ -225,6 +225,10 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		if (dto.getCavd() == null || "".equals(dto.getCavd())) {
 			dto.setCavd(cavdDefault.toString());
 		}
+		
+		if ("EMMA-XML".equals(dto.getCconta())) {
+			dto.setCmerge(""); //Disable
+		}
 	}
 
 	// ----------------

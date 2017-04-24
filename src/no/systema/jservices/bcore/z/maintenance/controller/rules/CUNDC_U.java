@@ -5,8 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
+import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.common.values.FasteKoder;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundcDto;
@@ -57,6 +57,26 @@ public class CUNDC_U {
 								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.ctype", new Object[] { dto.getCtype() }), "error", dbErrors));
 						retval = false;
 					}
+				}
+				//If ctype = EMMA-XML, 3 mandatory fields
+				if ("EMMA-XML".equals(dto.getCconta())) {
+					if (!StringUtils.hasValue(dto.getCphone()) ) {
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.mandatory.cphone", new Object[] { null }), "error", dbErrors));
+						retval = false;
+						
+					}
+					if (!StringUtils.hasValue(dto.getCfax()) ) {
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.mandatory.cfax", new Object[] { null }), "error", dbErrors));
+						retval = false;
+						
+					}						
+					if (!StringUtils.hasValue(dto.getCmobil()) ) {
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.mandatory.cmobil", new Object[] { null }), "error", dbErrors));
+						retval = false;
+					}						
 				}
 				// Check Faste Koder (KOFAST)
 				if (!existInKofast(user, dto)) {
