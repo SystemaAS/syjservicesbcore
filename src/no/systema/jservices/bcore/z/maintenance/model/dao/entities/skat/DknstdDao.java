@@ -16,7 +16,7 @@ public class DknstdDao implements Serializable, IDao {
 	
 	private String tist = "";                             
 	public String getTistPropertyName (){ return "tist"; }
-	public void setTist (String value){ this.tist = value;   }   
+	public void setTist (String value){ this.tist = value;   }   	
 	public String getTist (){ return this.tist;   }  
 	
 	private String tiavd = "";                                
