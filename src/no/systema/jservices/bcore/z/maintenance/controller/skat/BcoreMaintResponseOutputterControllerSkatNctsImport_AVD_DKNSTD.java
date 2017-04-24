@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 //rules
-import no.systema.jservices.bcore.z.maintenance.controller.rules.skat.DKX003R_U;
+import no.systema.jservices.bcore.z.maintenance.controller.rules.skat.DKX053R_U;
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DkxstdDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DknstdDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.DkxkodfDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.skat.DkxstdDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.skat.DknstdDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
@@ -38,34 +38,34 @@ import no.systema.jservices.model.dao.services.EdiiDaoServices;
  * All communication to the outside world is done through this gateway.
  * 
  * @author oscardelatorre
- * @date Apr 11, 2017
+ * @date Apr 24, 2017
  * 
  */
 
 @Controller
-public class BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTD {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTD.class.getName());
+public class BcoreMaintResponseOutputterControllerSkatNctsImport_AVD_DKNSTD {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSkatNctsImport_AVD_DKNSTD.class.getName());
 	
 	/**
 	 * FreeForm Source:
 	 * 	 File: 		Dkxstd
-	 * 	 PGM:		DKX003R 
-	 * 	 Member: 	MAINT - SKAT NCTS EXPORT AVD - Dkxstd  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
+	 * 	 PGM:		DKX053R 
+	 * 	 Member: 	MAINT - SKAT NCTS IMPORT AVD - Dknstd  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
 	 *  
 	 * 
 	 * @return
-	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsDKX003R.do?user=OSCAR&id=DKXSTD or DKXSTD_FHV
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsDKX003R.do?user=OSCAR&thavd=1
+	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsDKX053R.do?user=OSCAR&
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsDKX053R.do?user=OSCAR&tiavd=1
 	 * 
 	 */
-	@RequestMapping(value="syjsDKX003R.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="syjsDKX053R.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsRList( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.info("Inside syjsDKX003R.do");
+			logger.info("Inside syjsDKX053R.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			//String validAvd = request.getParameter("va");
@@ -80,28 +80,24 @@ public class BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTD {
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				//bind attributes is any
-				DkxstdDao dao = new DkxstdDao();
+				DknstdDao dao = new DknstdDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 	            binder.bind(request);
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
 				//do SELECT
 				logger.info("Before SELECT ...");
-				if ((dao.getThavd() != null && !"".equals(dao.getThavd()))) {
+				if ((dao.getTiavd() != null && !"".equals(dao.getTiavd()))) {
 					logger.info("findById...");
-					list = this.dkxstdDaoServices.findById(dao.getThavd(), dbErrorStackTrace);
+					list = this.dknstdDaoServices.findById(dao.getTiavd(), dbErrorStackTrace);
 				}
 				else if ("DKXSTD".equals(id)) {
-					logger.info("getNctsExportList...");
-					list = this.dkxstdDaoServices.getNctsExportList(dbErrorStackTrace);
+					logger.info("getNctsImportList...");
+					list = this.dknstdDaoServices.getNctsImportList(dbErrorStackTrace);
 				}
-				else if ("DKXSTD_FHV".equals(id)) {
-					logger.info("getNctsForhandsvarslingList...");
-					list = this.dkxstdDaoServices.getNctsForhandsvarslingList(dbErrorStackTrace);
-				} 
 				else if (id == null){
 					logger.info("getList...");
-					list = this.dkxstdDaoServices.getList(dbErrorStackTrace);
+					list = this.dknstdDaoServices.getList(dbErrorStackTrace);
 				}
 				
 				//process result
@@ -137,11 +133,11 @@ public class BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTD {
 	/**
 	 * 
 	 * Update Database DML operations
-	 * File: 	Dkxstd
-	 * PGM:		Dkx003R_U 
+	 * File: 	Dknstd
+	 * PGM:		Dkx053R_U 
 	 * Member: 	MAINT SKAT NCTS IMPORT - AVD , Maintenance - DML operations
 	 * 
-	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsDKX003R_U.do?user=OSCAR&thavd=1&mode=U/A/D
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsDKX053R_U.do?user=OSCAR&tiavd=1&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
@@ -149,14 +145,14 @@ public class BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTD {
 	 * 
 	 */
 	
-	@RequestMapping(value="syjsDKX003R_U.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="syjsDKX053R_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsR_U( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.info("Inside syjsDKX003R_U.do");
+			logger.info("Inside syjsDKX053R_U.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
@@ -168,19 +164,19 @@ public class BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTD {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 			
 			//bind attributes is any
-			DkxstdDao dao = new DkxstdDao();
+			DknstdDao dao = new DknstdDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             
             //rules
-            DKX003R_U rulerLord = new DKX003R_U(this.ediiDaoServices, this.dkxkodfDaoServices);
+            DKX053R_U rulerLord = new DKX053R_U(this.ediiDaoServices, this.dkxkodfDaoServices);
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("D".equals(mode)){
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						dmlRetval = this.dkxstdDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.dknstdDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -189,13 +185,13 @@ public class BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTD {
 					}
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode )){
-						List<DkxstdDao> list = new ArrayList<DkxstdDao>();
+						List<DknstdDao> list = new ArrayList<DknstdDao>();
 						//must complete numeric values to avoid <null> on those
 						rulerLord.adjustNumericFields(dao);
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
-							list = this.dkxstdDaoServices.findById(dao.getThavd(), dbErrorStackTrace);
+							list = this.dknstdDaoServices.findById(dao.getTiavd(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output
@@ -204,12 +200,12 @@ public class BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTD {
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
 								logger.info("Before INSERT ...");
-								dmlRetval = this.dkxstdDaoServices.insert(dao, dbErrorStackTrace);
+								dmlRetval = this.dknstdDaoServices.insert(dao, dbErrorStackTrace);
 							}
 							
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							dmlRetval = this.dkxstdDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = this.dknstdDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{
@@ -255,12 +251,12 @@ public class BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTD {
 	//----------------
 	//WIRED SERVICES
 	//----------------
-	@Qualifier ("dkxstdDaoServices")
-	private DkxstdDaoServices dkxstdDaoServices;
+	@Qualifier ("dknstdDaoServices")
+	private DknstdDaoServices dknstdDaoServices;
 	@Autowired
 	@Required
-	public void setDkxstdDaoServices (DkxstdDaoServices value){ this.dkxstdDaoServices = value; }
-	public DkxstdDaoServices getDkxstdDaoServices(){ return this.dkxstdDaoServices; }
+	public void setDknstdDaoServices (DknstdDaoServices value){ this.dknstdDaoServices = value; }
+	public DknstdDaoServices getDkxstdDaoServices(){ return this.dknstdDaoServices; }
 
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;

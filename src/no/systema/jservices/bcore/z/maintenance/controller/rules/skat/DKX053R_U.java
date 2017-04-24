@@ -4,21 +4,21 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TristdDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.TrkodfDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DknstdDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.skat.DknstdDaoServices;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
-
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.DkxkodfDaoServices;
 
 
 /**
  * 
  * @author oscardelatorre
- * @date Sep 16, 2016
+ * @date Apr 21, 2017
  */
 public class DKX053R_U {
 	private static Logger logger = Logger.getLogger(DKX053R_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
-	private TrkodfDaoServices trkodfDaoServices;
+	private DkxkodfDaoServices dkxkodfDaoServices;
 	
 	private StringBuffer validatorStackTrace = new StringBuffer();
 	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }
@@ -27,9 +27,10 @@ public class DKX053R_U {
 	 * 
 	 * @param ediiDaoServices
 	 */
-	public DKX053R_U(EdiiDaoServices ediiDaoServices, TrkodfDaoServices trkodfDaoServices){
+	public DKX053R_U(EdiiDaoServices ediiDaoServices, DkxkodfDaoServices dkxkodfDaoServices){
 		this.ediiDaoServices = ediiDaoServices;
-		this.trkodfDaoServices = trkodfDaoServices;
+		//this service is common for both NCTS. SKAT - NCTS Eksport and NCTS Import
+		this.dkxkodfDaoServices = dkxkodfDaoServices;
 	}
 
 	/**
@@ -40,7 +41,7 @@ public class DKX053R_U {
 	 * @param errorStackTrace
 	 * @return
 	 */
-	public boolean isValidInput(TristdDao dao, String user, String mode ){
+	public boolean isValidInput(DknstdDao dao, String user, String mode ){
 		boolean retval = true;
 		
 		//starting point
@@ -77,7 +78,7 @@ public class DKX053R_U {
 	 * @param mode
 	 * @return
 	 */
-	public boolean isValidInputForDelete(TristdDao dao, String user, String mode){
+	public boolean isValidInputForDelete(DknstdDao dao, String user, String mode){
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
@@ -96,7 +97,7 @@ public class DKX053R_U {
 	 * 
 	 * @param dao
 	 */
-	public void adjustNumericFields(TristdDao dao){
+	public void adjustNumericFields(DknstdDao dao){
 		String ZERO = "0";
 		//STANDE
 		//Decimals
@@ -128,7 +129,7 @@ public class DKX053R_U {
 	 * @param dao
 	 * @param errorStackTrace
 	 */
-	public boolean vaidateExchangesId(TristdDao dao){
+	public boolean vaidateExchangesId(DknstdDao dao){
 		boolean retval = true;
 		
 		List s0004List = this.ediiDaoServices.findById(dao.getS0004(), this.validatorStackTrace);
@@ -161,10 +162,12 @@ public class DKX053R_U {
 	 * @param dao
 	 * @return
 	 */
-	public boolean vaidateTullkontorId(TristdDao dao){
+	public boolean vaidateTullkontorId(DknstdDao dao){
 		boolean retval = true;
-		String UNIQUE_CODE_TULLKONTOR = "106";
-		List list = this.trkodfDaoServices.findById(UNIQUE_CODE_TULLKONTOR, dao.getTitsb(), this.validatorStackTrace);
+		/* TODO OSCAR ...
+		//String UNIQUE_CODE_TULLKONTOR = "106";
+		
+		List list = this.dknstdDaoServices.findById(UNIQUE_CODE_TULLKONTOR, dao.getTitsb(), this.validatorStackTrace);
 		
 		if( list!=null && list.size()==1 ){
 			//OK
@@ -174,7 +177,7 @@ public class DKX053R_U {
 			this.validatorStackTrace.append(" Freml.tollsted er ugyldig " );
 			retval = false;
 		}	
-		
+		*/
 		return retval;
 	}
 }
