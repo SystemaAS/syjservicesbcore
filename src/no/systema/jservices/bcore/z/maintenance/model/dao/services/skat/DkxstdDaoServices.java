@@ -4,7 +4,7 @@ import no.systema.jservices.model.dao.services.IDaoServices;
 /**
  * 
  * @author oscardelatorre
- * @date Apr 11, 2016
+ * @date Apr 11, 2017
  * 
  */
 public interface DkxstdDaoServices extends IDaoServices {
