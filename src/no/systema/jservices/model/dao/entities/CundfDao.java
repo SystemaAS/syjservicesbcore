@@ -47,6 +47,10 @@ public class CundfDao implements Serializable, IDao {
 	public void setKpers (String value){ this.kpers = value;   }   
 	public String getKpers (){ return this.kpers;   }              
 
+	private String tlf = "";                                
+	public void setTlf (String value){ this.tlf = value;   }   
+	public String getTlf (){ return this.tlf;   }  	
+	
 	private String sonavn = "";                                
 	public void setSonavn (String value){ this.sonavn = value;   }   
 	public String getSonavn (){ return this.sonavn;   }              

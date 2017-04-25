@@ -140,7 +140,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			sql.append(" betmat = ?, sfakt = ?, kgrens = ?, tfaxnr = ?, syregn = ?, sykont = ?, sylikv = ?, syopdt = ?, syminu = ?, ");
 			sql.append(" syutlp = ?, sypoge = ?, systat = ?, syselg = ?, syiat1 = ?, syiat2 = ?, sycoty = ?, syfr01 = ?, syfr02 = ?, ");
 			sql.append(" syfr03 = ?, syfr04 = ?, syfr05 = ?, syfr06 = ?, sysalu = ?, syepos = ?, aknrku = ?, vatkku = ?, xxbre = ?, ");
-			sql.append(" xxlen = ?, xxinm3 = ?, xxinlm = ?, rnraku = ?, golk = ?, kundgr = ?, pnpbku = ?, adr21 = ?, eori = ?, aktkod = ? ");
+			sql.append(" xxlen = ?, xxinm3 = ?, xxinlm = ?, rnraku = ?, golk = ?, kundgr = ?, pnpbku = ?, adr21 = ?, eori = ?, aktkod = ?, tlf = ? ");
 
 			sql.append(" WHERE kundnr = ? ");
 			sql.append(" AND firma = ? ");
@@ -151,7 +151,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 						dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(),
 						dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(),
 						dao.getSyfr03(), dao.getSyfr04(), dao.getSyfr05(), dao.getSyfr06(), dao.getSysalu(), dao.getSyepos(), dao.getAknrku(), dao.getVatkku(), dao.getXxbre(),
-						dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori(),dao.getAktkod(),
+						dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori(),dao.getAktkod(),dao.getTlf(),
 						//id's
 						dao.getKundnr(),dao.getFirma()
 						} );
@@ -174,30 +174,30 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		try {
 			CundfDao dao = (CundfDao) daoObj;
 			StringBuilder sql = new StringBuilder();
-			sql.append(" INSERT INTO cundf (firma, kundnr, knavn, syrg, adr1, adr3, postnr, syland, ");  //8
-			sql.append(" dkund ,  kpers , sonavn , valkod , spraak , bankg , postg , fmot , betbet , "); //9
-			sql.append(" betmat , sfakt , kgrens , tfaxnr , syregn , sykont , sylikv, syopdt , syminu , "); //9
-			sql.append(" syutlp , sypoge , systat , syselg , syiat1 , syiat2 , sycoty , syfr01, syfr02 , "); //9
-			sql.append(" syfr03 , syfr04 , syfr05 , syfr06 , sysalu , syepos , aknrku, vatkku , xxbre, "); //9
-			sql.append(" xxlen , xxinm3 , xxinlm , rnraku , golk , kundgr , pnpbku, adr21 , eori, aktkod ) "); //9
+			sql.append(" INSERT INTO cundf (firma, kundnr, knavn, syrg, adr1, adr3, postnr, syland, ");  
+			sql.append(" dkund ,  kpers , sonavn , valkod , spraak , bankg , postg , fmot , betbet , "); 
+			sql.append(" betmat , sfakt , kgrens , tfaxnr , syregn , sykont , sylikv, syopdt , syminu , "); 
+			sql.append(" syutlp , sypoge , systat , syselg , syiat1 , syiat2 , sycoty , syfr01, syfr02 , "); 
+			sql.append(" syfr03 , syfr04 , syfr05 , syfr06 , sysalu , syepos , aknrku, vatkku , xxbre, "); 
+			sql.append(" xxlen , xxinm3 , xxinlm , rnraku , golk , kundgr , pnpbku, adr21 , eori, aktkod, tlf ) "); 
 
 			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, "); //8
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); //9
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); //9
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); //9
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); //9
-			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "); //10
+			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) "); //10
 
 /*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
 			logger.info("insert::sql="+sql.toString());
 */			
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
-					dao.getFirma(), dao.getKundnr(), dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(),  //8
-					dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(), //9
-					dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(), //9
-					dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(), //9
-					dao.getSyfr03(), dao.getSyfr04(), dao.getSyfr05(), dao.getSyfr06(), dao.getSysalu(), dao.getSyepos(), dao.getAknrku(), dao.getVatkku(), dao.getXxbre(), //9
-					dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori(), dao.getAktkod()}); //10
+					dao.getFirma(), dao.getKundnr(), dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
+					dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(),
+					dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(),
+					dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(),
+					dao.getSyfr03(), dao.getSyfr04(), dao.getSyfr05(), dao.getSyfr06(), dao.getSysalu(), dao.getSyepos(), dao.getAknrku(), dao.getVatkku(), dao.getXxbre(),
+					dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori(), dao.getAktkod(),(dao.getTlf())});
 	
 
 		} catch (Exception e) {
@@ -324,7 +324,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		sql.append(" betmat, sfakt, kgrens, tfaxnr, syregn, sykont, sylikv, syopdt, syminu, ");
 		sql.append(" syutlp, sypoge, systat, syselg, syiat1, syiat2, sycoty, syfr01, syfr02, ");
 		sql.append(" syfr03, syfr04, syfr05, syfr06, sysalu, syepos, aknrku, vatkku, xxbre, ");
-		sql.append(" xxlen, xxinm3, xxinlm, rnraku, golk, kundgr, pnpbku, adr21, eori, aktkod ");
+		sql.append(" xxlen, xxinm3, xxinlm, rnraku, golk, kundgr, pnpbku, adr21, eori, aktkod, tlf ");
 		
 		sql.append(" FROM cundf a, firm b ");
 		sql.append(" WHERE a.firma = b.fifirm ");
