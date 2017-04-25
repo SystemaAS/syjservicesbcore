@@ -160,7 +160,6 @@ public class DknstdDaoServicesImpl implements DknstdDaoServices {
 			DknstdDao dao = (DknstdDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			
 			sql.append(" UPDATE dknstd SET tist = ?, tisg = ?, titdn = ?, tidt = ?, tienkl = ?, titrnr = ?, tign = ?, tignsk = ?, ");
 			sql.append(" tialsk = ?, tials = ?, tialss = ?, tiglsk = ?, tiacts = ?, tiskb = ?, titsb = ?, titarf = ?, tiws = ?, ");
 			sql.append(" tikn = ?, tina = ?, tiad1 = ?, tipn = ?, tips = ?, tilk = ?, tisk = ?, titin = ?, s0004 = ?, s0010 = ?, ");
@@ -170,12 +169,13 @@ public class DknstdDaoServicesImpl implements DknstdDaoServices {
 			sql.append(" tialk = ?, titaid = ?, titask = ?, titalk = ?, tikdc = ?, titrdt = ?, tilstl = ?, tivpos = ?, tintk = ?, tivkb = ?, ");
 			sql.append(" ticats = ?, tictl = ?, tidant = ?, tidfkd = ?, tidfsk = ?, tituid = ?, tisgdk = ?, tisgme = ?, tisgut = ?, tisgid = ?, ");
 			sql.append(" tisgdt = ?, tibyte = ? ");
-			//
+			//WHERE
 			sql.append(" WHERE tiavd = ? ");
+			
 			
 			//params
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
-				dao.getTist(), dao.getTisg(), dao.getTisg(), dao.getTitdn(), dao.getTidt(), dao.getTienkl(), dao.getTitrnr(), dao.getTign(), dao.getTignsk(),
+				dao.getTist(), dao.getTisg(), dao.getTitdn(), dao.getTidt(), dao.getTienkl(), dao.getTitrnr(), dao.getTign(), dao.getTignsk(),
 				dao.getTialsk(), dao.getTials(), dao.getTialss(), dao.getTiglsk(), dao.getTiacts(), dao.getTiskb(), dao.getTitsb(), dao.getTitarf(), dao.getTiws(),
 				dao.getTikn(), dao.getTina(), dao.getTiad1(), dao.getTipn(), dao.getTips(), dao.getTilk(), dao.getTisk(), dao.getTitin(), 
 				dao.getS0004(),dao.getS0010(),dao.getS0035(),dao.getDkns_0035(), dao.getS0026(), dao.getTidk(), dao.getTikna(), dao.getTinaa(), dao.getTiada1(), dao.getTipna(), dao.getTipsa(),
@@ -186,7 +186,7 @@ public class DknstdDaoServicesImpl implements DknstdDaoServices {
 				dao.getTisgdt(), dao.getTibyte(), 
 				//WHERE condition
 				dao.getTiavd() } );
-			
+
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());

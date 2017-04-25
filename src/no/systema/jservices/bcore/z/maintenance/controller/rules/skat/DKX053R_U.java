@@ -99,16 +99,14 @@ public class DKX053R_U {
 	 */
 	public void adjustNumericFields(DknstdDao dao){
 		String ZERO = "0";
-		//STANDE
 		//Decimals
-		/*N/A
-		if(dao.getSebel1()!=null && !"".equals(dao.getSebel1())){
-			String tmp = dao.getSebel1().replace(",", ".");
-			dao.setSebel1(tmp);
-		}else{
-			dao.setSebel1(ZERO);
+		if(dao.getTivkb()!=null && !"".equals(dao.getTivkb())){
+			String tmp = dao.getTivkb().replace(",", ".");
+			dao.setTivkb(tmp);
+		}else{	
+			dao.setTivkb(ZERO);
 		}
-		*/
+		
 		
 		//Integers
 		if(dao.getTidt()==null || "".equals(dao.getTidt())){
@@ -117,10 +115,37 @@ public class DKX053R_U {
 		if(dao.getTikn()==null || "".equals(dao.getTikn())){
 			dao.setTikn(ZERO);
 		}
+		if(dao.getTikna()==null || "".equals(dao.getTikna())){
+			dao.setTikna(ZERO);
+		}
 		if(dao.getTitdn()==null || "".equals(dao.getTitdn())){
 			dao.setTitdn(ZERO);
 		}
+		if(dao.getTikns()==null || "".equals(dao.getTikns())){
+			dao.setTikns(ZERO);
+		}
+		if(dao.getTiknk()==null || "".equals(dao.getTiknk())){
+			dao.setTiknk(ZERO);
+		}
+		if(dao.getTitrdt()==null || "".equals(dao.getTitrdt())){
+			dao.setTitrdt(ZERO);
+		}
+		if(dao.getTilstl()==null || "".equals(dao.getTilstl())){
+			dao.setTilstl(ZERO);
+		}
+		if(dao.getTivpos()==null || "".equals(dao.getTivpos())){
+			dao.setTivpos(ZERO);
+		}
+		if(dao.getTintk()==null || "".equals(dao.getTintk())){
+			dao.setTintk(ZERO);
+		}
 		
+		if(dao.getTidant()==null || "".equals(dao.getTidant())){
+			dao.setTidant(ZERO);
+		}
+		if(dao.getTibyte()==null || "".equals(dao.getTibyte())){
+			dao.setTibyte(ZERO);
+		}
 		
 	}
 	
