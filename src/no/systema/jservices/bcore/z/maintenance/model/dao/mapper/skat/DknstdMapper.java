@@ -3,7 +3,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.mapper.skat;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DkxstdDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DknstdDao;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 
  * @author oscardelatorre
- * @date  Sep 30, 2016
+ * @date  Apr 24, 2017
  * 
  */
 public class DknstdMapper implements RowMapper {
@@ -22,7 +22,7 @@ public class DknstdMapper implements RowMapper {
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	
-    	DkxstdDao dao = new DkxstdDao();
+    	DknstdDao dao = new DknstdDao();
     	try{
 	    	Class cl = Class.forName(dao.getClass().getCanonicalName());
 			Field[] fields = cl.getDeclaredFields();

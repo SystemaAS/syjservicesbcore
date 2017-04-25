@@ -91,7 +91,7 @@ public class BcoreMaintResponseOutputterControllerSkatNctsImport_AVD_DKNSTD {
 					logger.info("findById...");
 					list = this.dknstdDaoServices.findById(dao.getTiavd(), dbErrorStackTrace);
 				}
-				else if ("DKXSTD".equals(id)) {
+				else if ("DKNSTD".equals(id)) {
 					logger.info("getNctsImportList...");
 					list = this.dknstdDaoServices.getNctsImportList(dbErrorStackTrace);
 				}
