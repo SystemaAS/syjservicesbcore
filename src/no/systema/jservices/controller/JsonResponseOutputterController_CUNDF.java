@@ -107,7 +107,7 @@ public class JsonResponseOutputterController_CUNDF {
 						list = this.cundfDaoServices.findByName(dao.getKnavn(), dbErrorStackTrace);
 					}
 				}else{
-					list = this.cundfDaoServices.getList(dbErrorStackTrace);
+					list = null;
 				}
 				//process result
 				if (list!=null){

@@ -10,7 +10,6 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
-import no.systema.jservices.common.dao.SyparfDao;
 import no.systema.jservices.common.dao.services.FratxtDaoService;
 import no.systema.jservices.common.dao.services.SyparfDaoService;
 import no.systema.jservices.model.dao.entities.CundfDao;
@@ -24,22 +23,12 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	
 	@Override
 	public List<CundfDao> getList(){
-		/*String sql = "select knavn, adr1, adr2, postnr, adr3 from syspedf/cundf  where knavn like ?";
-		String paramKnavn = "B%";
-		final Object[] params = new Object[]{ paramKnavn }; 
-        return this.jdbcTemplate.query( sql, params, new CundfMapper());
-        */
-		//String sql = this.getSELECT_FROM_CLAUSE();
-		//return this.jdbcTemplate.query( sql, new CundfMapper());
-		return new ArrayList<CundfDao>();
+		throw new UnsupportedOperationException("getList needs some filter");
 	}
 	
 	@Override
 	public List<CundfDao> getList(StringBuffer errorStackTrace){
-		//Too much data. Must be at least one filter condition
-		//OBSOLETE-->String sql = this.getSELECT_FROM_CLAUSE();
-		//OBSOLETE-->return this.jdbcTemplate.query( sql, new CundfMapper());
-		return new ArrayList<CundfDao>();
+		throw new UnsupportedOperationException("getList needs some filter");
 	}
 	
 	@Override
