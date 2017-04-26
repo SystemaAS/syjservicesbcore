@@ -253,6 +253,7 @@ public class BcoreMaintResponseOutputterControllerSkatExport_AVD_DKEA {
 	public void setDkeaDaoServices (DkeaDaoServices value){ this.dkeaDaoServices = value; }
 	public DkeaDaoServices getDkeaDaoServices(){ return this.dkeaDaoServices; }
 
+	
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
 	@Autowired
