@@ -8,5 +8,5 @@ import no.systema.jservices.model.dao.services.IDaoServices;
  * 
  */
 public interface DkeaDaoServices extends IDaoServices {
-	
+	public List findById(Object dao, StringBuffer errorStackTrace);
 }
