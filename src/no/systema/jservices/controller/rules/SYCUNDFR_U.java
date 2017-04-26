@@ -9,6 +9,7 @@ import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
+import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.jservices.model.dao.services.CundfDaoServices;
@@ -82,6 +83,18 @@ public class SYCUNDFR_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.sylikv", new Object[] { dao.getSylikv()}), "error", dbErrors));
 					retval = false;					
 				}	
+
+				if (StringUtils.hasValue(dao.getFmot()) && dao.getFmot().equals(dao.getKundnr())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.fmot.equals", new Object[] { dao.getFmot()}), "error", dbErrors));
+					retval = false;							
+					
+				}
+				if ( (StringUtils.hasValue(dao.getFmot())) && !existInCundf(dao.getFmot())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.fmot", new Object[] { dao.getFmot()}), "error", dbErrors));
+					retval = false;					
+				}					
 				
 				
 			} else{ 
