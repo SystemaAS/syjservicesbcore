@@ -11,6 +11,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
 import no.systema.jservices.common.dao.services.FratxtDaoService;
+import no.systema.jservices.common.dao.services.SadvareDaoService;
 import no.systema.jservices.common.dao.services.SyparfDaoService;
 import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.jservices.model.dao.mapper.CundfMapper;
@@ -236,6 +237,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus ts) {
 					try {
+						deleteSadvare((CundfDao) daoObj, errorStackTrace);
 						deleteSyparf((CundfDao) daoObj, errorStackTrace);
 						deleteFratxt((CundfDao) daoObj, errorStackTrace);
 						deleteCundc((CundfDao) daoObj, errorStackTrace);
@@ -259,6 +261,15 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	}
 
 	
+	private void deleteSadvare(CundfDao cundfDao, StringBuffer errorStackTrace) {
+		try {
+			sadvareDaoService.deleteAll(cundfDao.getKundnr());
+		} catch (Exception e) {
+			logger.info("Error:", e);
+			errorStackTrace.append(e.getMessage());
+		}
+	}
+
 	private void deleteCundc(CundfDao cundfDao, StringBuffer errorStackTrace) {
 		cundcDaoServices.deleteAll(cundfDao.getFirma(), cundfDao.getKundnr(), errorStackTrace);
 	}
@@ -344,6 +355,11 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	private SyparfDaoService syparfDaoService = null;                                                            
 	public void setSyparfDaoService( SyparfDaoService syparfDaoService) {this.syparfDaoService = syparfDaoService;}          
 	public SyparfDaoService getSyparfDaoService() {return this.syparfDaoService;}	
+	
+	private SadvareDaoService sadvareDaoService = null;                                                            
+	public void setSadvareDaoService( SadvareDaoService sadvareDaoService) {this.sadvareDaoService = sadvareDaoService;}          
+	public SadvareDaoService getSadvareDaoService() {return this.sadvareDaoService;}	
+	
 	
 	
 	//TODO: Add more children...
