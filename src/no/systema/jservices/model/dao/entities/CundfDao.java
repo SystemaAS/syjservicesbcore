@@ -228,5 +228,13 @@ public class CundfDao implements Serializable, IDao {
 	public void setAktkod (String value){ this.aktkod = value;   }   
 	public String getAktkod (){ return this.aktkod;   }              
 	
+	private String symvjn = "";                                
+	public void setSymvjn (String value){ this.symvjn = value;   }   
+	public String getSymvjn (){ return this.symvjn;   }              
+
+	private String symvsp = "";                                
+	public void setSymvsp(String value){ this.symvsp = value;   }   
+	public String getSymvsp (){ return this.symvsp;   }  	
+	
 
 }

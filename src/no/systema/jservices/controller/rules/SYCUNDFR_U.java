@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import no.systema.jservices.common.dao.KodtlikDao;
 import no.systema.jservices.common.dao.ValufDao;
+import no.systema.jservices.common.dao.services.KodtftDaoService;
 import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
@@ -28,17 +29,19 @@ public class SYCUNDFR_U {
 	private KodtlkDaoService kodtlkDaoService = null;
 	private KodtlikDaoService kodtlikDaoService = null;
 	private KodtotyDaoService kodtotyDaoService = null;
+	private KodtftDaoService kodtftDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
 
-	public SYCUNDFR_U(HttpServletRequest request, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(HttpServletRequest request, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		messageSourceHelper = new MessageSourceHelper(request);
 		this.cundfDaoServices = cundfDaoServices;
 		this.valufDaoService = valufDaoService;
 		this.kodtlkDaoService = kodtlkDaoService;
 		this.kodtlikDaoService = kodtlikDaoService;
 		this.kodtotyDaoService = kodtotyDaoService;
+		this.kodtftDaoService = kodtftDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
 	}	
@@ -95,7 +98,11 @@ public class SYCUNDFR_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.fmot", new Object[] { dao.getFmot()}), "error", dbErrors));
 					retval = false;					
 				}					
-				
+				if ( (StringUtils.hasValue(dao.getSyfr03())) && !existInKodtft(dao.getSyfr03())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr03", new Object[] { dao.getSyfr03()}), "error", dbErrors));
+					retval = false;					
+				}					
 				
 			} else{ 
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -251,6 +258,14 @@ public class SYCUNDFR_U {
 			return true;
 		}
 	}	
-		
+
+	private boolean existInKodtft(String syfr03) {
+		boolean exists = kodtftDaoService.kfttypExist(syfr03);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}		
 	
 }

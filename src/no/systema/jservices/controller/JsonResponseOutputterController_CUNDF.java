@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
+import no.systema.jservices.common.dao.services.KodtftDaoService;
 import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
@@ -164,9 +165,6 @@ public class JsonResponseOutputterController_CUNDF {
 
 		try{
 			logger.info("Inside syjsSYCUNDFR_U.do");
-			
-			logger.info("locale="+locale);
-			
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
 			//Check ALWAYS user in BRIDF
@@ -180,7 +178,7 @@ public class JsonResponseOutputterController_CUNDF {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             //rules
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, sb, dbErrorStackTrace); 
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
@@ -330,6 +328,15 @@ public class JsonResponseOutputterController_CUNDF {
 	@Required
 	public void setKodtotyDaoService (KodtotyDaoService value){ this.kodtotyDaoService = value; }
 	public KodtotyDaoService getKodtotyDaoService(){ return this.kodtotyDaoService; }			
+
+	@Qualifier ("kodtftDaoService")
+	private KodtftDaoService kodtftDaoService;
+	@Autowired
+	@Required
+	public void setKodtftDaoService (KodtftDaoService value){ this.kodtftDaoService = value; }
+	public KodtftDaoService getKodtftDaoService(){ return this.kodtftDaoService; }		
+	
+	
 	
 }
 
