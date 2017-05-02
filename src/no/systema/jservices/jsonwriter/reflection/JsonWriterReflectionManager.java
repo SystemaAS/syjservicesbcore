@@ -2,15 +2,13 @@ package no.systema.jservices.jsonwriter.reflection;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import no.systema.jservices.model.dao.entities.IDao;
 import no.systema.main.util.JsonSpecialCharactersManager;
-import no.systema.main.util.constants.JsonConstants;
-import no.systema.jservices.model.dao.entities.IDao; 
+import no.systema.main.util.constants.JsonConstants; 
 
 public class JsonWriterReflectionManager {
 	private static JsonSpecialCharactersManager jsonFixMgr = new JsonSpecialCharactersManager();
@@ -103,7 +101,17 @@ public class JsonWriterReflectionManager {
 						counter ++;
 					} else {
 						if (methodName.endsWith("Dao")) {
-							IDao childDao = (IDao) theMethod.invoke(record);
+							Object childDao = null;
+							try {
+								childDao = (IDao) theMethod.invoke(record);
+							} catch (Exception e) {
+								if (e instanceof ClassCastException) {
+									childDao = (no.systema.jservices.common.dao.IDao) theMethod.invoke(record);	
+								} else {
+									logger.info("Error;", e);
+									throw e;
+								}
+							}
 							if (childDao != null) {
 								Class<?> childClazz = childDao.getClass();
 								for (Method childMethod : childClazz.getDeclaredMethods()) {
@@ -122,6 +130,15 @@ public class JsonWriterReflectionManager {
 											}
 											jsonReflectionOutput.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + this.jsonFixMgr.cleanRecord(value) + JsonConstants.JSON_QUOTES);
 											counter ++;
+										} else if(childReturnType.equals(int.class)){
+											String field = theChildMethod.getName().replace("get", "").toLowerCase();
+											int value = (int) theChildMethod.invoke(childDao);
+											if (counter > 1) {
+												jsonReflectionOutput.append(JsonConstants.JSON_FIELD_SEPARATOR);
+											}
+											jsonReflectionOutput.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + value + JsonConstants.JSON_QUOTES);
+											counter ++;
+											
 										}
 										
 									}
@@ -140,7 +157,5 @@ public class JsonWriterReflectionManager {
 
 		return jsonReflectionOutput.toString();
 	}
-
-
 
 }

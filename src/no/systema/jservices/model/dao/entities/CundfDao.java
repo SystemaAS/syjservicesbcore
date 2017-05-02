@@ -1,6 +1,8 @@
 package no.systema.jservices.model.dao.entities;
 import java.io.Serializable;
 
+import no.systema.jservices.common.dao.Cum3lmDao;
+
 public class CundfDao implements Serializable, IDao {
 
 	private String kundnr = "";                                
@@ -235,6 +237,14 @@ public class CundfDao implements Serializable, IDao {
 	private String symvsp = "";                                
 	public void setSymvsp(String value){ this.symvsp = value;   }   
 	public String getSymvsp (){ return this.symvsp;   }  	
+	
+	private Cum3lmDao cum3lmDao = null;
+	public Cum3lmDao getCum3lmDao() {
+		return cum3lmDao;
+	}
+	public void setCum3lmDao(Cum3lmDao cum3lmDao) {
+		this.cum3lmDao = cum3lmDao;
+	}
 	
 
 }

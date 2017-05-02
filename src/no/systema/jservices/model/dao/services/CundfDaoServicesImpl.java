@@ -3,6 +3,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.TransactionStatus;
@@ -10,6 +11,8 @@ import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.GenericObjectMapper;
+import no.systema.jservices.common.dao.Cum3lmDao;
+import no.systema.jservices.common.dao.services.Cum3lmDaoService;
 import no.systema.jservices.common.dao.services.FratxtDaoService;
 import no.systema.jservices.common.dao.services.SadvareDaoService;
 import no.systema.jservices.common.dao.services.SyparfDaoService;
@@ -59,7 +62,18 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" and kundnr = ? ");
 			sql.append(" and firma = ? ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id, firm }, new CundfMapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id, firm }, new GenericObjectMapper(new CundfDao()));
+			
+			//List with one
+			if (retval.size() > 0) {
+				CundfDao dao = retval.get(0);
+				Cum3lmDao qDao = new Cum3lmDao();
+				qDao.setM3kund(Integer.parseInt(dao.getKundnr()));
+				Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
+				dao.setCum3lmDao(cum3lmResultDao);
+				retval.clear();
+				retval.add(dao);
+			}
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -363,7 +377,9 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	public void setSadvareDaoService( SadvareDaoService sadvareDaoService) {this.sadvareDaoService = sadvareDaoService;}          
 	public SadvareDaoService getSadvareDaoService() {return this.sadvareDaoService;}	
 	
-	
+	private Cum3lmDaoService cum3lmDaoService = null;                                                            
+	public void setCum3lmDaoService( Cum3lmDaoService cum3lmDaoService) {this.cum3lmDaoService = cum3lmDaoService;}          
+	public Cum3lmDaoService getCum3lmDaoService() {return this.cum3lmDaoService;}		
 	
 	//TODO: Add more children...
 

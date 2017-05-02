@@ -9,6 +9,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -97,7 +98,9 @@ public class JsonResponseOutputterController_CUNDF {
 				//do SELECT
 				if(dao.getKundnr()!=null && !"".equals(dao.getKundnr())){
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
+						logger.info("Kilroy was here");
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
+						logger.info("CundfDao="+ReflectionToStringBuilder.toString(list.get(0)));
 					}else{
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
 					}
@@ -113,7 +116,8 @@ public class JsonResponseOutputterController_CUNDF {
 				//process result
 				if (list!=null){
 					//write the final JSON output
-					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
+					//sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
+					sb.append(jsonWriter.setJsonResult_Common_GetCompositeList(userName, list));
 				}else{
 					//write JSON error output
 					errMsg = "ERROR on SELECT: list is NULL?  Try to check: <DaoServices>.getList";
