@@ -23,11 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
+import no.systema.jservices.common.dao.Cum3lmDao;
 import no.systema.jservices.common.dao.services.KodtftDaoService;
 import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
+import no.systema.jservices.common.util.StringUtils;
 //rules
 import no.systema.jservices.controller.rules.SYCUNDFR_U;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -178,6 +180,10 @@ public class JsonResponseOutputterController_CUNDF {
 			CundfDao dao = new CundfDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
+            //Since no composite-support
+            String mllm = request.getParameter("mllm");
+            String m3m3 = request.getParameter("m3m3");
+
             //rules
             SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
 			//Start processing now
@@ -197,8 +203,10 @@ public class JsonResponseOutputterController_CUNDF {
 						rulerLord.updateNumericFieldsIfNull(dao);
 						if ("A".equals(mode)) {
 							addFieldsToDaoWhenNew(dao, dbErrorStackTrace);
+					        addCum3LmToDao(dao,m3m3,mllm );
 							dmlRetval = cundfDaoServices.insert(dao, dbErrorStackTrace);
 						} else if ("U".equals(mode)) {
+					        addCum3LmToDao(dao,m3m3,mllm );
 							dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
 						}
 					} else {
@@ -242,6 +250,20 @@ public class JsonResponseOutputterController_CUNDF {
 	}
 	
 	
+	private void addCum3LmToDao(CundfDao dao, String m3m3, String mllm) {
+		Cum3lmDao cum3lmDao = new Cum3lmDao();
+		cum3lmDao.setM3kund(Integer.parseInt(dao.getKundnr()));
+		cum3lmDao.setM3firm(dao.getFirma());
+		if (StringUtils.hasValue(m3m3)) {
+			cum3lmDao.setM3m3(Integer.parseInt(m3m3));
+		}
+		if (StringUtils.hasValue(mllm)) {
+			cum3lmDao.setMllm(Integer.parseInt(mllm));
+		}
+
+		dao.setCum3lmDao(cum3lmDao);
+	}
+
 	private void addFieldsToDaoWhenNew(CundfDao dao, StringBuffer dbErrorStackTrace) {
 		int knavnLength = dao.getKnavn().length();
 		if (knavnLength > 10) {

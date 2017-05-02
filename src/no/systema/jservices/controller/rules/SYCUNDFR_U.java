@@ -58,7 +58,7 @@ public class SYCUNDFR_U {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
 			if ( (dao.getKnavn() != null && !"".equals(dao.getKnavn())) && (dao.getAdr3() != null && !"".equals(dao.getAdr3()))) {
-				if ("A".equals(mode)  &&  existInCundf(dao.getKundnr() )) {
+				if ("A".equals(mode)  &&  StringUtils.hasValue(dao.getKundnr())  && existInCundf(dao.getKundnr() )) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.kundnr", new Object[] { dao.getKundnr()}), "error", dbErrors));
 					retval = false;
@@ -93,7 +93,7 @@ public class SYCUNDFR_U {
 					retval = false;							
 					
 				}
-				if ( (StringUtils.hasValue(dao.getFmot())) && !existInCundf(dao.getFmot())) {
+				if ( (StringUtils.hasValueIgnoreZero(dao.getFmot())) && !existInCundf(dao.getFmot())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.fmot", new Object[] { dao.getFmot()}), "error", dbErrors));
 					retval = false;					
@@ -121,14 +121,12 @@ public class SYCUNDFR_U {
 
 	public boolean isValidInputForDelete(CundfDao dao, String user, String mode){
 		boolean retval = true;
-		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
-			//check dao
-			/*
-			if( dao.getKoaavd()!=null && !"".equals(dao.getKoaavd()) ){
+		if( StringUtils.hasValue(user) && StringUtils.hasValue(mode) ){
+			if( StringUtils.hasValue(dao.getFirma()) && StringUtils.hasValue(dao.getKundnr()) ){
 				//OK
 			}else{
 				retval = false;
-			}*/			  
+			}		  
 		}else{
 			retval = false;
 		}

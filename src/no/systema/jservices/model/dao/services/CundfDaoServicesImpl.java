@@ -42,7 +42,20 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" and kundnr = ? ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new CundfMapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new GenericObjectMapper(new CundfDao()));
+			
+			//List with one
+			if (retval.size() > 0) {
+				CundfDao dao = retval.get(0);
+				Cum3lmDao qDao = new Cum3lmDao();
+				qDao.setM3kund(Integer.parseInt(dao.getKundnr()));
+				qDao.setM3firm(dao.getFirma());
+				Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
+				dao.setCum3lmDao(cum3lmResultDao);
+				retval.clear();
+				retval.add(dao);
+			}
+			
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -69,6 +82,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 				CundfDao dao = retval.get(0);
 				Cum3lmDao qDao = new Cum3lmDao();
 				qDao.setM3kund(Integer.parseInt(dao.getKundnr()));
+				qDao.setM3firm(dao.getFirma());
 				Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
 				dao.setCum3lmDao(cum3lmResultDao);
 				retval.clear();
@@ -97,7 +111,19 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" and UPPER(knavn) LIKE ? ");
 			sql.append(" and firma = ? ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + nameStr + WILDCARD, firm }, new CundfMapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + nameStr + WILDCARD, firm }, new GenericObjectMapper(new CundfDao()));
+			
+			//List with one
+			if (retval.size() > 0) {
+				CundfDao dao = retval.get(0);
+				Cum3lmDao qDao = new Cum3lmDao();
+				qDao.setM3kund(Integer.parseInt(dao.getKundnr()));
+				qDao.setM3firm(dao.getFirma());
+				Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
+				dao.setCum3lmDao(cum3lmResultDao);
+				retval.clear();
+				retval.add(dao);
+			}
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -120,7 +146,19 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" and UPPER(knavn) LIKE ? ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + nameStr + WILDCARD }, new CundfMapper());
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + nameStr + WILDCARD }, new GenericObjectMapper(new CundfDao()));
+			
+			//List with one
+			if (retval.size() > 0) {
+				CundfDao dao = retval.get(0);
+				Cum3lmDao qDao = new Cum3lmDao();
+				qDao.setM3kund(Integer.parseInt(dao.getKundnr()));
+				qDao.setM3firm(dao.getFirma());
+				Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
+				dao.setCum3lmDao(cum3lmResultDao);
+				retval.clear();
+				retval.add(dao);
+			}			
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -135,39 +173,59 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	@Override
 	public int update(Object daoObj, StringBuffer errorStackTrace) {
 		int retval = 0;
+		final CundfDao dao = (CundfDao) daoObj;
+		final StringBuilder sql = new StringBuilder();
+		sql.append(" UPDATE cundf SET knavn = ?, syrg = ?, adr1 = ?, adr3 = ?, postnr = ?, syland = ?, ");
+		sql.append(" dkund = ?,  kpers = ?, sonavn = ?, valkod = ?, spraak = ?, bankg = ?, postg = ?, fmot = ?, betbet = ?, ");
+		sql.append(" betmat = ?, sfakt = ?, kgrens = ?, tfaxnr = ?, syregn = ?, sykont = ?, sylikv = ?, syopdt = ?, syminu = ?, ");
+		sql.append(" syutlp = ?, sypoge = ?, systat = ?, syselg = ?, syiat1 = ?, syiat2 = ?, sycoty = ?, syfr01 = ?, syfr02 = ?, ");
+		sql.append(" syfr03 = ?, syfr04 = ?, syfr05 = ?, syfr06 = ?, sysalu = ?, syepos = ?, aknrku = ?, vatkku = ?, xxbre = ?, ");
+		sql.append(" xxlen = ?, xxinm3 = ?, xxinlm = ?, rnraku = ?, golk = ?, kundgr = ?, pnpbku = ?, adr21 = ?, eori = ?, aktkod = ?, tlf = ?, symvjn = ?, symvsp = ? ");
+		sql.append(" WHERE kundnr = ? ");
+		sql.append(" AND firma = ? ");
+
 		try {
+			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+				@Override
+				protected void doInTransactionWithoutResult(TransactionStatus ts) {
+					try {
+						//CUNDF
+						jdbcTemplate.update( sql.toString(), new Object[] { 
+								dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
+								dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(),
+								dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(),
+								dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(),
+								dao.getSyfr03(), dao.getSyfr04(), dao.getSyfr05(), dao.getSyfr06(), dao.getSysalu(), dao.getSyepos(), dao.getAknrku(), dao.getVatkku(), dao.getXxbre(),
+								dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori(),dao.getAktkod(),dao.getTlf(),
+								dao.getSymvjn(),dao.getSymvsp(),
+								//id's
+								dao.getKundnr(),dao.getFirma()
+								} );
+						
+						//CUM3LM
+						if (dao.getCum3lmDao() != null) {
+							boolean exist = cum3lmDaoService.exist(dao.getCum3lmDao());
+							if (exist) {
+								cum3lmDaoService.update(dao.getCum3lmDao());
+							} else {
+								cum3lmDaoService.create(dao.getCum3lmDao());
+							}
+						}
 
-			CundfDao dao = (CundfDao) daoObj;
-			StringBuilder sql = new StringBuilder();
-			sql.append(" UPDATE cundf SET knavn = ?, syrg = ?, adr1 = ?, adr3 = ?, postnr = ?, syland = ?, ");
-			sql.append(" dkund = ?,  kpers = ?, sonavn = ?, valkod = ?, spraak = ?, bankg = ?, postg = ?, fmot = ?, betbet = ?, ");
-			sql.append(" betmat = ?, sfakt = ?, kgrens = ?, tfaxnr = ?, syregn = ?, sykont = ?, sylikv = ?, syopdt = ?, syminu = ?, ");
-			sql.append(" syutlp = ?, sypoge = ?, systat = ?, syselg = ?, syiat1 = ?, syiat2 = ?, sycoty = ?, syfr01 = ?, syfr02 = ?, ");
-			sql.append(" syfr03 = ?, syfr04 = ?, syfr05 = ?, syfr06 = ?, sysalu = ?, syepos = ?, aknrku = ?, vatkku = ?, xxbre = ?, ");
-			sql.append(" xxlen = ?, xxinm3 = ?, xxinlm = ?, rnraku = ?, golk = ?, kundgr = ?, pnpbku = ?, adr21 = ?, eori = ?, aktkod = ?, tlf = ?, symvjn = ?, symvsp = ? ");
-
-			sql.append(" WHERE kundnr = ? ");
-			sql.append(" AND firma = ? ");
-
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
-						dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
-						dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(),
-						dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(),
-						dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(),
-						dao.getSyfr03(), dao.getSyfr04(), dao.getSyfr05(), dao.getSyfr06(), dao.getSysalu(), dao.getSyepos(), dao.getAknrku(), dao.getVatkku(), dao.getXxbre(),
-						dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori(),dao.getAktkod(),dao.getTlf(),
-						dao.getSymvjn(),dao.getSymvsp(),
-						//id's
-						dao.getKundnr(),dao.getFirma()
-						} );
-			
+					} catch (Exception e) {
+						logger.info("Error: setting update() to rollback only.");
+						ts.setRollbackOnly();
+					}
+				}
+			});
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString()); // Chop the message to comply to JSON-validation
+			e.printStackTrace();
+			logger.info(e);
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
-		}
-
+		}	
+			
 		return retval;
 	}
 
@@ -176,9 +234,8 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	public int insert(Object daoObj, StringBuffer errorStackTrace) {
 		int retval = 0;
 		
-		try {
-			CundfDao dao = (CundfDao) daoObj;
-			StringBuilder sql = new StringBuilder();
+			final CundfDao dao = (CundfDao) daoObj;
+			final StringBuilder sql = new StringBuilder();
 			sql.append(" INSERT INTO cundf (firma, kundnr, knavn, syrg, adr1, adr3, postnr, syland, ");  
 			sql.append(" dkund ,  kpers , sonavn , valkod , spraak , bankg , postg , fmot , betbet , "); 
 			sql.append(" betmat , sfakt , kgrens , tfaxnr , syregn , sykont , sylikv, syopdt , syminu , "); 
@@ -193,28 +250,41 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); 
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, ? ) "); 
 
-/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
-			logger.info("insert::sql="+sql.toString());
-*/			
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
-					dao.getFirma(), dao.getKundnr(), dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
-					dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(),
-					dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(),
-					dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(),
-					dao.getSyfr03(), dao.getSyfr04(), dao.getSyfr05(), dao.getSyfr06(), dao.getSysalu(), dao.getSyepos(), dao.getAknrku(), dao.getVatkku(), dao.getXxbre(),
-					dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori(), dao.getAktkod(),(dao.getTlf()),
-					dao.getSymvjn(),dao.getSymvsp()
-			});
-	
-
-		} catch (Exception e) {
-			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
-			// Chop the message to comply to JSON-validation
-			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-			retval = -1;
-		}
-		
+			try {
+				transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+					@Override
+					protected void doInTransactionWithoutResult(TransactionStatus ts) {
+						try {
+							//CUNDF
+							jdbcTemplate.update( sql.toString(), new Object[] { 
+									dao.getFirma(), dao.getKundnr(), dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
+									dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(),
+									dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(),
+									dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(),
+									dao.getSyfr03(), dao.getSyfr04(), dao.getSyfr05(), dao.getSyfr06(), dao.getSysalu(), dao.getSyepos(), dao.getAknrku(), dao.getVatkku(), dao.getXxbre(),
+									dao.getXxlen(), dao.getXxinm3(), dao.getXxinlm(), dao.getRnraku(), dao.getGolk(), dao.getKundgr(), dao.getPnpbku(), dao.getAdr21(), dao.getEori(), dao.getAktkod(),(dao.getTlf()),
+									dao.getSymvjn(),dao.getSymvsp()
+							});
+					
+							//CUM3LM
+							if (dao.getCum3lmDao() != null) {
+								cum3lmDaoService.create(dao.getCum3lmDao());
+							}
+							
+						} catch (Exception e) {
+							logger.info("Error: setting update() to rollback only.");
+							ts.setRollbackOnly();
+						}
+					}
+				});
+			} catch (Exception e) {
+				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+				e.printStackTrace();
+				logger.info(e);
+				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+				retval = -1;
+			}				
+			
 		return retval;
 	}
 	
@@ -254,6 +324,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus ts) {
 					try {
+						deleteCum3lm((CundfDao) daoObj, errorStackTrace);
 						deleteSadvare((CundfDao) daoObj, errorStackTrace);
 						deleteSyparf((CundfDao) daoObj, errorStackTrace);
 						deleteFratxt((CundfDao) daoObj, errorStackTrace);
@@ -277,35 +348,58 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		return retval;
 	}
 
+	private void deleteCum3lm(CundfDao cundfDao, StringBuffer errorStackTrace) {
+		try {
+			cum3lmDaoService.deleteAll(cundfDao.getFirma(),cundfDao.getKundnr());
+			logger.debug("cum3lmDaoService.deleteAll on:"+cundfDao.getFirma()+","+cundfDao.getKundnr());
+		} catch (Exception e) {
+			logger.error("Error:", e);
+			errorStackTrace.append(e.getMessage());
+			throw e;
+		}
+	}	
 	
 	private void deleteSadvare(CundfDao cundfDao, StringBuffer errorStackTrace) {
 		try {
 			sadvareDaoService.deleteAll(cundfDao.getKundnr());
+			logger.debug("sadvareDaoService.deleteAll on:"+cundfDao.getKundnr());
 		} catch (Exception e) {
-			logger.info("Error:", e);
+			logger.error("Error:", e);
 			errorStackTrace.append(e.getMessage());
+			throw e;
 		}
 	}
 
 	private void deleteCundc(CundfDao cundfDao, StringBuffer errorStackTrace) {
-		cundcDaoServices.deleteAll(cundfDao.getFirma(), cundfDao.getKundnr(), errorStackTrace);
+		try {
+			cundcDaoServices.deleteAll(cundfDao.getFirma(), cundfDao.getKundnr(), errorStackTrace);
+			logger.debug("cundcDaoServices.deleteAll on:"+cundfDao.getFirma()+","+cundfDao.getKundnr());
+		} catch (Exception e) {
+			logger.error("Error:", e);
+			errorStackTrace.append(e.getMessage());
+			throw e;
+		}
 	}
 	
 	private void deleteFratxt(CundfDao cundfDao, StringBuffer errorStackTrace) {
 		try {
 			fratxtDaoService.deleteAll(cundfDao.getKundnr());
+			logger.debug("fratxtDaoService.deleteAll on:"+cundfDao.getKundnr());
 		} catch (Exception e) {
-			logger.info("Error:", e);
+			logger.error("Error:", e);
 			errorStackTrace.append(e.getMessage());
+			throw e;
 		}
 	}
 	
 	private void deleteSyparf(CundfDao cundfDao, StringBuffer errorStackTrace) {
 		try {
 			syparfDaoService.deleteAll(cundfDao.getKundnr());
+			logger.debug("syparfDaoService.deleteAll on:"+cundfDao.getKundnr());
 		} catch (Exception e) {
-			logger.info("Error:", e);
+			logger.error("Error:", e);
 			errorStackTrace.append(e.getMessage());
+			throw e;
 		}
 	}	
 
