@@ -103,7 +103,7 @@ public class DkiaDaoServicesImpl implements DkiaDaoServices {
 			DkiaDao dao = (DkiaDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			
-			sql.append(" INSERT INTO dknstd ( dkia_syav, dkia_syop, ");
+			sql.append(" INSERT INTO dkia ( dkia_syav, dkia_syop, ");
 			sql.append(" dkia_14a, dkia_14b, dkia_14c, dkia_14d, dkia_14e, dkia_14f,  ");
 			sql.append(" dkia_0035 ");
 			sql.append(" )" );
