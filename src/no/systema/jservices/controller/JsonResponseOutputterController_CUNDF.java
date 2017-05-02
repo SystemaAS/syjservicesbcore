@@ -98,9 +98,7 @@ public class JsonResponseOutputterController_CUNDF {
 				//do SELECT
 				if(dao.getKundnr()!=null && !"".equals(dao.getKundnr())){
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
-						logger.info("Kilroy was here");
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
-						logger.info("CundfDao="+ReflectionToStringBuilder.toString(list.get(0)));
 					}else{
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
 					}
@@ -116,7 +114,6 @@ public class JsonResponseOutputterController_CUNDF {
 				//process result
 				if (list!=null){
 					//write the final JSON output
-					//sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
 					sb.append(jsonWriter.setJsonResult_Common_GetCompositeList(userName, list));
 				}else{
 					//write JSON error output
