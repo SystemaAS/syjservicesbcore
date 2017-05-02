@@ -103,7 +103,7 @@ public class DkeaDaoServicesImpl implements DkeaDaoServices {
 			DkeaDao dao = (DkeaDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			
-			sql.append(" INSERT INTO dknstd ( dkea_syav, dkea_syop, ");
+			sql.append(" INSERT INTO dkea ( dkea_syav, dkea_syop, ");
 			sql.append(" dkea_14a, dkea_14b, dkea_14c, dkea_14d, dkea_14e, dkea_14f,  ");
 			sql.append(" dkea_0035, dkea_ftip, dkea_us, dkea_pw, dkea_prtf ");
 			sql.append(" )" );
