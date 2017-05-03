@@ -49,4 +49,15 @@ public interface CundcDaoServices extends IDaoServices {
 	 * @param errorStackTrace
 	 */
 	public void deleteAll(String cfirma, String ccompn, StringBuffer errorStackTrace);
+	
+	
+	/**
+	 * 
+	 * Retriece the latest registered EMMA-XML info.
+	 * 
+	 * @param cfirma firma
+	 * @param errorStackTrace
+	 * @return Object with latest info on EMMA-XML
+	 */
+	public CundcDao getLastRegisteredEmmaXmlInfo(String cfirma, StringBuffer errorStackTrace);
 }

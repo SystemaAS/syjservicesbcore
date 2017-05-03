@@ -80,20 +80,15 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				if ((queryDao.getCfirma() != null && !"".equals(queryDao.getCfirma())) && (queryDao.getCcompn() != null && !"".equals(queryDao.getCcompn()))) {
 					if ( queryDao.getCconta() != null && !"".equals(queryDao.getCconta()) && queryDao.getCtype() != null && !"".equals(queryDao.getCtype()) ) {
 						CundcDao dao = (CundcDao)this.cundcDaoServices.get(queryDao, dbErrorStackTrace);
-						logger.info("cundcDaoServices.get , specific..");
 						if (dao != null) {
 							list = new ArrayList<CundcDao>();
 							list.add(dao);
 						}
 					} else {
-						logger.info("cundcDaoServices.findById , a list..");
 						list = this.cundcDaoServices.findById(queryDao.getCcompn(), queryDao.getCfirma(), dbErrorStackTrace);
-						logger.info("list="+list.size());
 					}
 
 				} else {
-					logger.info("cundcDaoServices.getList should not be reach...");
-				
 					list = this.cundcDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result
@@ -231,7 +226,63 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			dto.setCmerge(""); //Disable
 		}
 	}
-
+	
+	/**
+	 * FreeForm Source:
+	 * 	 File: 		CUNDC
+	 * 
+	 * @return
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsCUNDC_LATEST_EMMA_XML_INFO.do?user=OSCAR&cfirma=SY
+	 * 
+	 */
+	@RequestMapping(value="syjsCUNDC_LATEST_EMMA_XML_INFO.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String syjsCUNDC_GetLateestEmmaXmLInfo( HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();
+		try {
+			logger.info("Inside syjsCUNDC_EMMA_XML_INFO.do");
+			String user = request.getParameter("user");
+			// Check ALWAYS user in BRIDF
+			String userName = this.bridfDaoServices.findNameById(user);
+			String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+			if (userName != null && !"".equals(userName)) {
+				CundcDao queryDao = new CundcDao();
+				CundcDao resultDao = new CundcDao();
+				ServletRequestDataBinder binder = new ServletRequestDataBinder(queryDao);
+				binder.bind(request);
+				List list = new ArrayList<>();
+				if (queryDao.getCfirma() != null && !"".equals(queryDao.getCfirma())) {
+					resultDao = cundcDaoServices.getLastRegisteredEmmaXmlInfo(queryDao.getCfirma(), dbErrorStackTrace);
+					list.add(resultDao);
+				}
+				if (list != null && list.size() > 0) {
+					// write the final JSON output
+					sb.append(jsonWriter.setJsonResult_Common_GetCompositeList(userName, list));
+				} else {
+					errMsg = "ERROR on SELECT: list is NULL?  Try to check: <DaoServices>.getList";
+					status = "error";
+					logger.info("After SELECT:" + " " + status + errMsg);
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}
+			} else {
+				errMsg = "ERROR on SELECT";
+				status = "error";
+				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+		} catch (Exception e) {
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+		session.invalidate();
+		return sb.toString();
+	}	
+	
 	// ----------------
 	// WIRED SERVICES
 	// ----------------

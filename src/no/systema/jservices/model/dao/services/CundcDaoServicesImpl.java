@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.ArktxtDao;
@@ -34,21 +35,18 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	@Override
 	public List<CundcDao> findById(String ccompn, String cfirma, StringBuffer errorStackTrace) {
 		List<CundcDao> retval = new ArrayList<CundcDao>();
-		try{
+		try {
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" and ccompn = ? ");
 			sql.append(" and cfirma = ? ");
-			
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { ccompn, cfirma }, new GenericObjectMapper(new CundcDao()));
 
-			logger.info("retval.size"+retval.size());
-			
-			
-		}catch(Exception e){
+			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { ccompn, cfirma }, new GenericObjectMapper(new CundcDao()));
+
+		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
-			//Chop the message to comply to JSON-validation
+			logger.error(writer.toString());
+			// Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = null;
 		}
@@ -69,15 +67,9 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" and cconta = ? ");
 			sql.append(" and ctype = ? ");
 
-			logger.info("get::sql=" + sql.toString());
-			logger.info("ccompn=" + queryDao.getCcompn() + ", cfirma=" + queryDao.getCfirma() + ", ccconta=" + queryDao.getCconta() + ", ctype="
-					+ queryDao.getCtype());
-
 			dao = (CundcDao) this.jdbcTemplate.queryForObject(sql.toString(),
 					new Object[] { queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta(), queryDao.getCtype() },
 					new GenericObjectMapper(new CundcDao()));
-
-			logger.info("result dao=" + ReflectionToStringBuilder.toString(dao));
 
 			// If exist in Kofast, it means NOT normal Kontaktperson, the other
 			// function, with prefix *
@@ -101,12 +93,35 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(e);
+			logger.error(e);
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 		}
 
 		return dao;
 	}	
+	
+	
+	@Override
+	public CundcDao getLastRegisteredEmmaXmlInfo(String cfirma, StringBuffer errorStackTrace) {
+		CundcDao dao = null;		
+		StringBuilder sql = new StringBuilder();
+		sql.append(this.getSELECT_FROM_CLAUSE());
+		sql.append(" and ccompn = (select max(ccompn) from cundc where cconta = 'EMMA-XML' and cfirma = ? ) ");
+		sql.append(" and cfirma = ? ");
+		sql.append(" and cconta = 'EMMA-XML' ");
+		
+		try {
+			dao = (CundcDao) this.jdbcTemplate.queryForObject(sql.toString(), new Object[] { cfirma, cfirma}, new GenericObjectMapper(new CundcDao()));
+		} 
+		catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.error(e);
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+		}
+
+		return dao;
+	}	
+	
 	
 	@Override
 	public int update(Object daoObj, StringBuffer errorStackTrace) {
@@ -121,8 +136,8 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
 
-			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
-			logger.info("update::sql="+sql.toString());
+			logger.debug("dto="+ReflectionToStringBuilder.toString(dto));
+			logger.debug("update::sql="+sql.toString());
 			
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 						dto.getCconta(), dto.getCtype(), dto.getCphone(), dto.getCmobil(), dto.getCemail(), dto.getClive(), 
@@ -163,8 +178,8 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ? ) ");
 
-			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
-			logger.info("insert::sql="+sql.toString());
+			logger.debug("dto="+ReflectionToStringBuilder.toString(dto));
+			logger.debug("insert::sql="+sql.toString());
 
 			StringBuilder copd = new StringBuilder();
 			copd.append(spaceFiller(dto.getCopd1()));
@@ -213,8 +228,8 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" AND   ctype = ?");
 
 			
-			logger.info("dao="+ReflectionToStringBuilder.toString(dto));
-			logger.info("sql="+sql.toString());
+			logger.debug("dao="+ReflectionToStringBuilder.toString(dto));
+			logger.debug("sql="+sql.toString());
 			
 			retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta(), dto.getCtype() });
 
