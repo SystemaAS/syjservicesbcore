@@ -253,7 +253,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				CundcDao resultDao = new CundcDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(queryDao);
 				binder.bind(request);
-				List list = new ArrayList<>();
+				List list = new ArrayList();
 				if (queryDao.getCfirma() != null && !"".equals(queryDao.getCfirma())) {
 					resultDao = cundcDaoServices.getLastRegisteredEmmaXmlInfo(queryDao.getCfirma(), dbErrorStackTrace);
 					list.add(resultDao);

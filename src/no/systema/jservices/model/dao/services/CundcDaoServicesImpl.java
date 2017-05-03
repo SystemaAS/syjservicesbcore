@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.ArktxtDao;
@@ -157,7 +156,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString()); // Chop the message to comply to JSON-validation
+			logger.error(writer.toString()); // Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}
@@ -254,7 +253,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" WHERE  ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 
-			logger.info("sql=" + sql.toString());
+			logger.debug("sql=" + sql.toString());
 
 			jdbcTemplate.update(sql.toString(), new Object[] { ccompn, cfirma });
 
@@ -287,7 +286,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
+			logger.error(writer.toString());
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			return false;
 		}
