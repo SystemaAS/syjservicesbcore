@@ -132,7 +132,7 @@ public class JsonWriterReflectionManager {
 											counter ++;
 										} else if(childReturnType.equals(int.class)){
 											String field = theChildMethod.getName().replace("get", "").toLowerCase();
-											int value = (int) theChildMethod.invoke(childDao);
+											int value = (Integer) theChildMethod.invoke(childDao);
 											if (counter > 1) {
 												jsonReflectionOutput.append(JsonConstants.JSON_FIELD_SEPARATOR);
 											}

@@ -348,7 +348,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		return retval;
 	}
 
-	private void deleteCum3lm(CundfDao cundfDao, StringBuffer errorStackTrace) {
+	private void deleteCum3lm(CundfDao cundfDao, StringBuffer errorStackTrace) throws Exception {
 		try {
 			cum3lmDaoService.deleteAll(cundfDao.getFirma(),cundfDao.getKundnr());
 			logger.debug("cum3lmDaoService.deleteAll on:"+cundfDao.getFirma()+","+cundfDao.getKundnr());
@@ -359,7 +359,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}
 	}	
 	
-	private void deleteSadvare(CundfDao cundfDao, StringBuffer errorStackTrace) {
+	private void deleteSadvare(CundfDao cundfDao, StringBuffer errorStackTrace) throws Exception {
 		try {
 			sadvareDaoService.deleteAll(cundfDao.getKundnr());
 			logger.debug("sadvareDaoService.deleteAll on:"+cundfDao.getKundnr());
@@ -370,7 +370,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}
 	}
 
-	private void deleteCundc(CundfDao cundfDao, StringBuffer errorStackTrace) {
+	private void deleteCundc(CundfDao cundfDao, StringBuffer errorStackTrace) throws Exception {
 		try {
 			cundcDaoServices.deleteAll(cundfDao.getFirma(), cundfDao.getKundnr(), errorStackTrace);
 			logger.debug("cundcDaoServices.deleteAll on:"+cundfDao.getFirma()+","+cundfDao.getKundnr());
@@ -381,7 +381,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}
 	}
 	
-	private void deleteFratxt(CundfDao cundfDao, StringBuffer errorStackTrace) {
+	private void deleteFratxt(CundfDao cundfDao, StringBuffer errorStackTrace) throws Exception {
 		try {
 			fratxtDaoService.deleteAll(cundfDao.getKundnr());
 			logger.debug("fratxtDaoService.deleteAll on:"+cundfDao.getKundnr());
@@ -392,7 +392,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}
 	}
 	
-	private void deleteSyparf(CundfDao cundfDao, StringBuffer errorStackTrace) {
+	private void deleteSyparf(CundfDao cundfDao, StringBuffer errorStackTrace) throws Exception {
 		try {
 			syparfDaoService.deleteAll(cundfDao.getKundnr());
 			logger.debug("syparfDaoService.deleteAll on:"+cundfDao.getKundnr());
