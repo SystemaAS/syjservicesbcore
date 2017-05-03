@@ -10,7 +10,9 @@ import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.common.values.FasteKoder;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundcDto;
+import no.systema.jservices.model.dao.entities.EdiiDao;
 import no.systema.jservices.model.dao.services.CundcDaoServices;
+import no.systema.jservices.model.dao.services.EdiiDaoServices;
 import no.systema.main.util.MessageSourceHelper;
 
 /**
@@ -24,16 +26,18 @@ public class CUNDC_U {
 	private MessageSourceHelper messageSourceHelper = null;
 	private CundcDaoServices cundcDaoServices = null;
 	private KofastDaoServices kofastDaoServices = null;
+	private EdiiDaoServices ediiDaoServices = null;
 	
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 	private boolean ID_CHECK = true;
 
 
-	public CUNDC_U(HttpServletRequest request, CundcDaoServices cundcDaoServices, KofastDaoServices kofastDaoServices, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public CUNDC_U(HttpServletRequest request, CundcDaoServices cundcDaoServices, KofastDaoServices kofastDaoServices, EdiiDaoServices ediiDaoServices, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		messageSourceHelper = new MessageSourceHelper(request);
 		this.cundcDaoServices = cundcDaoServices;
 		this.kofastDaoServices = kofastDaoServices;
+		this.ediiDaoServices = ediiDaoServices;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
 	}
@@ -58,7 +62,7 @@ public class CUNDC_U {
 						retval = false;
 					}
 				}
-				//If ctype = EMMA-XML, 3 mandatory fields
+				//If ctype = EMMA-XML, 3 mandatory fields, cmobil, cfax, cphone = Shapeshifters
 				if ("EMMA-XML".equals(dto.getCconta())) {
 					if (!StringUtils.hasValue(dto.getCphone()) ) {
 						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -66,17 +70,27 @@ public class CUNDC_U {
 						retval = false;
 						
 					}
+					//Mottakers utv. id
 					if (!StringUtils.hasValue(dto.getCfax()) ) {
 						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.mandatory.cfax", new Object[] { null }), "error", dbErrors));
 						retval = false;
 						
-					}						
+					} else if (!existInEdii(EdiiDaoServices.EXTERNAL, dto.getCfax())) { //Shapeshifter
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.mandatory.external.inex", new Object[] { dto.getCfax() }), "error", dbErrors));						
+						retval = false;					
+					}
+					//Avsenders utv. id
 					if (!StringUtils.hasValue(dto.getCmobil()) ) {
 						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.mandatory.cmobil", new Object[] { null }), "error", dbErrors));
 						retval = false;
-					}						
+					} else if (!existInEdii(EdiiDaoServices.INTERNAL, dto.getCmobil())) { //Shapeshifter
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.mandatory.internal.inex", new Object[] { dto.getCmobil() }), "error", dbErrors));						
+						retval = false;
+					}					
 				}
 				// Check Faste Koder (KOFAST)
 				if (!existInKofast(user, dto)) {
@@ -94,6 +108,15 @@ public class CUNDC_U {
 	}
 
 
+
+	private boolean existInEdii(String inex, String inid) {
+		boolean exists = false;
+		List<EdiiDao> list = ediiDaoServices.findByIdAndInex(inex,inid, dbErrors);
+		if (list != null && list.size() > 0) {
+			exists = true;
+		}		
+		return exists;
+	}
 
 	public boolean isValidInputForDelete(CundcDto dto, String user, String mode) {
 		boolean retval = true;

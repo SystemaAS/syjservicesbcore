@@ -53,6 +53,27 @@ public class EdiiDaoServicesImpl implements EdiiDaoServices {
 		return retval;
 	}
 	
+	@Override
+	public List<EdiiDao> findByIdAndInex(String inex, String id,StringBuffer errorStackTrace) {
+		List<EdiiDao> retval = new ArrayList<EdiiDao>();
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" where inex = ? ");
+			sql.append(" and   inid = ? ");
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { inex , id}, new EdiiMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = null;
+		}
+		return retval;
+	} 	
+	
+	
 	/**
 	 * 
 	 */
@@ -94,6 +115,6 @@ public class EdiiDaoServicesImpl implements EdiiDaoServices {
 	 */                                                                                                  
 	private JdbcTemplate jdbcTemplate = null;                                                            
 	public void setJdbcTemplate( JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}          
-	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}                                    
+	public JdbcTemplate getJdbcTemplate() {return this.jdbcTemplate;}
 
 }

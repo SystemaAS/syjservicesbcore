@@ -26,6 +26,7 @@ import no.systema.jservices.model.dao.entities.CundcDao;
 import no.systema.jservices.model.dao.entities.CundcDto;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.CundcDaoServices;
+import no.systema.jservices.model.dao.services.EdiiDaoServices;
 
 /**
  * Service Response Controller
@@ -157,7 +158,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dto);
 			binder.bind(request);
 			// rules
-			CUNDC_U rulerLord = new CUNDC_U(request,cundcDaoServices, kofastDaoServices,sb, dbErrorStackTrace);
+			CUNDC_U rulerLord = new CUNDC_U(request,cundcDaoServices, kofastDaoServices, ediiDaoServices,sb, dbErrorStackTrace);
 			// Start processing now
 			if (userName != null && !"".equals(userName)) {
 				int dmlRetval = 0;
@@ -265,4 +266,19 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		return this.bridfDaoServices;
 	}
 
+	@Qualifier("ediiDaoServices")
+	private EdiiDaoServices ediiDaoServices;
+
+	@Autowired
+	@Required
+	public void setEdiiDaoServices(EdiiDaoServices value) {
+		this.ediiDaoServices = value;
+	}
+
+	public EdiiDaoServices getEdiiDaoServices() {
+		return this.ediiDaoServices;
+	}	
+	
+	
+	
 }
