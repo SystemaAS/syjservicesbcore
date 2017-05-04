@@ -35,7 +35,7 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_CLAUSE());
-			
+			sql.append(" fetch first 1 rows only");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new FirmMapper());
 			
@@ -58,6 +58,7 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 			sql.append(this.getSELECT_CLAUSE());
 			//WHERE
 			sql.append(" where a.fifirm = ?  ");
+			sql.append(" fetch first 1 rows only");
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new FirmMapper());
 			
@@ -93,8 +94,9 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 		sql.append(" on a.fifirm = g.l1firm ");
 		// no join ?
 		sql.append(" inner join KODTV AS z "); //no key in this table
-		sql.append(" on z.kovavd = 0 ");
-		sql.append(" and z.kovuni = 'V' ");
+		sql.append(" on z.kovuni = 'V' ");
+		//NOT TRUSTABLE --> sql.append(" and z.kovavd = '0'");
+		//sql.append(" fetch first 1 rows only");
 		
 		return sql.toString();
 	}
