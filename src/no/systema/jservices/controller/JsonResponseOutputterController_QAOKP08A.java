@@ -104,6 +104,7 @@ public class JsonResponseOutputterController_QAOKP08A {
 				}else{
 					logger.info("Before getList ...");
 					list = this.qaokp08aDaoServices.getList(dbErrorStackTrace);
+					logger.info("Before getList ...");
 				}
 				//process result
 				if (list!=null){

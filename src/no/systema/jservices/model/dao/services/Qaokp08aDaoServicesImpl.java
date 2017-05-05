@@ -24,8 +24,8 @@ public class Qaokp08aDaoServicesImpl implements Qaokp08aDaoServices {
 	 */
 	public List<Qaokp08Dao> getList(StringBuffer errorStackTrace){
 		StringBuffer sql = new StringBuffer();
-		sql.append("select * ");
-		sql.append("from qusrsys.qaokp08a");
+		sql.append("select wos8dden, wos8ddgn, wos8desc ");
+		sql.append("from qusrsys.qaokp08a ");
 		
 		return this.jdbcTemplate.query( sql.toString(), new Qaokp08aMapper());
 	}
@@ -40,9 +40,9 @@ public class Qaokp08aDaoServicesImpl implements Qaokp08aDaoServices {
 		List<Qaokp08Dao> retval = new ArrayList<Qaokp08Dao>();
 		try{
 		StringBuffer sql = new StringBuffer();
-		sql.append("select * ");
-		sql.append("from qusrsys.qaokp08a a");
-		sql.append("where a.wos8dden = ? ");
+		sql.append("select wos8dden, wos8ddgn, wos8desc ");
+		sql.append("from qusrsys.qaokp08a  ");
+		sql.append("where wos8dden = ? ");
 		
 		retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new Qaokp08aMapper() );
 		
