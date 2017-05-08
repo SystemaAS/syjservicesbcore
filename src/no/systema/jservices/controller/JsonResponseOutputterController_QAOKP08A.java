@@ -67,7 +67,7 @@ public class JsonResponseOutputterController_QAOKP08A {
 	 * 
 	 * @return
 	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYQAOKP08AR.do?user=OSCAR
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYQAOKP08AR.do?user=OSCAR&wos8dden
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYQAOKP08AR.do?user=OSCAR&wos8dden=ROGER
 	 * 
 	 */
 	@RequestMapping(value="syjsSYQAOKP08AR.do", method={RequestMethod.GET, RequestMethod.POST})
