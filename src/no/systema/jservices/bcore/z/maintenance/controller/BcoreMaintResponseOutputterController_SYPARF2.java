@@ -188,6 +188,9 @@ public class BcoreMaintResponseOutputterController_SYPARF2 {
 	}
 	
 	private SyparfDto fetchRecord(String syuser, String syrecn) {
+		logger.info("SYUSER:" + syuser);
+		logger.info("SYRECN:" + syrecn);
+		
 		SyparfDao dao = (SyparfDao) syparf2DaoService.find(syuser, syrecn);
 		SyparfDto dto = getDto(dao);
 
