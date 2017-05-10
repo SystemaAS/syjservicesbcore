@@ -63,11 +63,9 @@ public class BcoreMaintResponseOutputterController_SYPARF2 {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 			if (userName != null && !"".equals(userName) && (syuser != null && !"".equals(syuser)) ) {
 				if (syrecn != null && !"".equals(syrecn)) {
-					logger.info("A");
 					SyparfDto dto = fetchRecord(syuser, syrecn);
 					syparfDtoList.add(dto);
 				} else {
-					logger.info("B");
 					syparfDtoList = fetchList(syuser);
 				}
 				
@@ -188,11 +186,9 @@ public class BcoreMaintResponseOutputterController_SYPARF2 {
 		return sb.toString();
 
 	}
-
-
 	
-	private SyparfDto fetchRecord(String sykunr, String syrecn) {
-		SyparfDao dao = (SyparfDao) syparf2DaoService.find(sykunr, syrecn);
+	private SyparfDto fetchRecord(String syuser, String syrecn) {
+		SyparfDao dao = (SyparfDao) syparf2DaoService.find(syuser, syrecn);
 		SyparfDto dto = getDto(dao);
 
 		return dto;
