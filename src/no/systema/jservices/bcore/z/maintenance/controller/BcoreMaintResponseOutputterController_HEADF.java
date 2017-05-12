@@ -17,30 +17,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import no.systema.jservices.common.dao.FaktDao;
-import no.systema.jservices.common.dao.services.FaktDaoService;
+import no.systema.jservices.common.dao.HeadfDao;
+import no.systema.jservices.common.dao.services.HeadfDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.CSVOutputter;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
-public class BcoreMaintResponseOutputterController_FAKT {
-	private static final Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_FAKT.class.getName());
+public class BcoreMaintResponseOutputterController_HEADF {
+	private static final Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_HEADF.class.getName());
 
 	/**
-	 * File: 	FAKT
+	 * File: 	HEADF
 	 * 
-	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsFAKT.do?user=OSCAR&csv=true
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsHEADF.do?user=OSCAR&csv=true
 	 * 
 	 */
-	@RequestMapping(value="syjsFAKT.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="syjsHEADF.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public String doFakt(HttpSession session, HttpServletRequest request) {
-		JsonResponseWriter2<FaktDao> jsonWriter = new JsonResponseWriter2<FaktDao>();
-		CSVOutputter<FaktDao> csvOutputter = new CSVOutputter<FaktDao>();
+	public String doHeadf(HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter2<HeadfDao> jsonWriter = new JsonResponseWriter2<HeadfDao>();
+		CSVOutputter<HeadfDao> csvOutputter = new CSVOutputter<HeadfDao>();
 		StringBuffer sb = new StringBuffer();
-		List<FaktDao> firmDaoList = null;
+		List<HeadfDao> headfDaoList = null;
 		
 		try {
 			String user = request.getParameter("user");
@@ -52,15 +52,15 @@ public class BcoreMaintResponseOutputterController_FAKT {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
 			if ((userName != null && !"".equals(userName))) {
-				firmDaoList = faktDaoService.findAll(null);
-				if (firmDaoList != null) {
+				headfDaoList = headfDaoService.findAll(null);
+				if (headfDaoList != null) {
 					if (StringUtils.hasValue(csv)) {
-						sb.append(csvOutputter.writeAsString(firmDaoList));
+						sb.append(csvOutputter.writeAsString(headfDaoList));
 					} else {
-						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, firmDaoList));
+						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, headfDaoList));
 					}
 				} else {
-					errMsg = "ERROR on SELECT: Can not find FaktDao list";
+					errMsg = "ERROR on SELECT: Can not find HeadfDao list";
 					status = "error";
 					logger.info( status + errMsg);
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
@@ -93,12 +93,12 @@ public class BcoreMaintResponseOutputterController_FAKT {
 	public void setBridfDaoServices (BridfDaoServices value){ this.bridfDaoServices = value; }
 	public BridfDaoServices getBridfDaoServices(){ return this.bridfDaoServices; }	
 
-	@Qualifier ("faktDaoService")
-	private FaktDaoService faktDaoService;
+	@Qualifier ("headfDaoService")
+	private HeadfDaoService headfDaoService;
 	@Autowired
 	@Required
-	public void setFirmDaoService(FaktDaoService value){ this.faktDaoService = value; }
-	public FaktDaoService getFirmDaoService(){ return this.faktDaoService; }		
+	public void setHeadfDaoService(HeadfDaoService value){ this.headfDaoService = value; }
+	public HeadfDaoService getHeadfDaoService(){ return this.headfDaoService; }		
 	
 	
 }
