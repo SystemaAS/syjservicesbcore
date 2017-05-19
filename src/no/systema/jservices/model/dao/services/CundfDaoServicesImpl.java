@@ -3,7 +3,6 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.TransactionStatus;
@@ -17,7 +16,6 @@ import no.systema.jservices.common.dao.services.FratxtDaoService;
 import no.systema.jservices.common.dao.services.SadvareDaoService;
 import no.systema.jservices.common.dao.services.SyparfDaoService;
 import no.systema.jservices.model.dao.entities.CundfDao;
-import no.systema.jservices.model.dao.mapper.CundfMapper;
 import no.systema.main.util.DbErrorMessageManager;
 
 
@@ -37,66 +35,53 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	
 	@Override
 	public List findById(String id, StringBuffer errorStackTrace){
-		List<CundfDao> retval = new ArrayList<CundfDao>();
+		List<CundfDao> cundfDaoList = new ArrayList<CundfDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" and kundnr = ? ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new GenericObjectMapper(new CundfDao()));
+			cundfDaoList = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new GenericObjectMapper(new CundfDao()));
 			
-			//List with one
-			if (retval.size() > 0) {
-				CundfDao dao = retval.get(0);
-				Cum3lmDao qDao = new Cum3lmDao();
-				qDao.setM3kund(Integer.parseInt(dao.getKundnr()));
-				qDao.setM3firm(dao.getFirma());
-				Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
-				dao.setCum3lmDao(cum3lmResultDao);
-				retval.clear();
-				retval.add(dao);
+			if (cundfDaoList.size() > 0) {
+				for (CundfDao cundfDao : cundfDaoList) {
+					cundfDao.setCum3lmDao(getCum3lmDao(cundfDao));
+				}
 			}
-			
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
+			logger.error(writer.toString());
 			//Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-			retval = null;
+			cundfDaoList = null;
 		}
-		return retval;
+		return cundfDaoList;
 	}
 	
 	@Override
 	public List findById(String id, String firm, StringBuffer errorStackTrace){
-		List<CundfDao> retval = new ArrayList<CundfDao>();
+		List<CundfDao> cundfDaoList = new ArrayList<CundfDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" and kundnr = ? ");
 			sql.append(" and firma = ? ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id, firm }, new GenericObjectMapper(new CundfDao()));
+			cundfDaoList = this.jdbcTemplate.query( sql.toString(), new Object[] { id, firm }, new GenericObjectMapper(new CundfDao()));
 			
-			//List with one
-			if (retval.size() > 0) {
-				CundfDao dao = retval.get(0);
-				Cum3lmDao qDao = new Cum3lmDao();
-				qDao.setM3kund(Integer.parseInt(dao.getKundnr()));
-				qDao.setM3firm(dao.getFirma());
-				Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
-				dao.setCum3lmDao(cum3lmResultDao);
-				retval.clear();
-				retval.add(dao);
+			if (cundfDaoList.size() > 0) {
+				for (CundfDao cundfDao : cundfDaoList) {
+					cundfDao.setCum3lmDao(getCum3lmDao(cundfDao));
+				}
 			}
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
+			logger.error(writer.toString());
 			//Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-			retval = null;
+			cundfDaoList = null;
 		}
-		return retval;
+		return cundfDaoList;
 	}
 	
 	@Override
@@ -105,68 +90,60 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		String nameStr = "";
 		if(name!=null && !"".equals(name)){ nameStr = name.toUpperCase(); }
 		
-		List<CundfDao> retval = new ArrayList<CundfDao>();
+		List<CundfDao> cundfDaoList = new ArrayList<CundfDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" and UPPER(knavn) LIKE ? ");
 			sql.append(" and firma = ? ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + nameStr + WILDCARD, firm }, new GenericObjectMapper(new CundfDao()));
+			cundfDaoList = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + nameStr + WILDCARD, firm }, new GenericObjectMapper(new CundfDao()));
+
+			logger.debug("findbyName(String name, String firm), sqlString="+sql.toString());
 			
-			//List with one
-			if (retval.size() > 0) {
-				CundfDao dao = retval.get(0);
-				Cum3lmDao qDao = new Cum3lmDao();
-				qDao.setM3kund(Integer.parseInt(dao.getKundnr()));
-				qDao.setM3firm(dao.getFirma());
-				Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
-				dao.setCum3lmDao(cum3lmResultDao);
-				retval.clear();
-				retval.add(dao);
+			if (cundfDaoList.size() > 0) {
+				for (CundfDao cundfDao : cundfDaoList) {
+					cundfDao.setCum3lmDao(getCum3lmDao(cundfDao));
+				}
 			}
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
 			//Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-			retval = null;
+			cundfDaoList = null;
 		}
-		return retval;
+		return cundfDaoList;
 	}
 	
+
 	@Override
 	public List findByName(String name, StringBuffer errorStackTrace){
 		String WILDCARD = "%";
 		String nameStr = "";
 		if(name!=null && !"".equals(name)){ nameStr = name.toUpperCase(); }
 		
-		List<CundfDao> retval = new ArrayList<CundfDao>();
+		List<CundfDao> cundfDaoList = new ArrayList<CundfDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" and UPPER(knavn) LIKE ? ");
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + nameStr + WILDCARD }, new GenericObjectMapper(new CundfDao()));
+			cundfDaoList = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + nameStr + WILDCARD }, new GenericObjectMapper(new CundfDao()));
 			
-			//List with one
-			if (retval.size() > 0) {
-				CundfDao dao = retval.get(0);
-				Cum3lmDao qDao = new Cum3lmDao();
-				qDao.setM3kund(Integer.parseInt(dao.getKundnr()));
-				qDao.setM3firm(dao.getFirma());
-				Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
-				dao.setCum3lmDao(cum3lmResultDao);
-				retval.clear();
-				retval.add(dao);
-			}			
+			logger.debug("findbyName(String name), sqlString="+sql.toString());
+			
+			if (cundfDaoList.size() > 0) {
+				for (CundfDao cundfDao : cundfDaoList) {
+					cundfDao.setCum3lmDao(getCum3lmDao(cundfDao));
+				}
+			}
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
+			logger.error(writer.toString());
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
-			retval = null;
+			cundfDaoList = null;
 		}
-		return retval;
+		return cundfDaoList;
 	}
 	
 	
@@ -442,6 +419,15 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		
 		return sql.toString();
 	}
+	
+	private Cum3lmDao getCum3lmDao(CundfDao cundfDao) {
+		Cum3lmDao qDao = new Cum3lmDao();
+		qDao.setM3kund(Integer.parseInt(cundfDao.getKundnr()));
+		qDao.setM3firm(cundfDao.getFirma());
+		Cum3lmDao cum3lmResultDao = cum3lmDaoService.find(qDao);
+		return cum3lmResultDao;
+	}
+	
 	
 	/**                                                                                                  
 	 * Wires jdbcTemplate                                                                                
