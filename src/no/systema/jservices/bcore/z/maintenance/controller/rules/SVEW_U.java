@@ -70,18 +70,5 @@ public class SVEW_U {
 		return retval;
 	}
 
-	public void updateNumericFieldsIfNull(SvewDao dao) {
-		String ZERO = "0";
-//		if(dao.getSysort()==null || "".equals(dao.getSysort())){
-//			dao.setSysort(ZERO);
-//		}
-//		if(dao.getSyavd()==null || "".equals(dao.getSyavd())){
-//			dao.setSyavd(ZERO);
-//		}		
-//		if(dao.getSyvrdn()==null || "".equals(dao.getSyvrdn())){
-//			dao.setSyvrdn(ZERO);
-//		}
-	}
-
 	
 }

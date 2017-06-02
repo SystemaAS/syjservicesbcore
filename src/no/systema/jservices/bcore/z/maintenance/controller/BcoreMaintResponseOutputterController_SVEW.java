@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SVEW_U;
 import no.systema.jservices.common.dao.SvewDao;
-import no.systema.jservices.common.dao.SviwDao;
 import no.systema.jservices.common.dao.services.Kodts2DaoService;
 import no.systema.jservices.common.dao.services.Kodts5DaoService;
 import no.systema.jservices.common.dao.services.Kodts6DaoService;
@@ -99,18 +97,17 @@ public class BcoreMaintResponseOutputterController_SVEW {
 
 	}
 
-	//TODO
 	/**
-	 * Update Database DML operations File: SVIW
+	 * Update Database DML operations File: SVEW
 	 * 
 	 * @Example UPDATE:
-	 *          http://gw.systema.no:8080/syjservicesbcore/syjsSVIW_U.do?user=OSCAR&sviw_knnr=1&sviw_knso=Tarzan&...and many more...&mode=U/A/D
+	 *          http://gw.systema.no:8080/syjservicesbcore/syjsSVEW_U.do?user=OSCAR&svew_knnr=1&svew_knso=Tarzan&...and many more...&mode=U/A/D
 	 *
 	 */
 	@RequestMapping(value = "syjsSVEW_U.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String syjsSVEW_U(HttpSession session, HttpServletRequest request) {
-		JsonResponseWriter2<SviwDao> jsonWriter = new JsonResponseWriter2<SviwDao>();
+		JsonResponseWriter2<SvewDao> jsonWriter = new JsonResponseWriter2<SvewDao>();
 		StringBuffer sb = new StringBuffer();
 		String userName = null;
 		String errMsg = null;
@@ -139,7 +136,6 @@ public class BcoreMaintResponseOutputterController_SVEW {
 					}
 				} else {
 					if (rulerLord.isValidInput(dao, userName, mode)) {
-						rulerLord.updateNumericFieldsIfNull(dao);
 						if ("A".equals(mode)) {
 							resultDao = svewDaoService.create(dao);
 						} else if ("U".equals(mode)) {
@@ -148,8 +144,8 @@ public class BcoreMaintResponseOutputterController_SVEW {
 					} 
 				}
 				if (resultDao == null) {
-					errMsg = "ERROR on UPDATE";
-					status = "error";
+					errMsg = "ERROR on UPDATE ";
+					status = "error ";
 					dbErrorStackTrace.append("Could not add/update dao=" + ReflectionToStringBuilder.toString(dao));
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				} else {
@@ -166,20 +162,12 @@ public class BcoreMaintResponseOutputterController_SVEW {
 			}
 
 		} catch (Exception e) {
-			if (e instanceof BadSqlGrammarException) {
-				errMsg = "ERROR on UPDATE";
-				status = "error";
-				logger.info("getLocalizedMessage="+e.getCause().getLocalizedMessage());
-				logger.info("getMessage="+e.getCause().getMessage());
-				dbErrorStackTrace.append(e.getCause());
-				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status,dbErrorStackTrace));
-			} else {
-				logger.info("Error:", e);
-				Writer writer = new StringWriter();
-				PrintWriter printWriter = new PrintWriter(writer);
-				e.printStackTrace(printWriter);
-				return "ERROR [JsonResponseOutputterController]" + writer.toString();
-			}
+			errMsg = "ERROR on UPDATE ";
+			status = "error ";
+			logger.info("getLocalizedMessage="+e.getCause().getLocalizedMessage());
+			logger.info("getMessage="+e.getCause().getMessage());
+			dbErrorStackTrace.append(e.getCause());
+			sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status,dbErrorStackTrace));
 		}
 		session.invalidate();
 		return sb.toString();
