@@ -12,8 +12,6 @@ import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.main.util.MessageSourceHelper;
 
-//TODO
-
 /**
  * 
  * @author Fredrik Möller
@@ -43,13 +41,13 @@ public class SVEW_U {
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
 			if ( dao.getSvew_knnr() > 0 && StringUtils.hasValue(dao.getSvew_knso())) 	{
 				//Ursprungsland.
-				if ( StringUtils.hasValue(dao.getSvew_ulkd()) &&  !existInSvtx03f(dao.getSvew_ulkd()) ) {
+				if ( StringUtils.hasValue(dao.getSvew_ulkd()) &&  !existAsUlkdInSvtx03f(dao.getSvew_ulkd()) ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_ulkd",new Object[] { dao.getSvew_ulkd() }),"error", dbErrors));
 					retval = false;
 				}
 				//Taricnr
-				if ( StringUtils.hasValue(dao.getSvew_vata()) &&  !existInSvtx10f(dao.getSvew_vata()) ) {
+				if ( StringUtils.hasValue(dao.getSvew_vata()) &&  !existAsVataInSvtx10f(dao.getSvew_vata()) ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_vata",new Object[] { dao.getSvew_vata() }),"error", dbErrors));
 					retval = false;
@@ -60,6 +58,13 @@ public class SVEW_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_eup1",new Object[] { dao.getSvew_eup1() }),"error", dbErrors));
 					retval = false;
 				}				
+				//Förfarande 37:1
+				if ( StringUtils.hasValue(dao.getSvew_eup2()) &&  !existAsEup2InSvtx03f(dao.getSvew_eup2()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_eup2",new Object[] { dao.getSvew_eup2() }),"error", dbErrors));
+					retval = false;
+				}
+
 				
 			} else {
 				retval = false;
@@ -97,7 +102,7 @@ public class SVEW_U {
 		return retval;
 	}
 
-	private boolean existInSvtx03f(String svew_ulkd) {
+	private boolean existAsUlkdInSvtx03f(String svew_ulkd) {
 		boolean exists = svtx03fDaoService.landKodeExist(svew_ulkd);
 		if (!exists) {
 			return false;
@@ -105,8 +110,17 @@ public class SVEW_U {
 			return true;
 		}
 	}
+
+	private boolean existAsEup2InSvtx03f(String svew_eup2) {
+		boolean exists = svtx03fDaoService.eup2Exist(svew_eup2);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}	
 	
-	private boolean existInSvtx10f(String svew_vata) {
+	private boolean existAsVataInSvtx10f(String svew_vata) {
 		String trailingZeros = "00";
 		String svew_vataToValidate = svew_vata + trailingZeros;
 		boolean exists = svtx10fDaoService.tariExportNrExist(svew_vataToValidate);
@@ -115,6 +129,7 @@ public class SVEW_U {
 		} else {
 			return true;
 		}
-	}	
+	}
+	
 	
 }

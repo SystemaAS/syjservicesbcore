@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +22,7 @@ import no.systema.jservices.common.dao.Svtx03fDao;
 import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
+import no.systema.jservices.common.values.Svtx03fKodTyper;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
@@ -30,7 +32,7 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 	/**
 	 * File: 	SVTX03F
 	 * 
-	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsSVTX03F.do?user=OSCAR
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsSVTX03F.do?user=OSCAR&02=GCY..FFK..
 	 * 
 	 */
 	@RequestMapping(value="syjsSVTX03F.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -39,6 +41,7 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 		JsonResponseWriter2<Svtx03fDao> jsonWriter = new JsonResponseWriter2<Svtx03fDao>();
 		StringBuffer sb = new StringBuffer();
 		List<Svtx03fDao> svtx03fDaoList = null;
+		String type02 = request.getParameter("02");
 		
 		try {
 			String user = request.getParameter("user");
@@ -48,12 +51,17 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
-			if ( StringUtils.hasValue(userName) ) {
-				svtx03fDaoList = svtx03fDaoService.getLandKoder();
+			if ( StringUtils.hasValue(userName) && (StringUtils.hasValue(type02))) {
+				if (type02.equals(Svtx03fKodTyper.GCY.toString())) {
+					svtx03fDaoList = svtx03fDaoService.getLandKoder();
+				}
+				if (type02.equals(Svtx03fKodTyper.FFK.toString())) {
+					svtx03fDaoList = svtx03fDaoService.getEup2Koder();
+				}
 				if (svtx03fDaoList != null) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svtx03fDaoList));
 				} else {
-					errMsg = "ERROR on SELECT: Can not find Svtx03fDao list";
+					errMsg = " ERROR on SELECT: Can not find Svtx03fDao list on 02="+type02+ " only "+ReflectionToStringBuilder.toString(Svtx03fKodTyper.values())+" available";
 					status = "error";
 					logger.info( status + errMsg);
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));

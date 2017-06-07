@@ -9,6 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import no.systema.jservices.common.dao.services.SvewDaoService;
 import no.systema.jservices.common.dao.services.SvtproDaoService;
 import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.dao.services.Svtx10fDaoService;
+import no.systema.jservices.common.dto.SvewDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
@@ -173,12 +175,23 @@ public class BcoreMaintResponseOutputterController_SVEW {
 		SvewDao dao = (SvewDao) svewDaoService.find(knnr, svew_knso);
 		return dao;
 	}
+	
+	
+	
+	
 
 	private List<SvewDao> fetchList(String sviw_knnr) {
 		List<SvewDao> svewDaoList = null;
 		svewDaoList = svewDaoService.findAll(sviw_knnr);
 		return svewDaoList;
 	}
+	
+	
+//	private SvewDto getDto(SvewDao dao) {
+//		
+//		SerializationUtils.clone(dao);
+//	}
+	
 
 	@Qualifier("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
