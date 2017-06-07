@@ -22,16 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SVEW_U;
 import no.systema.jservices.common.dao.SvewDao;
-import no.systema.jservices.common.dao.services.Kodts2DaoService;
-import no.systema.jservices.common.dao.services.Kodts5DaoService;
-import no.systema.jservices.common.dao.services.Kodts6DaoService;
-import no.systema.jservices.common.dao.services.Kodts7DaoService;
-import no.systema.jservices.common.dao.services.Kodts8DaoService;
-import no.systema.jservices.common.dao.services.KodtsaDaoService;
-import no.systema.jservices.common.dao.services.KodtsbDaoService;
-import no.systema.jservices.common.dao.services.KodtvalfDaoService;
 import no.systema.jservices.common.dao.services.SvewDaoService;
-import no.systema.jservices.common.dao.services.TariDaoService;
+import no.systema.jservices.common.dao.services.Svtx03fDaoService;
+import no.systema.jservices.common.dao.services.Svtx10fDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
@@ -58,6 +51,7 @@ public class BcoreMaintResponseOutputterController_SVEW {
 		String svew_knso = request.getParameter("svew_knso");
 
 		try {
+			logger.info("Inside syjsSVEW.do");
 			String user = request.getParameter("user");
 			String userName = this.bridfDaoServices.findNameById(user);
 			String errMsg = "";
@@ -128,7 +122,7 @@ public class BcoreMaintResponseOutputterController_SVEW {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			SVEW_U rulerLord = new SVEW_U(request ,sb, dbErrorStackTrace);
+			SVEW_U rulerLord = new SVEW_U(request,svtx03fDaoService , svtx10fDaoService ,sb, dbErrorStackTrace);
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
@@ -164,9 +158,8 @@ public class BcoreMaintResponseOutputterController_SVEW {
 		} catch (Exception e) {
 			errMsg = "ERROR on UPDATE ";
 			status = "error ";
-			logger.info("getLocalizedMessage="+e.getCause().getLocalizedMessage());
-			logger.info("getMessage="+e.getCause().getMessage());
-			dbErrorStackTrace.append(e.getCause());
+			logger.info("Error:",e);
+			dbErrorStackTrace.append(e.getMessage());
 			sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status,dbErrorStackTrace));
 		}
 		session.invalidate();
@@ -188,147 +181,46 @@ public class BcoreMaintResponseOutputterController_SVEW {
 
 	@Qualifier("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
-
 	@Autowired
 	@Required
 	public void setBridfDaoServices(BridfDaoServices value) {
 		this.bridfDaoServices = value;
 	}
-
 	public BridfDaoServices getBridfDaoServices() {
 		return this.bridfDaoServices;
 	}
 
 	@Qualifier("svewDaoService")
 	private SvewDaoService svewDaoService;
-
 	@Autowired
 	@Required
 	public void setSvewDaoService(SvewDaoService value) {
 		this.svewDaoService = value;
 	}
-
 	public SvewDaoService getSvwwDaoService() {
 		return this.svewDaoService;
 	}
-	
-	@Qualifier("kodts7DaoService")
-	private Kodts7DaoService kodts7DaoService;
 
+	@Qualifier("svtx03fDaoService")
+	private Svtx03fDaoService svtx03fDaoService;
 	@Autowired
 	@Required
-	public void setKodts7DaoService(Kodts7DaoService value) {
-		this.kodts7DaoService = value;
+	public void setSvtx03fDaoService(Svtx03fDaoService value) {
+		this.svtx03fDaoService = value;
 	}
-
-	public Kodts7DaoService getKodts7DaoService() {
-		return this.kodts7DaoService;
+	public Svtx03fDaoService getSvtx03fDaoService() {
+		return this.svtx03fDaoService;
 	}	
-	
-	@Qualifier("kodts2DaoService")
-	private Kodts2DaoService kodts2DaoService;
 
+	@Qualifier("svtx10fDaoService")
+	private Svtx10fDaoService svtx10fDaoService;
 	@Autowired
 	@Required
-	public void setKodts2DaoService(Kodts2DaoService value) {
-		this.kodts2DaoService = value;
+	public void setSvtx10fDaoService(Svtx10fDaoService value) {
+		this.svtx10fDaoService = value;
 	}
-
-	public Kodts2DaoService getKodts2DaoService() {
-		return this.kodts2DaoService;
-	}
-	
-	@Qualifier("kodts5DaoService")
-	private Kodts5DaoService kodts5DaoService;
-
-	@Autowired
-	@Required
-	public void setKodts5DaoService(Kodts5DaoService value) {
-		this.kodts5DaoService = value;
-	}
-
-	public Kodts5DaoService getKodts5DaoService() {
-		return this.kodts5DaoService;
-	}
-	
-	@Qualifier("kodts6DaoService")
-	private Kodts6DaoService kodts6DaoService;
-
-	@Autowired
-	@Required
-	public void setKodts6DaoService(Kodts6DaoService value) {
-		this.kodts6DaoService = value;
-	}
-
-	public Kodts6DaoService getKodts6DaoService() {
-		return this.kodts6DaoService;
-	}		
-
-	@Qualifier("kodts8DaoService")
-	private Kodts8DaoService kodts8DaoService;
-
-	@Autowired
-	@Required
-	public void setKodts8DaoService(Kodts8DaoService value) {
-		this.kodts8DaoService = value;
-	}
-
-	public Kodts8DaoService getKodts8DaoService() {
-		return this.kodts8DaoService;
-	}	
-	
-	
-	@Qualifier("kodtsaDaoService")
-	private KodtsaDaoService kodtsaDaoService;
-
-	@Autowired
-	@Required
-	public void setKodtsaDaoService(KodtsaDaoService value) {
-		this.kodtsaDaoService = value;
-	}
-
-	public KodtsaDaoService getKodtsaDaoService() {
-		return this.kodtsaDaoService;
-	}		
-	
-	@Qualifier("kodtsbDaoService")
-	private KodtsbDaoService kodtsbDaoService;
-
-	@Autowired
-	@Required
-	public void setKodtsbDaoService(KodtsbDaoService value) {
-		this.kodtsbDaoService = value;
-	}
-
-	public KodtsbDaoService getKodtsbDaoService() {
-		return this.kodtsbDaoService;
-	}		
-	
-	@Qualifier("kodtvalfDaoService")
-	private KodtvalfDaoService kodtvalfDaoService;
-
-	@Autowired
-	@Required
-	public void setKodtvalfDaoService(KodtvalfDaoService value) {
-		this.kodtvalfDaoService = value;
-	}
-
-	public KodtvalfDaoService getKodtvalfDaoService() {
-		return this.kodtvalfDaoService;
-	}		
-	
-	
-	@Qualifier("tariDaoService")
-	private TariDaoService tariDaoService;
-
-	@Autowired
-	@Required
-	public void setTariDaoService(TariDaoService value) {
-		this.tariDaoService = value;
-	}
-
-	public TariDaoService getTariDaoService() {
-		return this.tariDaoService;
+	public Svtx10fDaoService getSvtx10fDaoService() {
+		return this.svtx10fDaoService;
 	}		
 	
 	
