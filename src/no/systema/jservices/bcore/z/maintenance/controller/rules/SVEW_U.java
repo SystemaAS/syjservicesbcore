@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import no.systema.jservices.common.dao.SvewDao;
+import no.systema.jservices.common.dao.services.SvtproDaoService;
 import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.dao.services.Svtx10fDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
@@ -24,13 +25,15 @@ public class SVEW_U {
 	private MessageSourceHelper messageSourceHelper = null;
 	private Svtx03fDaoService svtx03fDaoService = null;
 	private Svtx10fDaoService svtx10fDaoService = null;
+	private SvtproDaoService svtproDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
-	public SVEW_U(HttpServletRequest request, Svtx03fDaoService svtx03fDaoService, Svtx10fDaoService svtx10fDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SVEW_U(HttpServletRequest request, Svtx03fDaoService svtx03fDaoService, Svtx10fDaoService svtx10fDaoService, SvtproDaoService svtproDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		messageSourceHelper = new MessageSourceHelper(request);
 		this.svtx03fDaoService = svtx03fDaoService;
 		this.svtx10fDaoService = svtx10fDaoService;
+		this.svtproDaoService = svtproDaoService;
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
 	}
@@ -51,7 +54,12 @@ public class SVEW_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_vata",new Object[] { dao.getSvew_vata() }),"error", dbErrors));
 					retval = false;
 				}
-				
+				//Förfarande 37:1
+				if ( StringUtils.hasValue(dao.getSvew_eup1()) &&  !existInSvtpro(dao.getSvew_eup1()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_eup1",new Object[] { dao.getSvew_eup1() }),"error", dbErrors));
+					retval = false;
+				}				
 				
 			} else {
 				retval = false;
@@ -64,6 +72,15 @@ public class SVEW_U {
 	}
 
 
+
+	private boolean existInSvtpro(String svew_eup1) {
+		boolean exists = svtproDaoService.svpr_prExist(svew_eup1);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 	public boolean isValidInputForDelete(SvewDao dao, String user, String mode) {
 		boolean retval = true;

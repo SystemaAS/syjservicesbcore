@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SVEW_U;
 import no.systema.jservices.common.dao.SvewDao;
 import no.systema.jservices.common.dao.services.SvewDaoService;
+import no.systema.jservices.common.dao.services.SvtproDaoService;
 import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.dao.services.Svtx10fDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
@@ -122,7 +123,7 @@ public class BcoreMaintResponseOutputterController_SVEW {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			SVEW_U rulerLord = new SVEW_U(request,svtx03fDaoService , svtx10fDaoService ,sb, dbErrorStackTrace);
+			SVEW_U rulerLord = new SVEW_U(request, svtx03fDaoService ,svtx10fDaoService, svtproDaoService , sb, dbErrorStackTrace);
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
@@ -223,6 +224,16 @@ public class BcoreMaintResponseOutputterController_SVEW {
 		return this.svtx10fDaoService;
 	}		
 	
+	@Qualifier("svtproDaoService")
+	private SvtproDaoService svtproDaoService;
+	@Autowired
+	@Required
+	public void setSvtproDaoService(SvtproDaoService value) {
+		this.svtproDaoService = value;
+	}
+	public SvtproDaoService getSvtproDaoService() {
+		return this.svtproDaoService;
+	}		
 	
 	
 }
