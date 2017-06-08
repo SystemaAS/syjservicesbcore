@@ -32,8 +32,8 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 	/**
 	 * File: 	SVTX03F
 	 * 
-	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsSVTX03F.do?user=OSCAR&02=GCY..FFK..
-	 * 
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsSVTX03F.do?user=OSCAR&02=GCY..FFK..KLI...
+	 * For O2 kodes, @see {@link Svtx03fKodTyper}
 	 */
 	@RequestMapping(value="syjsSVTX03F.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
@@ -58,10 +58,13 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 				if (type02.equals(Svtx03fKodTyper.FFK.toString())) {
 					svtx03fDaoList = svtx03fDaoService.getEup2Koder();
 				}
+				if (type02.equals(Svtx03fKodTyper.KLI.toString())) {
+					svtx03fDaoList = svtx03fDaoService.getKollislagKoder();
+				}
 				if (svtx03fDaoList != null) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svtx03fDaoList));
 				} else {
-					errMsg = " ERROR on SELECT: Can not find Svtx03fDao list on 02="+type02+ " only "+ReflectionToStringBuilder.toString(Svtx03fKodTyper.values())+" available";
+					errMsg = " ERROR on SELECT: Can not find Svtx03fDao list on 02="+type02+ ", only "+ReflectionToStringBuilder.toString(Svtx03fKodTyper.values())+" available";
 					status = "error";
 					logger.info( status + errMsg);
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));

@@ -41,7 +41,7 @@ public class SVEW_U {
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
 			if ( dao.getSvew_knnr() > 0 && StringUtils.hasValue(dao.getSvew_knso())) 	{
 				//Ursprungsland.
-				if ( StringUtils.hasValue(dao.getSvew_ulkd()) &&  !existAsUlkdInSvtx03f(dao.getSvew_ulkd()) ) {
+				if ( StringUtils.hasValue(dao.getSvew_ulkd()) &&  !svtx03fDaoService.landKodeExist(dao.getSvew_ulkd()) ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_ulkd",new Object[] { dao.getSvew_ulkd() }),"error", dbErrors));
 					retval = false;
@@ -53,18 +53,50 @@ public class SVEW_U {
 					retval = false;
 				}
 				//Förfarande 37:1
-				if ( StringUtils.hasValue(dao.getSvew_eup1()) &&  !existInSvtpro(dao.getSvew_eup1()) ) {
+				if ( StringUtils.hasValue(dao.getSvew_eup1()) &&  !svtproDaoService.svpr_prExist(dao.getSvew_eup1()) ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_eup1",new Object[] { dao.getSvew_eup1() }),"error", dbErrors));
 					retval = false;
 				}				
 				//Förfarande 37:1
-				if ( StringUtils.hasValue(dao.getSvew_eup2()) &&  !existAsEup2InSvtx03f(dao.getSvew_eup2()) ) {
+				if ( StringUtils.hasValue(dao.getSvew_eup2()) &&  !svtx03fDaoService.eup2Exist(dao.getSvew_eup2()) ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_eup2",new Object[] { dao.getSvew_eup2() }),"error", dbErrors));
 					retval = false;
 				}
+				//Kollislag 1
+				if ( StringUtils.hasValue(dao.getSvew_kosl()) &&  !svtx03fDaoService.kollislagExist(dao.getSvew_kosl())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_kosl",new Object[] { dao.getSvew_kosl() }),"error", dbErrors));
+					retval = false;
+				}
+				//Kollislag 2
+				if ( StringUtils.hasValue(dao.getSvew_kos2()) &&  !svtx03fDaoService.kollislagExist(dao.getSvew_kos2())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_kosl",new Object[] { dao.getSvew_kos2() }),"error", dbErrors));
+					retval = false;
+				}
+				//Kollislag 3
+				if ( StringUtils.hasValue(dao.getSvew_kos3()) &&  !svtx03fDaoService.kollislagExist(dao.getSvew_kos3())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_kosl",new Object[] { dao.getSvew_kos3() }),"error", dbErrors));
+					retval = false;
+				}
+				//Kollislag 4
+				if ( StringUtils.hasValue(dao.getSvew_kos4()) &&  !svtx03fDaoService.kollislagExist(dao.getSvew_kos4())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_kosl",new Object[] { dao.getSvew_kos4() }),"error", dbErrors));
+					retval = false;
+				}
+				//Kollislag 5
+				if ( StringUtils.hasValue(dao.getSvew_kos5()) &&  !svtx03fDaoService.kollislagExist(dao.getSvew_kos5())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_kosl",new Object[] { dao.getSvew_kos5() }),"error", dbErrors));
+					retval = false;
+				}
 
+				
+				
 				
 			} else {
 				retval = false;
@@ -74,17 +106,6 @@ public class SVEW_U {
 		}
 
 		return retval;
-	}
-
-
-
-	private boolean existInSvtpro(String svew_eup1) {
-		boolean exists = svtproDaoService.svpr_prExist(svew_eup1);
-		if (!exists) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	public boolean isValidInputForDelete(SvewDao dao, String user, String mode) {
@@ -102,24 +123,6 @@ public class SVEW_U {
 		return retval;
 	}
 
-	private boolean existAsUlkdInSvtx03f(String svew_ulkd) {
-		boolean exists = svtx03fDaoService.landKodeExist(svew_ulkd);
-		if (!exists) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	private boolean existAsEup2InSvtx03f(String svew_eup2) {
-		boolean exists = svtx03fDaoService.eup2Exist(svew_eup2);
-		if (!exists) {
-			return false;
-		} else {
-			return true;
-		}
-	}	
-	
 	private boolean existAsVataInSvtx10f(String svew_vata) {
 		String trailingZeros = "00";
 		String svew_vataToValidate = svew_vata + trailingZeros;
