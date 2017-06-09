@@ -123,6 +123,7 @@ public class SVEW_U {
 		return retval;
 	}
 
+	//TODO ta bort när import ska göras
 	private boolean existAsVataInSvtx10f(String svew_vata) {
 		String trailingZeros = "00";
 		String svew_vataToValidate = svew_vata + trailingZeros;
