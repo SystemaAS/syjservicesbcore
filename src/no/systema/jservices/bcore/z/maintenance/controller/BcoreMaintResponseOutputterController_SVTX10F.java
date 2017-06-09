@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.common.dao.Svtx10fDao;
-import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.dao.services.Svtx10fDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
@@ -31,7 +30,7 @@ public class BcoreMaintResponseOutputterController_SVTX10F {
 	/**
 	 * File: 	SVTX10F
 	 * 
-	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsSVTX10F.do?user=OSCAR
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsSVTX10F.do?user=OSCAR&varukod=01
 	 * 
 	 */
 	@RequestMapping(value="syjsSVTX10F.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -40,6 +39,7 @@ public class BcoreMaintResponseOutputterController_SVTX10F {
 		JsonResponseWriter2<Svtx10fDao> jsonWriter = new JsonResponseWriter2<Svtx10fDao>();
 		StringBuffer sb = new StringBuffer();
 		List<Svtx10fDao> svtx10fDaoList = null;
+		String varukod = request.getParameter("varukod");
 		
 		try {
 			String user = request.getParameter("user");
@@ -50,7 +50,14 @@ public class BcoreMaintResponseOutputterController_SVTX10F {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
 			if ( StringUtils.hasValue(userName) ) {
-				svtx10fDaoList = svtx10fDaoService.findAll(null);
+				if (varukod != null && varukod.length() > 1) {
+					svtx10fDaoList = svtx10fDaoService.findByLikeId(varukod);
+				} else {
+					errMsg = "ERROR on SELECT: Full scan of Svtx10f is not supported. Please provide a least two char of varukod.";
+					status = "error";
+					logger.info( status + errMsg);
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}
 				if (svtx10fDaoList != null) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svtx10fDaoList));
 				} else {
