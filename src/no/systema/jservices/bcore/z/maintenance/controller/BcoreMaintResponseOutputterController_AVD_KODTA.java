@@ -83,8 +83,8 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 			String sadNctsImportAvdList = request.getParameter("nialist"); //SadNctsImportAvdlist
 			String sadNctsExportAvdList = request.getParameter("nealist"); //SadNctsExportAvdlist
 			//
-			String skatImportAvdList = request.getParameter("ssialist"); //SkatImportAvdlist
-			String skatExportAvdList = request.getParameter("ssealist"); //SkatExportAvdlist
+			String skatImportAvdList = request.getParameter("ssialist"); //SkatImportAvdlist / TdsImport
+			String skatExportAvdList = request.getParameter("ssealist"); //SkatExportAvdlist / TdsExport
 			String skatNctsImportAvdList = request.getParameter("snialist"); //SkatNctsImportAvdlist
 			String skatNctsExportAvdList = request.getParameter("snealist"); //SkatNctsExportAvdlist
 			

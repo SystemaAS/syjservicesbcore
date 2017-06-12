@@ -58,7 +58,7 @@ public class SVE051R_U {
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
 			if( (dao.getSvea_syav()!=null && !"".equals(dao.getSvea_syav())) &&
-					(dao.getSvea_syop()!=null && !"".equals(dao.getSvea_syop()))	){	
+				(dao.getSvea_syop()!=null && !"".equals(dao.getSvea_syop()))	){	
 				//OK
 			}else{
 				retval = false;
