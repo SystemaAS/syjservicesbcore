@@ -37,7 +37,7 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 	 */
 	@RequestMapping(value="syjsSVTX03F.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public String brreg(HttpSession session, HttpServletRequest request) {
+	public String doSvtx03f(HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter2<Svtx03fDao> jsonWriter = new JsonResponseWriter2<Svtx03fDao>();
 		StringBuffer sb = new StringBuffer();
 		List<Svtx03fDao> svtx03fDaoList = null;
@@ -61,6 +61,10 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 				if (type02.equals(Svtx03fKodTyper.KLI.toString())) {
 					svtx03fDaoList = svtx03fDaoService.getKollislagKoder();
 				}
+				if (type02.equals(Svtx03fKodTyper.MCF.toString())) {
+					svtx03fDaoList = svtx03fDaoService.getBilagdaHandlingarKoder();
+				}
+
 				if (svtx03fDaoList != null) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svtx03fDaoList));
 				} else {

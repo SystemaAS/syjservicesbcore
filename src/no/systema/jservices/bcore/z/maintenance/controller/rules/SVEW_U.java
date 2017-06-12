@@ -94,6 +94,12 @@ public class SVEW_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_kosl",new Object[] { dao.getSvew_kos5() }),"error", dbErrors));
 					retval = false;
 				}
+				//Bilagd handling 1
+				if ( StringUtils.hasValue(dao.getSvew_bit1()) &&  !svtx03fDaoService.bilagdHandlingExist(dao.getSvew_bit1())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit1() }),"error", dbErrors));
+					retval = false;
+				}
 
 				
 				
