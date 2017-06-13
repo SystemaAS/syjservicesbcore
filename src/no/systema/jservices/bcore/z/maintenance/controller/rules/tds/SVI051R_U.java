@@ -4,8 +4,8 @@ import java.util.*;
 
 import org.apache.log4j.Logger;
 
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.tds.SveaDao;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.tds.SveaDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.tds.SviaDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.tds.SviaDaoServices;
 
 /**
  * 
@@ -27,14 +27,14 @@ public class SVI051R_U {
 	 * @param mode
 	 * @return
 	 */
-	public boolean isValidInput(SveaDao dao, String user, String mode ){
+	public boolean isValidInput(SviaDao dao, String user, String mode ){
 		boolean retval = true;
 		
 		//starting point
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
-			if( (dao.getSvea_syav()!=null && !"".equals(dao.getSvea_syav())) &&
-				(dao.getSvea_syop()!=null && !"".equals(dao.getSvea_syop()))	){	
+			if( (dao.getSvia_syav()!=null && !"".equals(dao.getSvia_syav())) &&
+				(dao.getSvia_syop()!=null && !"".equals(dao.getSvia_syop()))	){	
 				//OK
 			}else{
 				retval = false;
@@ -53,12 +53,12 @@ public class SVI051R_U {
 	 * @param mode
 	 * @return
 	 */
-	public boolean isValidInputForDelete(SveaDao dao, String user, String mode){
+	public boolean isValidInputForDelete(SviaDao dao, String user, String mode){
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
-			if( (dao.getSvea_syav()!=null && !"".equals(dao.getSvea_syav())) &&
-				(dao.getSvea_syop()!=null && !"".equals(dao.getSvea_syop()))	){	
+			if( (dao.getSvia_syav()!=null && !"".equals(dao.getSvia_syav())) &&
+				(dao.getSvia_syop()!=null && !"".equals(dao.getSvia_syop()))	){	
 				//OK
 			}else{
 				retval = false;
@@ -73,7 +73,7 @@ public class SVI051R_U {
 	 * 
 	 * @param dao
 	 */
-	public void adjustNumericFields(SveaDao dao){
+	public void adjustNumericFields(SviaDao dao){
 		String ZERO = "0";
 		//Integers
 		/* N/A since these both fields are key fields (mandatory)
