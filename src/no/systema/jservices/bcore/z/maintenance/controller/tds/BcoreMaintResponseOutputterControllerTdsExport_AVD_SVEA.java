@@ -139,7 +139,7 @@ public class BcoreMaintResponseOutputterControllerTdsExport_AVD_SVEA {
 	 * @return
 	 * 
 	 */
-	/*
+	
 	@RequestMapping(value="syjsSVE051R_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsR_U( HttpSession session, HttpServletRequest request) {
@@ -159,19 +159,19 @@ public class BcoreMaintResponseOutputterControllerTdsExport_AVD_SVEA {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 			
 			//bind attributes is any
-			DkeaDao dao = new DkeaDao();
+			SveaDao dao = new SveaDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             
             //rules
-            DKE051R_U rulerLord = new DKE051R_U();
+            SVE051R_U rulerLord = new SVE051R_U();
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("D".equals(mode)){
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						dmlRetval = this.dkeaDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.sveaDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -180,13 +180,13 @@ public class BcoreMaintResponseOutputterControllerTdsExport_AVD_SVEA {
 					}
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode )){
-						List<DkeaDao> list = new ArrayList<DkeaDao>();
+						List<SveaDao> list = new ArrayList<SveaDao>();
 						//must complete numeric values to avoid <null> on those
 						// NA rulerLord.adjustNumericFields(dao);
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
-							list = this.dkeaDaoServices.findById(dao, dbErrorStackTrace);
+							list = this.sveaDaoServices.findById(dao, dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output
@@ -195,12 +195,12 @@ public class BcoreMaintResponseOutputterControllerTdsExport_AVD_SVEA {
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
 								logger.info("Before INSERT ...");
-								dmlRetval = this.dkeaDaoServices.insert(dao, dbErrorStackTrace);
+								dmlRetval = this.sveaDaoServices.insert(dao, dbErrorStackTrace);
 							}
 							
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							dmlRetval = this.dkeaDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = this.sveaDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{
@@ -242,7 +242,7 @@ public class BcoreMaintResponseOutputterControllerTdsExport_AVD_SVEA {
 		session.invalidate();
 		return sb.toString();
 	}
-	*/
+	
 	//----------------
 	//WIRED SERVICES
 	//----------------
