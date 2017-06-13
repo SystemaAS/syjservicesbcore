@@ -64,6 +64,9 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 				if (type02.equals(Svtx03fKodTyper.MCF.toString())) {
 					svtx03fDaoList = svtx03fDaoService.getBilagdaHandlingarKoder();
 				}
+				if (type02.equals(Svtx03fKodTyper.THO.toString())) {
+					svtx03fDaoList = svtx03fDaoService.getTidigareHandlingarKoder();
+				}
 
 				if (svtx03fDaoList != null) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svtx03fDaoList));
@@ -77,7 +80,7 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 			} else {
 				errMsg = "ERROR on SELECT";
 				status = "error";
-				dbErrorStackTrace.append("request input parameters are invalid: <user>");
+				dbErrorStackTrace.append("request input parameters are invalid: <user> <type02>");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 			}
 		} catch (Exception e) {

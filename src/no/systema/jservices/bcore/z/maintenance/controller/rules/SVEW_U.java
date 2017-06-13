@@ -100,8 +100,114 @@ public class SVEW_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit1() }),"error", dbErrors));
 					retval = false;
 				}
-
-				
+				//Bilagd handling 2
+				if ( StringUtils.hasValue(dao.getSvew_bit2()) &&  !svtx03fDaoService.bilagdHandlingExist(dao.getSvew_bit2())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit2() }),"error", dbErrors));
+					retval = false;
+				}
+				//Bilagd handling 3
+				if ( StringUtils.hasValue(dao.getSvew_bit3()) &&  !svtx03fDaoService.bilagdHandlingExist(dao.getSvew_bit3())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit3() }),"error", dbErrors));
+					retval = false;
+				}
+				//Bilagd handling 4
+				if ( StringUtils.hasValue(dao.getSvew_bit4()) &&  !svtx03fDaoService.bilagdHandlingExist(dao.getSvew_bit4())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit4() }),"error", dbErrors));
+					retval = false;
+				}
+				//Bilagd handling 5
+				if ( StringUtils.hasValue(dao.getSvew_bit5()) &&  !svtx03fDaoService.bilagdHandlingExist(dao.getSvew_bit5())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit5() }),"error", dbErrors));
+					retval = false;
+				}
+				//Bilagd handling 6
+				if ( StringUtils.hasValue(dao.getSvew_bit6()) &&  !svtx03fDaoService.bilagdHandlingExist(dao.getSvew_bit6())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit6() }),"error", dbErrors));
+					retval = false;
+				}
+				//Bilagd handling 7
+				if ( StringUtils.hasValue(dao.getSvew_bit7()) &&  !svtx03fDaoService.bilagdHandlingExist(dao.getSvew_bit7())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit7() }),"error", dbErrors));
+					retval = false;
+				}
+				//Bilagd handling 8
+				if ( StringUtils.hasValue(dao.getSvew_bit8()) &&  !svtx03fDaoService.bilagdHandlingExist(dao.getSvew_bit8())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit8() }),"error", dbErrors));
+					retval = false;
+				}
+				//Bilagd handling 9
+				if ( StringUtils.hasValue(dao.getSvew_bit9()) &&  !svtx03fDaoService.bilagdHandlingExist(dao.getSvew_bit9())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_bit",new Object[] { dao.getSvew_bit9() }),"error", dbErrors));
+					retval = false;
+				}
+				//Tidigare handling 1
+				if ( StringUtils.hasValue(dao.getSvew_tit1()) &&  !svtx03fDaoService.tidigareHandlingExist(dao.getSvew_tit1())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_tit",new Object[] { dao.getSvew_tit1() }),"error", dbErrors));
+					retval = false;
+				}
+				//Tidigare handling 2
+				if ( StringUtils.hasValue(dao.getSvew_tit2()) &&  !svtx03fDaoService.tidigareHandlingExist(dao.getSvew_tit2())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_tit",new Object[] { dao.getSvew_tit2() }),"error", dbErrors));
+					retval = false;
+				}
+				//Tidigare handling 3
+				if ( StringUtils.hasValue(dao.getSvew_tit3()) &&  !svtx03fDaoService.tidigareHandlingExist(dao.getSvew_tit3())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_tit",new Object[] { dao.getSvew_tit3() }),"error", dbErrors));
+					retval = false;
+				}
+				//Tidigare handling 4
+				if ( StringUtils.hasValue(dao.getSvew_tit4()) &&  !svtx03fDaoService.tidigareHandlingExist(dao.getSvew_tit4())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_tit",new Object[] { dao.getSvew_tit4() }),"error", dbErrors));
+					retval = false;
+				}
+				//Tidigare handling 5
+				if ( StringUtils.hasValue(dao.getSvew_tit5()) &&  !svtx03fDaoService.tidigareHandlingExist(dao.getSvew_tit5())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_tit",new Object[] { dao.getSvew_tit5() }),"error", dbErrors));
+					retval = false;
+				}
+				//Tidigare handling 6
+				if ( StringUtils.hasValue(dao.getSvew_tit6()) &&  !svtx03fDaoService.tidigareHandlingExist(dao.getSvew_tit6())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_tit",new Object[] { dao.getSvew_tit6() }),"error", dbErrors));
+					retval = false;
+				}
+				//Tidigare handling 7
+				if ( StringUtils.hasValue(dao.getSvew_tit7()) &&  !svtx03fDaoService.tidigareHandlingExist(dao.getSvew_tit7())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_tit",new Object[] { dao.getSvew_tit7() }),"error", dbErrors));
+					retval = false;
+				}
+				//Tidigare handling 8
+				if ( StringUtils.hasValue(dao.getSvew_tit8()) &&  !svtx03fDaoService.tidigareHandlingExist(dao.getSvew_tit8())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_tit",new Object[] { dao.getSvew_tit8() }),"error", dbErrors));
+					retval = false;
+				}
+				//Tidigare handling 9
+				if ( StringUtils.hasValue(dao.getSvew_tit9()) &&  !svtx03fDaoService.tidigareHandlingExist(dao.getSvew_tit9())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_tit",new Object[] { dao.getSvew_tit9() }),"error", dbErrors));
+					retval = false;
+				}
+				//Landkode
+				if ( StringUtils.hasValue(dao.getSvew_lagl()) &&  !svtx03fDaoService.landKodeExist(dao.getSvew_lagl()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_lagl",new Object[] { dao.getSvew_lagl() }),"error", dbErrors));
+					retval = false;
+				}
 				
 				
 			} else {
