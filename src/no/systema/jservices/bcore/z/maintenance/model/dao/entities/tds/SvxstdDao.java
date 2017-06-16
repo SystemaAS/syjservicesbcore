@@ -30,6 +30,22 @@ public class SvxstdDao implements Serializable, IDao {
 	public String getThavdPropertyName (){ return "thavd"; }
 	public void setThavd(String value) {  this.thavd = value; }
 	public String getThavd() {return this.thavd;}
+	
+	private String koanvn = "";                                
+	public String getKoanvnPropertyName (){ return "koanvn"; }
+	public void setKoanvn (String value){ this.koanvn = value;   }   
+	public String getKoanvn (){ return this.koanvn;   }  
+	
+	private String koaknr = "";                                
+	public String getKoaknrPropertyName (){ return "koaknr"; }
+	public void setKoaknr (String value){ this.koaknr = value;   }   
+	public String getKoaknr (){ return this.koaknr;   }  
+	
+	private String syrg = "";                                
+	public String getSyrgPropertyName (){ return "syrg"; }
+	public void setSyrg (String value){ this.syrg = value;   }   
+	public String getSyrg (){ return this.syrg;   }  
+	
 	//thtdn Oppdragsnr
 	private String thtdn = "";
 	public String getThtdnPropertyName (){ return "thtdn"; }
@@ -603,37 +619,10 @@ public class SvxstdDao implements Serializable, IDao {
 	public void setTgprm(String value) {  this.tgprm = value; }
 	public String getTgprm() { return this.tgprm;}
 	
-	//Criteria in order to present a warranty alarm
-	private boolean warrantyAlarm = false;
-	public boolean getWarrantyAlarm() { 
-		try{
-			Double totalLimit= 0.00D;
-			Double totalUsed = 0.00D;
-			Double percentage = 0.00D;
-			if(this.tggbl != "" && this.tggblb !="" && this.tgprm !=""){
-				if(!"".equals(this.tggbl)&& !"".equals(this.tggblb) && !"".equals(this.tgprm)){
-					try{
-						totalLimit = Double.valueOf(this.tggbl);
-						totalUsed = Double.valueOf(this.tggblb);
-						percentage = Double.valueOf(this.tgprm);
-						//Check for math validity
-						if(percentage>0){
-							Double validCeiling = totalLimit * (percentage/100);
-							if(validCeiling<totalUsed){
-								this.warrantyAlarm = true;
-							}
-						}
-					}catch(Exception e){
-						//nothing;	
-					}
-				}
-			}
-		}catch(Exception e){
-			logger.info("CATCH ON Warranty....!!!!!!!!!!!!!");
-		}
-		
-		return this.warrantyAlarm;
-	}
+	private String s0004 = "";                                
+	public String getS0004PropertyName (){ return "s0004"; }
+	public void setS0004 (String value){ this.s0004 = value;   }   
+	public String getS0004 (){ return this.s0004;   }  
 	
 	
 	
