@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,16 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SVIW_U;
 import no.systema.jservices.common.dao.SviwDao;
-import no.systema.jservices.common.dao.services.Kodts2DaoService;
-import no.systema.jservices.common.dao.services.Kodts5DaoService;
-import no.systema.jservices.common.dao.services.Kodts6DaoService;
-import no.systema.jservices.common.dao.services.Kodts7DaoService;
-import no.systema.jservices.common.dao.services.Kodts8DaoService;
-import no.systema.jservices.common.dao.services.KodtsaDaoService;
-import no.systema.jservices.common.dao.services.KodtsbDaoService;
-import no.systema.jservices.common.dao.services.KodtvalfDaoService;
 import no.systema.jservices.common.dao.services.SviwDaoService;
-import no.systema.jservices.common.dao.services.TariDaoService;
+import no.systema.jservices.common.dao.services.SvtproDaoService;
+import no.systema.jservices.common.dao.services.Svtx03fDaoService;
+import no.systema.jservices.common.dao.services.Svtx10fDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
@@ -44,21 +37,22 @@ public class BcoreMaintResponseOutputterController_SVIW {
 	 * File: SVIW
 	 * 
 	 * @Example SELECT
-	 *          specific:http://gw.systema.no:8080/syjservicesbcore/syjsSVIW.do?user=OSCAR&sviw_knnr=1&sviw_knso=Elfenben
+	 *          specific:http://gw.systema.no:8080/syjservicesbcore/syjsSVIW.do?user=OSCAR&sviw_knnr=1&sviw_knso=Jane
 	 * @Example SELECT list:
 	 *          http://gw.systema.no:8080/syjservicesbcore/syjsSVIW.do?user=OSCAR&sviw_knnr=1
 	 * 
 	 */
 	@RequestMapping(value = "syjsSVIW.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String doSadvare(HttpSession session, HttpServletRequest request) {
+	public String doSviw(HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter2<SviwDao> jsonWriter = new JsonResponseWriter2<SviwDao>();
 		StringBuffer sb = new StringBuffer();
-		List<SviwDao> sviwDaoList = new ArrayList<SviwDao>();
+		List<SviwDao> svewDaoList = new ArrayList<SviwDao>();
 		String sviw_knnr = request.getParameter("sviw_knnr");
 		String sviw_knso = request.getParameter("sviw_knso");
 
 		try {
+			logger.info("Inside syjsSVIW.do");
 			String user = request.getParameter("user");
 			String userName = this.bridfDaoServices.findNameById(user);
 			String errMsg = "";
@@ -67,12 +61,12 @@ public class BcoreMaintResponseOutputterController_SVIW {
 			if ((userName != null && !"".equals(userName)) && (sviw_knnr != null && !"".equals(sviw_knnr))) {
 				if (sviw_knso != null && !"".equals(sviw_knso)) {
 					SviwDao dao = fetchRecord(sviw_knnr, sviw_knso);
-					sviwDaoList.add(dao);
+					svewDaoList.add(dao);
 				} else {
-					sviwDaoList = fetchList(sviw_knnr);
+					svewDaoList = fetchList(sviw_knnr);
 				}
-				if (sviwDaoList != null) {
-					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, sviwDaoList));
+				if (svewDaoList != null) {
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svewDaoList));
 				} else {
 					errMsg = "ERROR on SELECT: Can not find SviwDao list";
 					status = "error";
@@ -82,7 +76,7 @@ public class BcoreMaintResponseOutputterController_SVIW {
 			} else {
 				errMsg = "ERROR on SELECT";
 				status = "error";
-				dbErrorStackTrace.append("request input parameters are invalid: <user> and <levenr> ");
+				dbErrorStackTrace.append("request input parameters are invalid: <user> and <sviw_knnr> ");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 			}
 		} catch (Exception e) {
@@ -98,7 +92,6 @@ public class BcoreMaintResponseOutputterController_SVIW {
 
 	}
 
-	//TODO
 	/**
 	 * Update Database DML operations File: SVIW
 	 * 
@@ -108,7 +101,7 @@ public class BcoreMaintResponseOutputterController_SVIW {
 	 */
 	@RequestMapping(value = "syjsSVIW_U.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String syjsSADVARE_U(HttpSession session, HttpServletRequest request) {
+	public String syjsSVEW_U(HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter2<SviwDao> jsonWriter = new JsonResponseWriter2<SviwDao>();
 		StringBuffer sb = new StringBuffer();
 		String userName = null;
@@ -130,7 +123,7 @@ public class BcoreMaintResponseOutputterController_SVIW {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			SVIW_U rulerLord = new SVIW_U(request ,sb, dbErrorStackTrace);
+			SVIW_U rulerLord = new SVIW_U(request, svtx03fDaoService ,svtx10fDaoService, svtproDaoService , sb, dbErrorStackTrace);
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dao, userName, mode)) {
@@ -138,7 +131,6 @@ public class BcoreMaintResponseOutputterController_SVIW {
 					}
 				} else {
 					if (rulerLord.isValidInput(dao, userName, mode)) {
-						rulerLord.updateNumericFieldsIfNull(dao);
 						if ("A".equals(mode)) {
 							resultDao = sviwDaoService.create(dao);
 						} else if ("U".equals(mode)) {
@@ -147,8 +139,8 @@ public class BcoreMaintResponseOutputterController_SVIW {
 					} 
 				}
 				if (resultDao == null) {
-					errMsg = "ERROR on UPDATE";
-					status = "error";
+					errMsg = "ERROR on UPDATE ";
+					status = "error ";
 					dbErrorStackTrace.append("Could not add/update dao=" + ReflectionToStringBuilder.toString(dao));
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				} else {
@@ -165,183 +157,84 @@ public class BcoreMaintResponseOutputterController_SVIW {
 			}
 
 		} catch (Exception e) {
-			if (e instanceof BadSqlGrammarException) {
-				errMsg = "ERROR on UPDATE";
-				status = "error";
-				logger.info("getLocalizedMessage="+e.getCause().getLocalizedMessage());
-				logger.info("getMessage="+e.getCause().getMessage());
-				dbErrorStackTrace.append(e.getCause());
-				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status,dbErrorStackTrace));
-			} else {
-				logger.info("Error:", e);
-				Writer writer = new StringWriter();
-				PrintWriter printWriter = new PrintWriter(writer);
-				e.printStackTrace(printWriter);
-				return "ERROR [JsonResponseOutputterController]" + writer.toString();
-			}
+			errMsg = "ERROR on UPDATE ";
+			status = "error ";
+			logger.info("Error:",e);
+			dbErrorStackTrace.append(e.getMessage());
+			sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status,dbErrorStackTrace));
 		}
 		session.invalidate();
 		return sb.toString();
 
 	}
 
-	private SviwDao fetchRecord(String sviw_knnr, String sviw_knso) {
-		int knnr = Integer.parseInt(sviw_knnr);
-		SviwDao dao = (SviwDao) sviwDaoService.find(knnr, sviw_knso);
+	private SviwDao fetchRecord(String svew_knnr, String svew_knso) {
+		int knnr = Integer.parseInt(svew_knnr);
+		SviwDao dao = (SviwDao) sviwDaoService.find(knnr, svew_knso);
 		return dao;
 	}
-
+	
 	private List<SviwDao> fetchList(String sviw_knnr) {
-		List<SviwDao> sviwDaoList = null;
-		sviwDaoList = sviwDaoService.findAll(sviw_knnr);
-		return sviwDaoList;
+		List<SviwDao> svewDaoList = null;
+		svewDaoList = sviwDaoService.findAll(sviw_knnr);
+		return svewDaoList;
 	}
-
+	
+	
 	@Qualifier("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
-
 	@Autowired
 	@Required
 	public void setBridfDaoServices(BridfDaoServices value) {
 		this.bridfDaoServices = value;
 	}
-
 	public BridfDaoServices getBridfDaoServices() {
 		return this.bridfDaoServices;
 	}
 
 	@Qualifier("sviwDaoService")
 	private SviwDaoService sviwDaoService;
-
 	@Autowired
 	@Required
 	public void setSviwDaoService(SviwDaoService value) {
 		this.sviwDaoService = value;
 	}
-
-	public SviwDaoService getSviwDaoService() {
+	public SviwDaoService getSvwwDaoService() {
 		return this.sviwDaoService;
 	}
-	
-	@Qualifier("kodts7DaoService")
-	private Kodts7DaoService kodts7DaoService;
 
+	@Qualifier("svtx03fDaoService")
+	private Svtx03fDaoService svtx03fDaoService;
 	@Autowired
 	@Required
-	public void setKodts7DaoService(Kodts7DaoService value) {
-		this.kodts7DaoService = value;
+	public void setSvtx03fDaoService(Svtx03fDaoService value) {
+		this.svtx03fDaoService = value;
 	}
-
-	public Kodts7DaoService getKodts7DaoService() {
-		return this.kodts7DaoService;
+	public Svtx03fDaoService getSvtx03fDaoService() {
+		return this.svtx03fDaoService;
 	}	
-	
-	@Qualifier("kodts2DaoService")
-	private Kodts2DaoService kodts2DaoService;
 
+	@Qualifier("svtx10fDaoService")
+	private Svtx10fDaoService svtx10fDaoService;
 	@Autowired
 	@Required
-	public void setKodts2DaoService(Kodts2DaoService value) {
-		this.kodts2DaoService = value;
+	public void setSvtx10fDaoService(Svtx10fDaoService value) {
+		this.svtx10fDaoService = value;
 	}
-
-	public Kodts2DaoService getKodts2DaoService() {
-		return this.kodts2DaoService;
-	}
-	
-	@Qualifier("kodts5DaoService")
-	private Kodts5DaoService kodts5DaoService;
-
-	@Autowired
-	@Required
-	public void setKodts5DaoService(Kodts5DaoService value) {
-		this.kodts5DaoService = value;
-	}
-
-	public Kodts5DaoService getKodts5DaoService() {
-		return this.kodts5DaoService;
-	}
-	
-	@Qualifier("kodts6DaoService")
-	private Kodts6DaoService kodts6DaoService;
-
-	@Autowired
-	@Required
-	public void setKodts6DaoService(Kodts6DaoService value) {
-		this.kodts6DaoService = value;
-	}
-
-	public Kodts6DaoService getKodts6DaoService() {
-		return this.kodts6DaoService;
-	}		
-
-	@Qualifier("kodts8DaoService")
-	private Kodts8DaoService kodts8DaoService;
-
-	@Autowired
-	@Required
-	public void setKodts8DaoService(Kodts8DaoService value) {
-		this.kodts8DaoService = value;
-	}
-
-	public Kodts8DaoService getKodts8DaoService() {
-		return this.kodts8DaoService;
-	}	
-	
-	
-	@Qualifier("kodtsaDaoService")
-	private KodtsaDaoService kodtsaDaoService;
-
-	@Autowired
-	@Required
-	public void setKodtsaDaoService(KodtsaDaoService value) {
-		this.kodtsaDaoService = value;
-	}
-
-	public KodtsaDaoService getKodtsaDaoService() {
-		return this.kodtsaDaoService;
+	public Svtx10fDaoService getSvtx10fDaoService() {
+		return this.svtx10fDaoService;
 	}		
 	
-	@Qualifier("kodtsbDaoService")
-	private KodtsbDaoService kodtsbDaoService;
-
+	@Qualifier("svtproDaoService")
+	private SvtproDaoService svtproDaoService;
 	@Autowired
 	@Required
-	public void setKodtsbDaoService(KodtsbDaoService value) {
-		this.kodtsbDaoService = value;
+	public void setSvtproDaoService(SvtproDaoService value) {
+		this.svtproDaoService = value;
 	}
-
-	public KodtsbDaoService getKodtsbDaoService() {
-		return this.kodtsbDaoService;
+	public SvtproDaoService getSvtproDaoService() {
+		return this.svtproDaoService;
 	}		
-	
-	@Qualifier("kodtvalfDaoService")
-	private KodtvalfDaoService kodtvalfDaoService;
-
-	@Autowired
-	@Required
-	public void setKodtvalfDaoService(KodtvalfDaoService value) {
-		this.kodtvalfDaoService = value;
-	}
-
-	public KodtvalfDaoService getKodtvalfDaoService() {
-		return this.kodtvalfDaoService;
-	}		
-	
-	
-	@Qualifier("tariDaoService")
-	private TariDaoService tariDaoService;
-
-	@Autowired
-	@Required
-	public void setTariDaoService(TariDaoService value) {
-		this.tariDaoService = value;
-	}
-
-	public TariDaoService getTariDaoService() {
-		return this.tariDaoService;
-	}		
-	
 	
 	
 }
