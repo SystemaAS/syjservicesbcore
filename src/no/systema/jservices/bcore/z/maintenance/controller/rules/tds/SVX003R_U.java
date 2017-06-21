@@ -5,9 +5,9 @@ import java.util.*;
 import org.apache.log4j.Logger;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.tds.SvxstdDao;
-//import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DkxstdfvDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.tds.SvxstdfvDao;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.DkxkodfDaoServices;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.SvxkodfDaoServices;
 
 
 /**
@@ -18,7 +18,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.DkxkodfDaoSer
 public class SVX003R_U {
 	private static Logger logger = Logger.getLogger(SVX003R_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
-	private DkxkodfDaoServices dkxkodfDaoServices;
+	private SvxkodfDaoServices svxkodfDaoServices;
 	
 	private StringBuffer validatorStackTrace = new StringBuffer();
 	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }
@@ -27,9 +27,9 @@ public class SVX003R_U {
 	 * 
 	 * @param ediiDaoServices
 	 */
-	public SVX003R_U(EdiiDaoServices ediiDaoServices, DkxkodfDaoServices dkxkodfDaoServices){
+	public SVX003R_U(EdiiDaoServices ediiDaoServices, SvxkodfDaoServices svxkodfDaoServices){
 		this.ediiDaoServices = ediiDaoServices;
-		this.dkxkodfDaoServices = dkxkodfDaoServices;
+		this.svxkodfDaoServices = svxkodfDaoServices;
 	}
 
 	
@@ -63,51 +63,51 @@ public class SVX003R_U {
 		if(retval){
 			//(2) Validity Toldsted (tullkontor)
 			if(dao.getThcats()!=null && !"".equals(dao.getThcats())){
-				retval = this.vaidateTullkontorId(dao.getThcats(), " C. Avg.tollsted er ugyldig ");
+				retval = this.vaidateTullkontorId(dao.getThcats(), " Avgångstullkontor är ogiltigt ");
 			}
 			if(retval){
 				if(dao.getThtsb()!=null && !"".equals(dao.getThtsb())){
-					retval = this.vaidateTullkontorId(dao.getThtsb	(), " 53. Bestemmelsestollsted er ugyldig ");
+					retval = this.vaidateTullkontorId(dao.getThtsb	(), " 53. Bestämmelsetullkontor är ogiltigt ");
 				}
 			}
 			if(retval){
 				if(dao.getThtsd1()!=null && !"".equals(dao.getThtsd1())){
-					retval = this.vaidateTullkontorId(dao.getThtsd1(), " 51. Planlagte transitteringstollsteder (1) er ugyldig ");
+					retval = this.vaidateTullkontorId(dao.getThtsd1(), " 51. .Planerade transittullkontor (1) är ogiltigt ");
 				}
 			}
 			if(retval){
 				if(dao.getThtsd2()!=null && !"".equals(dao.getThtsd2())){
-					retval = this.vaidateTullkontorId(dao.getThtsd2(), " 51. Planlagte transitteringstollsteder (2) er ugyldig ");
+					retval = this.vaidateTullkontorId(dao.getThtsd2(), " 51. .Planerade transittullkontor (2) är ogiltigt ");
 				}
 			}
 			if(retval){
 				if(dao.getThtsd3()!=null && !"".equals(dao.getThtsd3())){
-					retval = this.vaidateTullkontorId(dao.getThtsd3(), " 51. Planlagte transitteringstollsteder (3) er ugyldig ");
+					retval = this.vaidateTullkontorId(dao.getThtsd3(), " 51. Planerade transittullkontor (3) är ogiltig ");
 				}
 			}
 			if(retval){
 				if(dao.getThtsd4()!=null && !"".equals(dao.getThtsd4())){
-					retval = this.vaidateTullkontorId(dao.getThtsd4(), " 51. Planlagte transitteringstollsteder (4) er ugyldig ");
+					retval = this.vaidateTullkontorId(dao.getThtsd4(), " 51. Planerade transittullkontor (4) är ogiltig");
 				}
 			}
 			if(retval){
 				if(dao.getThtsd5()!=null && !"".equals(dao.getThtsd5())){
-					retval = this.vaidateTullkontorId(dao.getThtsd5(), " 51. Planlagte transitteringstollsteder (5) er ugyldig ");
+					retval = this.vaidateTullkontorId(dao.getThtsd5(), " 51. Planerade transittullkontor (5) är ogiltig ");
 				}
 			}
 			if(retval){
 				if(dao.getThtsd6()!=null && !"".equals(dao.getThtsd6())){
-					retval = this.vaidateTullkontorId(dao.getThtsd6(), " 51. Planlagte transitteringstollsteder (6) er ugyldig ");
+					retval = this.vaidateTullkontorId(dao.getThtsd6(), " 51. Planerade transittullkontor (6) är ogiltig ");
 				}
 			}
 			if(retval){
 				if(dao.getThtsd7()!=null && !"".equals(dao.getThtsd7())){
-					retval = this.vaidateTullkontorId(dao.getThtsd7(), " 51. Planlagte transitteringstollsteder (7) er ugyldig ");
+					retval = this.vaidateTullkontorId(dao.getThtsd7(), " 51. Planerade transittullkontor (7) är ogiltig ");
 				}
 			}
 			if(retval){
 				if(dao.getThtsd8()!=null && !"".equals(dao.getThtsd8())){
-					retval = this.vaidateTullkontorId(dao.getThtsd8(), " 51. Planlagte transitteringstollsteder (8) er ugyldig ");
+					retval = this.vaidateTullkontorId(dao.getThtsd8(), " 51. Planerade transittullkontor (8) är ogiltig ");
 				}
 			}
 			
@@ -231,7 +231,7 @@ public class SVX003R_U {
 	 */
 	public boolean vaidateExchangesId(SvxstdDao dao){
 		boolean retval = true;
-		/* TODO
+	
 		List s0004List = this.ediiDaoServices.findById(dao.getS0004(), this.validatorStackTrace);
 		List s0010List = this.ediiDaoServices.findById(dao.getS0010(), this.validatorStackTrace);
 		
@@ -242,19 +242,19 @@ public class SVX003R_U {
 			if(s0004List!=null && s0004List.size()==1){ 
 				//OK 
 			}else{
-				this.validatorStackTrace.append(" UtvekslingsId Avd. er ugyldig /" );
+				this.validatorStackTrace.append(" UtväxlingsId Avd. är ogiltig /" );
 			}
 			
 			if(s0010List!=null && s0010List.size()==1){
 				//OK
 			}else{
-				this.validatorStackTrace.append(" UtvekslingsId Tollvesenet er ugyldig " );
+				this.validatorStackTrace.append(" UtväxlingsId Tullverket är ogiltig " );
 				
 			}
 			retval = false;
 			
 		}
-		*/
+		
 		return retval;
 	}
 	/**
@@ -266,7 +266,7 @@ public class SVX003R_U {
 		boolean retval = true;
 		
 		String UNIQUE_CODE_TULLKONTOR = "106";
-		List list = this.dkxkodfDaoServices.findById(UNIQUE_CODE_TULLKONTOR, value, this.validatorStackTrace);
+		List list = this.svxkodfDaoServices.findById(UNIQUE_CODE_TULLKONTOR, value, this.validatorStackTrace);
 		
 		if( list!=null && list.size()==1 ){
 			//OK
@@ -280,12 +280,9 @@ public class SVX003R_U {
 		return retval;
 	}
 	
-	
-	
-	
-	
+
 	/**
-	 * Child record Sikkerhet
+	 * Child record Säkerhet
 	 * 
 	 * @param dao
 	 * @param user
@@ -293,8 +290,8 @@ public class SVX003R_U {
 	 * 
 	 * @return
 	 */
-	/*
-	public boolean isValidInput(DkxstdfvDao dao, String user, String mode ){
+	
+	public boolean isValidInput(SvxstdfvDao dao, String user, String mode ){
 		boolean retval = true;
 		
 		//starting point
@@ -310,7 +307,7 @@ public class SVX003R_U {
 		}
 		return retval;
 	}
-	*/
+	
 	/**
 	 * 
 	 * @param dao
@@ -318,8 +315,8 @@ public class SVX003R_U {
 	 * @param mode
 	 * @return
 	 */
-	/*
-	public boolean isValidInputForDelete(DkxstdfvDao dao, String user, String mode){
+	
+	public boolean isValidInputForDelete(SvxstdfvDao dao, String user, String mode){
 		boolean retval = true;
 		if( (user!=null && !"".equals(user)) && (mode!=null && !"".equals(mode)) ){
 			//check dao
@@ -333,11 +330,14 @@ public class SVX003R_U {
 		}
 		return retval;
 	}
-	*/
-	/*
-	public void adjustNumericFields(DkxstdfvDao dao){
+	
+	/**
+	 * 
+	 * @param dao
+	 */
+	public void adjustNumericFields(SvxstdfvDao dao){
 		String ZERO = "0";
-		//TRUSTDFV
+		//SVXSTDFV
 		
 		//Integers
 		if(dao.getThsik()==null || "".equals(dao.getThsik())){
@@ -362,5 +362,5 @@ public class SVX003R_U {
 			dao.setThdta(ZERO);
 		}
 	}
-	*/
+	
 }

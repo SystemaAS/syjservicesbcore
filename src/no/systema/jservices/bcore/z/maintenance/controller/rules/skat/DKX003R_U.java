@@ -357,7 +357,7 @@ public class DKX003R_U {
 	
 	public void adjustNumericFields(DkxstdfvDao dao){
 		String ZERO = "0";
-		//TRUSTDFV
+		//DKSTDFV
 		
 		//Integers
 		if(dao.getThsik()==null || "".equals(dao.getThsik())){

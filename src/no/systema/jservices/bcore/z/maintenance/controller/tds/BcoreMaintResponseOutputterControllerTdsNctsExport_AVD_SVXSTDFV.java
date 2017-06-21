@@ -3,31 +3,40 @@ package no.systema.jservices.bcore.z.maintenance.controller.tds;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Field;
+import java.util.*;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-//rules
-import no.systema.jservices.bcore.z.maintenance.controller.rules.tds.SVX003R_U;
 //Application
-import no.systema.jservices.bcore.z.maintenance.model.dao.entities.tds.SvxstdDao;
+//import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
+import no.systema.jservices.bcore.z.maintenance.model.dao.entities.tds.SvxstdfvDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.SvxkodfDaoServices;
-import no.systema.jservices.bcore.z.maintenance.model.dao.services.tds.SvxstdDaoServices;
-import no.systema.jservices.jsonwriter.JsonResponseWriter;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.tds.SvxstdfvDaoServices;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
+import no.systema.jservices.jsonwriter.JsonResponseWriter;
+//rules
+import no.systema.jservices.bcore.z.maintenance.controller.rules.tds.SVX003R_U;
 
 
 /**
@@ -37,38 +46,36 @@ import no.systema.jservices.model.dao.services.EdiiDaoServices;
  * All communication to the outside world is done through this gateway.
  * 
  * @author oscardelatorre
- * @date Jun 16, 2017
+ * @date Jun 21, 2017
  * 
  */
 
 @Controller
-public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD.class.getName());
+public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTDFV {
+	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTDFV.class.getName());
 	
 	/**
 	 * FreeForm Source:
-	 * 	 File: 		Svxstd
-	 * 	 PGM:		SVX003R 
-	 * 	 Member: 	MAINT - TDS NCTS EXPORT AVD - Svxstd  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
+	 * 	File: 		SVXSTDFV
+	 * 	PGM:		SVX003R 
+	 * 	Member: 	MAINT - TDS NCTS EXPORT AVD - SVXSTDFV  - Maintenance - SELECT LIST  or SELECT SPECIFIC 
 	 *  
 	 * 
 	 * @return
-	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSVX003R.do?user=OSCAR&id=SVXSTD
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSVX003R.do?user=OSCAR&thavd=1
+	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSVX003fvR.do?user=OSCAR
+	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSVX003fvR.do?user=OSCAR&thavd=1
 	 * 
 	 */
-	@RequestMapping(value="syjsSVX003R.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="syjsSVX003fvR.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsRList( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.info("Inside syjsSVX003R.do");
+			logger.info("Inside syjsSVX003fvR.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
-			//String validAvd = request.getParameter("va");
-			String id = request.getParameter("id");  //DKXSTD or DKXSTD_FHV, for correct selection
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
             //DEBUG --> logger.info("USERNAME:" + userName + "XX");
@@ -79,28 +86,19 @@ public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD {
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				//bind attributes is any
-				SvxstdDao dao = new SvxstdDao();
+				SvxstdfvDao dao = new SvxstdfvDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 	            binder.bind(request);
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
 				//do SELECT
 				logger.info("Before SELECT ...");
-				if ((dao.getThavd() != null && !"".equals(dao.getThavd()))) {
+				if( (dao.getThavd()!=null && !"".equals(dao.getThavd())) ){
 					logger.info("findById...");
-					list = this.svxstdDaoServices.findById(dao.getThavd(), dbErrorStackTrace);
-				}
-				else if ("SVXSTD".equals(id)) {
-					logger.info("getNctsExportList...");
-					list = this.svxstdDaoServices.getNctsExportList(dbErrorStackTrace);
-				}
-				else if ("SVXSTD_FHV".equals(id)) {
-					logger.info("getNctsForhandsvarslingList...");
-					list = this.svxstdDaoServices.getNctsForhandsvarslingList(dbErrorStackTrace);
-				} 
-				else if (id == null){
+					list = this.svxstdfvDaoServices.findById(dao.getThavd(), dbErrorStackTrace);
+				}else{
 					logger.info("getList...");
-					list = this.svxstdDaoServices.getList(dbErrorStackTrace);
+					list = this.svxstdfvDaoServices.getList(dbErrorStackTrace);
 				}
 				
 				//process result
@@ -136,19 +134,18 @@ public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD {
 	/**
 	 * 
 	 * Update Database DML operations
-	 * File: 	Svxstd
-	 * PGM:		Svx003R_U 
-	 * Member: 	MAINT TDS NCTS IMPORT - AVD , Maintenance - DML operations
+	 * File: 	SVXSTDFV
+	 * PGM:		SVX003fvR_U 
+	 * Member: 	MAINT TDS NCTS EXPORT - AVD , Maintenance - DML operations
 	 * 
-	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsSVX003R_U.do?user=OSCAR&thavd=1&mode=U/A/D
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicesbcore/syjsSVX003fvR_U.do?user=OSCAR&thavd=1&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
 	 * @return
 	 * 
 	 */
-	
-	@RequestMapping(value="syjsSVX003R_U.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="syjsSVX003fvR_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsR_U( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
@@ -165,9 +162,11 @@ public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD {
             String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
+			StringBuffer validatorStackTrace = new StringBuffer();
+			
 			
 			//bind attributes is any
-			SvxstdDao dao = new SvxstdDao();
+			SvxstdfvDao dao = new SvxstdfvDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             
@@ -179,7 +178,7 @@ public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD {
 				if("D".equals(mode)){
 					logger.info("Before DELETE ...");
 					if(rulerLord.isValidInputForDelete(dao, userName, mode)){
-						dmlRetval = this.svxstdDaoServices.delete(dao, dbErrorStackTrace);
+						dmlRetval = this.svxstdfvDaoServices.delete(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
@@ -188,13 +187,13 @@ public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD {
 					}
 				}else{
 				  if(rulerLord.isValidInput(dao, userName, mode )){
-						List<SvxstdDao> list = new ArrayList<SvxstdDao>();
+						List<SvxstdfvDao> list = new ArrayList<SvxstdfvDao>();
 						//must complete numeric values to avoid <null> on those
 						rulerLord.adjustNumericFields(dao);
 						//do ADD
 						if("A".equals(mode)){
 							logger.info("Before INSERT ...");
-							list = this.svxstdDaoServices.findById(dao.getThavd(), dbErrorStackTrace);
+							list = this.svxstdfvDaoServices.findById(dao.getThavd(), dbErrorStackTrace);
 							//check if there is already such a code. If it does, stop the update
 							if(list!=null && list.size()>0){
 								//write JSON error output
@@ -203,12 +202,12 @@ public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD {
 								sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							}else{
 								logger.info("Before INSERT ...");
-								dmlRetval = this.svxstdDaoServices.insert(dao, dbErrorStackTrace);
+								dmlRetval = this.svxstdfvDaoServices.insert(dao, dbErrorStackTrace);
 							}
 							
 						}else if("U".equals(mode)){
 							logger.info("Before UPDATE ...");
-							dmlRetval = this.svxstdDaoServices.update(dao, dbErrorStackTrace);
+							dmlRetval = this.svxstdfvDaoServices.update(dao, dbErrorStackTrace);
 						}
 						
 				  }else{
@@ -254,13 +253,14 @@ public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD {
 	//----------------
 	//WIRED SERVICES
 	//----------------
-	@Qualifier ("svxstdDaoServices")
-	private SvxstdDaoServices svxstdDaoServices;
+	@Qualifier ("svxstdfvDaoServices")
+	private SvxstdfvDaoServices svxstdfvDaoServices;
 	@Autowired
 	@Required
-	public void setSvxstdDaoServices (SvxstdDaoServices value){ this.svxstdDaoServices = value; }
-	public SvxstdDaoServices getSvxstdDaoServices(){ return this.svxstdDaoServices; }
+	public void setSvxstdfvDaoServices (SvxstdfvDaoServices value){ this.svxstdfvDaoServices = value; }
+	public SvxstdfvDaoServices getSvxstdfvDaoServices(){ return this.svxstdfvDaoServices; }
 
+	
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
 	@Autowired
@@ -283,6 +283,7 @@ public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTD {
 	@Required
 	public void setSvxkodfDaoServices (SvxkodfDaoServices value){ this.svxkodfDaoServices = value; }
 	public SvxkodfDaoServices getSvxkodfDaoServices(){ return this.svxkodfDaoServices; }
+	
 	
 	
 }
