@@ -47,7 +47,7 @@ public class SVEW_U {
 					retval = false;
 				}
 				//Taricnr
-				if ( StringUtils.hasValue(dao.getSvew_vata()) &&  !existAsVataInSvtx10f(dao.getSvew_vata()) ) {
+				if ( StringUtils.hasValue(dao.getSvew_vata()) &&  !svtx10fDaoService.tariExportNrExist(dao.getSvew_vata()) ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.svew.error.svew_vata",new Object[] { dao.getSvew_vata() }),"error", dbErrors));
 					retval = false;
@@ -235,17 +235,4 @@ public class SVEW_U {
 		return retval;
 	}
 
-	//TODO ta bort när import ska göras
-	private boolean existAsVataInSvtx10f(String svew_vata) {
-		String trailingZeros = "00";
-		String svew_vataToValidate = svew_vata + trailingZeros;
-		boolean exists = svtx10fDaoService.tariExportNrExist(svew_vataToValidate);
-		if (!exists) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	
 }

@@ -47,7 +47,7 @@ public class BcoreMaintResponseOutputterController_SVIW {
 	public String doSviw(HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter2<SviwDao> jsonWriter = new JsonResponseWriter2<SviwDao>();
 		StringBuffer sb = new StringBuffer();
-		List<SviwDao> svewDaoList = new ArrayList<SviwDao>();
+		List<SviwDao> sviwDaoList = new ArrayList<SviwDao>();
 		String sviw_knnr = request.getParameter("sviw_knnr");
 		String sviw_knso = request.getParameter("sviw_knso");
 
@@ -61,12 +61,12 @@ public class BcoreMaintResponseOutputterController_SVIW {
 			if ((userName != null && !"".equals(userName)) && (sviw_knnr != null && !"".equals(sviw_knnr))) {
 				if (sviw_knso != null && !"".equals(sviw_knso)) {
 					SviwDao dao = fetchRecord(sviw_knnr, sviw_knso);
-					svewDaoList.add(dao);
+					sviwDaoList.add(dao);
 				} else {
-					svewDaoList = fetchList(sviw_knnr);
+					sviwDaoList = fetchList(sviw_knnr);
 				}
-				if (svewDaoList != null) {
-					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svewDaoList));
+				if (sviwDaoList != null) {
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, sviwDaoList));
 				} else {
 					errMsg = "ERROR on SELECT: Can not find SviwDao list";
 					status = "error";
@@ -101,7 +101,7 @@ public class BcoreMaintResponseOutputterController_SVIW {
 	 */
 	@RequestMapping(value = "syjsSVIW_U.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String syjsSVEW_U(HttpSession session, HttpServletRequest request) {
+	public String syjsSVIW_U(HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter2<SviwDao> jsonWriter = new JsonResponseWriter2<SviwDao>();
 		StringBuffer sb = new StringBuffer();
 		String userName = null;
@@ -168,16 +168,16 @@ public class BcoreMaintResponseOutputterController_SVIW {
 
 	}
 
-	private SviwDao fetchRecord(String svew_knnr, String svew_knso) {
-		int knnr = Integer.parseInt(svew_knnr);
-		SviwDao dao = (SviwDao) sviwDaoService.find(knnr, svew_knso);
+	private SviwDao fetchRecord(String sviw_knnr, String sviw_knso) {
+		int knnr = Integer.parseInt(sviw_knnr);
+		SviwDao dao = (SviwDao) sviwDaoService.find(knnr, sviw_knso);
 		return dao;
 	}
 	
 	private List<SviwDao> fetchList(String sviw_knnr) {
-		List<SviwDao> svewDaoList = null;
-		svewDaoList = sviwDaoService.findAll(sviw_knnr);
-		return svewDaoList;
+		List<SviwDao> sviwDaoList = null;
+		sviwDaoList = sviwDaoService.findAll(sviw_knnr);
+		return sviwDaoList;
 	}
 	
 	
