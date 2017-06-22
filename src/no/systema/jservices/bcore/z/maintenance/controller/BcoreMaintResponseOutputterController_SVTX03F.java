@@ -67,6 +67,9 @@ public class BcoreMaintResponseOutputterController_SVTX03F {
 				if (type02.equals(Svtx03fKodTyper.THO.toString())) {
 					svtx03fDaoList = svtx03fDaoService.getTidigareHandlingarKoder();
 				}
+				if (type02.equals(Svtx03fKodTyper.FOR.toString())) {
+					svtx03fDaoList = svtx03fDaoService.getFormansKoder();
+				}
 
 				if (svtx03fDaoList != null) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svtx03fDaoList));

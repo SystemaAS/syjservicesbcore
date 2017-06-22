@@ -208,6 +208,12 @@ public class SVIW_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.sviw.error.sviw_lagl",new Object[] { dao.getSviw_lagl() }),"error", dbErrors));
 					retval = false;
 				}
+				//Förmånskoder
+				if ( StringUtils.hasValue(dao.getSviw_fokd()) &&  !svtx03fDaoService.formansExist(dao.getSviw_fokd()) ) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.sviw.error.sviw_fokd",new Object[] { dao.getSviw_fokd() }),"error", dbErrors));
+					retval = false;
+				}
 				
 				
 			} else {
