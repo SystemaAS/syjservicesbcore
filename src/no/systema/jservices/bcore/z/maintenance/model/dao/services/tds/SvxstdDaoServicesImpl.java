@@ -190,14 +190,13 @@ public class SvxstdDaoServicesImpl implements SvxstdDaoServices {
 			SvxstdDao dao = (SvxstdDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			/*TODO
-			sql.append(" UPDATE dkxstd SET thnttd = ?, thntll = ?, thfmll = ?, thenkl = ?, thtdn = ?, s0004 = ?, s0010 = ?, s0026 = ?, s0035 = ?, thekst = ?, ");
+			
+			sql.append(" UPDATE svxstd SET thnttd = ?, thntll = ?, thfmll = ?, thenkl = ?, thtdn = ?, s0004 = ?, s0010 = ?, s0026 = ?, s0035 = ?, thekst = ?, ");
 			sql.append(" thkns = ?, thnas = ?, thtins = ?, thads1 = ?, thsks = ?, thpss = ?, thpns = ?, thlks = ?, ");
 			sql.append(" thknk = ?, thnak = ?, thtink = ?, thadk1 = ?, thskk = ?, thpsk = ?, thpnk = ?, thlkk = ?, ");
 			sql.append(" thtsd1 = ?, thtsd2 = ?, thtsd3 = ?, thtsd4 = ?, thtsd5 = ?, thtsd6 = ?, thtsd7 = ?, thtsd8 = ?, thtsb = ?, ");
 			sql.append(" thgkd = ?, thgft1 = ?, thgadk = ?, thgbgi = ?, thgbgu = ?, thgft2 = ?, ");
-			//TODO- CB must update the file with YBC-changes: --> sql.append(" thgpr = ?, ");
-			sql.append(" thgbl = ?, thgvk = ?, ");
+			sql.append(" thgpr = ?, thgbl = ?, thgvk = ?, ");
 			sql.append(" thalk = ?, thblk = ?, thtaid = ?, thtalk = ?, thtask = ?, thtgid = ?, thtglk = ?, thtgsk = ?, ");
 			sql.append(" thtrm = ?, thkdc = ?, thlsd = ?, thcats = ?, thskfd = ?, thdst = ?, thdsk = ?, thdkr = ?, thddt = ?, ");
 			
@@ -212,8 +211,8 @@ public class SvxstdDaoServicesImpl implements SvxstdDaoServices {
 				dao.getThknk(), dao.getThnak(), dao.getThtink(), dao.getThadk1(), dao.getThskk(), dao.getThpsk(), dao.getThpnk(), dao.getThlkk(), 
 				dao.getThtsd1(),dao.getThtsd2(),dao.getThtsd3(),dao.getThtsd4(),dao.getThtsd5(),dao.getThtsd6(),dao.getThtsd7(),dao.getThtsd8(), dao.getThtsb(),
 				dao.getThgkd(), dao.getThgft1(), dao.getThgadk(), dao.getThgbgi(), dao.getThgbgu(), dao.getThgft2(), 
-				//dao.getThgpr(), 
-				dao.getThgbl(), dao.getThgvk(),
+				
+				dao.getThgpr(), dao.getThgbl(), dao.getThgvk(),
 				dao.getThalk(), dao.getThblk(), dao.getThtaid(), dao.getThtalk(), dao.getThtask(), dao.getThtgid(), dao.getThtglk(), dao.getThtgsk(),
 				dao.getThtrm(), dao.getThkdc(), dao.getThlsd(), dao.getThcats(), dao.getThskfd(), dao.getThdst(), dao.getThdsk(), dao.getThdkr(), dao.getThddt(),
 				
@@ -221,7 +220,7 @@ public class SvxstdDaoServicesImpl implements SvxstdDaoServices {
 				dao.getThdfkd(), dao.getThdant(), dao.getThdfsk(), dao.getThdk(),
 				//WHERE condition
 				dao.getThavd() } );
-				*/
+				
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());

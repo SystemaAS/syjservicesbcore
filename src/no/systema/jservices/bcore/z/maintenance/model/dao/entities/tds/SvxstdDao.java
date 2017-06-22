@@ -405,6 +405,12 @@ public class SvxstdDao implements Serializable, IDao {
 	public void setThgadk(String value) {  this.thgadk = value; }
 	public String getThgadk() { return this.thgadk;}
 	
+	
+	private String thgpr = "";                                
+	public String getThgprPropertyName (){ return "thgpr"; }
+	public void setThgpr (String value){ this.thgpr = value;   }   
+	public String getThgpr (){ return this.thgpr;   }  
+	
 	private String thgbl = "";
 	public String getThgblPropertyName (){ return "thgbl"; }
 	public void setThgbl(String value) {  this.thgbl = value; }
@@ -541,6 +547,26 @@ public class SvxstdDao implements Serializable, IDao {
 	public void setThtet(String value) {  this.thtet = value; }
 	public String getThtet() { return this.thtet;}
 	
+	private String thnttd = "";                                
+	public String getThnttdPropertyName (){ return "thnttd"; }
+	public void setThnttd (String value){ this.thnttd = value;   }   
+	public String getThnttd (){ return this.thnttd;   }  
+	
+	private String thntll = "";                                
+	public String getThntllPropertyName (){ return "thntll"; }
+	public void setThntll (String value){ this.thntll = value;   }   
+	public String getThntll (){ return this.thntll;   }
+	
+	private String thfmll = "";                                
+	public String getThfmllPropertyName (){ return "thfmll"; }
+	public void setThfmll (String value){ this.thfmll = value;   }   
+	public String getThfmll (){ return this.thfmll;   }  
+
+	private String thnpns = "";                                
+	public String getThnpnsPropertyName (){ return "thnpns"; }
+	public void setThnpns (String value){ this.thnpns = value;   }   
+	public String getThnpns (){ return this.thnpns;   }  
+	
 	//Std value for NCTS export. Needed when Signering (send to) is used
 	//This value is valid ONLY for NCTS export
 	private String thmf = "015";
@@ -638,6 +664,15 @@ public class SvxstdDao implements Serializable, IDao {
 	public String getS0026PropertyName (){ return "s0026"; }
 	public void setS0026 (String value){ this.s0026 = value;   }   
 	public String getS0026 (){ return this.s0026;   }  
+	
+	private String thekst = "";                                
+	public String getThekstPropertyName (){ return "thekst"; }
+	public void setThekst (String value){ this.thekst = value;   }   
+	public String getThekst (){ return this.thekst;   }  
+	
+	
+	
+	
 	
 	/**
 	 * Used for java reflection in other classes
