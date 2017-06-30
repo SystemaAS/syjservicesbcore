@@ -15,4 +15,7 @@ public interface KodtaDaoServices extends IDaoServices {
 	//
 	public List getListForAvailableAvdSkatNctsImport(StringBuffer errorStackTrace);
 	public List getListForAvailableAvdSkatNctsExport(StringBuffer errorStackTrace);
+	//
+	public List getListForAvailableAvdTdsNctsImport(StringBuffer errorStackTrace);
+	public List getListForAvailableAvdTdsNctsExport(StringBuffer errorStackTrace);
 }

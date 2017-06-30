@@ -216,6 +216,62 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	
 	/**
 	 * 
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public List getListForAvailableAvdTdsNctsImport(StringBuffer errorStackTrace){
+		List<KodtaDao> retval = new ArrayList<KodtaDao>();
+		
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select a.koaavd, a.koafir, a.koanvn, a.koaknr ");
+			sql.append(" from kodta AS a ");
+			sql.append(" left outer join svnstd AS b ");
+			sql.append(" on a.koaavd = b.tiavd ");
+			sql.append(" where b.tiavd is NULL ");
+			sql.append(" order by a.koaavd ");
+			
+			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = null;
+		}
+		return retval;
+	}
+	
+	/**
+	 * TDS NCTS Export
+	 */
+	public List getListForAvailableAvdTdsNctsExport(StringBuffer errorStackTrace){
+		List<KodtaDao> retval = new ArrayList<KodtaDao>();
+		
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select a.koaavd, a.koafir, a.koanvn, a.koaknr ");
+			sql.append(" from kodta AS a ");
+			sql.append(" left outer join svxstd AS b ");
+			sql.append(" on a.koaavd = b.thavd ");
+			sql.append(" where b.thavd is NULL ");
+			sql.append(" order by a.koaavd ");
+			
+			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = null;
+		}
+		return retval;
+	}
+	
+	/**
+	 * 
 	 */
 	public List findById (String id, StringBuffer errorStackTrace ){
 		List<KodtaDao> retval = new ArrayList<KodtaDao>();

@@ -87,6 +87,9 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 			String skatExportAvdList = request.getParameter("ssealist"); //SkatExportAvdlist / TdsExport
 			String skatNctsImportAvdList = request.getParameter("snialist"); //SkatNctsImportAvdlist
 			String skatNctsExportAvdList = request.getParameter("snealist"); //SkatNctsExportAvdlist
+			//
+			String tdsNctsImportAvdList = request.getParameter("tnialist"); //TdsNctsImportAvdlist
+			String tdsNctsExportAvdList = request.getParameter("tnealist"); //TdsNctsExportAvdlist
 			
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
@@ -134,7 +137,16 @@ public class BcoreMaintResponseOutputterController_AVD_KODTA {
 						logger.info("Before getListForAvailableAvdSkatNctsExport ...");
 						list = this.kodtaDaoServices.getListForAvailableAvdSkatNctsExport(dbErrorStackTrace);
 					
-					}else{
+					//TDS	
+					}else if(tdsNctsImportAvdList!=null && !"".equals(tdsNctsImportAvdList)){
+						logger.info("Before getListForAvailableAvdTdsNctsImport ...");
+						list = this.kodtaDaoServices.getListForAvailableAvdTdsNctsImport(dbErrorStackTrace);
+				
+					}else if(tdsNctsExportAvdList!=null && !"".equals(tdsNctsExportAvdList)){
+						logger.info("Before getListForAvailableAvdTdsNctsExport ...");
+						list = this.kodtaDaoServices.getListForAvailableAvdTdsNctsExport(dbErrorStackTrace);
+				
+					} else{
 						logger.info("Before getList ...");
 						list = this.kodtaDaoServices.getList(dbErrorStackTrace);
 					}
