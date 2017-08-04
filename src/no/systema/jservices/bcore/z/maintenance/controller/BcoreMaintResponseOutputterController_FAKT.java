@@ -3,6 +3,7 @@ package no.systema.jservices.bcore.z.maintenance.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.common.dao.FaktDao;
+import no.systema.jservices.common.dao.SvewDao;
 import no.systema.jservices.common.dao.services.FaktDaoService;
+import no.systema.jservices.common.dto.FaktDto;
+import no.systema.jservices.common.dto.SvewDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.CSVOutputter;
 import no.systema.jservices.common.util.StringUtils;
@@ -40,7 +44,7 @@ public class BcoreMaintResponseOutputterController_FAKT {
 		JsonResponseWriter2<FaktDao> jsonWriter = new JsonResponseWriter2<FaktDao>();
 		CSVOutputter<FaktDao> csvOutputter = new CSVOutputter<FaktDao>();
 		StringBuffer sb = new StringBuffer();
-		List<FaktDao> firmDaoList = null;
+		List<FaktDao> faktDaoList = null;
 		
 		try {
 			String user = request.getParameter("user");
@@ -52,12 +56,12 @@ public class BcoreMaintResponseOutputterController_FAKT {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
 			if ((userName != null && !"".equals(userName))) {
-				firmDaoList = faktDaoService.findAll(null);
-				if (firmDaoList != null) {
+				faktDaoList = faktDaoService.findAll(null);
+				if (faktDaoList != null) {
 					if (StringUtils.hasValue(csv)) {
-						sb.append(csvOutputter.writeAsString(firmDaoList));
+						sb.append(csvOutputter.writeAsString(faktDaoList));
 					} else {
-						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, firmDaoList));
+						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, faktDaoList));
 					}
 				} else {
 					errMsg = "ERROR on SELECT: Can not find FaktDao list";
@@ -85,7 +89,59 @@ public class BcoreMaintResponseOutputterController_FAKT {
 
 	}
 
-	
+	/**
+	 * File: 	FAKT
+	 * 
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsFAKT_DB.do?user=OSCAR&year=2017
+	 * 
+	 */
+	@RequestMapping(value="syjsFAKT_DB.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String doFaktReportDashboard(HttpSession session, HttpServletRequest request) {
+		CSVOutputter<FaktDto> csvOutputter = new CSVOutputter<FaktDto>();
+		JsonResponseWriter2<FaktDto> jsonWriter = new JsonResponseWriter2<FaktDto>();
+		StringBuffer sb = new StringBuffer();
+		List<FaktDto> faktDtoList = null;
+		
+		try {
+			String user = request.getParameter("user");
+			String year = request.getParameter("year");
+			String userName = this.bridfDaoServices.findNameById(user); 
+			String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+
+			if (StringUtils.hasValue(userName) && StringUtils.hasValue(year)) {
+				faktDtoList = faktDaoService.getYearSumGroupAvdOpdDato(Integer.valueOf(year));
+				if (faktDtoList != null) {
+						//sb.append(csvOutputter.writeAsString(faktDtoList));
+						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, faktDtoList));
+				} else {
+					errMsg = "ERROR on SELECT: Can not find FaktDao list";
+					status = "error";
+					logger.info( status + errMsg);
+					sb.append(errMsg);
+				}
+
+			} else {
+				errMsg = "ERROR on SELECT";
+				status = "error";
+				dbErrorStackTrace.append(" request input parameters are invalid: <user>");
+				sb.append(userName + errMsg + status + dbErrorStackTrace);
+			}
+		} catch (Exception e) {
+			logger.info("Error :", e);
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+
+		session.invalidate();
+		return sb.toString();
+
+	}
+
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
 	@Autowired
