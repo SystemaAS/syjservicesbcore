@@ -111,8 +111,9 @@ public class BcoreMaintResponseOutputterController_FAKT {
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
-			if (StringUtils.hasValue(userName) && StringUtils.hasValue(year)) {
-				faktDtoList = faktDaoService.getYearSumGroupAvdOpdDato(Integer.valueOf(year));
+			if (StringUtils.hasValue(userName)) {
+				String dummy = "1";
+				faktDtoList = faktDaoService.getYearSumGroupAvdOpdDato(Integer.valueOf(dummy));
 				if (faktDtoList != null) {
 						//sb.append(csvOutputter.writeAsString(faktDtoList));
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, faktDtoList));
