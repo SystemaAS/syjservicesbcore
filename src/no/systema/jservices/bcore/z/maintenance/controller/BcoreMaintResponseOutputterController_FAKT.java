@@ -77,7 +77,7 @@ public class BcoreMaintResponseOutputterController_FAKT {
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 			}
 		} catch (Exception e) {
-			logger.info("Error :", e);
+			logger.error("Error :", e);
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
@@ -92,7 +92,7 @@ public class BcoreMaintResponseOutputterController_FAKT {
 	/**
 	 * File: 	FAKT
 	 * 
-	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsFAKT_DB.do?user=OSCAR&year=2017
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsFAKT_DB.do?user=OSCAR&year=2016
 	 * 
 	 */
 	@RequestMapping(value="syjsFAKT_DB.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -103,20 +103,27 @@ public class BcoreMaintResponseOutputterController_FAKT {
 		StringBuffer sb = new StringBuffer();
 		List<FaktDto> faktDtoList = null;
 		
+		logger.info("inside syjsFAKT_DB.do");
+		
 		try {
 			String user = request.getParameter("user");
 			String year = request.getParameter("year");
-			String userName = this.bridfDaoServices.findNameById(user); 
+			//String userName = this.bridfDaoServices.findNameById(user); 
+			String userName = "test";
 			String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
-			if (StringUtils.hasValue(userName)) {
-				String dummy = "1";
-				faktDtoList = faktDaoService.getYearSumGroupAvdOpdDato(Integer.valueOf(dummy));
+			//if (StringUtils.hasValue(userName)) {
+			if (true) {
+				logger.info("true");
+				faktDtoList = faktDaoService.getYearSumGroupAvdOpdDato(Integer.valueOf(year));
+				logger.info("faktDtoList.size()="+faktDtoList.size());
 				if (faktDtoList != null) {
-						//sb.append(csvOutputter.writeAsString(faktDtoList));
-						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, faktDtoList));
+					//sb.append(csvOutputter.writeAsString(faktDtoList));
+					logger.info("appendar till sb.");
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, faktDtoList));
+					logger.info("appendat till sb!");
 				} else {
 					errMsg = "ERROR on SELECT: Can not find FaktDao list";
 					status = "error";
@@ -139,6 +146,7 @@ public class BcoreMaintResponseOutputterController_FAKT {
 		}
 
 		session.invalidate();
+		logger.info("About to return...");
 		return sb.toString();
 
 	}
