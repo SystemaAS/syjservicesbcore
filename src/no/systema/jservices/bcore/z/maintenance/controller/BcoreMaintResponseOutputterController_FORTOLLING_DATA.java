@@ -8,17 +8,20 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.common.dao.services.FortollingDaoService;
 import no.systema.jservices.common.dto.FortollingDto;
+import no.systema.jservices.common.dto.HeadfDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
@@ -31,7 +34,7 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 	 * File: SADH (fortolloing noreg)
 	 * 
 	 * @Example SELECT
-	 *          http://gw.systema.no:8080/syjservicesbcore/syjsFORTOLLING_DB.do?user=OSCAR&year=2016
+	 *          http://gw.systema.no:8080/syjservicesbcore/syjsFORTOLLING_DB.do?user=OSCAR&selectedYear=2016
 	 * 
 	 */
 	@RequestMapping(value = "syjsFORTOLLING_DB.do", method = { RequestMethod.GET, RequestMethod.POST })
@@ -42,18 +45,20 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 		List<FortollingDto> fortollingDtoList = null;
 
 		logger.info("inside syjsFORTOLLING_DB.do");
-
+		
 		try {
 			String user = request.getParameter("user");
-			String year = request.getParameter("year");
 			String userName = this.bridfDaoServices.findNameById(user);
 			String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
-
-			if (StringUtils.hasValue(userName)) {
+			
+			FortollingDto qDto = null;
+            qDto = getDto(request);  
+			
+			if (StringUtils.hasValue(userName) && StringUtils.hasValue(qDto.getRegistreringsdato())) {
 				logger.info("Retrieving data...");
-				fortollingDtoList = fortollingDaoService.getStats(Integer.valueOf(year));
+				fortollingDtoList = fortollingDaoService.getStats(qDto);
 				if (fortollingDtoList != null) {
 					logger.info("fortollingDtoList.size()=" + fortollingDtoList.size());
 					logger.info("appendar till sb.");
@@ -68,7 +73,7 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 			} else {
 				errMsg = "ERROR on SELECT";
 				status = "error";
-				dbErrorStackTrace.append(" request input parameters are invalid: <user>");
+				dbErrorStackTrace.append(" request input parameters are invalid: <user> and <year>");
 				sb.append(userName + errMsg + status + dbErrorStackTrace);
 			}
 		} catch (Exception e) {
@@ -85,6 +90,20 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 
 	}
 
+	private FortollingDto getDto(HttpServletRequest request) {
+		FortollingDto qDto = new FortollingDto();
+		ServletRequestDataBinder binder = new ServletRequestDataBinder(qDto);
+        binder.bind(request);	
+        
+        if (qDto.getRegistreringsdato() != null) {
+        	qDto.setRegistreringsdato(qDto.getRegistreringsdato() + "0000");
+        }
+        
+        logger.info("qDto="+ReflectionToStringBuilder.toString(qDto));
+        
+        return qDto;
+	}	
+	
 	@Qualifier("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
 
