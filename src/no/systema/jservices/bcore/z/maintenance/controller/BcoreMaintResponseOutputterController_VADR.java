@@ -44,6 +44,9 @@ public class BcoreMaintResponseOutputterController_VADR {
 		try {
 			String user = request.getParameter("user");
 			String kundnr = request.getParameter("kundnr");
+			String vadrnr = request.getParameter("vadrnr");
+			String firma = request.getParameter("firma");
+			
 			// Check ALWAYS user in BRIDF
 			String userName = this.bridfDaoServices.findNameById(user);
 			String errMsg = "";
@@ -51,7 +54,15 @@ public class BcoreMaintResponseOutputterController_VADR {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
 			if (StringUtils.hasValue(userName) && StringUtils.hasValue(kundnr)) {
-				vadrDaoList = vadrDaoService.getList(Integer.parseInt(kundnr));
+				if(StringUtils.hasValue(vadrnr) && StringUtils.hasValue(firma)){
+					vadrDaoList = vadrDaoService.getList(Integer.parseInt(kundnr), Integer.parseInt(vadrnr), firma);
+				}else{
+					if(StringUtils.hasValue(firma)){
+						vadrDaoList = vadrDaoService.getList(Integer.parseInt(kundnr), firma);
+					}else{
+						vadrDaoList = vadrDaoService.getList(Integer.parseInt(kundnr));
+					}
+				}
 				if (vadrDaoList != null) {
 					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, vadrDaoList));
 				} else {

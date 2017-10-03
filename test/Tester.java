@@ -8,7 +8,7 @@ public class Tester {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		String fromAvd = "1";
+		/*String fromAvd = "1";
 		String toAvd = "10";
 		
 		int lLimit = 0;
@@ -24,6 +24,8 @@ public class Tester {
 		}catch(Exception e){
 			
 		}
+		*/
+		
 
 	}
 

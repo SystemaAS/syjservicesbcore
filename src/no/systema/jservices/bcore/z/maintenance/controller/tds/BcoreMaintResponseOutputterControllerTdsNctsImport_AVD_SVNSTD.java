@@ -155,7 +155,7 @@ public class BcoreMaintResponseOutputterControllerTdsNctsImport_AVD_SVNSTD {
 			logger.info("Inside syjsSVX053R_U.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
-			String mode = request.getParameter("mode");
+			String mode = request.getParameter("mode");	
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
             //DEBUG --> logger.info("USERNAME:" + userName + "XX");

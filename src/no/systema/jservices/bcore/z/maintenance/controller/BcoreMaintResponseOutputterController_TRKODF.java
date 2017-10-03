@@ -80,7 +80,6 @@ public class BcoreMaintResponseOutputterController_TRKODF {
 			logger.info("Inside syjsTRKODFR.do");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
-	
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
             //DEBUG --> logger.info("USERNAME:" + userName + "XX");

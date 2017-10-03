@@ -16,7 +16,7 @@ public class SqlTesterLight {
 	//sql compact execution
 	private void runIt(){
 		try{
-			String IP_SYSTEMA_AS400 = "10.13.1.22"; 
+			String IP_SYSTEMA_AS400 = "10.13.3.22"; 
 			String userId = "systema";
 			String pass = "straffe12";
 			
@@ -38,8 +38,8 @@ public class SqlTesterLight {
 				 StringBuffer sql = new StringBuffer();
 				 sql.append(" select count(1) counter ");
 				 
-				 sql.append(" from navavd ");
-				 sql.append(" where koaavd = 5 ");
+				 sql.append(" from firm ");
+				 //sql.append(" where koaavd = 5 ");
 				 	
 				 PreparedStatement stmt = conn.prepareStatement(sql.toString());
 				 

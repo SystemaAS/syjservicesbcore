@@ -67,7 +67,7 @@ public class BcoreMaintResponseOutputterController_KOFAST {
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 			
-			//Start processing now
+			//Start processing now //
 			if(userName!=null && !"".equals(userName)){
 				KofastDao dao = new KofastDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
