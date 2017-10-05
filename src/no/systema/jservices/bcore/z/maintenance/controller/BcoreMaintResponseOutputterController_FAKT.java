@@ -8,11 +8,13 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -89,7 +91,7 @@ public class BcoreMaintResponseOutputterController_FAKT {
 	/**
 	 * File: 	HEADF/FAKT/TURER
 	 * 
-	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsFAKT_DB.do?user=OSCAR&year=2016
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsFAKT_DB.do?user=OSCAR&registreringsdato=2016
 	 * 
 	 */
 	@RequestMapping(value="syjsFAKT_DB.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -104,15 +106,19 @@ public class BcoreMaintResponseOutputterController_FAKT {
 		
 		try {
 			String user = request.getParameter("user");
-			String year = request.getParameter("year");
+			//String year = request.getParameter("year");
 			String userName = this.bridfDaoServices.findNameById(user); 
 			String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
+			FaktDto qDto = null;
+            qDto = getDto(request);  
+			
+			
 			if (StringUtils.hasValue(userName)) {
 				logger.info("Retrieving data...");
-				faktDtoList = faktDaoService.getYearSumGroupAvdOpdDato(Integer.valueOf(year));
+				faktDtoList = faktDaoService.getStats(qDto);
 				if (faktDtoList != null) {
 					//sb.append(csvOutputter.writeAsString(faktDtoList));
 					logger.info("faktDtoList.size()="+faktDtoList.size());
@@ -145,6 +151,19 @@ public class BcoreMaintResponseOutputterController_FAKT {
 
 	}
 
+	
+	private FaktDto getDto(HttpServletRequest request) {
+		FaktDto qDto = new FaktDto();
+		ServletRequestDataBinder binder = new ServletRequestDataBinder(qDto);
+        binder.bind(request);	
+        
+        logger.info("qDto="+ReflectionToStringBuilder.toString(qDto));
+        
+        return qDto;
+	}	
+	
+	
+	
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
 	@Autowired
