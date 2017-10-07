@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.common.dao.services.FortollingDaoService;
 import no.systema.jservices.common.dto.FortollingDto;
-import no.systema.jservices.common.dto.HeadfDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
@@ -31,10 +30,10 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 	private static final Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_FORTOLLING_DATA.class.getName());
 
 	/**
-	 * File: SADH (fortolloing noreg)
+	 * File: SADH (fortolling no)
 	 * 
 	 * @Example SELECT
-	 *          http://gw.systema.no:8080/syjservicesbcore/syjsFORTOLLING_DB.do?user=OSCAR&selectedYear=2016
+	 *          http://gw.systema.no:8080/syjservicesbcore/syjsFORTOLLING_DB.do?user=OSCAR&registreringsdato=2016
 	 * 
 	 */
 	@RequestMapping(value = "syjsFORTOLLING_DB.do", method = { RequestMethod.GET, RequestMethod.POST })
