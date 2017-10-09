@@ -152,6 +152,12 @@ public class BcoreMaintResponseOutputterController_FAKT {
 	}
 
 	
+	/*
+	 * Serve both overview and details.
+	 * 
+	 * in overview year is delivered, e.g. 2017, adding trailing month and day, e.g into 20170100
+	 * In detail year and month is delivered, 201703, adding days, e.g. into  20170300
+	 */
 	private FaktDto getDto(HttpServletRequest request) {
 		FaktDto qDto = new FaktDto();
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(qDto);
@@ -161,7 +167,6 @@ public class BcoreMaintResponseOutputterController_FAKT {
         
         return qDto;
 	}	
-	
 	
 	
 	@Qualifier ("bridfDaoServices")
