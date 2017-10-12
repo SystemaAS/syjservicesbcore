@@ -23,6 +23,7 @@ import no.systema.jservices.common.dao.FaktDao;
 import no.systema.jservices.common.dao.services.FaktDaoService;
 import no.systema.jservices.common.dto.FaktDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
+import no.systema.jservices.common.json.WrapperDto;
 import no.systema.jservices.common.util.CSVOutputter;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
@@ -97,9 +98,11 @@ public class BcoreMaintResponseOutputterController_FAKT {
 	@RequestMapping(value="syjsFAKT_DB.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String doFaktReportDashboard(HttpSession session, HttpServletRequest request) {
-		CSVOutputter<FaktDto> csvOutputter = new CSVOutputter<FaktDto>();
-		JsonResponseWriter2<FaktDto> jsonWriter = new JsonResponseWriter2<FaktDto>();
+		//CSVOutputter<FaktDto> csvOutputter = new CSVOutputter<FaktDto>();
+		//JsonResponseWriter2<FaktDto> jsonWriter = new JsonResponseWriter2<FaktDto>();
+		JsonResponseWriter2<WrapperDto<FaktDto>> jsonWriter = new JsonResponseWriter2<WrapperDto<FaktDto>>();
 		StringBuffer sb = new StringBuffer();
+		WrapperDto<FaktDto> wrapperDto = new WrapperDto<FaktDto>();
 		List<FaktDto> faktDtoList = null;
 		
 		logger.info("inside syjsFAKT_DB.do");
@@ -123,7 +126,9 @@ public class BcoreMaintResponseOutputterController_FAKT {
 					//sb.append(csvOutputter.writeAsString(faktDtoList));
 					logger.info("faktDtoList.size()="+faktDtoList.size());
 					logger.info("appendar till sb.");
-					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, faktDtoList));
+					wrapperDto.setDtoList(faktDtoList);
+					//sb.append(jsonWriter.setJsonResult_Common_GetList(userName, faktDtoList));
+					sb.append(jsonWriter.setJsonResult_Common_GetComposite_No_Container(wrapperDto));
 					logger.info("appendat till sb!");
 				} else {
 					errMsg = "ERROR on SELECT: Can not find FaktDao list";
