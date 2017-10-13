@@ -185,7 +185,7 @@ public class BcoreMaintResponseOutputterController_FAKT {
         if (qDto.getFavk() != null) {
         	String[] favk = qDto.getFavk().split(",");
         	for (int i = 0; i < favk.length; i++) {
-        		qDto.getInclFavkList().add(favk[i]);
+        		qDto.getFavkList().add(favk[i]);
         	}
         }        
         
