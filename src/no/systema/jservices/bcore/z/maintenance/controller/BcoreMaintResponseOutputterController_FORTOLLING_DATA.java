@@ -98,6 +98,21 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
         	qDto.setRegistreringsdato(qDto.getRegistreringsdato() + "0000");
         }
         
+        if (qDto.getAvdelings() != null) {
+        	String[] avd = qDto.getAvdelings().split(",");
+        	for (int i = 0; i < avd.length; i++) {
+        		qDto.getAvdelingList().add(avd[i]);
+        	}
+        }
+        
+        if (qDto.getSignatur() != null) {
+        	String[] sign = qDto.getSignatur().split(",");
+        	for (int i = 0; i < sign.length; i++) {
+        		qDto.getSignaturList().add(sign[i]);
+        	}
+        }        
+        
+        
         logger.info("qDto="+ReflectionToStringBuilder.toString(qDto));
         
         return qDto;
