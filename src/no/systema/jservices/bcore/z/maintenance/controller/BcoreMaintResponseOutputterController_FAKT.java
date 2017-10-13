@@ -168,7 +168,29 @@ public class BcoreMaintResponseOutputterController_FAKT {
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(qDto);
         binder.bind(request);	
         
+        if (qDto.getAvdelings() != null) {
+        	String[] avd = qDto.getAvdelings().split(",");
+        	for (int i = 0; i < avd.length; i++) {
+        		qDto.getAvdelingList().add(avd[i]);
+        	}
+        }
+        
+        if (qDto.getSignatur() != null) {
+        	String[] sign = qDto.getSignatur().split(",");
+        	for (int i = 0; i < sign.length; i++) {
+        		qDto.getSignaturList().add(sign[i]);
+        	}
+        }    
+        
+        if (qDto.getFavk() != null) {
+        	String[] favk = qDto.getFavk().split(",");
+        	for (int i = 0; i < favk.length; i++) {
+        		qDto.getInclFavkList().add(favk[i]);
+        	}
+        }        
+        
         logger.info("qDto="+ReflectionToStringBuilder.toString(qDto));
+          
         
         return qDto;
 	}	
