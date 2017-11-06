@@ -32,7 +32,7 @@ public class SyparfDaoServicesImpl implements SyparfDaoServices {
 			sql.append(" from syparf");
 			//WHERE
 			sql.append(" where syvrda = ?  ");
-			retval = this.jdbcTemplate.queryForInt( sql.toString(), new Object[] { id });
+			retval = this.jdbcTemplate.queryForObject( sql.toString(), new Object[] { id }, Integer.class);
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -164,7 +164,7 @@ public class SyparfDaoServicesImpl implements SyparfDaoServices {
 		sql.append(" FROM tellge ");	
 		sql.append(" WHERE geco = 'SYPAR' ");	
 		
-		retval = this.jdbcTemplate.queryForInt( sql.toString());
+		retval = this.jdbcTemplate.queryForObject( sql.toString(), Integer.class);
 		
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);

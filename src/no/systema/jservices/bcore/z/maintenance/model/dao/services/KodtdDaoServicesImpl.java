@@ -33,7 +33,7 @@ public class KodtdDaoServicesImpl implements KodtdDaoServices {
 			//WHERE
 			sql.append(" where kodavd = ? ");
 			
-			retval = this.jdbcTemplate.queryForInt( sql.toString(), new Object[] { id });
+			retval = this.jdbcTemplate.queryForObject( sql.toString(), new Object[] { id }, Integer.class);
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
