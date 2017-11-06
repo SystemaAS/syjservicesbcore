@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.common.dao.FaktDao;
 import no.systema.jservices.common.dao.services.FaktDaoService;
+import no.systema.jservices.common.dto.FaktDWDto;
 import no.systema.jservices.common.dto.FaktDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.json.WrapperDto;
@@ -156,6 +157,69 @@ public class BcoreMaintResponseOutputterController_FAKT {
 
 	}
 
+	/**
+	 * File: 	DWSUMPER
+	 * 
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsFAKT_DB_DW.do?user=FREDRIK&registreringsdato=2016
+	 * 
+	 */
+	@RequestMapping(value="syjsFAKT_DB_DW.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String doFaktReportDashboardDw(HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter2<WrapperDto<FaktDWDto>> jsonWriter = new JsonResponseWriter2<WrapperDto<FaktDWDto>>();
+		StringBuffer sb = new StringBuffer();
+		WrapperDto<FaktDWDto> wrapperDto = new WrapperDto<FaktDWDto>();
+		List<FaktDWDto> faktDwDtoList = null;
+		
+		logger.info("inside syjsFAKT_DB_DW.do");
+		
+		try {
+			String user = request.getParameter("user");
+			String userName = this.bridfDaoServices.findNameById(user); 
+			String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+
+			FaktDto qDto = null;
+            qDto = getDto(request);  
+			
+			
+			if (StringUtils.hasValue(userName)) {
+				logger.info("Retrieving data...");
+				faktDwDtoList = faktDaoService.getStatsFromDW(qDto);
+				if (faktDwDtoList != null) {
+					logger.info("faktDtoList.size()="+faktDwDtoList.size());
+					logger.info("appendar till sb.");
+					wrapperDto.setDtoList(faktDwDtoList);
+					sb.append(jsonWriter.setJsonResult_Common_GetComposite_No_Container(wrapperDto));
+					logger.info("appendat till sb!");
+				} else {
+					errMsg = "ERROR on SELECT: Can not find FaktDwDao list";
+					status = "error";
+					logger.info( status + errMsg);
+					sb.append(errMsg);
+				}
+			} else {
+				errMsg = "ERROR on SELECT";
+				status = "error";
+				dbErrorStackTrace.append(" request input parameters are invalid: <user>");
+				sb.append(userName + errMsg + status + dbErrorStackTrace);
+			}
+		} catch (Exception e) {
+			logger.info("Error :", e);
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+
+		session.invalidate();
+		logger.info("About to return...");
+		return sb.toString();
+
+	}	
+	
+	
 	
 	/*
 	 * Serve both overview and details.
