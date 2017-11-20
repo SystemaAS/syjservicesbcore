@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.common.dao.FaktDao;
+import no.systema.jservices.common.dao.Kodts2Dao;
+import no.systema.jservices.common.dao.SingleValueObject;
 import no.systema.jservices.common.dao.services.FaktDaoService;
 import no.systema.jservices.common.dto.FaktDWDto;
 import no.systema.jservices.common.dto.FaktDto;
@@ -219,8 +221,55 @@ public class BcoreMaintResponseOutputterController_FAKT {
 
 	}	
 	
-	
-	
+	/**
+	 * 
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsFAKT_DB_DISTINCT_YEAR.do?user=FREDRIK
+	 * 
+	 */
+	@RequestMapping(value="syjsFAKT_DB_DISTINCT_YEAR.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String brreg(HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter2<SingleValueObject> jsonWriter = new JsonResponseWriter2<SingleValueObject>();
+		StringBuffer sb = new StringBuffer();
+		List<SingleValueObject> years = null;
+		
+		try {
+			String user = request.getParameter("user");
+			String userName = this.bridfDaoServices.findNameById(user); 
+			String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+
+			if ((userName != null && !"".equals(userName))) {
+				years = faktDaoService.getAvailableYears();
+				if (years != null) {
+						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, years));
+				} else {
+					errMsg = "ERROR on SELECT: Can not find SingleValueObject list";
+					status = "error";
+					logger.info( status + errMsg);
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}
+
+			} else {
+				errMsg = "ERROR on SELECT";
+				status = "error";
+				dbErrorStackTrace.append("request input parameters are invalid: <user>");
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+		} catch (Exception e) {
+			logger.info("Error :", e);
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+
+		session.invalidate();
+		return sb.toString();
+
+	}
+
 	/*
 	 * Serve both overview and details.
 	 * 
