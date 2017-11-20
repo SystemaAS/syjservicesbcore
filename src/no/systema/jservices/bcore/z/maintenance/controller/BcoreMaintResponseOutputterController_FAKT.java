@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.common.dao.FaktDao;
 import no.systema.jservices.common.dao.Kodts2Dao;
-import no.systema.jservices.common.dao.SingleValueObject;
 import no.systema.jservices.common.dao.services.FaktDaoService;
 import no.systema.jservices.common.dto.FaktDWDto;
 import no.systema.jservices.common.dto.FaktDto;
+import no.systema.jservices.common.dto.SingleValueDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.json.WrapperDto;
 import no.systema.jservices.common.util.CSVOutputter;
@@ -229,9 +229,9 @@ public class BcoreMaintResponseOutputterController_FAKT {
 	@RequestMapping(value="syjsFAKT_DB_DISTINCT_YEAR.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String brreg(HttpSession session, HttpServletRequest request) {
-		JsonResponseWriter2<SingleValueObject> jsonWriter = new JsonResponseWriter2<SingleValueObject>();
+		JsonResponseWriter2<SingleValueDto> jsonWriter = new JsonResponseWriter2<SingleValueDto>();
 		StringBuffer sb = new StringBuffer();
-		List<SingleValueObject> years = null;
+		List<SingleValueDto> years = null;
 		
 		try {
 			String user = request.getParameter("user");
