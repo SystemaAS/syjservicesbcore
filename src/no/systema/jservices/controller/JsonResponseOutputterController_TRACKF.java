@@ -66,11 +66,18 @@ public class JsonResponseOutputterController_TRACKF {
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("ttavd", dao.getTtavd());
 					params.put("ttopd", dao.getTtopd());
-					//get specific
-					trackDaoList = trackfDaoService.findAll(params);
+					//get specific 
+					if(dao.getTtdate() > 0 && dao.getTttime() > 0){
+						params.put("ttdate", dao.getTtdate());
+						params.put("tttime", dao.getTttime());
+						trackDaoList = trackfDaoService.findAll(params);
+					}else{
+						trackDaoList = trackfDaoService.findAll(params);
+					}
 					
 				} else {
-					trackDaoList = trackfDaoService.findAll(null);
+					//could be enormous-->trackDaoList = trackfDaoService.findAll(null);
+					//empty list ...
 				}
 				if (trackDaoList != null) {
 					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, trackDaoList));
