@@ -143,13 +143,13 @@ public class JsonResponseOutputterController_TRACKF {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 			
-			//NOTE: No rulerLord, data i validated in client
-
+			//Set keys
 			if (userName != null && !"".equals(userName)) {
 				if ("D".equals(mode)) {
 					this.setKeys(dao);
 					trackfDaoService.delete(dao);
 				} else if ("A".equals(mode)) {
+					this.setKeys(dao);
 					resultDao = trackfDaoService.create(dao);
 				} else if ("U".equals(mode)) {
 					this.setKeys(dao);
