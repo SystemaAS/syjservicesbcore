@@ -26,7 +26,9 @@ public class JsonWriterReflectionManager {
 			Method  theMethod = null;
 			Class<?> returnType = null;
 			int counter = 1;
+			
 			for(Method method : recordClazz.getDeclaredMethods()){
+				//logger.info("MTEHOD:" + method);
 				//only getters
 				String getter = method.getName();
 				if(getter.startsWith("get") && !getter.endsWith("PropertyName")){
@@ -35,12 +37,21 @@ public class JsonWriterReflectionManager {
 					if(returnType.equals(String.class)){
 						String field = theMethod.getName().replace("get", "").toLowerCase();
 						String value = (String)theMethod.invoke(record);
-						//logger.info(field + " " + value);
+						//logger.info("FIELD:" + field + " " + value);
 						if(counter>1){ jsonReflectionOutput.append(JsonConstants.JSON_FIELD_SEPARATOR ); }
 						//trim when not null
 						if(value!=null){ value = value.trim(); }
 						//append json string
 						jsonReflectionOutput.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + this.jsonFixMgr.cleanRecord(value) + JsonConstants.JSON_QUOTES);
+						counter ++;
+						
+					}else if(returnType.equals(int.class)){
+						String field = theMethod.getName().replace("get", "").toLowerCase();
+						int value = (Integer)theMethod.invoke(record);
+						//logger.info("FIELD:" + field + " " + value);
+						if(counter>1){ jsonReflectionOutput.append(JsonConstants.JSON_FIELD_SEPARATOR ); }
+						//append json string
+						jsonReflectionOutput.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + value + JsonConstants.JSON_QUOTES);
 						counter ++;
 					}
 				}

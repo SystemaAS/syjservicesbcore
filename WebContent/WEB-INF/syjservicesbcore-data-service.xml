@@ -50,6 +50,10 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   
+  <bean id="hedummyUraDaoServices" class="no.systema.jservices.model.dao.services.HedummyUraDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  
   <bean id="navavdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.NavavdDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
