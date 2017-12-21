@@ -3,8 +3,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import no.systema.jservices.common.dao.HeadfDao;
-
 public class HedummyDao implements IDao {
 	private String hest;// TEGN            1       1         1        Begge    Statuskode      
 	private String heur; //    TEGN            1       1         2        Begge    Delsystem-kode    

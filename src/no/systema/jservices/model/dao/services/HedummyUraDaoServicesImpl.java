@@ -74,6 +74,13 @@ public class HedummyUraDaoServicesImpl implements HedummyUraDaoServices {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = null;
+			try{
+				//drop alias
+				db2MemberAliasMgr.dropAlias(this.jdbcTemplate, this.library, this.alias);
+			}catch(Exception dbe){
+				logger.info(dbe.toString());
+			}
+			
 		}
 		return retval;
 	}
@@ -105,6 +112,15 @@ public class HedummyUraDaoServicesImpl implements HedummyUraDaoServices {
 			//Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = null;
+			
+			try{
+				//drop alias
+				db2MemberAliasMgr.dropAlias(this.jdbcTemplate, this.library, this.alias);
+			}catch(Exception dbe){
+				logger.info(dbe.toString());
+			}
+
+			
 		}
 		return retval;
 	}
