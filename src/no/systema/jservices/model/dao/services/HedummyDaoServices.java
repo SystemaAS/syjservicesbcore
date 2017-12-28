@@ -18,7 +18,7 @@ import no.systema.jservices.model.dao.entities.EdiiDao;
  * @author oscardelatorre
  *
  */
-public interface HedummyUraDaoServices extends IDaoServicesReadOnly, IDaoMemberAliasServices { 
+public interface HedummyDaoServices extends IDaoServicesReadOnly, IDaoMemberAliasServices { 
 	public List findById(Integer id, StringBuffer errorStackTrace);
 	
 }

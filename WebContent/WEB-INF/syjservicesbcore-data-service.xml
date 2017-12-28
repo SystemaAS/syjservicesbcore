@@ -50,7 +50,7 @@
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   
-  <bean id="hedummyUraDaoServices" class="no.systema.jservices.model.dao.services.HedummyUraDaoServicesImpl">
+  <bean id="hedummyDaoServices" class="no.systema.jservices.model.dao.services.HedummyDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
   

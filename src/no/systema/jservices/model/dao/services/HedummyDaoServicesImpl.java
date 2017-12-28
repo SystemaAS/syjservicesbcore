@@ -13,8 +13,8 @@ import no.systema.main.util.StringManager;
 import no.systema.jservices.common.dao.services.util.Db2MemberAliasManager;
 
 
-public class HedummyUraDaoServicesImpl implements HedummyUraDaoServices {
-	private static Logger logger = Logger.getLogger(HedummyUraDaoServicesImpl.class.getName());
+public class HedummyDaoServicesImpl implements HedummyDaoServices {
+	private static Logger logger = Logger.getLogger(HedummyDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	private StringManager strMgr = new StringManager();
 	private Db2MemberAliasManager db2MemberAliasMgr = new Db2MemberAliasManager();
