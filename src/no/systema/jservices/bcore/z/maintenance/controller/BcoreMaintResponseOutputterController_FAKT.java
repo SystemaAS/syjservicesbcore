@@ -3,7 +3,9 @@ package no.systema.jservices.bcore.z.maintenance.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.common.dao.FaktDao;
 import no.systema.jservices.common.dao.Kodts2Dao;
+import no.systema.jservices.common.dao.TrackfDao;
 import no.systema.jservices.common.dao.services.FaktDaoService;
 import no.systema.jservices.common.dto.FaktDWDto;
 import no.systema.jservices.common.dto.FaktDto;
@@ -259,6 +262,72 @@ public class BcoreMaintResponseOutputterController_FAKT {
 			}
 		} catch (Exception e) {
 			logger.info("Error :", e);
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+
+		session.invalidate();
+		return sb.toString();
+
+	}
+	/**
+	 * This method is the normal getList outside the stats-scope. The usual SELECT from the db table for Oppdr.reg purposes (fraktbrev)
+	 * @author oscardelatorre
+	 * 
+	 * @param session
+	 * @param request
+	 * @return
+	 * 
+	 * * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/syjsFAKTR.do?user=OSCAR&faavd=1&faopd=184&fafrbn=1
+	 */
+	@RequestMapping(value="syjsFAKTR.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String doFaktr(HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter2<FaktDao> jsonWriter = new JsonResponseWriter2<FaktDao>();
+		StringBuffer sb = new StringBuffer();
+		List<FaktDao> faktDaoList = null;
+		
+		try {
+			String user = request.getParameter("user");
+			// Check ALWAYS user in BRIDF
+			String userName = this.bridfDaoServices.findNameById(user); 
+			String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+
+			
+			if (StringUtils.hasValue(userName)) {
+				FaktDao resultDao = new FaktDao();
+				FaktDao dao = new FaktDao();
+				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
+				binder.bind(request);
+				
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("faavd", dao.getFaavd());
+				params.put("faopd", dao.getFaopd());
+				params.put("fafrbn", dao.getFafrbn());
+				
+				faktDaoList = faktDaoService.findAll(params);
+				
+				if (faktDaoList != null) {
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, faktDaoList));
+				} else {
+					errMsg = "ERROR on SELECT: Can not find FaktDao list";
+					status = "error";
+					logger.info( status + errMsg);
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}
+
+			} else {
+				errMsg = "ERROR on SELECT";
+				status = "error";
+				dbErrorStackTrace.append(" request input parameters are invalid: <user>");
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+		} catch (Exception e) {
+			logger.error("Error :", e);
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
