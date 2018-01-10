@@ -131,27 +131,36 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 		JsonReader<InitResponseDto> jsonReader = new JsonReader<InitResponseDto>();
 		jsonReader.set(new InitResponseDto());
 		DateTimeManager dm = new DateTimeManager();
+		UrlCgiProxyService urlCgiProxyService = new UrlCgiProxyServiceImpl();
+		String errMsg = null;
 
 		String BASE_URL = httpRootCgi + "/sycgip/tsadhanr0.pgm";	
 		StringBuffer urlRequestParams = new StringBuffer();
 		urlRequestParams.append("user=" + userName);
 		urlRequestParams.append("&dtfra=" + regDato);
 		urlRequestParams.append("&dttil=" + dm.getCurrentDate_ISO());
-		logger.info("Prepare data into SADHAN with url-call="+ BASE_URL);
-		logger.info(urlRequestParams);
+		logger.info("Prepare data into SADHAN with url-call:"+ BASE_URL+ " on params:"+urlRequestParams);
 		
-		UrlCgiProxyService urlCgiProxyService = new UrlCgiProxyServiceImpl();
-		String jsonPayload = urlCgiProxyService.getJsonContent(BASE_URL, urlRequestParams.toString());
+		InitResponseDto dto = null;
+		try {
+			String jsonPayload = urlCgiProxyService.getJsonContent(BASE_URL, urlRequestParams.toString());
+			logger.info("Preparation response="+jsonPayload);
+			dto = (InitResponseDto) jsonReader.get(jsonPayload);
+			if (dto == null) {
+				throw new RuntimeException("Could not parse jsonPayload:"+jsonPayload+ ", into dto");
+			}
+			if (dto.getErrMsg().isEmpty()) {
+				errMsg = null;
+			} else {
+				errMsg = dto.getErrMsg();
+			}
+			
+		} catch (Exception e) {
+			logger.error("Error calling BASE_URL:"+BASE_URL+" with param:"+urlRequestParams);
+			e.printStackTrace();
+		}	
 		
-		logger.info("Preparation response="+jsonPayload);
-		
-		InitResponseDto dto = (InitResponseDto) jsonReader.get(jsonPayload);	
-		
-		if (dto.getErrMsg().isEmpty()) {
-			return null;
-		} else {
-			return dto.getErrMsg();
-		}
+		return errMsg;
 			
 	}
 
