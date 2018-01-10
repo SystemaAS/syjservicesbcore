@@ -288,7 +288,7 @@ public class BcoreMaintResponseOutputterController_FAKT {
 		JsonResponseWriter2<FaktDao> jsonWriter = new JsonResponseWriter2<FaktDao>();
 		StringBuffer sb = new StringBuffer();
 		List<FaktDao> faktDaoList = null;
-		
+		String all = request.getParameter("all");
 		try {
 			String user = request.getParameter("user");
 			// Check ALWAYS user in BRIDF
@@ -307,7 +307,11 @@ public class BcoreMaintResponseOutputterController_FAKT {
 				Map<String, Object> params = new HashMap<String, Object>();
 				params.put("faavd", dao.getFaavd());
 				params.put("faopd", dao.getFaopd());
-				params.put("fafrbn", dao.getFafrbn());
+				if(StringUtils.hasValue(all)){
+					//all records not counting fafrbn as key
+				}else{
+					params.put("fafrbn", dao.getFafrbn());
+				}
 				
 				faktDaoList = faktDaoService.findAll(params);
 				
