@@ -19,9 +19,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import no.systema.jservices.common.cgi.UrlCgiProxyService;
+import no.systema.jservices.common.cgi.UrlCgiProxyServiceImpl;
+import no.systema.jservices.common.cgi.dto.InitResponseDto;
 import no.systema.jservices.common.dao.services.FortollingDaoService;
 import no.systema.jservices.common.dto.FortollingDto;
+import no.systema.jservices.common.json.JsonReader;
 import no.systema.jservices.common.json.JsonResponseWriter2;
+import no.systema.jservices.common.util.DateTimeManager;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
@@ -47,6 +52,7 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 		
 		try {
 			String user = request.getParameter("user");
+			String httpRootCgi = request.getParameter("httpRootCgi");
 			String userName = this.bridfDaoServices.findNameById(user);
 			String errMsg = "";
 			String status = "ok";
@@ -56,7 +62,12 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
             qDto = getDto(request);  
 			
 			if (StringUtils.hasValue(userName) && StringUtils.hasValue(qDto.getRegistreringsdato())) {
-				logger.info("Retrieving data...");
+				errMsg = initData(httpRootCgi, userName, qDto.getRegistreringsdato());
+				if (errMsg == null) {
+					//continue;
+				} else {
+					throw new RuntimeException("something went wrong...errMsg="+errMsg);
+				}
 				fortollingDtoList = fortollingDaoService.getStats(qDto);
 				if (fortollingDtoList != null) {
 					logger.info("fortollingDtoList.size()=" + fortollingDtoList.size());
@@ -87,6 +98,61 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 		logger.info("About to return...");
 		return sb.toString();
 
+	}
+
+	/**
+	 * Datawarehouse table for Analyse - Fortolling (NO)
+	 * 
+	 * Preparation params is fra and till dato </br>
+	 * 
+	 * <b> url: /sycgip/tsadhanr0.pgm </b>
+	 * Params:
+	 * <li>
+	 *  user, e.g CB
+	 * <li>
+	 *  dtfra, e.g 20100101
+	 * </li>
+	 * <li>
+	 *  dttil, e.g 20171231
+	 * </li>
+	 * </b>
+	 * @Example http://gw.systema.no:8080/sycgip/tsadhanr0.pgm?user=CB&dtfra=20100101&dttil=20171231
+	 * </b>
+	 * Return format: 				
+	 * 	{							
+	 *	"user": "CB",				
+	 *	"dtfra": "20100101",		
+	 *	"dttil": "20171231",		
+	 *	"errMsg": ""				
+	 * }				
+	 * 
+	 */
+	protected String initData(String httpRootCgi, String userName, String regDato) {
+		JsonReader<InitResponseDto> jsonReader = new JsonReader<InitResponseDto>();
+		jsonReader.set(new InitResponseDto());
+		DateTimeManager dm = new DateTimeManager();
+
+		String BASE_URL = httpRootCgi + "/sycgip/tsadhanr0.pgm";	
+		StringBuffer urlRequestParams = new StringBuffer();
+		urlRequestParams.append("user=" + userName);
+		urlRequestParams.append("&dtfra=" + regDato);
+		urlRequestParams.append("&dttil=" + dm.getCurrentDate_ISO());
+		logger.info("Prepare data into SADHAN with url-call="+ BASE_URL);
+		logger.info(urlRequestParams);
+		
+		UrlCgiProxyService urlCgiProxyService = new UrlCgiProxyServiceImpl();
+		String jsonPayload = urlCgiProxyService.getJsonContent(BASE_URL, urlRequestParams.toString());
+		
+		logger.info("Preparation response="+jsonPayload);
+		
+		InitResponseDto dto = (InitResponseDto) jsonReader.get(jsonPayload);	
+		
+		if (dto.getErrMsg().isEmpty()) {
+			return null;
+		} else {
+			return dto.getErrMsg();
+		}
+			
 	}
 
 	private FortollingDto getDto(HttpServletRequest request) {
