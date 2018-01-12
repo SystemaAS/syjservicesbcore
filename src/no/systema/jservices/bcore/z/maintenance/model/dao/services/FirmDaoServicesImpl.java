@@ -252,6 +252,35 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 	 * @return
 	 * @throws Exception
 	 */
+	public int updateFirfbCounter(Object daoObj, StringBuffer errorStackTrace) throws Exception{
+		int retval = 0;
+		try{
+			FirmDao dao = (FirmDao)daoObj;
+			StringBuffer sql = new StringBuffer();
+			//DEBUG --> logger.info("mydebug");
+			Integer counter = Integer.parseInt(dao.getFirecn());
+			counter++;
+			sql.append(" UPDATE firfb SET firecn = ?  ");
+			sql.append(" WHERE fifirm = ? ");
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { counter, dao.getFifirm() } );
+				
+			dao.setFirecn(String.valueOf(counter));
+		}catch(Exception e){
+			logger.info(e.toString());
+			//Writer writer = dbErrorMessageMgr.getPrintWriter(e);
+			//logger.info(writer.toString());
+			throw e;
+		}
+		return retval;
+	}
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 * @throws Exception
+	 */
 	private int updateFirmkos(Object daoObj, StringBuffer errorStackTrace) throws Exception{
 		int retval = 0;
 		try{

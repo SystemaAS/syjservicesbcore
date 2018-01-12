@@ -7,4 +7,6 @@ import no.systema.jservices.model.dao.services.IDaoServices;
  * @date Aug 4, 2016
  * 
  */
-public interface FirmDaoServices extends IDaoServices { }
+public interface FirmDaoServices extends IDaoServices { 
+	public int updateFirfbCounter(Object daoObj, StringBuffer errorStackTrace) throws Exception;
+}

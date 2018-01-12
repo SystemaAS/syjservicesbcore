@@ -33,7 +33,7 @@ import javax.servlet.http.HttpSession;
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
-
+import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 //rules
@@ -140,7 +140,7 @@ public class BcoreMaintResponseOutputterController_FIRM {
 	 * PGM:		SYFA30
 	 * Member: 	MAINT FIRM Maintenance - SELECT LIST or SELECT SPECIFIC
 	 * 
-	 * @Example UPDATE: http://gw.systema.no:8080/syjservicestn/syjsSYFIRMR_U.do?user=OSCAR&mode=U/A/D
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicesbcore/syjsSYFIRMR_U.do?user=OSCAR&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
@@ -227,6 +227,87 @@ public class BcoreMaintResponseOutputterController_FIRM {
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				}else{
 					//OK UPDATE
+					sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
+				}
+				
+			}else{
+				//write JSON error output
+				errMsg = "ERROR on UPDATE";
+				status = "error";
+				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+			
+		}catch(Exception e){
+			//write std.output error output
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+		session.invalidate();
+		return sb.toString();
+	}
+	
+	/**
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicesbcore/syjsFIRFB_U_COUNTER.do?user=OSCAR&fifirm=SY
+	 *
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="syjsFIRFB_U_COUNTER.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String syjsFIRFBR_U( HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();
+		
+		try{
+			logger.info("Inside syjsFIRFB_U_COUNTER.do");
+			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
+			String user = request.getParameter("user");
+			String mode = request.getParameter("mode");
+			//Check ALWAYS user in BRIDF
+            String userName = this.bridfDaoServices.findNameById(user);
+            //DEBUG --> logger.info("USERNAME:" + userName + "XX");
+            String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+			
+			//bind attributes is any
+			FirmDao dao = new FirmDao();
+			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
+            binder.bind(request);
+            //Start processing now
+			if(userName!=null && !"".equals(userName)){
+				List<FirmDao> list = null;
+	            int dmlRetval = 0;
+				
+				if(dao.getFifirm()!=null && !"".equals(dao.getFifirm())){
+					//do SELECT for fetching correct record with correct counter (firecn)
+					logger.info("Before SELECT ...");
+					list = this.firmDaoServices.findById(dao.getFifirm(), dbErrorStackTrace);
+					if(list!=null & list.size()>0){
+						for(FirmDao record: list){
+							logger.info("Before UPDATE counter (firecn)");
+							dmlRetval = this.firmDaoServices.updateFirfbCounter(record, dbErrorStackTrace);
+							if(record!=null && StringUtils.hasValue(record.getFirecn())){
+								dao.setFirecn(record.getFirecn());
+							}
+						}	
+					}
+				}
+				//----------------------------------
+				//check returns from dml operations
+				//----------------------------------
+				if(dmlRetval<0){
+					//write JSON error output
+					errMsg = "ERROR on UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
+					status = "error";
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}else{
+					//OK UPDATE
+					status = status + " firecn:" + dao.getFirecn();
 					sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
 				}
 				
