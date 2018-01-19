@@ -121,7 +121,7 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 	 * Return format: 				
 	 * 	{							
 	 *	"user": "CB",				
-	 *	"dtfra": "20100101",		
+	 *	"dtfra": "20170000",		
 	 *	"dttil": "20171231",		
 	 *	"errMsg": ""				
 	 * }				
@@ -130,15 +130,15 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 	protected String initData(String httpRootCgi, String userName, String regDato) {
 		JsonReader<InitResponseDto> jsonReader = new JsonReader<InitResponseDto>();
 		jsonReader.set(new InitResponseDto());
-		DateTimeManager dm = new DateTimeManager();
 		UrlCgiProxyService urlCgiProxyService = new UrlCgiProxyServiceImpl();
 		String errMsg = null;
-
+		String dtfra = regDato + "0000";
+		String dttil = regDato + "1231";
 		String BASE_URL = httpRootCgi + "/sycgip/tsadhanr0.pgm";	
 		StringBuffer urlRequestParams = new StringBuffer();
 		urlRequestParams.append("user=" + userName);
-		urlRequestParams.append("&dtfra=" + regDato);
-		urlRequestParams.append("&dttil=" + dm.getCurrentDate_ISO());
+		urlRequestParams.append("&dtfra=" + dtfra);
+		urlRequestParams.append("&dttil=" + dttil);
 		logger.info("Prepare data into SADHAN with url-call:"+ BASE_URL+ " on params:"+urlRequestParams);
 		
 		InitResponseDto dto = null;
@@ -154,7 +154,6 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 			} else {
 				errMsg = dto.getErrMsg();
 			}
-			
 		} catch (Exception e) {
 			logger.error("Error calling BASE_URL:"+BASE_URL+" with param:"+urlRequestParams);
 			e.printStackTrace();
@@ -168,10 +167,6 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 		FortollingDto qDto = new FortollingDto();
 		ServletRequestDataBinder binder = new ServletRequestDataBinder(qDto);
         binder.bind(request);	
-        
-        if (qDto.getRegistreringsdato() != null) {
-        	qDto.setRegistreringsdato(qDto.getRegistreringsdato() + "0000");
-        }
         
         if (qDto.getAvdelings() != null) {
         	String[] avd = qDto.getAvdelings().split(",");
