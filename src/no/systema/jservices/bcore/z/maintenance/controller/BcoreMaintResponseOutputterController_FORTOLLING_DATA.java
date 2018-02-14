@@ -60,7 +60,7 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 			FortollingDto qDto = null;
             qDto = getDto(request);  
 			
-			if (StringUtils.hasValue(userName) && StringUtils.hasValue(qDto.getRegistreringsdato())) {
+			if (StringUtils.hasValue(userName) && StringUtils.hasValue(qDto.getFradato()) && StringUtils.hasValue(qDto.getTildato())) {
 				errMsg = initData(httpRootCgi, userName, qDto);
 				if (errMsg == null) {
 					//continue;
@@ -82,7 +82,7 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 			} else {
 				errMsg = "ERROR on SELECT";
 				status = "error";
-				dbErrorStackTrace.append(" request input parameters are invalid: <user> and <year>");
+				dbErrorStackTrace.append(" request input parameters are invalid: <user>, <fradto> or <tildato>");
 				sb.append(userName + errMsg + status + dbErrorStackTrace);
 			}
 		} catch (Exception e) {
@@ -137,8 +137,10 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 		jsonReader.set(new InitResponseDto());
 		UrlCgiProxyService urlCgiProxyService = new UrlCgiProxyServiceImpl();
 		String errMsg = null;
-		String dtfra = qDto.getRegistreringsdato() + "0000";
-		String dttil = qDto.getRegistreringsdato()  + "1231";
+//		String dtfra = qDto.getRegistreringsdato() + "0000";
+//		String dttil = qDto.getRegistreringsdato()  + "1231";
+		String dtfra = qDto.getFradato();
+		String dttil = qDto.getTildato();
 		String BASE_URL = httpRootCgi + "/sycgip/tsadhanr0.pgm";	
 		StringBuffer urlRequestParams = new StringBuffer();
 		urlRequestParams.append("user=" + userName);
