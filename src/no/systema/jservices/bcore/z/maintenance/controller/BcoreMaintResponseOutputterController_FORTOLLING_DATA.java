@@ -26,7 +26,6 @@ import no.systema.jservices.common.dao.services.FortollingDaoService;
 import no.systema.jservices.common.dto.FortollingDto;
 import no.systema.jservices.common.json.JsonReader;
 import no.systema.jservices.common.json.JsonResponseWriter2;
-import no.systema.jservices.common.util.DateTimeManager;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
@@ -62,7 +61,7 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
             qDto = getDto(request);  
 			
 			if (StringUtils.hasValue(userName) && StringUtils.hasValue(qDto.getRegistreringsdato())) {
-				errMsg = initData(httpRootCgi, userName, qDto.getRegistreringsdato());
+				errMsg = initData(httpRootCgi, userName, qDto);
 				if (errMsg == null) {
 					//continue;
 				} else {
@@ -115,8 +114,14 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 	 * <li>
 	 *  dttil, e.g 20171231
 	 * </li>
+	 * <li>
+	 *  siknk, e.g 1
+	 * </li>
+	 * <li>
+	 *  sikns, e.g 100
+	 * </li> 
 	 * </b>
-	 * @Example http://gw.systema.no:8080/sycgip/tsadhanr0.pgm?user=CB&dtfra=20100101&dttil=20171231
+	 * @Example http://gw.systema.no:8080/sycgip/tsadhanr0.pgm?user=CB&dtfra=20100101&dttil=20171231&siknk=1&sikns=100
 	 * </b>
 	 * Return format: 				
 	 * 	{							
@@ -127,18 +132,24 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 	 * }				
 	 * 
 	 */
-	protected String initData(String httpRootCgi, String userName, String regDato) {
+	protected String initData(String httpRootCgi, String userName, FortollingDto qDto) {
 		JsonReader<InitResponseDto> jsonReader = new JsonReader<InitResponseDto>();
 		jsonReader.set(new InitResponseDto());
 		UrlCgiProxyService urlCgiProxyService = new UrlCgiProxyServiceImpl();
 		String errMsg = null;
-		String dtfra = regDato + "0000";
-		String dttil = regDato + "1231";
+		String dtfra = qDto.getRegistreringsdato() + "0000";
+		String dttil = qDto.getRegistreringsdato()  + "1231";
 		String BASE_URL = httpRootCgi + "/sycgip/tsadhanr0.pgm";	
 		StringBuffer urlRequestParams = new StringBuffer();
 		urlRequestParams.append("user=" + userName);
 		urlRequestParams.append("&dtfra=" + dtfra);
 		urlRequestParams.append("&dttil=" + dttil);
+		if (qDto.getMottaker() > 0) {
+			urlRequestParams.append("&siknk=" + qDto.getMottaker());
+		}
+		if (qDto.getAvsender() > 0) {
+			urlRequestParams.append("&sikns=" + qDto.getAvsender());
+		}		
 		logger.info("Prepare data into SADHAN with url-call:"+ BASE_URL+ " on params:"+urlRequestParams);
 		
 		InitResponseDto dto = null;
