@@ -99,7 +99,7 @@ public class JsonResponseOutputterController_HEDUMMY {
 				//-----------------------------
 	            //prepare service (mandatory)
 	            //-----------------------------
-	            this.hedummyDaoServices.setLibrary("syspedf");
+	            //this.hedummyDaoServices.setLibrary("syspedf");
 	            this.hedummyDaoServices.setAlias("ura_alias");
 	            this.hedummyDaoServices.setMemberTable("hedummy");
 	            this.hedummyDaoServices.setMember("ura");
@@ -188,7 +188,6 @@ public class JsonResponseOutputterController_HEDUMMY {
 				//-----------------------------
 	            //prepare service (mandatory)
 	            //-----------------------------
-	            this.hedummyDaoServices.setLibrary("syspedf");
 	            this.hedummyDaoServices.setAlias("urb_alias");
 	            this.hedummyDaoServices.setMemberTable("hedummy");
 	            this.hedummyDaoServices.setMember("urb");

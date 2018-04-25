@@ -9,7 +9,6 @@ import java.util.List;
  */
 public interface IDaoMemberAliasServices {
 	//Mandatory for Alias-mechanism
-	public void setLibrary(String value);
 	public void setMember(String value);
 	public void setAlias(String value);
 	public void setMemberTable(String value);
