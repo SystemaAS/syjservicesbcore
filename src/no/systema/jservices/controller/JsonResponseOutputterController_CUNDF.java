@@ -97,17 +97,29 @@ public class JsonResponseOutputterController_CUNDF {
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
 				//do SELECT
+	            logger.info("A");
 				if(dao.getKundnr()!=null && !"".equals(dao.getKundnr())){
+					//logger.info("B");
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
 					}else{
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
 					}
 				}else if (dao.getKnavn()!=null && !"".equals(dao.getKnavn())){
+					//logger.info("C");
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
 						list = this.cundfDaoServices.findByName(dao.getKnavn(), dao.getFirma(), dbErrorStackTrace);
 					}else{
 						list = this.cundfDaoServices.findByName(dao.getKnavn(), dbErrorStackTrace);
+					}
+				}else if (dao.getSyrg()!=null && !"".equals(dao.getSyrg())){
+					
+					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
+						//logger.info("Z");
+						list = this.cundfDaoServices.findByOrgnr(dao.getSyrg(), dao.getFirma(), dbErrorStackTrace);
+					}else{
+						//logger.info("ZZZ");
+						list = this.cundfDaoServices.findByOrgnr(dao.getSyrg(), dbErrorStackTrace);
 					}
 				}else{
 					list = null;

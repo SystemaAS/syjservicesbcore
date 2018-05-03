@@ -146,6 +146,69 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		return cundfDaoList;
 	}
 	
+	@Override
+	public List findByOrgnr(String orgnr, StringBuffer errorStackTrace){
+		String WILDCARD = "%";
+		String orgnrStr = "";
+		if(orgnr!=null && !"".equals(orgnr)){ orgnrStr = orgnr; }
+		
+		List<CundfDao> cundfDaoList = new ArrayList<CundfDao>();
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" and syrg LIKE ? ");
+			//logger.info(sql.toString());
+			cundfDaoList = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + orgnrStr + WILDCARD }, new GenericObjectMapper(new CundfDao()));
+			
+			logger.debug("findbyOrgnr(String orgnr), sqlString="+sql.toString());
+			
+			if (cundfDaoList.size() > 0) {
+				
+				for (CundfDao cundfDao : cundfDaoList) {
+					cundfDao.setCum3lmDao(getCum3lmDao(cundfDao));
+				}
+			}
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.error(writer.toString());
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			cundfDaoList = null;
+		}
+		return cundfDaoList;
+	}
+	
+	@Override
+	public List findByOrgnr(String orgnr, String firm, StringBuffer errorStackTrace){
+		String WILDCARD = "%";
+		String orgnrStr = "";
+		if(orgnr!=null && !"".equals(orgnr)){ orgnrStr = orgnr; }
+		
+		List<CundfDao> cundfDaoList = new ArrayList<CundfDao>();
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" and syrg LIKE ? ");
+			sql.append(" and firma = ? ");
+			cundfDaoList = this.jdbcTemplate.query( sql.toString(), new Object[] { WILDCARD + orgnrStr + WILDCARD, firm }, new GenericObjectMapper(new CundfDao()));
+
+			logger.debug("findbyOrgnr(String orgnr, String firm), sqlString="+sql.toString());
+			
+			if (cundfDaoList.size() > 0) {
+				for (CundfDao cundfDao : cundfDaoList) {
+					cundfDao.setCum3lmDao(getCum3lmDao(cundfDao));
+				}
+			}
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			cundfDaoList = null;
+		}
+		return cundfDaoList;
+	}
+
 	
 	@Override
 	public int update(Object daoObj, StringBuffer errorStackTrace) {
