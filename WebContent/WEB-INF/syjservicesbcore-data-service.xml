@@ -46,6 +46,9 @@
   <bean id="bridfDaoServices" class="no.systema.jservices.model.dao.services.BridfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="bridfPasswordDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.BridfPasswordDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   <bean id="firmLoginDaoServices" class="no.systema.jservices.model.dao.services.FirmLoginDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
