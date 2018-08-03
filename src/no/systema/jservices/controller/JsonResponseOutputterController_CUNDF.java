@@ -3,6 +3,7 @@ package no.systema.jservices.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Locale;
 
@@ -23,11 +24,14 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
 import no.systema.jservices.common.dao.Cum3lmDao;
+import no.systema.jservices.common.dao.ViskundeDao;
+import no.systema.jservices.common.dao.services.FirmvisDaoService;
 import no.systema.jservices.common.dao.services.KodtftDaoService;
 import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
+import no.systema.jservices.common.dao.services.ViskundeDaoService;
 import no.systema.jservices.common.util.StringUtils;
 //rules
 import no.systema.jservices.controller.rules.SYCUNDFR_U;
@@ -215,10 +219,18 @@ public class JsonResponseOutputterController_CUNDF {
 						if ("A".equals(mode)) {
 							addFieldsToDaoWhenNew(dao, dbErrorStackTrace);
 					        addCum3LmToDao(dao,m3m3,mllm );
-							dmlRetval = cundfDaoServices.insert(dao, dbErrorStackTrace);
+	
+					        dmlRetval = cundfDaoServices.insert(dao, dbErrorStackTrace);
+
+					        manageVismaIntegration(dao, "INSERT");
+					        
 						} else if ("U".equals(mode)) {
 					        addCum3LmToDao(dao,m3m3,mllm );
-							dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
+
+					        dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
+					        
+					        manageVismaIntegration(dao, "UPDATE");
+					        
 						}
 					} else {
 						// write JSON error output
@@ -261,6 +273,106 @@ public class JsonResponseOutputterController_CUNDF {
 	}
 	
 	
+	private void manageVismaIntegration(CundfDao cundfDao, String dml) {
+		if (!hasVismaNetIntegration()) {
+			return;
+		}
+		logger.info("manageVismaIntegration on dao="+cundfDao);
+		ViskundeDao dao = getViskundeDao(cundfDao);		
+
+		if(dml.equals("INSERT")) {
+			viskundeDaoService.create(dao);
+			logger.info("VISKUNDE created, dao="+dao);
+		}
+
+		if(dml.equals("UPDATE")) {
+			if (viskundeDaoService.exist(dao)) {
+				viskundeDaoService.update(dao);
+				logger.info("VISKUNDE updated, dao="+dao);
+			} else {
+				viskundeDaoService.create(dao);
+				logger.info("VISKUNDE created, dao="+dao);				
+			}
+		}
+		
+	}
+
+	private ViskundeDao getViskundeDao(CundfDao cundfDao) {
+		ViskundeDao dao = new ViskundeDao();
+	
+		dao.setFirma(cundfDao.getFirma()); //private String firma;
+		dao.setKundnr(Integer.parseInt(cundfDao.getKundnr())); //private int kundnr; //key
+		dao.setAktkod(cundfDao.getAktkod());  // private String aktkod;
+		dao.setDkund(cundfDao.getDkund()); //private String dkund;
+		dao.setKnavn(cundfDao.getKnavn()); //;private String knavn;
+		dao.setAdr1(cundfDao.getAdr1()); //;private String adr1;
+		dao.setAdr2(cundfDao.getAdr2()); //private String adr2;
+		dao.setPostnr(Integer.parseInt(cundfDao.getPostnr()));  //private int postnr;
+		dao.setAdr3(cundfDao.getAdr3()); //private String adr3;
+		dao.setKpers(cundfDao.getKpers()); //private String kpers;
+		dao.setTlf(cundfDao.getTlf());//private String tlf;
+		dao.setValkod(cundfDao.getValkod()); //;private String valkod;
+		dao.setSpraak(cundfDao.getSpraak()); //private String spraak;
+		dao.setBankg(cundfDao.getBankg());//private String bankg;
+		dao.setPostg(cundfDao.getPostg()); //private String postg;
+		dao.setFmot(Integer.parseInt(cundfDao.getFmot())); //private int fmot;
+		dao.setBetbet(cundfDao.getBetbet()); //private String betbet;
+		dao.setBetmat(cundfDao.getBetmat()); //private String betmat;
+		dao.setSfakt(cundfDao.getSfakt()); //private String sfakt;
+		dao.setKgrens(Integer.parseInt(cundfDao.getKgrens()));  //private int kgrens;
+		dao.setTfaxnr(cundfDao.getTfaxnr()); //private String tfaxnr;
+		dao.setSyregn(Integer.parseInt(cundfDao.getSyregn())); //private int syregn;
+		dao.setSykont(Integer.parseInt(cundfDao.getSykont())); //private int sykont;
+		dao.setSylikv(cundfDao.getSylikv()); //private String sylikv;
+		dao.setSyopdt(cundfDao.getSyopdt()); //private String syopdt;
+		dao.setSyminu(new BigDecimal(cundfDao.getSyminu())); //;private BigDecimal syminu = new BigDecimal(0);
+		dao.setSyutlp(new BigDecimal(cundfDao.getSyutlp())); //private BigDecimal syutlp = new BigDecimal(0);
+		dao.setSyrg(cundfDao.getSyrg()); //private String syrg;
+		dao.setSypoge(cundfDao.getSypoge()); //private String sypoge;
+		dao.setSystat(cundfDao.getSystat()); //private String systat;
+		dao.setSyland(cundfDao.getSyland()); //private String syland;
+		dao.setSyselg(cundfDao.getSyselg()); //private String syselg;
+		dao.setSyiat1(Integer.parseInt(cundfDao.getSyiat1())); //private int syiat1;
+		dao.setSyiat2(Integer.parseInt(cundfDao.getSyiat2())); //private int syiat2;
+		dao.setSycoty(cundfDao.getSycoty()); //private String sycoty;
+		dao.setSyfr01(cundfDao.getSyfr01()); //private String syfr01;
+		dao.setSyfr02(cundfDao.getSyfr02()); //private String syfr02;
+		dao.setSyfr03(cundfDao.getSyfr03()); //private String syfr03;
+		dao.setSyfr04(cundfDao.getSyfr04()); //private String syfr04;
+		dao.setSyfr05(cundfDao.getSyfr05()); //private String syfr05;
+		dao.setSyfr06(cundfDao.getSyfr06()); //private String syfr06;
+		dao.setSysalu(Integer.parseInt(cundfDao.getSysalu())); //private int sysalu;
+		dao.setSyepos(cundfDao.getSyepos()); //private String syepos;
+		dao.setAknrku(Integer.parseInt(cundfDao.getAknrku())); //;private int aknrku;
+		dao.setVatkku(cundfDao.getVatkku()); //private String vatkku;
+		dao.setXxbre(new BigDecimal(cundfDao.getXxbre())); //private BigDecimal xxbre = new BigDecimal(0);
+		dao.setXxlen(new BigDecimal(cundfDao.getXxlen())); //private BigDecimal xxlen = new BigDecimal(0);
+		dao.setXxinm3(new BigDecimal(cundfDao.getXxinm3())); //private BigDecimal xxinm3 = new BigDecimal(0);
+		dao.setXxinlm(new BigDecimal(cundfDao.getXxinlm())); //private BigDecimal xxinlm = new BigDecimal(0);
+		dao.setRnraku(cundfDao.getRnraku()); //private String rnraku;
+		dao.setGolk(cundfDao.getGolk()); //private String golk;
+		dao.setKundgr(cundfDao.getKundgr()); //private String kundgr;
+		dao.setPnpbku(cundfDao.getPnpbku()); //private String pnpbku;
+		dao.setAdr21(cundfDao.getAdr21()); //private String adr21;
+		dao.setEori(cundfDao.getEori()); //private String eori;
+		dao.setSymvjn(cundfDao.getSymvjn()); //private String symvjn;
+		dao.setSymvsp(cundfDao.getSymvsp()); //private String symvsp;	
+		dao.setSyminu(new BigDecimal(cundfDao.getSyminu())); 
+		
+		return dao;
+	}
+
+
+	private boolean hasVismaNetIntegration() {
+		boolean hasVismaNet = false;
+
+		if (firmvisDaoService.countAll() > 0) {
+			hasVismaNet = true;
+		}
+
+		return hasVismaNet;
+	}
+
 	private void addCum3LmToDao(CundfDao dao, String m3m3, String mllm) {
 		Cum3lmDao cum3lmDao = new Cum3lmDao();
 		cum3lmDao.setM3kund(Integer.parseInt(dao.getKundnr()));
@@ -370,7 +482,11 @@ public class JsonResponseOutputterController_CUNDF {
 	public void setKodtftDaoService (KodtftDaoService value){ this.kodtftDaoService = value; }
 	public KodtftDaoService getKodtftDaoService(){ return this.kodtftDaoService; }		
 	
-	
+	@Autowired
+	ViskundeDaoService viskundeDaoService;
+
+	@Autowired
+	FirmvisDaoService firmvisDaoService;
 	
 }
 
