@@ -290,8 +290,10 @@ public class JsonResponseOutputterController_CUNDF {
 				viskundeDaoService.update(dao);
 				logger.info("VISKUNDE updated, dao="+dao);
 			} else {
-				viskundeDaoService.create(dao);
-				logger.info("VISKUNDE created, dao="+dao);				
+				if ("A".equals(dao.getAktkod())) { //Fakturakunde
+					viskundeDaoService.create(dao);
+					logger.info("VISKUNDE created, dao="+dao);				
+				}
 			}
 		}
 		
