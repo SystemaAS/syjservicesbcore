@@ -32,6 +32,7 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 	 */
 	public List getList(StringBuffer errorStackTrace){
 		List<KodtaDao> retval = new ArrayList<KodtaDao>();
+		List<KodtaDao> cleanList = new ArrayList<KodtaDao>();
 		
 		try{
 			StringBuffer sql = new StringBuffer();
@@ -39,7 +40,16 @@ public class KodtaDaoServicesImpl implements KodtaDaoServices {
 			sql.append(" order by a.koaavd " );
 			
 			retval = this.jdbcTemplate.query( sql.toString(), new KodtaMapper());
-			
+			if(retval!=null && retval.size()>0){
+				for(KodtaDao record: retval){
+					//could be contaminated of outer-join orphan records...
+					if(record.getKoanvn()!=null && !record.getKoanvn().equals("null")){
+						cleanList.add(record);
+					}
+					
+				}
+				retval = cleanList;
+			}
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.info(writer.toString());

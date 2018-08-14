@@ -40,7 +40,9 @@ public class JsonResponseWriter {
 		sb.append(JsonConstants.JSON_OPEN_LIST);
 		int counter = 1;
 		for(IDao record : list){
-			if(counter>1){ sb.append(JsonConstants.JSON_RECORD_SEPARATOR); }
+			if(counter>1){ 
+				sb.append(JsonConstants.JSON_RECORD_SEPARATOR); 
+			}
 			sb.append(JsonConstants.JSON_OPEN_LIST_RECORD);
 			//doIt
 			sb.append(new JsonWriterReflectionManager().getGettersFromRecord(record));
