@@ -40,6 +40,7 @@ import no.systema.jservices.model.dao.entities.CundfDao;
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.CundfDaoServices;
+import no.systema.jservices.model.dao.services.EdiiDaoServices;
 
 
 /**
@@ -200,7 +201,7 @@ public class JsonResponseOutputterController_CUNDF {
             String m3m3 = request.getParameter("m3m3");
 
             //rules
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
@@ -227,6 +228,11 @@ public class JsonResponseOutputterController_CUNDF {
 						} else if ("U".equals(mode)) {
 					        addCum3LmToDao(dao,m3m3,mllm );
 
+					        
+					        logger.info("::syjsSYCUNDFR_U.do:: dao.getPostnr()="+dao.getPostnr());
+					        
+					        
+					        
 					        dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
 					        
 					        manageVismaIntegration(dao, "UPDATE");
@@ -483,6 +489,15 @@ public class JsonResponseOutputterController_CUNDF {
 	@Required
 	public void setKodtftDaoService (KodtftDaoService value){ this.kodtftDaoService = value; }
 	public KodtftDaoService getKodtftDaoService(){ return this.kodtftDaoService; }		
+
+//	@Qualifier ("xyz")
+	private EdiiDaoServices ediiDaoServices;
+	@Autowired
+	@Required
+	public void setEdiiDaoServices (EdiiDaoServices value){ this.ediiDaoServices = value; }
+	public EdiiDaoServices getEdiiDaoServices(){ return this.ediiDaoServices; }		
+	
+	
 	
 	@Autowired
 	ViskundeDaoService viskundeDaoService;

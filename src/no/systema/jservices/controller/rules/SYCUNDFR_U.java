@@ -1,6 +1,8 @@
 package no.systema.jservices.controller.rules;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import no.systema.jservices.common.dao.KodtlikDao;
@@ -13,7 +15,9 @@ import no.systema.jservices.common.dao.services.ValufDaoService;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundfDao;
+import no.systema.jservices.model.dao.entities.EdiiDao;
 import no.systema.jservices.model.dao.services.CundfDaoServices;
+import no.systema.jservices.model.dao.services.EdiiDaoServices;
 import no.systema.main.util.MessageSourceHelper;
 /**
  * 
@@ -30,12 +34,14 @@ public class SYCUNDFR_U {
 	private KodtlikDaoService kodtlikDaoService = null;
 	private KodtotyDaoService kodtotyDaoService = null;
 	private KodtftDaoService kodtftDaoService = null;
+	private EdiiDaoServices ediiDaoServices = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 
 
-	public SYCUNDFR_U(HttpServletRequest request, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(HttpServletRequest request, EdiiDaoServices ediiDaoServices, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		messageSourceHelper = new MessageSourceHelper(request);
+		this.ediiDaoServices = ediiDaoServices;
 		this.cundfDaoServices = cundfDaoServices;
 		this.valufDaoService = valufDaoService;
 		this.kodtlkDaoService = kodtlkDaoService;
@@ -101,6 +107,11 @@ public class SYCUNDFR_U {
 				if ( (StringUtils.hasValue(dao.getSyfr03())) && !existInKodtft(dao.getSyfr03())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr03", new Object[] { dao.getSyfr03()}), "error", dbErrors));
+					retval = false;					
+				}					
+				if ( (StringUtils.hasValue(dao.getSyfr06())) && !existInEdii("EHF")) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr06", new Object[] { dao.getSyfr06()}), "error", dbErrors));
 					retval = false;					
 				}					
 				
@@ -265,5 +276,15 @@ public class SYCUNDFR_U {
 			return true;
 		}
 	}		
+	
+	private boolean existInEdii(String inid) {
+		List<EdiiDao> list = ediiDaoServices.findById(inid, null);
+		if (list.isEmpty()) {
+			return false;
+		} else {
+			return true;
+		}
+	}		
+	
 	
 }
