@@ -32,6 +32,7 @@ import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
 import no.systema.jservices.common.dao.services.ViskundeDaoService;
+import no.systema.jservices.common.elma.proxy.EntryRequest;
 import no.systema.jservices.common.util.StringUtils;
 //rules
 import no.systema.jservices.controller.rules.SYCUNDFR_U;
@@ -201,7 +202,8 @@ public class JsonResponseOutputterController_CUNDF {
             String m3m3 = request.getParameter("m3m3");
 
             //rules
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
+            
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,entryRequest,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
@@ -228,6 +230,10 @@ public class JsonResponseOutputterController_CUNDF {
 						} else if ("U".equals(mode)) {
 					        addCum3LmToDao(dao,m3m3,mllm );
 
+	
+					        logger.info("dao.getSyfr06()="+dao.getSyfr06()+", dao.getSyrg()= "+dao.getSyrg());
+					        
+					        
 					        dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
 					        
 					        manageVismaIntegration(dao, "UPDATE");
@@ -238,6 +244,7 @@ public class JsonResponseOutputterController_CUNDF {
 						errMsg = "ERROR on ADD/UPDATE: invalid rulerLord, error="+sb.toString();
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+						logger.error(sb);
 					}
 				}
 				// ----------------------------------
@@ -248,6 +255,7 @@ public class JsonResponseOutputterController_CUNDF {
 					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+					logger.error(sb);
 				} else {
 					// OK UPDATE
 					sb.append(jsonWriter.setJsonSimpleValidResult(userName, dao, status));
@@ -259,6 +267,7 @@ public class JsonResponseOutputterController_CUNDF {
 				status = "error";
 				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				logger.error(sb);
 			}
 			
 		}catch(Exception e){
@@ -266,6 +275,7 @@ public class JsonResponseOutputterController_CUNDF {
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
+			logger.error(sb);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
 		session.invalidate();
@@ -496,6 +506,9 @@ public class JsonResponseOutputterController_CUNDF {
 
 	@Autowired
 	FirmvisDaoService firmvisDaoService;
+	
+	@Autowired
+	EntryRequest entryRequest;
 	
 }
 

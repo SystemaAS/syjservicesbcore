@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import no.systema.jservices.common.dao.KodtlikDao;
 import no.systema.jservices.common.dao.ValufDao;
 import no.systema.jservices.common.dao.services.KodtftDaoService;
@@ -12,6 +14,8 @@ import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
+import no.systema.jservices.common.elma.entities.Entry;
+import no.systema.jservices.common.elma.proxy.EntryRequest;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundfDao;
@@ -35,12 +39,14 @@ public class SYCUNDFR_U {
 	private KodtotyDaoService kodtotyDaoService = null;
 	private KodtftDaoService kodtftDaoService = null;
 	private EdiiDaoServices ediiDaoServices = null;
+	private EntryRequest entryRequest = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
+	
 
-
-	public SYCUNDFR_U(HttpServletRequest request, EdiiDaoServices ediiDaoServices, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(HttpServletRequest request, EntryRequest entryRequest, EdiiDaoServices ediiDaoServices, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		messageSourceHelper = new MessageSourceHelper(request);
+		this.entryRequest = entryRequest;
 		this.ediiDaoServices = ediiDaoServices;
 		this.cundfDaoServices = cundfDaoServices;
 		this.valufDaoService = valufDaoService;
@@ -109,11 +115,17 @@ public class SYCUNDFR_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr03", new Object[] { dao.getSyfr03()}), "error", dbErrors));
 					retval = false;					
 				}					
-				if ( (StringUtils.hasValue(dao.getSyfr06())) && !existInEdii("EHF")) {
+				if ( (StringUtils.hasValue(dao.getSyfr06())) && !existInEdii("EHF") ) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr06", new Object[] { dao.getSyfr06()}), "error", dbErrors));
 					retval = false;					
+				}	
+				if ( (StringUtils.hasValue(dao.getSyfr06())) && !existInElma(dao.getSyrg())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr06X", new Object[] { dao.getSyrg()}), "error", dbErrors));
+					retval = false;					
 				}					
+				
 				
 			} else{ 
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -285,6 +297,16 @@ public class SYCUNDFR_U {
 			return true;
 		}
 	}		
+	
+	private boolean existInElma(String orgnr) {
+		Entry entry = entryRequest.getElmaEntry(orgnr);
+		if (entry != null) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
 	
 	
 }
