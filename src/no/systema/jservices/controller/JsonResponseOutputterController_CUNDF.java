@@ -230,10 +230,6 @@ public class JsonResponseOutputterController_CUNDF {
 						} else if ("U".equals(mode)) {
 					        addCum3LmToDao(dao,m3m3,mllm );
 
-	
-					        logger.info("dao.getSyfr06()="+dao.getSyfr06()+", dao.getSyrg()= "+dao.getSyrg());
-					        
-					        
 					        dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
 					        
 					        manageVismaIntegration(dao, "UPDATE");
