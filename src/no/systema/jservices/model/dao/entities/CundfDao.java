@@ -2,9 +2,15 @@ package no.systema.jservices.model.dao.entities;
 import java.io.Serializable;
 
 import no.systema.jservices.common.dao.Cum3lmDao;
+import no.systema.jservices.common.dto.ExludeMapping;
 
 public class CundfDao implements Serializable, IDao {
 
+	@ExludeMapping
+	private String kundetype = "";                                
+	public void setKundetype (String value){ this.kundetype = value;   }   
+	public String getKundetype (){ return this.kundetype;   }    	
+	
 	private String kundnr = "";                                
 	public void setKundnr (String value){ this.kundnr = value;   }   
 	public String getKundnr (){ return this.kundnr;   }              

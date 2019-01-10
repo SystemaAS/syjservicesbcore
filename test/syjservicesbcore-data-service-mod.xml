@@ -104,9 +104,6 @@
   <bean id="tristdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TristdDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  <bean id="trkodfDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrkodfDaoServicesImpl">
-      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
-  </bean>
   <bean id="trustdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
@@ -138,16 +135,15 @@
         -tomcat-juli.jar
       /////////////////
    -->
-
 	<bean id="dataSource" class="org.apache.tomcat.dbcp.dbcp2.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="com.ibm.as400.access.AS400JDBCDriver" />
-		<property name="url"
-			value="jdbc:as400://10.13.1.22;naming=system;socket timeout=15000;libraries=syendre,syendptf,syspedf,sysped" />
+		<!-- For VALUF : l1dat -->
+		<property name="url" value="jdbc:as400://10.13.3.22;naming=system;socket timeout=15000;libraries=syendre,syendptf,syspedf,sysped,l1dat"/>
+		<!--  property name="url" value="jdbc:as400://10.13.3.22;naming=system;socket timeout=15000;libraries=asssyend,aspsyend,aspsyendpt,asssyspedf,aspsysped,l1dat;translate binary=true"/-->
 		<property name="username" value="systema" />
 		<property name="password" value="straffe12" />
 	</bean>
-
 
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

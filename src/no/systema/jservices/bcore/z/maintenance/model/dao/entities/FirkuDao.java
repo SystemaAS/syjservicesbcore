@@ -8,11 +8,6 @@ import no.systema.jservices.model.dao.entities.IDao;
  * db-table
  * 
  * 
- * FIFIRM     Firmakode                                1    2     2         A   
- * FIKUFR     FRA KUNDENUMMER                          3   10     8   8   0 S   
- * FIKUTI     TIL KUNDENUMMER                         11   18     8   8   0 S   
- * FIKUNE     NESTE KUNDENR                           19   26     8   8   0 S   
- * 
  * 
  * @author Fredrik Möller
  * @date Dec 6, 2016
@@ -25,6 +20,7 @@ public class FirkuDao implements Serializable, IDao {
 	private String fikufr = "";
 	private String fikuti = "";
 	private String fikune = "";
+	private String fikufn = "";
 
 	public String getFifirm() {
 		return fifirm;
@@ -58,5 +54,12 @@ public class FirkuDao implements Serializable, IDao {
 		this.fikune = fikune;
 	}
 
-	
+	public String getFikufn() {
+		return fikufn;
+	}
+
+	public void setFikufn(String fikufn) {
+		this.fikufn = fikufn;
+	}
+
 }

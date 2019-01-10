@@ -25,4 +25,22 @@ public interface FirkuDaoServices extends IDaoServices {
 	 */
 	public String getFikune(StringBuffer errorStackTrace);
 	
+	/**
+	 * Retrieve the next available fikufn, and increment with one.
+	 * 
+	 * @param errorStackTrace
+	 * @return next valid fikufn as String, and incrementing with one, for next
+	 */
+	public String getFikufn(StringBuffer errorStackTrace);	
+	
+	/**
+	 * Check if it is valid to register invoice customer.
+	 * If FIKUFN is not 0, then it is ok.
+	 * 
+	 * @param errorStackTrace
+	 * @return true if FIKUFN is not 0, else false.
+	 */
+	public boolean invoiceCustomerEnabled(StringBuffer errorStackTrace);
+	
+	
 }

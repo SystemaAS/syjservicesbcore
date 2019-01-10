@@ -33,9 +33,13 @@ public class FirkuDaoServicesImpl implements FirkuDaoServices {
 		throw new RuntimeException("Not implemented");
 	}
 
+	@Override
+	public int update(Object dao, StringBuffer errorStackTrace) {
+		throw new RuntimeException("Not implemented");
+	}
 	
 	@Override
-	public IDao get(StringBuffer errorStackTrace) {
+public IDao get(StringBuffer errorStackTrace) {
 		IDao dao = null;
 		try {
 			StringBuilder sql = new StringBuilder();
@@ -59,17 +63,13 @@ public class FirkuDaoServicesImpl implements FirkuDaoServices {
 		throw new RuntimeException("Not implemented");
 	}	
 	
-	@Override
-	public int update(Object daoObj, StringBuffer errorStackTrace) {
+	private int updateFikune(Object daoObj, StringBuffer errorStackTrace) {
 		int retval = 0;
 		try {
 			FirkuDao dao = (FirkuDao) daoObj;
 			StringBuilder sql = new StringBuilder();
 			sql.append(" UPDATE firku SET fikune = ? ");
 
-/*			logger.info("dao="+ReflectionToStringBuilder.toString(dao));
-			logger.info("update::sql="+sql.toString());
-*/
 			retval = this.jdbcTemplate.update(sql.toString(),new Object[] { dao.getFikune()});
 
 		} catch (Exception e) {
@@ -83,32 +83,84 @@ public class FirkuDaoServicesImpl implements FirkuDaoServices {
 	}
 	
 
+	private int updateFikufn(Object daoObj, StringBuffer errorStackTrace) {
+		int retval = 0;
+		try {
+			FirkuDao dao = (FirkuDao) daoObj;
+			StringBuilder sql = new StringBuilder();
+			sql.append(" UPDATE firku SET fikufn = ? ");
+
+			retval = this.jdbcTemplate.update(sql.toString(),new Object[] { dao.getFikufn()});
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+
+		return retval;
+	}	
+	
+	
 	@Override
 	public int delete(Object dao, StringBuffer errorStackTrace) {
 		throw new RuntimeException("Not implemented");
 	}
-	
 
+	@Override
+	public boolean invoiceCustomerEnabled(StringBuffer errorStackTrace) {
+		FirkuDao existingDao = (FirkuDao) get(errorStackTrace);
+		int fikufn;
+		
+		fikufn = new Integer(existingDao.getFikufn());
+		
+		if( fikufn > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}	
+	
 	@Override
 	public String getFikune(StringBuffer errorStackTrace) {
 		String fikune;
 		int nextFikune;
 
 		FirkuDao existingDao = (FirkuDao) get(errorStackTrace);
+		
 		fikune = existingDao.getFikune();
 		nextFikune = new Integer(existingDao.getFikune()) + 1;
 
 		FirkuDao updateDao = SerializationUtils.clone(existingDao);
 		updateDao.setFikune(Integer.toString(nextFikune));
-		update(updateDao, errorStackTrace);
+		updateFikune(updateDao, errorStackTrace);
 		
 		return fikune;
 	}
 	
+	
+	@Override
+	public String getFikufn(StringBuffer errorStackTrace) {
+		String fikufn;
+		int nextFikufn;
+
+		FirkuDao existingDao = (FirkuDao) get(errorStackTrace);
+		fikufn = existingDao.getFikufn();
+		nextFikufn = new Integer(existingDao.getFikufn()) + 1;
+
+		FirkuDao updateDao = SerializationUtils.clone(existingDao);
+		updateDao.setFikufn(Integer.toString(nextFikufn));
+		updateFikufn(updateDao, errorStackTrace);
+		
+		return fikufn;
+	}	
+	
+	
 	private String getSELECT_FROM_CLAUSE(){
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" select fu.fifirm, fikufr, fikuti, fikune ");
+		sql.append(" select fu.fifirm, fikufr, fikuti, fikune, fikufn ");
 		sql.append(" FROM firku fu, firm f ");
 		sql.append(" WHERE fu.fifirm = f.fifirm ");
 		

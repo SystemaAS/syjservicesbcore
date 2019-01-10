@@ -10,21 +10,25 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServices;
 import no.systema.jservices.common.dao.Cum3lmDao;
+import no.systema.jservices.common.dao.FirkuDao;
 import no.systema.jservices.common.dao.ViskundeDao;
+import no.systema.jservices.common.dao.services.FirkuDaoService;
 import no.systema.jservices.common.dao.services.FirmvisDaoService;
 import no.systema.jservices.common.dao.services.KodtftDaoService;
 import no.systema.jservices.common.dao.services.KodtlikDaoService;
@@ -34,11 +38,9 @@ import no.systema.jservices.common.dao.services.ValufDaoService;
 import no.systema.jservices.common.dao.services.ViskundeDaoService;
 import no.systema.jservices.common.elma.proxy.EntryRequest;
 import no.systema.jservices.common.util.StringUtils;
-//rules
 import no.systema.jservices.controller.rules.SYCUNDFR_U;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundfDao;
-//import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.CundfDaoServices;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
@@ -58,7 +60,7 @@ import no.systema.jservices.model.dao.services.EdiiDaoServices;
  * 
  */
 
-@Controller
+@RestController
 public class JsonResponseOutputterController_CUNDF {
 	private static Logger logger = Logger.getLogger(JsonResponseOutputterController_CUNDF.class.getName());
 	
@@ -203,6 +205,9 @@ public class JsonResponseOutputterController_CUNDF {
 
             //rules
             
+            logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+            
+            
             SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,entryRequest,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
@@ -226,6 +231,7 @@ public class JsonResponseOutputterController_CUNDF {
 					        dmlRetval = cundfDaoServices.insert(dao, dbErrorStackTrace);
 
 					        manageVismaIntegration(dao, "INSERT");
+					        
 					        
 						} else if ("U".equals(mode)) {
 					        addCum3LmToDao(dao,m3m3,mllm );
@@ -278,10 +284,57 @@ public class JsonResponseOutputterController_CUNDF {
 		
 		return sb.toString();
 	}
+
 	
+	/**
+	 * Get info about if valid to register invoice customer
+	 * 
+	 * Example :
+	 * http://localhost:8080/syjservicesbcore/syjsSYCUNDFR_INVOICE?user=SYSTEMA
+	 */	
+	@RequestMapping(path = "/syjsSYCUNDFR_INVOICE", method = RequestMethod.GET)
+	public String getInvoiceCustomerAllowed(HttpSession session,
+									@RequestParam(value = "user", required = true) String user) {
+
+		checkUser(user);
+		StringBuffer errorStackTrace = new StringBuffer();
+        
+		logger.info("/syjsSYCUNDFR_INVOICE");
+		boolean enabled = firkuDaoServices.invoiceCustomerEnabled(errorStackTrace);
+		
+		session.invalidate();
+		
+		if (enabled) {
+			return "J";
+		} else {
+			return "N";
+		}
+		
+	}	
+	
+	/**
+	 * Get info about if valid to register invoice customer
+	 * 
+	 * Example :
+	 * http://localhost:8080/syjservicesbcore/syjsSYCUNDFR_FIRKU?user=SYSTEMA
+	 */	
+	@RequestMapping(path = "/syjsSYCUNDFR_FIRKU", method = RequestMethod.GET)
+	public FirkuDao getFirku(HttpSession session,
+									@RequestParam(value = "user", required = true) String user) {
+
+		checkUser(user);
+        
+		logger.info("/syjsSYCUNDFR_FIRKU");
+		FirkuDao dao = firkuDaoService.get();
+		
+		session.invalidate();
+			
+		return dao;
+		
+	}		
 	
 	private void manageVismaIntegration(CundfDao cundfDao, String dml) {
-		if (!hasVismaNetIntegration()) {
+		if (!hasVismaNetIntegration() || "I".equals(cundfDao.getAktkod())) {
 			return;
 		}
 		logger.info("manageVismaIntegration on dao="+cundfDao);
@@ -409,22 +462,39 @@ public class JsonResponseOutputterController_CUNDF {
 		if (firmList.size() == 1) {
 			firmDao = firmList.get(0);
 		} else {
-			logger.info("ERROR: Incorrect number of rows i Firma!");
+			logger.error("ERROR: Incorrect number of rows i Firma!");
 			throw new IllegalArgumentException("Incorrect number of rows i Firma!");
 		}
 
 		dao.setFirma(firmDao.getFifirm());
 		
 		if (dao.getKundnr() != null && dao.getKundnr().length() == 0) {
-			String kundNr = firkuDaoServices.getFikune(dbErrorStackTrace);
+			String kundNr;
+
+			if(dao.getKundetype().equals("A")) { //A=Adressekunde
+				kundNr = firkuDaoServices.getFikune(dbErrorStackTrace);
+			} else { //F=Fakturakunde
+				if (!firkuDaoServices.invoiceCustomerEnabled(dbErrorStackTrace)) {
+					logger.error("ERROR: Not allowed to create invoice customer!");
+					throw new IllegalArgumentException("Not allowed to create invoice customer!");
+				}
+				kundNr = String.valueOf(firkuDaoServices.getFikufn(dbErrorStackTrace));
+			}
+
 			dao.setKundnr(kundNr);
+		
 		}
 		
 		dao.setAktkod("I");  //Always set to Adressekunde when new.
 		
 	}
 
-
+	private void checkUser(String user) {
+		if (bridfDaoServices.findNameById(user) == null) {
+			throw new RuntimeException("ERROR: parameter, user, is not valid!");
+		}
+	}	
+	
 	//----------------
 	//WIRED SERVICES
 	//----------------
@@ -505,6 +575,9 @@ public class JsonResponseOutputterController_CUNDF {
 	
 	@Autowired
 	EntryRequest entryRequest;
+	
+	@Autowired
+	FirkuDaoService firkuDaoService;
 	
 }
 
