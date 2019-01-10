@@ -203,6 +203,8 @@ public class JsonResponseOutputterController_CUNDF {
             String mllm = request.getParameter("mllm");
             String m3m3 = request.getParameter("m3m3");
 
+            logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+            
             //rules
             
             SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,entryRequest,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
@@ -470,19 +472,24 @@ public class JsonResponseOutputterController_CUNDF {
 
 			if(dao.getKundetype().equals("A")) { //A=Adressekunde
 				kundNr = firkuDaoServices.getFikune(dbErrorStackTrace);
-			} else { //F=Fakturakunde
+				dao.setAktkod("I");  //Always set to Adressekunde when new.
+			} 
+			
+			else if (dao.getKundetype().equals("F")) { //F=Fakturakunde
+				kundNr = String.valueOf(firkuDaoServices.getFikufn(dbErrorStackTrace));
 				if (!firkuDaoServices.invoiceCustomerEnabled(dbErrorStackTrace)) {
 					logger.error("ERROR: Not allowed to create invoice customer!");
 					throw new IllegalArgumentException("Not allowed to create invoice customer!");
 				}
-				kundNr = String.valueOf(firkuDaoServices.getFikufn(dbErrorStackTrace));
+			} else { //something wrong
+				throw new RuntimeException("Kundetype not valid!, kundetype="+dao.getKundetype());
 			}
+			
 
 			dao.setKundnr(kundNr);
 		
 		}
 		
-		dao.setAktkod("I");  //Always set to Adressekunde when new.
 		
 	}
 
