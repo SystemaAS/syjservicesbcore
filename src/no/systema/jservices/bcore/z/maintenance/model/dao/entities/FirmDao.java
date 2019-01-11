@@ -340,6 +340,12 @@ public class FirmDao implements Serializable, IDao {
 	public String getFikunePropertyName (){ return "fikune"; }
 	public void setFikune (String value){ this.fikune = value;   }   
 	public String getFikune (){ return this.fikune;   } 
+
+	private String fikufn = "";  
+	public String getFikufnPropertyName (){ return "fikufn"; }
+	public void setFikufn (String value){ this.fikufn = value;   }   
+	public String getFikufn (){ return this.fikufn;   } 	
+	
 	//END FIRKU
 	
 	//--------------

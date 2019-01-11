@@ -314,10 +314,10 @@ public class FirmDaoServicesImpl implements FirmDaoServices {
 			FirmDao dao = (FirmDao)daoObj;
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
-			sql.append(" UPDATE firku SET fikufr = ?, fikuti = ?, fikune = ?  ");
+			sql.append(" UPDATE firku SET fikufr = ?, fikuti = ?, fikune = ?, fikufn = ?  ");
 			sql.append(" WHERE fifirm = ? ");
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getFikufr(), dao.getFikuti(), dao.getFikune(),
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getFikufr(), dao.getFikuti(), dao.getFikune(),dao.getFikufn(),
 				//WHERE
 				dao.getFifirm() } );
 		}catch(Exception e){
