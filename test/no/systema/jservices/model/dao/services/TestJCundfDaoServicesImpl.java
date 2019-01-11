@@ -1,7 +1,11 @@
 package no.systema.jservices.model.dao.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -32,6 +36,27 @@ public class TestJCundfDaoServicesImpl {
 		kundnr = "222";
 		firma = "SY";
 	}
+	
+	@Test
+	public final void testFindByName() {
+		String qKnavn = "FISK";
+		
+		List list = cundfDaoServices.findByName(qKnavn,errorStackTrace);
+		
+	}
+	
+	@Test
+	public final void testFetchFirstRowsOnly() {
+		List list = cundfDaoServices.findFetchFirstRowsOnly(2, errorStackTrace);
+
+		list.forEach(dao -> {
+			System.out.println("dao="+ReflectionToStringBuilder.toString(dao));
+		});
+		
+		
+	}	
+	
+	
 	
 	//@Test
 	public final void testCreate() {

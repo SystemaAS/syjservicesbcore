@@ -209,6 +209,19 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		return cundfDaoList;
 	}
 
+
+	@Override
+	public List findFetchFirstRowsOnly(int nrOfRows, StringBuffer errorStackTrace) {
+		List<CundfDao> cundfDaoList = new ArrayList<CundfDao>();
+
+		StringBuffer sql = new StringBuffer();
+		sql.append(this.getSELECT_FROM_CLAUSE());
+		sql.append(" ORDER BY kundnr ");
+		sql.append(" FETCH FIRST "+nrOfRows+" ROWS ONLY ");
+		cundfDaoList = this.jdbcTemplate.query( sql.toString(), new GenericObjectMapper(new CundfDao()));
+		
+		return cundfDaoList;
+	}		
 	
 	@Override
 	public int update(Object daoObj, StringBuffer errorStackTrace) {
@@ -522,8 +535,8 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	
 	private Cum3lmDaoService cum3lmDaoService = null;                                                            
 	public void setCum3lmDaoService( Cum3lmDaoService cum3lmDaoService) {this.cum3lmDaoService = cum3lmDaoService;}          
-	public Cum3lmDaoService getCum3lmDaoService() {return this.cum3lmDaoService;}		
-	
+	public Cum3lmDaoService getCum3lmDaoService() {return this.cum3lmDaoService;}
+
 	//TODO: Add more children...
 
 

@@ -1,24 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
-<!--  
-   - data layer components  
- -->
+
 <beans>  
-  <!--///////////////////
-      DAO-Service layer
-     ///////////////////
-  -->
-  <!-- Application User 
-   <bean id="applicationUserDao" class="no.logiq.webedidemo.model.dao.ApplicationUserDaoImpl" singleton="false">
-      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
-  </bean>
-   <bean id="documentDeliveryDao" class="no.logiq.webedidemo.model.dao.DocumentDeliveryDaoImpl" singleton="false">
-      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
-  </bean>
-  -->
-  <!-- Domain Dao:s Services  -->
+
   <bean id="dbConnectionTesterDaoServices" class="no.systema.jservices.model.dao.services.DbConnectionTesterDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="cum3lmDaoService" class="no.systema.jservices.common.dao.services.Cum3lmDaoServiceImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>  
   <bean id="cundfDaoServices" class="no.systema.jservices.model.dao.services.CundfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
        <property name="transactionTemplate"><ref bean="transactionTemplate"/></property>

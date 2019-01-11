@@ -6,6 +6,7 @@ import no.systema.jservices.common.dto.ExludeMapping;
 
 public class CundfDao implements Serializable, IDao {
 
+	@ExludeMapping
 	private String kundetype = "";                                
 	public void setKundetype (String value){ this.kundetype = value;   }   
 	public String getKundetype (){ return this.kundetype;   }    	

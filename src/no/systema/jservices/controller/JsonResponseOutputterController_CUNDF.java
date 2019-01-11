@@ -107,14 +107,14 @@ public class JsonResponseOutputterController_CUNDF {
 				//do SELECT
 	            logger.info("A");
 				if(dao.getKundnr()!=null && !"".equals(dao.getKundnr())){
-					//logger.info("B");
+					logger.info("cundfDaoServices.findById");
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
 					}else{
 						list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
 					}
 				}else if (dao.getKnavn()!=null && !"".equals(dao.getKnavn())){
-					//logger.info("C");
+					logger.info("cundfDaoServices.findByName");
 					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
 						list = this.cundfDaoServices.findByName(dao.getKnavn(), dao.getFirma(), dbErrorStackTrace);
 					}else{
@@ -130,7 +130,9 @@ public class JsonResponseOutputterController_CUNDF {
 						list = this.cundfDaoServices.findByOrgnr(dao.getSyrg(), dbErrorStackTrace);
 					}
 				}else{
-					list = null;
+					
+					list = this.cundfDaoServices.findFetchFirstRowsOnly(100, dbErrorStackTrace);
+					
 				}
 				//process result
 				if (list!=null){

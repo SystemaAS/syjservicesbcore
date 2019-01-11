@@ -29,4 +29,12 @@ public interface CundfDaoServices extends IDaoServices {
 	 */
 	public int cascadeDelete(Object daoObj, StringBuffer errorStackTrace);
 	
+	/**Fetch first rows only
+	 * 
+	 * @param nrOfRows
+	 * @param errorStackTrace
+	 * @return List CundfDao
+	 */
+	public List findFetchFirstRowsOnly(int nrOfRows, StringBuffer errorStackTrace);
+	
 }
