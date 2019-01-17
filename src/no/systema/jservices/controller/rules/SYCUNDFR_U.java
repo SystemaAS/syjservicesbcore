@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import no.systema.jservices.common.dao.KodtlikDao;
 import no.systema.jservices.common.dao.ValufDao;
+import no.systema.jservices.common.dao.services.FirkuDaoService;
 import no.systema.jservices.common.dao.services.KodtftDaoService;
 import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
@@ -40,12 +41,14 @@ public class SYCUNDFR_U {
 	private KodtftDaoService kodtftDaoService = null;
 	private EdiiDaoServices ediiDaoServices = null;
 	private EntryRequest entryRequest = null;
+	private FirkuDaoService firkuDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 	
 
-	public SYCUNDFR_U(HttpServletRequest request, EntryRequest entryRequest, EdiiDaoServices ediiDaoServices, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(FirkuDaoService firkuDaoService, HttpServletRequest request, EntryRequest entryRequest, EdiiDaoServices ediiDaoServices, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		messageSourceHelper = new MessageSourceHelper(request);
+		this.firkuDaoService = firkuDaoService;
 		this.entryRequest = entryRequest;
 		this.ediiDaoServices = ediiDaoServices;
 		this.cundfDaoServices = cundfDaoServices;
@@ -125,8 +128,18 @@ public class SYCUNDFR_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr06X", new Object[] { dao.getSyrg()}), "error", dbErrors));
 					retval = false;					
 				}					
+	
 				
-				
+				if (dao.getKundetype() != null) { // New
+					if ("F".equals(dao.getKundetype()) && !StringUtils.hasValue(dao.getBetbet())) {
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
+						retval = false;
+					}
+				} else if (!firkuDaoService.isAdressCustomer(new Integer(dao.getKundnr())) && !StringUtils.hasValue(dao.getBetbet())) { // Update
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
+					retval = false;
+				}
+
 			} else{ 
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 						messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.mandatory", null), "error", dbErrors));

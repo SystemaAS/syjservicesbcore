@@ -209,7 +209,7 @@ public class JsonResponseOutputterController_CUNDF {
             
             //rules
             
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U(request,entryRequest,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(firkuDaoService,request,entryRequest,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
