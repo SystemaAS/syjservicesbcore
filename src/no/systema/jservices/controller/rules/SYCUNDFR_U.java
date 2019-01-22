@@ -5,16 +5,16 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import no.systema.jservices.common.dao.KodtlikDao;
 import no.systema.jservices.common.dao.ValufDao;
+import no.systema.jservices.common.dao.VispnrDao;
 import no.systema.jservices.common.dao.services.FirkuDaoService;
 import no.systema.jservices.common.dao.services.KodtftDaoService;
 import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
 import no.systema.jservices.common.dao.services.KodtotyDaoService;
 import no.systema.jservices.common.dao.services.ValufDaoService;
+import no.systema.jservices.common.dao.services.VispnrDaoService;
 import no.systema.jservices.common.elma.entities.Entry;
 import no.systema.jservices.common.elma.proxy.EntryRequest;
 import no.systema.jservices.common.util.StringUtils;
@@ -42,12 +42,14 @@ public class SYCUNDFR_U {
 	private EdiiDaoServices ediiDaoServices = null;
 	private EntryRequest entryRequest = null;
 	private FirkuDaoService firkuDaoService = null;
+	private VispnrDaoService vispnrDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 	
 
-	public SYCUNDFR_U(FirkuDaoService firkuDaoService, HttpServletRequest request, EntryRequest entryRequest, EdiiDaoServices ediiDaoServices, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(VispnrDaoService vispnrDaoService, FirkuDaoService firkuDaoService, HttpServletRequest request, EntryRequest entryRequest, EdiiDaoServices ediiDaoServices, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		messageSourceHelper = new MessageSourceHelper(request);
+		this.vispnrDaoService = vispnrDaoService;
 		this.firkuDaoService = firkuDaoService;
 		this.entryRequest = entryRequest;
 		this.ediiDaoServices = ediiDaoServices;
@@ -89,6 +91,28 @@ public class SYCUNDFR_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syland", new Object[] { dao.getSyland()}), "error", dbErrors));
 					retval = false;					
 				}	
+				
+				//Postnr (norsk)
+				if ( StringUtils.hasValue(dao.getSyland())  && StringUtils.hasValue(dao.getPostnr()) ) {
+					if (dao.getSyland().equals("NO") && landKodeExistInVispnr(dao.getSyland())) {
+						if ( !existInVispnr(dao.getSyland(), dao.getPostnr()) ) {
+							errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+									messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.postnr", new Object[] { dao.getPostnr(), dao.getSyland()}), "error", dbErrors));
+							retval = false;							
+						}
+					}					
+				}	
+
+				//Postnr (utlendsk)
+				if ( StringUtils.hasValue(dao.getSyland())  && StringUtils.hasValue(dao.getSypoge()) ) {
+					if (landKodeExistInVispnr(dao.getSyland())) {
+						if ( !existInVispnr(dao.getSyland(), dao.getSypoge()) ) {
+							errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+									messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.sypoge", new Object[] { dao.getSypoge(), dao.getSyland()}), "error", dbErrors));
+							retval = false;							
+						}
+					}					
+				}		
 				
 				if ( (dao.getSyopdt() != null  && !"".equals(dao.getSyopdt()) ) && !existInKodtoty(dao.getSyopdt())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -291,7 +315,32 @@ public class SYCUNDFR_U {
 		} else {
 			return true;
 		}
-	}	
+	}
+	
+	//TODO add check only if landkod exist in vispnr
+	private boolean existInVispnr(String syland, String postnr) {
+		VispnrDao qDao = new VispnrDao();
+		qDao.setVilk(syland);
+		qDao.setViponr(postnr);
+		
+		boolean exists = vispnrDaoService.exist(qDao);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	private boolean landKodeExistInVispnr(String syland) {
+		boolean exists = vispnrDaoService.landKodeExist(syland);
+		if (!exists) {
+			return false;
+		} else {
+			return true;
+		}	
+		
+	}
+	
 
 	private boolean existInKodtft(String syfr03) {
 		boolean exists = kodtftDaoService.kfttypExist(syfr03);
