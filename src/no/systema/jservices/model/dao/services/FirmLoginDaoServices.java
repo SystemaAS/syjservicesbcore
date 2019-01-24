@@ -9,5 +9,6 @@ import java.util.*;
  */
 public interface FirmLoginDaoServices {
 	public String getCompanyCode();
+	public String getTradevisionFlag();
 	public List getList();
 }

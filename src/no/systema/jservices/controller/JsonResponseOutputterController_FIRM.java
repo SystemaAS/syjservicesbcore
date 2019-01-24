@@ -96,13 +96,18 @@ public class JsonResponseOutputterController_FIRM {
 	            binder.bind(request);
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            String companyCode = null;
+	            String tradevisionFlag = null;
 				//do SELECT
 				logger.info("Before SELECT ...");
 				companyCode  = this.firmDaoServices.getCompanyCode();
+				tradevisionFlag = this.firmDaoServices.getTradevisionFlag();
 				//process result
 				if (companyCode!=null){
 					//write the final JSON output
-					sb.append(jsonWriter.setJsonResult_Common_GetField("fifirm", companyCode));
+					//sb.append(jsonWriter.setJsonResult_Common_GetField("fifirm", companyCode));
+					//if(tradevisionFlag==null){ tradevisionFlag = ""; }
+					sb.append(jsonWriter.setJsonResult_Common_GetField("fifirm", companyCode, "fitdvi", tradevisionFlag));
+					
 				}else{
 					//write JSON error output
 					errMsg = "ERROR on SELECT: list is NULL?  Try to check: <DaoServices>.getCompanyCode";

@@ -42,6 +42,21 @@ public class FirmLoginDaoServicesImpl implements FirmLoginDaoServices {
 		}
 		return name;
 	}
+	/**
+	 * 
+	 * @return
+	 */
+	public String getTradevisionFlag(){
+		String sql = "SELECT fitdvi FROM firm ";
+		String name = null;
+		try{
+			name = (String)jdbcTemplate.queryForObject( sql, String.class);
+			
+		}catch(Exception e){
+			logger.info(e.toString());
+		}
+		return name;
+	}
 	
 	
 	

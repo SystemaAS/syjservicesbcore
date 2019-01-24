@@ -12,7 +12,7 @@ import no.systema.jservices.model.dao.entities.IDao;
 
 import no.systema.main.util.JsonSpecialCharactersManager;
 import no.systema.main.util.constants.JsonConstants;
-
+import no.systema.main.util.StringManager;
 /**
  * JSON outputter
  * 
@@ -23,7 +23,7 @@ import no.systema.main.util.constants.JsonConstants;
 public class JsonResponseWriter {
 	private static JsonSpecialCharactersManager jsonFixMgr = new JsonSpecialCharactersManager();
 	private static Logger logger = Logger.getLogger(JsonResponseWriter.class.getName());
-	
+	private StringManager strMgr = new StringManager();
 	/**
 	 * 
 	 * @param user
@@ -79,6 +79,43 @@ public class JsonResponseWriter {
 			sb.append(JsonConstants.JSON_CLOSE_LIST_RECORD);
 
 		}
+		sb.append(JsonConstants.JSON_CLOSE_LIST);
+		sb.append(JsonConstants.JSON_END);
+		
+		return sb.toString();
+	}
+	/**
+	 * 
+	 * @param field
+	 * @param fieldValue
+	 * @param field2
+	 * @param fieldValue2
+	 * @return
+	 */
+	public String setJsonResult_Common_GetField(String field, String fieldValue, String field2, String fieldValue2 ){
+		StringBuffer sb = new StringBuffer();
+		//build the return JSON
+		sb.append(JsonConstants.JSON_START);
+		sb.append(this.setFieldQuotes("user") + ":" + this.setFieldQuotes("none") + ",");
+		sb.append(this.setFieldQuotes("errMsg") + ":" + this.setFieldQuotes("") + ",");
+		sb.append(this.setFieldQuotes("list") + ":");
+		sb.append(JsonConstants.JSON_OPEN_LIST);
+		if(strMgr.isNotNull(fieldValue)){
+			sb.append(JsonConstants.JSON_OPEN_LIST_RECORD);
+			//doIt
+			sb.append(JsonConstants.JSON_QUOTES + field + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + this.jsonFixMgr.cleanRecord(fieldValue) + JsonConstants.JSON_QUOTES);
+			
+			//write ALWAYS tradevision flag value
+			sb.append(",");
+			//doIt
+			sb.append(JsonConstants.JSON_QUOTES + field2 + JsonConstants.JSON_QUOTES + ":" + JsonConstants.JSON_QUOTES + this.jsonFixMgr.cleanRecord(fieldValue2) + JsonConstants.JSON_QUOTES);
+		
+			//close the list
+			sb.append(JsonConstants.JSON_CLOSE_LIST_RECORD);
+
+		}
+		
+		
 		sb.append(JsonConstants.JSON_CLOSE_LIST);
 		sb.append(JsonConstants.JSON_END);
 		
