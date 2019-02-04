@@ -15,12 +15,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.FirmDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
@@ -38,6 +38,7 @@ import no.systema.jservices.common.dao.services.ValufDaoService;
 import no.systema.jservices.common.dao.services.ViskundeDaoService;
 import no.systema.jservices.common.dao.services.VispnrDaoService;
 import no.systema.jservices.common.elma.proxy.EntryRequest;
+import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.controller.rules.SYCUNDFR_U;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -61,7 +62,7 @@ import no.systema.jservices.model.dao.services.EdiiDaoServices;
  * 
  */
 
-@RestController
+@Controller
 public class JsonResponseOutputterController_CUNDF {
 	private static Logger logger = Logger.getLogger(JsonResponseOutputterController_CUNDF.class.getName());
 	
@@ -295,6 +296,7 @@ public class JsonResponseOutputterController_CUNDF {
 	 * http://localhost:8080/syjservicesbcore/syjsSYCUNDFR_INVOICE?user=SYSTEMA
 	 */	
 	@RequestMapping(path = "/syjsSYCUNDFR_INVOICE", method = RequestMethod.GET)
+	@ResponseBody
 	public String getInvoiceCustomerAllowed(HttpSession session,
 									@RequestParam(value = "user", required = true) String user) {
 
@@ -321,17 +323,21 @@ public class JsonResponseOutputterController_CUNDF {
 	 * http://localhost:8080/syjservicesbcore/syjsSYCUNDFR_FIRKU?user=SYSTEMA
 	 */	
 	@RequestMapping(path = "/syjsSYCUNDFR_FIRKU", method = RequestMethod.GET)
-	public FirkuDao getFirku(HttpSession session,
+	@ResponseBody
+	public String getFirku(HttpSession session,
 									@RequestParam(value = "user", required = true) String user) {
 
 		checkUser(user);
-        
+   
 		logger.info("/syjsSYCUNDFR_FIRKU");
+		JsonResponseWriter2<FirkuDao> jsonWriter2 = new JsonResponseWriter2<FirkuDao>();
 		FirkuDao dao = firkuDaoService.get();
-		
+
+		StringBuilder sb = new StringBuilder(jsonWriter2.setJsonResult_Common_GetComposite(user, dao));
+
 		session.invalidate();
 			
-		return dao;
+		return sb.toString();
 		
 	}		
 	
