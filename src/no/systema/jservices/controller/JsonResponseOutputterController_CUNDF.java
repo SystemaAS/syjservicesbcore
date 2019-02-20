@@ -237,11 +237,19 @@ public class JsonResponseOutputterController_CUNDF {
 					        
 					        
 						} else if ("U".equals(mode)) {
-					        addCum3LmToDao(dao,m3m3,mllm );
+							logger.info("OtDt1");
+							
+							addCum3LmToDao(dao,m3m3,mllm );
 
+							logger.info("OtDt2");						
+							
 					        dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
+			
+							logger.info("OtDt3");
 					        
 					        manageVismaIntegration(dao, "UPDATE");
+					        
+							logger.info("OtDt4");
 					        
 						}
 					} else {
@@ -280,7 +288,8 @@ public class JsonResponseOutputterController_CUNDF {
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
-			logger.error(sb);
+			logger.info(sb);
+			logger.error(":::ERROR:::",e);
 			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
 		session.invalidate();

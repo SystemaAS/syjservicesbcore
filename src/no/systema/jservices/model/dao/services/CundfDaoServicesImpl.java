@@ -242,6 +242,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 				@Override
 				protected void doInTransactionWithoutResult(TransactionStatus ts) {
 					try {
+						logger.info("FrMo1");
 						//CUNDF
 						jdbcTemplate.update( sql.toString(), new Object[] { 
 								dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
@@ -255,6 +256,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 								dao.getKundnr(),dao.getFirma()
 								} );
 						
+						logger.info("FrMo2");
 						//CUM3LM
 						if (dao.getCum3lmDao() != null) {
 							boolean exist = cum3lmDaoService.exist(dao.getCum3lmDao());
@@ -264,9 +266,11 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 								cum3lmDaoService.create(dao.getCum3lmDao());
 							}
 						}
+						logger.info("FrMo3");
 
 					} catch (Exception e) {
 						logger.info("Error: setting update() to rollback only.");
+						logger.error("ERROR:"+e);
 						ts.setRollbackOnly();
 					}
 				}
@@ -274,7 +278,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			e.printStackTrace();
-			logger.info(e);
+			logger.error(":::ERROR:::"+e);
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
 		}	
