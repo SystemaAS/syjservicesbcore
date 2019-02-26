@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
+import no.systema.jservices.common.util.EmailValidator;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.common.values.FasteKoder;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -27,6 +28,7 @@ public class CUNDC_U {
 	private CundcDaoServices cundcDaoServices = null;
 	private KofastDaoServices kofastDaoServices = null;
 	private EdiiDaoServices ediiDaoServices = null;
+	private EmailValidator emailValidator = new EmailValidator();
 	
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
@@ -60,6 +62,16 @@ public class CUNDC_U {
 						errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 								messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.ctype", new Object[] { dto.getCtype() }), "error", dbErrors));
 						retval = false;
+					}
+				}
+				// Check valid mail (if ctype is prefixed with *)
+				if (StringUtils.hasValue(dto.getCemail())) {
+					if (StringUtils.hasValue(dto.getCtype())) {
+						if (dto.getCtype().startsWith("*") && !validEmail(dto.getCemail())) {
+							errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+									messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.email", new Object[] { dto.getCemail() }), "error", dbErrors));
+							retval = false;
+						}
 					}
 				}
 				//If ctype = EMMA-XML, 3 mandatory fields, cmobil, cfax, cphone = Shapeshifters
@@ -108,6 +120,14 @@ public class CUNDC_U {
 	}
 
 
+
+	private boolean validEmail(String cemail) {
+		if (emailValidator.validateEmail(cemail)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	private boolean existInEdii(String inex, String inid) {
 		boolean exists = false;
