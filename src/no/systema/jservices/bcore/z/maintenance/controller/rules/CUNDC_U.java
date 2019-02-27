@@ -125,6 +125,14 @@ public class CUNDC_U {
 		if (emailValidator.validateEmail(cemail)) {
 			return true;
 		} else {
+			//Special case 1
+			if(cemail.equals("@")) {
+				return true;
+			}
+			//Special case 2
+			if(cemail.equals("@user")) {
+				return true;
+			}
 			return false;
 		}
 	}
