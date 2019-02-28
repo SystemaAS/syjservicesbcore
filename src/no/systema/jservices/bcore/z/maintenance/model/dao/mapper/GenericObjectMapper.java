@@ -56,7 +56,7 @@ public class GenericObjectMapper implements RowMapper {
 					field.set(dao, rs.getString(name));
 				} catch (Exception e) {
 					// Usually when no column matches the JavaBean property...
-					logger.info(e.getMessage() + e.toString() + "name="+name);
+					//logger.info(e.getMessage() + e.toString() + "name="+name);
 					continue;
 				}
 			}

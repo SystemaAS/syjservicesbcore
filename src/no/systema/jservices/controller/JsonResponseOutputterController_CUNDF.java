@@ -189,15 +189,17 @@ public class JsonResponseOutputterController_CUNDF {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();	
 
+		StringBuffer dbErrorStackTrace = new StringBuffer();
+        String errMsg = "";
+		String status = "ok";
+		String userName = null;
+		
 		try{
 			logger.info("Inside syjsSYCUNDFR_U.do");
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
 			//Check ALWAYS user in BRIDF
-            String userName = this.bridfDaoServices.findNameById(user);
-            String errMsg = "";
-			String status = "ok";
-			StringBuffer dbErrorStackTrace = new StringBuffer();
+            userName = this.bridfDaoServices.findNameById(user);
 			
 			//bind attributes is any
 			CundfDao dao = new CundfDao();
@@ -237,19 +239,11 @@ public class JsonResponseOutputterController_CUNDF {
 					        
 					        
 						} else if ("U".equals(mode)) {
-							logger.info("OtDt1");
-							
 							addCum3LmToDao(dao,m3m3,mllm );
-
-							logger.info("OtDt2");						
 							
 					        dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
 			
-							logger.info("OtDt3");
-					        
 					        manageVismaIntegration(dao, "UPDATE");
-					        
-							logger.info("OtDt4");
 					        
 						}
 					} else {
@@ -290,11 +284,15 @@ public class JsonResponseOutputterController_CUNDF {
 			e.printStackTrace(printWriter);
 			logger.info(sb);
 			logger.error(":::ERROR:::",e);
-			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+			errMsg = "ERROR on ADD/UPDATE:  error="+e.getMessage();
+			status = "error";
+			sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+
 		}
+
 		session.invalidate();
-		
 		return sb.toString();
+
 	}
 
 	
@@ -443,6 +441,7 @@ public class JsonResponseOutputterController_CUNDF {
 
 
 	private boolean hasVismaNetIntegration() {
+		logger.info(":::hasVismaNetIntegration:::");
 		boolean hasVismaNet = false;
 
 		if (firmvisDaoService.countAll() > 0) {
@@ -453,6 +452,7 @@ public class JsonResponseOutputterController_CUNDF {
 	}
 
 	private void addCum3LmToDao(CundfDao dao, String m3m3, String mllm) {
+		logger.info(":::addCum3LmToDao:::");
 		Cum3lmDao cum3lmDao = new Cum3lmDao();
 		cum3lmDao.setM3kund(Integer.parseInt(dao.getKundnr()));
 		cum3lmDao.setM3firm(dao.getFirma());
@@ -467,6 +467,7 @@ public class JsonResponseOutputterController_CUNDF {
 	}
 
 	private void addFieldsToDaoWhenNew(CundfDao dao, StringBuffer dbErrorStackTrace) {
+		logger.info(":::addFieldsToDaoWhenNew:::");
 		int knavnLength = dao.getKnavn().length();
 		if (knavnLength > 10) {
 			dao.setSonavn(dao.getKnavn().substring(0, 10));
@@ -486,15 +487,16 @@ public class JsonResponseOutputterController_CUNDF {
 		dao.setFirma(firmDao.getFifirm());
 		
 		if (dao.getKundnr() != null && dao.getKundnr().length() == 0) {
-			String kundNr;
+			String kundNr = null;
 
-			if(dao.getKundetype() ==  null || dao.getKundetype().endsWith("") || dao.getKundetype().equals("A")) { //A=Adressekunde
+			if(dao.getKundetype() ==  null || dao.getKundetype().length() == 0 || dao.getKundetype().equals("A")) { //A=Adressekunde
 				kundNr = firkuDaoServices.getFikune(dbErrorStackTrace);
+				logger.info("kundnr from FIKUNE, kundnr="+kundNr);
 				dao.setAktkod("I");  //Always set to Adressekunde when new.
 			} 
-			
 			else if (dao.getKundetype().equals("F")) { //F=Fakturakunde
 				kundNr = String.valueOf(firkuDaoServices.getFikufn(dbErrorStackTrace));
+				logger.info("kundnr from FIKUNE, kundnr="+kundNr);
 				if (!firkuDaoServices.invoiceCustomerEnabled(dbErrorStackTrace)) {
 					logger.error("ERROR: Not allowed to create invoice customer!");
 					throw new IllegalArgumentException("Not allowed to create invoice customer!");
