@@ -488,7 +488,7 @@ public class JsonResponseOutputterController_CUNDF {
 		if (dao.getKundnr() != null && dao.getKundnr().length() == 0) {
 			String kundNr;
 
-			if(dao.getKundetype().equals("A")) { //A=Adressekunde
+			if(dao.getKundetype() ==  null || dao.getKundetype().endsWith("") || dao.getKundetype().equals("A")) { //A=Adressekunde
 				kundNr = firkuDaoServices.getFikune(dbErrorStackTrace);
 				dao.setAktkod("I");  //Always set to Adressekunde when new.
 			} 
