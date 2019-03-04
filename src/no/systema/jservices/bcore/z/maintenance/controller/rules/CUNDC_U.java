@@ -51,7 +51,7 @@ public class CUNDC_U {
 			if ( (dto.getCfirma() != null && !"".equals(dto.getCfirma())) && (dto.getCcompn() != null && !"".equals(dto.getCcompn()))
 					&& (dto.getCconta() != null && !"".equals(dto.getCconta())) && (dto.getCtype() != null && !"".equals(dto.getCtype())) ) {
 				// Check duplicate
-				if ("A".equals(mode)  &&  existInCundc(dto.getCfirma(), dto.getCcompn(), dto.getCconta(), dto.getCtype())) {
+				if ( ( "A".equals(mode) || ( "U".equals(mode)) )  &&  existInCundc(dto.getCfirma(), dto.getCcompn(), dto.getCconta(), dto.getCtype())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dto.getCconta(), dto.getCcompn() }), "error", dbErrors));
 					retval = false;
@@ -150,8 +150,7 @@ public class CUNDC_U {
 		boolean retval = true;
 		if ((user != null && !"".equals(user)) && (mode != null && !"".equals(mode))) {
 			// check dao
-			if ( (dto.getCfirma() != null && !"".equals(dto.getCfirma())) && (dto.getCcompn() != null && !"".equals(dto.getCcompn()))
-					&& (dto.getCconta() != null && !"".equals(dto.getCconta())) && (dto.getCtype() != null && !"".equals(dto.getCtype())) ) {
+			if ( StringUtils.hasValue(dto.getCfirma()) && StringUtils.hasValue(dto.getCcompn()) && StringUtils.hasValue(dto.getCconta()) && dto.getCtype() != null ) {
 				// OK
 			} else {
 				retval = false;

@@ -11,6 +11,7 @@ public class CundcDao implements Serializable, IDao {
 	private String cconta = "";  //key
 	private String ccontaorg = "";
 	private String ctype =""; //key
+	private String ctypeorg ="";
 	private String cphone = "";
 	private String cmobil = "";
 	private String cfax = "";
@@ -232,6 +233,12 @@ public class CundcDao implements Serializable, IDao {
 	}
 	public void setArkvedkDao(ArkvedkDao arkvedkDao) {
 		this.arkvedkDao = arkvedkDao;
+	}
+	public String getCtypeorg() {
+		return ctypeorg;
+	}
+	public void setCtypeorg(String ctypeorg) {
+		this.ctypeorg = ctypeorg;
 	}
 	
 	

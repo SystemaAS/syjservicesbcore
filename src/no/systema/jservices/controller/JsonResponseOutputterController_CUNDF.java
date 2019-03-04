@@ -209,7 +209,9 @@ public class JsonResponseOutputterController_CUNDF {
             String mllm = request.getParameter("mllm");
             String m3m3 = request.getParameter("m3m3");
 
-            logger.info("dao="+ReflectionToStringBuilder.toString(dao));
+            logger.info("DAO="+ReflectionToStringBuilder.toString(dao));
+            logger.info("dao.getSonavn()="+dao.getSonavn());
+
             
             //rules
             
@@ -468,12 +470,6 @@ public class JsonResponseOutputterController_CUNDF {
 
 	private void addFieldsToDaoWhenNew(CundfDao dao, StringBuffer dbErrorStackTrace) {
 		logger.info(":::addFieldsToDaoWhenNew:::");
-		int knavnLength = dao.getKnavn().length();
-		if (knavnLength > 10) {
-			dao.setSonavn(dao.getKnavn().substring(0, 10));
-		} else {
-			dao.setSonavn(dao.getKnavn());
-		}
 
 		List<FirmDao> firmList = firmDaoServices.getList(dbErrorStackTrace);
 		FirmDao firmDao = null;

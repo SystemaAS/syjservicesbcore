@@ -64,11 +64,24 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" and ccompn = ? ");
 			sql.append(" and cfirma = ? ");
 			sql.append(" and cconta = ? ");
-			sql.append(" and ctype = ? ");
+			if ("".equals(queryDao.getCtype())) {
+				queryDao.setCtype(null);
+				sql.append(" and NULLIF(ctype, '') IS NULL ");			
+				dao = (CundcDao) this.jdbcTemplate.queryForObject(sql.toString(),
+						new Object[] { queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta() },
+						new GenericObjectMapper(new CundcDao()));
+			
+			} else {
+				sql.append(" and ctype = ? ");
+				dao = (CundcDao) this.jdbcTemplate.queryForObject(sql.toString(),
+						new Object[] { queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta(), queryDao.getCtype() },
+						new GenericObjectMapper(new CundcDao()));
+			
+			} 
 
-			dao = (CundcDao) this.jdbcTemplate.queryForObject(sql.toString(),
-					new Object[] { queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta(), queryDao.getCtype() },
-					new GenericObjectMapper(new CundcDao()));
+
+			logger.info("sql="+sql);
+			logger.info("queryDao="+ReflectionToStringBuilder.toString(queryDao));
 
 			// If exist in Kofast, it means NOT normal Kontaktperson, the other
 			// function, with prefix *
@@ -124,27 +137,42 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	
 	@Override
 	public int update(Object daoObj, StringBuffer errorStackTrace) {
+		logger.info("::update::");
 		int retval = 0;
 		try {
 
 			CundcDto dto = (CundcDto) daoObj;
+			logger.info("dto.getCtypeorg()="+dto.getCtypeorg());
 			StringBuilder sql = new StringBuilder();
 			sql.append(" UPDATE cundc SET cconta= ?, ctype = ?, cphone = ?, cmobil = ?, cemail = ?, clive = ?, ");
 			sql.append(" cprint = ?, sonavn= ?, cemne = ?, cavd = ?, cavdio = ?, copd = ?, copdio = ?, cmerge = ?, cfax = ?");
 			sql.append(" WHERE ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
-
-			logger.debug("dto="+ReflectionToStringBuilder.toString(dto));
-			logger.debug("update::sql="+sql.toString());
+			if ("".equals(dto.getCtype())) {
+				dto.setCtype(null);
+				sql.append(" and NULLIF(ctype, '') IS NULL ");			
+				retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
+						dto.getCconta(), dto.getCtype(), dto.getCphone(), dto.getCmobil(), dto.getCemail(), dto.getClive(), 
+						dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), dto.getCopd(),
+						dto.getCopdio(), dto.getCmerge(),dto.getCfax(),
+						dto.getCcompn(),dto.getCfirma(), dto.getCcontaorg()
+						} );
 			
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
+			} else {
+				sql.append(" and ctype = ? ");
+				retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 						dto.getCconta(), dto.getCtype(), dto.getCphone(), dto.getCmobil(), dto.getCemail(), dto.getClive(), 
 						dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), dto.getCopd(),
 						dto.getCopdio(), dto.getCmerge(),dto.getCfax(),
 						//id's
-						dto.getCcompn(),dto.getCfirma(), dto.getCcontaorg()
+						dto.getCcompn(),dto.getCfirma(), dto.getCcontaorg(), dto.getCtypeorg()
 						} );
+			
+			} 
+			
+			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
+			logger.info("update::sql="+sql.toString());
 			
 			if (retval>=0) {
 				ArkvedkDao arkvedkDao = createArkvedkDao(dto, errorStackTrace);
@@ -177,8 +205,8 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" VALUES( ?, ?, ?, ?, ?, ?, ?, ?, ?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ? ) ");
 
-			logger.debug("dto="+ReflectionToStringBuilder.toString(dto));
-			logger.debug("insert::sql="+sql.toString());
+			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
+			logger.info("insert::sql="+sql.toString());
 
 			StringBuilder copd = new StringBuilder();
 			copd.append(spaceFiller(dto.getCopd1()));
@@ -215,6 +243,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 
 	@Override
 	public int delete(Object dtoObj, StringBuffer errorStackTrace) {
+		logger.info("::delete::");
 		int retval = 0;
 		try {
 
@@ -224,17 +253,23 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" WHERE   ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
-			sql.append(" AND   ctype = ?");
-
+			if ("".equals(dto.getCtype())) {
+				sql.append(" and NULLIF(ctype, '') IS NULL ");			
+				dto.setCtype(null);
+				retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta() });
+			} else {
+				sql.append(" and ctype = ? ");
+				retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta(), dto.getCtype() });
+			} 
 			
-			logger.debug("dao="+ReflectionToStringBuilder.toString(dto));
-			logger.debug("sql="+sql.toString());
+			logger.info("dao="+ReflectionToStringBuilder.toString(dto));
+			logger.info("sql="+sql.toString());
 			
-			retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta(), dto.getCtype() });
 
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
+			logger.error(writer.toString());
+			logger.error("::ERROR::", e);
 			// Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
@@ -393,7 +428,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	private String getSELECT_FROM_CLAUSE(){
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" select ccompn, cfirma, cconta, cconta ccontaOrg, ctype, cphone, cmobil, cfax, cemail, clive, ");
+		sql.append(" select ccompn, cfirma, cconta, cconta ccontaOrg, ctype, ctype ctypeOrg, cphone, cmobil, cfax, cemail, clive, ");
 		sql.append(" cprint, sonavn, cemne, cavd, cavdio, copd, copdio, cmerge ");
 		sql.append(" FROM cundc c, firm f ");
 		sql.append(" WHERE c.cfirma = f.fifirm ");

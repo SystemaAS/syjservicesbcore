@@ -16,6 +16,7 @@ public class CundcDto {
 	private String cconta = ""; // key
 	private String ccontaorg = ""; 
 	private String ctype = ""; //key
+	private String ctypeorg = ""; 
 	private String cphone = "";
 	private String cmobil = "";
 	private String cfax = "";
@@ -529,6 +530,12 @@ public class CundcDto {
 	}
 	public void setAvkved30(String avkved30) {
 		this.avkved30 = avkved30;
+	}
+	public String getCtypeorg() {
+		return ctypeorg;
+	}
+	public void setCtypeorg(String ctypeorg) {
+		this.ctypeorg = ctypeorg;
 	}
 
 

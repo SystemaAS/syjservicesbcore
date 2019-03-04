@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
+import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundcDao;
 import no.systema.jservices.model.dao.entities.CundcDto;
@@ -51,7 +52,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 	 * 
 	 * @return
 	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsCUNDC.do?user=OSCAR&cfirma=SY&ccompn=1
-	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsCUNDC.do?user=OSCAR&cfirma=SY&ccompn=10&cconta=EMMA-XML&ctype=*Advisering SjøX
+	 * @Example SELECT specific: http://localhost:8080/syjservicesbcore/syjsCUNDC.do?user=OSCAR&cfirma=SY&ccompn=10&cconta=EMMA-XML&ctype=*Advisering SjøX
 	 * 
 	 */
 	@RequestMapping(value="syjsCUNDC.do", method={RequestMethod.GET, RequestMethod.POST})
@@ -76,20 +77,25 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(queryDao);
 	            binder.bind(request);
 	            List list = null;
-				
-				if ((queryDao.getCfirma() != null && !"".equals(queryDao.getCfirma())) && (queryDao.getCcompn() != null && !"".equals(queryDao.getCcompn()))) {
-					if ( queryDao.getCconta() != null && !"".equals(queryDao.getCconta()) && queryDao.getCtype() != null && !"".equals(queryDao.getCtype()) ) {
-						CundcDao dao = (CundcDao)this.cundcDaoServices.get(queryDao, dbErrorStackTrace);
+	            
+				if (  StringUtils.hasValue(queryDao.getCfirma())  &&  StringUtils.hasValue(queryDao.getCcompn())) {
+					if ( StringUtils.hasValue(queryDao.getCconta()) && queryDao.getCtype() != null ) { //ctype is key, kan be null:-)
+						logger.info("cundcDaoServices.get");
+						CundcDao dao = (CundcDao) cundcDaoServices.get(queryDao, dbErrorStackTrace);
 						if (dao != null) {
+							logger.info("dao="+dao);
 							list = new ArrayList<CundcDao>();
 							list.add(dao);
 						}
+
 					} else {
-						list = this.cundcDaoServices.findById(queryDao.getCcompn(), queryDao.getCfirma(), dbErrorStackTrace);
+						logger.info("cundcDaoServices.findById");
+						list = cundcDaoServices.findById(queryDao.getCcompn(), queryDao.getCfirma(), dbErrorStackTrace);
 					}
 
 				} else {
-					list = this.cundcDaoServices.getList(dbErrorStackTrace);
+					logger.info("cundcDaoServices.getList");
+					list = cundcDaoServices.getList(dbErrorStackTrace);
 				}
 				//process result
 				if (list!=null){
@@ -139,15 +145,18 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 
+		StringBuffer dbErrorStackTrace = new StringBuffer();
+        String errMsg = "";
+		String status = "ok";
+		String userName = null;		
+
+		logger.info("Inside syjsCUNDC_U.do");
+		
 		try {
-			logger.info("Inside syjsCUNDC_U.do");
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
 			// Check ALWAYS user in BRIDF
-			String userName = this.bridfDaoServices.findNameById(user);
-			String errMsg = "";
-			String status = "ok";
-			StringBuffer dbErrorStackTrace = new StringBuffer();
+			userName = this.bridfDaoServices.findNameById(user);
 
 			CundcDto dto = new CundcDto();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dto);
@@ -159,10 +168,11 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				int dmlRetval = 0;
 				if ("D".equals(mode)) {
 					if (rulerLord.isValidInputForDelete(dto, userName, mode)) {
+						logger.info("delete...");
 						dmlRetval = cundcDaoServices.delete(dto, dbErrorStackTrace);
 					} else {
 						// write JSON error output
-						errMsg = "ERROR on DELETE: invalid?  Try to check: <DaoServices>.delete";
+						errMsg = "ERROR on DELETE: invalid rulerLord  Try to check: <DaoServices>.delete";
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					}
@@ -170,8 +180,10 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 					if (rulerLord.isValidInput(dto, userName, mode)) {
 						adjustDao(dto);
 						if ("A".equals(mode)) {
+							logger.info("insert...");
 							dmlRetval = cundcDaoServices.insert(dto, dbErrorStackTrace);
 						} else if ("U".equals(mode)) {
+							logger.info("update...");
 							dmlRetval = cundcDaoServices.update(dto, dbErrorStackTrace);
 						}
 					} else {
@@ -186,6 +198,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 				// ----------------------------------
 				if (dmlRetval < 0) {
 					// write JSON error output
+					logger.error("dbErrorStackTrace="+dbErrorStackTrace);
 					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
@@ -196,6 +209,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 
 			} else {
 				// write JSON error output
+				logger.error("dbErrorStackTrace="+dbErrorStackTrace);
 				errMsg = "ERROR on UPDATE";
 				status = "error";
 				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
@@ -207,7 +221,11 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
-			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+			logger.info(sb);
+			logger.error(":::ERROR:::",e);
+			errMsg = "ERROR on ADD/UPDATE:  error="+e.getMessage();
+			status = "error";
+			sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 		}
 		session.invalidate();
 		return sb.toString();
