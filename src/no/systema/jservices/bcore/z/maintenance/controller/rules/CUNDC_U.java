@@ -51,7 +51,12 @@ public class CUNDC_U {
 			if ( (dto.getCfirma() != null && !"".equals(dto.getCfirma())) && (dto.getCcompn() != null && !"".equals(dto.getCcompn()))
 					&& (dto.getCconta() != null && !"".equals(dto.getCconta())) && (dto.getCtype() != null && !"".equals(dto.getCtype())) ) {
 				// Check duplicate
-				if ( ( "A".equals(mode) || ( "U".equals(mode)) )  &&  existInCundc(dto.getCfirma(), dto.getCcompn(), dto.getCconta(), dto.getCtype())) {
+				if (  "A".equals(mode)   &&  existInCundc(dto.getCfirma(), dto.getCcompn(), dto.getCconta(), dto.getCtype())) {
+					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dto.getCconta(), dto.getCcompn() }), "error", dbErrors));
+					retval = false;
+				}
+				if (  "U".equals(mode)   &&  existInCundc(dto)) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dto.getCconta(), dto.getCcompn() }), "error", dbErrors));
 					retval = false;
@@ -121,6 +126,8 @@ public class CUNDC_U {
 
 
 
+
+
 	private boolean validEmail(String cemail) {
 		if (emailValidator.validateEmail(cemail)) {
 			return true;
@@ -169,6 +176,14 @@ public class CUNDC_U {
 			return true;
 		}
 	}
+
+	private boolean existInCundc(CundcDto dto) {
+		if (!dto.getCcontaorg().equals(dto.getCconta()) || !dto.getCtypeorg().equals(dto.getCtype())) {
+			return existInCundc(dto.getCfirma(), dto.getCcompn(), dto.getCconta(), dto.getCtype());
+			
+		}
+		return false;
+	}	
 	
 	private boolean existInKofast(String value, boolean idCheck) {
 		boolean exists = false;

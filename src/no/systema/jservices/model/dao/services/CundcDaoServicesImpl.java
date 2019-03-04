@@ -288,7 +288,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" WHERE  ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 
-			logger.debug("sql=" + sql.toString());
+			logger.info("sql=" + sql.toString());
 
 			jdbcTemplate.update(sql.toString(), new Object[] { ccompn, cfirma });
 
@@ -309,10 +309,17 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" AND   ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
-			sql.append(" AND   ctype = ?");
-
-			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { ccompn, cfirma, cconta, ctype }, new GenericObjectMapper(new CundcDao()));
-
+			if ("".equals(ctype)) {
+				sql.append(" and NULLIF(ctype, '') IS NULL ");			
+				retval = this.jdbcTemplate.query(sql.toString(), new Object[] { ccompn, cfirma, cconta }, new GenericObjectMapper(new CundcDao()));
+			} else {
+				sql.append(" and ctype = ? ");
+				retval = this.jdbcTemplate.query(sql.toString(), new Object[] { ccompn, cfirma, cconta, ctype }, new GenericObjectMapper(new CundcDao()));
+			} 
+			
+			logger.info("sql=" + sql.toString());
+			logger.info("ccompn="+ccompn+", cfirma="+cfirma+",cconta="+cconta+",ctype="+ctype);
+			
 			if (retval.size() == 0) {
 				return false;
 			} else {
@@ -322,6 +329,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.error(writer.toString());
+			logger.error(e);
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			return false;
 		}
