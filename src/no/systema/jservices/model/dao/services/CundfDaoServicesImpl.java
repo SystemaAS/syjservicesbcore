@@ -228,7 +228,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		int retval = 0;
 		final CundfDao dao = (CundfDao) daoObj;
 		final StringBuilder sql = new StringBuilder();
-		sql.append(" UPDATE cundf SET knavn = ?, syrg = ?, adr1 = ?, adr3 = ?, postnr = ?, syland = ?, ");
+		sql.append(" UPDATE cundf SET knavn = ?, syrg = ?, adr1 = ?, adr2 = ?, adr3 = ?, postnr = ?, syland = ?, ");
 		sql.append(" dkund = ?,  kpers = ?, sonavn = ?, valkod = ?, spraak = ?, bankg = ?, postg = ?, fmot = ?, betbet = ?, ");
 		sql.append(" betmat = ?, sfakt = ?, kgrens = ?, tfaxnr = ?, syregn = ?, sykont = ?, sylikv = ?, syopdt = ?, syminu = ?, ");
 		sql.append(" syutlp = ?, sypoge = ?, systat = ?, syselg = ?, syiat1 = ?, syiat2 = ?, sycoty = ?, syfr01 = ?, syfr02 = ?, ");
@@ -245,7 +245,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 					try {
 						//CUNDF
 						jdbcTemplate.update( sql.toString(), new Object[] { 
-								dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
+								dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr2() , dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
 								dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(),
 								dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(),
 								dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(),
@@ -294,14 +294,14 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		
 			final CundfDao dao = (CundfDao) daoObj;
 			final StringBuilder sql = new StringBuilder();
-			sql.append(" INSERT INTO cundf (firma, kundnr, knavn, syrg, adr1, adr3, postnr, syland, ");  
+			sql.append(" INSERT INTO cundf (firma, kundnr, knavn, syrg, adr1, adr2, adr3, postnr, syland, ");  
 			sql.append(" dkund ,  kpers , sonavn , valkod , spraak , bankg , postg , fmot , betbet , "); 
 			sql.append(" betmat , sfakt , kgrens , tfaxnr , syregn , sykont , sylikv, syopdt , syminu , "); 
 			sql.append(" syutlp , sypoge , systat , syselg , syiat1 , syiat2 , sycoty , syfr01, syfr02 , "); 
 			sql.append(" syfr03 , syfr04 , syfr05 , syfr06 , sysalu , syepos , aknrku, vatkku , xxbre, "); 
 			sql.append(" xxlen , xxinm3 , xxinlm , rnraku , golk , kundgr , pnpbku, adr21 , eori, aktkod, tlf,symvjn,symvsp  ) "); 
 
-			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ?, ");
+			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ? ,?, ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); 
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , ");
 			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , "); 
@@ -316,7 +316,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 						try {
 							//CUNDF
 							jdbcTemplate.update( sql.toString(), new Object[] { 
-									dao.getFirma(), dao.getKundnr(), dao.getKnavn(), dao.getSyrg(), dao.getAdr1(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
+									dao.getFirma(), dao.getKundnr(), dao.getKnavn(), dao.getSyrg(), dao.getAdr1(),dao.getAdr2(), dao.getAdr3(), dao.getPostnr(), dao.getSyland(), 
 									dao.getDkund(), dao.getKpers(), dao.getSonavn(), dao.getValkod(), dao.getSpraak(), dao.getBankg(), dao.getPostg(), dao.getFmot(), dao.getBetbet(),
 									dao.getBetmat(), dao.getSfakt(), dao.getKgrens(), dao.getTfaxnr(), dao.getSyregn(), dao.getSykont(), dao.getSylikv(), dao.getSyopdt(), dao.getSyminu(),
 									dao.getSyutlp(), dao.getSypoge(), dao.getSystat(), dao.getSyselg(), dao.getSyiat1(), dao.getSyiat2(), dao.getSycoty(), dao.getSyfr01(), dao.getSyfr02(),
@@ -331,7 +331,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 							}
 							
 						} catch (Exception e) {
-							logger.info("Error: setting update() to rollback only.");
+							logger.error("Error: setting update() to rollback only.", e);
 							ts.setRollbackOnly();
 						}
 					}
