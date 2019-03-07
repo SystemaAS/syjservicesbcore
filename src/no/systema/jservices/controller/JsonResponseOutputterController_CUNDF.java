@@ -238,7 +238,7 @@ public class JsonResponseOutputterController_CUNDF {
 					        
 					        
 						} else if ("U".equals(mode)) {
-							//TODO add change on SONAVN
+							addFieldsToDaoWhenEdit(dao, dbErrorStackTrace);
 							addCum3LmToDao(dao,m3m3,mllm );
 							
 					        dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);
@@ -510,6 +510,16 @@ public class JsonResponseOutputterController_CUNDF {
 		
 	}
 
+	private void addFieldsToDaoWhenEdit(CundfDao dao, StringBuffer dbErrorStackTrace) {
+		logger.info(":::addFieldsToDaoWhenEdit:::");
+		if (!StringUtils.hasValue(dao.getSonavn())) {
+			addDefaultSonavn(dao);
+		}		
+	}
+	
+	
+	
+	
 	private void addDefaultSonavn(CundfDao dao) {
 		int knavnLength = dao.getKnavn().length();
 		if (knavnLength > 10) {
