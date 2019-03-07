@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
+import no.systema.jservices.common.dao.services.KodafDaoService;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.CundcDao;
@@ -131,8 +132,6 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 	 * 
 	 * Update Database DML operations File: CUNDC
 	 * 
-	 * @Example UPDATE:
-	 *          http://gw.systema.no:8080/syjservicestn/syjsSYFA63R_U.do?user=OSCAR&cfirma=SY&ccompn=10&ccconta=1&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
@@ -347,6 +346,22 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 	public EdiiDaoServices getEdiiDaoServices() {
 		return this.ediiDaoServices;
 	}	
+	
+
+	@Qualifier("kodafDaoService")
+	private KodafDaoService kodafDaoServices;
+
+	@Autowired
+	@Required
+	public void setKodafDaoService(KodafDaoService value) {
+		this.kodafDaoServices = value;
+	}
+
+	public KodafDaoService getKodafDaoService() {
+		return this.kodafDaoServices;
+	}	
+	
+	
 	
 	
 	

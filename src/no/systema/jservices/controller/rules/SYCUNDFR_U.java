@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
+
+import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
+import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.common.dao.KodtlikDao;
 import no.systema.jservices.common.dao.ValufDao;
 import no.systema.jservices.common.dao.VispnrDao;
@@ -30,7 +34,7 @@ import no.systema.main.util.MessageSourceHelper;
  * @date Aug 4, 2016
  */
 public class SYCUNDFR_U {
-
+	private static Logger logger = Logger.getLogger(SYCUNDFR_U.class.getName());
 	private JsonResponseWriter jsonWriter = new JsonResponseWriter();
 	private MessageSourceHelper messageSourceHelper = null;
 	private CundfDaoServices cundfDaoServices = null;
@@ -41,16 +45,16 @@ public class SYCUNDFR_U {
 	private KodtftDaoService kodtftDaoService = null;
 	private EdiiDaoServices ediiDaoServices = null;
 	private EntryRequest entryRequest = null;
-	private FirkuDaoService firkuDaoService = null;
+	private FirkuDaoServices firkuDaoServices = null;
 	private VispnrDaoService vispnrDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 	
 
-	public SYCUNDFR_U(VispnrDaoService vispnrDaoService, FirkuDaoService firkuDaoService, HttpServletRequest request, EntryRequest entryRequest, EdiiDaoServices ediiDaoServices, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SYCUNDFR_U(VispnrDaoService vispnrDaoService, FirkuDaoServices firkuDaoServices, HttpServletRequest request, EntryRequest entryRequest, EdiiDaoServices ediiDaoServices, CundfDaoServices cundfDaoServices,  ValufDaoService valufDaoService, KodtlkDaoService kodtlkDaoService, KodtotyDaoService kodtotyDaoService, KodtlikDaoService kodtlikDaoService, KodtftDaoService kodtftDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		messageSourceHelper = new MessageSourceHelper(request);
 		this.vispnrDaoService = vispnrDaoService;
-		this.firkuDaoService = firkuDaoService;
+		this.firkuDaoServices = firkuDaoServices;
 		this.entryRequest = entryRequest;
 		this.ediiDaoServices = ediiDaoServices;
 		this.cundfDaoServices = cundfDaoServices;
@@ -153,15 +157,20 @@ public class SYCUNDFR_U {
 					retval = false;					
 				}					
 	
-				
-				if (dao.getKundetype() != null) { // New
+				//New, betbet check
+				if (StringUtils.hasValue(dao.getKundetype())) {
 					if ("F".equals(dao.getKundetype()) && !StringUtils.hasValue(dao.getBetbet())) {
 						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
 						retval = false;
 					}
-				} else if (!firkuDaoService.isAdressCustomer(new Integer(dao.getKundnr())) && !StringUtils.hasValue(dao.getBetbet())) { // Update
-					errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
-					retval = false;
+				} 
+				//Update, betbet check
+				if (!StringUtils.hasValue(dao.getKundetype())) { 
+					if (!firkuDaoServices.isAdressCustomer(new Integer(dao.getKundnr()),dbErrors) && !StringUtils.hasValue(dao.getBetbet())) {
+						logger.info("KILROY IS HERE");
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
+						retval = false;
+					}
 				}
 
 			} else{ 
@@ -175,6 +184,9 @@ public class SYCUNDFR_U {
 					messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.mandatory", null), "error", dbErrors));
 			retval = false;
 		}
+
+		logger.info("::isValidInput:: errors="+errors.toString());
+		
 		return retval;
 	}
 

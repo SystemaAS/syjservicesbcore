@@ -39,7 +39,7 @@ public class FirkuDaoServicesImpl implements FirkuDaoServices {
 	}
 	
 	@Override
-public IDao get(StringBuffer errorStackTrace) {
+	public IDao get(StringBuffer errorStackTrace) {
 		IDao dao = null;
 		try {
 			StringBuilder sql = new StringBuilder();
@@ -121,6 +121,22 @@ public IDao get(StringBuffer errorStackTrace) {
 			return false;
 		}
 	}	
+
+	
+	@Override
+	public boolean isAdressCustomer(int kundnr, StringBuffer errorStackTrace) {
+		FirkuDao existingDao = (FirkuDao) get(errorStackTrace);
+		int fikufr = new Integer(existingDao.getFikufr());
+		int fikuti = new Integer(existingDao.getFikuti());
+		
+		if(kundnr >= fikufr && kundnr <= fikuti) {
+			return true;
+		} else {
+			return false;
+		}	
+	}
+	
+	
 	
 	@Override
 	public String getFikune(StringBuffer errorStackTrace) {

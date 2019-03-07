@@ -212,8 +212,7 @@ public class JsonResponseOutputterController_CUNDF {
             logger.info("DAO="+ReflectionToStringBuilder.toString(dao));
             
             //rules
-            
-            SYCUNDFR_U rulerLord = new SYCUNDFR_U(vispnrDaoService, firkuDaoService,request,entryRequest,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
+            SYCUNDFR_U rulerLord = new SYCUNDFR_U(vispnrDaoService, firkuDaoServices,request,entryRequest,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
@@ -239,6 +238,7 @@ public class JsonResponseOutputterController_CUNDF {
 					        
 					        
 						} else if ("U".equals(mode)) {
+							//TODO add change on SONAVN
 							addCum3LmToDao(dao,m3m3,mllm );
 							
 					        dmlRetval = cundfDaoServices.update(dao, dbErrorStackTrace);

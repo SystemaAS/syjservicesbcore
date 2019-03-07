@@ -42,5 +42,11 @@ public interface FirkuDaoServices extends IDaoServices {
 	 */
 	public boolean invoiceCustomerEnabled(StringBuffer errorStackTrace);
 	
-	
+
+	/**
+	 * Check if customer is adresscustomer
+	 * @param kundnr
+	 * @return true if adresscustomer, else false.
+	 */
+	boolean isAdressCustomer(int kundnr, StringBuffer errorStackTrace);	
 }

@@ -121,6 +121,8 @@ public class CUNDC_U {
 			retval = false;
 		}
 
+		logger.info("inValidInput, errors="+errors);
+		
 		return retval;
 	}
 
