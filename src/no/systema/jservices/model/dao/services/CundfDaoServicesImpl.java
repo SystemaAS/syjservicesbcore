@@ -15,6 +15,7 @@ import no.systema.jservices.common.dao.services.Cum3lmDaoService;
 import no.systema.jservices.common.dao.services.FratxtDaoService;
 import no.systema.jservices.common.dao.services.SadvareDaoService;
 import no.systema.jservices.common.dao.services.SyparfDaoService;
+import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.model.dao.entities.CundfDao;
 import no.systema.main.util.DbErrorMessageManager;
 
@@ -488,15 +489,22 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	
 	
 	@Override
-	public boolean orgNrExist(String orgnr, StringBuffer errorStackTrace) {
+	public boolean orgNrExist(String orgnr, String kundnr, StringBuffer errorStackTrace) {
 		try {
 			List<CundfDao> retval = new ArrayList<CundfDao>();
 			StringBuilder sql = new StringBuilder();
 			sql.append(this.getSELECT_FROM_CLAUSE());
 			sql.append(" AND  syrg = ? ");
+			if (!StringUtils.hasValue(kundnr)) {
+				retval = this.jdbcTemplate.query(sql.toString(), new Object[] { orgnr }, new GenericObjectMapper(new CundfDao()));
+			} else {
+				sql.append(" AND  kundnr <> ? ");
+				retval = this.jdbcTemplate.query(sql.toString(), new Object[] { orgnr, Integer.parseInt(kundnr) }, new GenericObjectMapper(new CundfDao()));
+				
+			}
 
-			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { orgnr }, new GenericObjectMapper(new CundfDao()));
-
+//			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { orgnr, kundnr }, new GenericObjectMapper(new CundfDao()));
+			
 			if (retval.size() == 0) {
 				return false;
 			} else {
@@ -511,7 +519,28 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		}
 	}
 	
-	
+	@Override
+	public int orgNrCount(String orgnr, StringBuffer errorStackTrace) {
+		int count = 0;
+		try {
+			List<CundfDao> retval = new ArrayList<CundfDao>();
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" AND  syrg = ? ");
+
+			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { orgnr }, new GenericObjectMapper(new CundfDao()));
+
+			count =  retval.size();
+			
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+		}
+		
+		return count;
+
+	}	
 	
 	
 	private String getSELECT_FROM_CLAUSE(){

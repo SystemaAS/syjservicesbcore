@@ -86,13 +86,32 @@ public class TestJCundfDaoServicesImpl {
 	
 	@Test
 	public final void testOrgnrExist() {
-		String orgnr = "93680921901";
-		assertTrue(cundfDaoServices.orgNrExist(orgnr, errorStackTrace));
+		String orgnr = "979642121";
+		String kundnr = "12";
+		assertTrue(cundfDaoServices.orgNrExist(orgnr, kundnr,errorStackTrace));
+		
+		kundnr = "";
+		assertTrue(cundfDaoServices.orgNrExist(orgnr, kundnr,errorStackTrace));
+	
 		
 		orgnr = "XYZ";
-		assertFalse(cundfDaoServices.orgNrExist(orgnr, errorStackTrace));
+		assertFalse(cundfDaoServices.orgNrExist(orgnr, kundnr,errorStackTrace));
 		
 	}
+	
+	
+	@Test
+	public final void testOrgnrCount() {
+		String orgnr = "936809219";  //systema
+
+		System.out.println("cundfDaoServices.orgNrCount(orgnr, errorStackTrace)="+cundfDaoServices.orgNrCount(orgnr, errorStackTrace));
+		
+		assertTrue(cundfDaoServices.orgNrCount(orgnr, errorStackTrace) > 1);
+		
+		orgnr = "XYZ";
+		assertTrue(cundfDaoServices.orgNrCount(orgnr, errorStackTrace) == 0);
+		
+	}	
 	
 	
 

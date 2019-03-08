@@ -324,6 +324,65 @@ public class JsonResponseOutputterController_CUNDF {
 	}	
 	
 	/**
+	 * Get info about if orgnr exist.
+	 * 
+	 * Example :
+	 * http://localhost:8080/syjservicesbcore/syjsSYCUNDFR_ORGNR_EXIST?user=SYSTEMA&syrg=936809219&kundnr=10
+	 */	
+	@RequestMapping(path = "/syjsSYCUNDFR_ORGNR_EXIST", method = RequestMethod.GET)
+	@ResponseBody
+	public String getOrgnrExist(HttpSession session,
+									@RequestParam(value = "user", required = true) String user,
+									@RequestParam(value = "syrg", required = true) String syrg,
+									@RequestParam(value = "kundnr", required = false) String kundnr) {
+
+		checkUser(user);
+		StringBuffer errorStackTrace = new StringBuffer();
+        
+		logger.info("/syjsSYCUNDFR_ORGNR_EXIST");
+		boolean enabled = cundfDaoServices.orgNrExist(syrg, kundnr ,errorStackTrace);
+		
+		session.invalidate();
+		
+		if (enabled) {
+			return "J";
+		} else {
+			return "N";
+		}
+		
+	}	
+
+
+	/**
+	 * Get info about if orgnr exist multiple times
+	 * 
+	 * Example :
+	 * http://localhost:8080/syjservicesbcore/syjsSYCUNDFR_ORGNR_MULTI?user=SYSTEMA&syrg=936809219
+	 */	
+	@RequestMapping(path = "/syjsSYCUNDFR_ORGNR_MULTI", method = RequestMethod.GET)
+	@ResponseBody
+	public String getOrgnrMulti(HttpSession session,
+									@RequestParam(value = "user", required = true) String user,
+									@RequestParam(value = "syrg", required = true) String syrg) {
+
+		checkUser(user);
+		StringBuffer errorStackTrace = new StringBuffer();
+        
+		logger.info("/syjsSYCUNDFR_ORGNR_MULTI");
+		int count = cundfDaoServices.orgNrCount(syrg, errorStackTrace);
+		
+		session.invalidate();
+		
+		if (count > 1) {
+			return "J";
+		} else {
+			return "N";
+		}
+		
+	}		
+	
+	
+	/**
 	 * Get info about if valid to register invoice customer
 	 * 
 	 * Example :

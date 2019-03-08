@@ -37,14 +37,24 @@ public interface CundfDaoServices extends IDaoServices {
 	 */
 	public List findFetchFirstRowsOnly(int nrOfRows, StringBuffer errorStackTrace);
 	
-	
 	/**
 	 * Exist control on orgnr
+	 * excluded actual kundnr
+	 * 
+	 * @param orgnr
+	 * @kundnr kundnr
+	 * @param errorStackTrace
+	 * @return true or false
+	 */
+	public boolean orgNrExist(String orgnr, String kundnr, StringBuffer errorStackTrace);
+
+	/**
+	 * Count on orgnr
 	 * 
 	 * @param orgnr
 	 * @param errorStackTrace
 	 * @return true or false
 	 */
-	public boolean orgNrExist(String orgnr, StringBuffer errorStackTrace);
+	public int orgNrCount(String orgnr, StringBuffer errorStackTrace);
 	
 }

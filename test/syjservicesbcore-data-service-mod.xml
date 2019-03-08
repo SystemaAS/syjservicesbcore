@@ -130,8 +130,8 @@
 		<!-- For VALUF : l1dat -->
 		<property name="url" value="jdbc:as400://10.13.3.22;naming=system;socket timeout=15000;libraries=syendre,syendptf,syspedf,sysped,l1dat"/>
 		<!--  property name="url" value="jdbc:as400://10.13.3.22;naming=system;socket timeout=15000;libraries=asssyend,aspsyend,aspsyendpt,asssyspedf,aspsysped,l1dat;translate binary=true"/-->
-		<property name="username" value="x" />
-		<property name="password" value="y" />
+		<property name="username" value="systema" />
+		<property name="password" value="straffe12" />
 	</bean>
 
 	<bean id="transactionManager"
