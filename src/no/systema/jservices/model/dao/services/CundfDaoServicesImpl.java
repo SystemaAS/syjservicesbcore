@@ -484,7 +484,34 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			return false;
 		}
-	}    	
+	}    
+	
+	
+	@Override
+	public boolean orgNrExist(String orgnr, StringBuffer errorStackTrace) {
+		try {
+			List<CundfDao> retval = new ArrayList<CundfDao>();
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" AND  syrg = ? ");
+
+			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { orgnr }, new GenericObjectMapper(new CundfDao()));
+
+			if (retval.size() == 0) {
+				return false;
+			} else {
+				return true;
+			}
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			return false;
+		}
+	}
+	
+	
 	
 	
 	private String getSELECT_FROM_CLAUSE(){
@@ -542,6 +569,7 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	private Cum3lmDaoService cum3lmDaoService = null;                                                            
 	public void setCum3lmDaoService( Cum3lmDaoService cum3lmDaoService) {this.cum3lmDaoService = cum3lmDaoService;}          
 	public Cum3lmDaoService getCum3lmDaoService() {return this.cum3lmDaoService;}
+
 
 	//TODO: Add more children...
 

@@ -82,6 +82,19 @@ public class TestJCundfDaoServicesImpl {
 		assertTrue(cundcDaoServices.exists(firma, kundnr, "kontakt", "funksjon", errorStackTrace));
 		
 	}	
+	
+	
+	@Test
+	public final void testOrgnrExist() {
+		String orgnr = "93680921901";
+		assertTrue(cundfDaoServices.orgNrExist(orgnr, errorStackTrace));
+		
+		orgnr = "XYZ";
+		assertFalse(cundfDaoServices.orgNrExist(orgnr, errorStackTrace));
+		
+	}
+	
+	
 
 	//@Test
 	public final void testCreateAndDelete() {
