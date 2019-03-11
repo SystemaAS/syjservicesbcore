@@ -561,11 +561,9 @@ public class JsonResponseOutputterController_CUNDF {
 				throw new RuntimeException("Kundetype not valid!, kundetype="+dao.getKundetype());
 			}
 			
-
 			dao.setKundnr(kundNr);
 		
 		}
-		
 		
 	}
 
@@ -575,9 +573,6 @@ public class JsonResponseOutputterController_CUNDF {
 			addDefaultSonavn(dao);
 		}		
 	}
-	
-	
-	
 	
 	private void addDefaultSonavn(CundfDao dao) {
 		int knavnLength = dao.getKnavn().length();
