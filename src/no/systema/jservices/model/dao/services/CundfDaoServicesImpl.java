@@ -503,8 +503,6 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 				
 			}
 
-//			retval = this.jdbcTemplate.query(sql.toString(), new Object[] { orgnr, kundnr }, new GenericObjectMapper(new CundfDao()));
-			
 			if (retval.size() == 0) {
 				return false;
 			} else {

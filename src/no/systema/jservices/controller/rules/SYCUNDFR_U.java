@@ -46,6 +46,7 @@ public class SYCUNDFR_U {
 	private EdiiDaoServices ediiDaoServices = null;
 	private EntryRequest entryRequest = null;
 	private FirkuDaoServices firkuDaoServices = null;
+	/*Active only if FIRMVIS had values*/
 	private VispnrDaoService vispnrDaoService = null;
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;

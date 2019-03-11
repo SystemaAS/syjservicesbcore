@@ -210,7 +210,7 @@ public class JsonResponseOutputterController_CUNDF {
             String m3m3 = request.getParameter("m3m3");
 
             logger.info("DAO="+ReflectionToStringBuilder.toString(dao));
-            
+   
             //rules
             SYCUNDFR_U rulerLord = new SYCUNDFR_U(vispnrDaoService, firkuDaoServices,request,entryRequest,ediiDaoServices,cundfDaoServices, valufDaoService, kodtlkDaoService , kodtotyDaoService , kodtlikDaoService, kodtftDaoService,sb, dbErrorStackTrace); 
 			//Start processing now
@@ -552,7 +552,7 @@ public class JsonResponseOutputterController_CUNDF {
 			} 
 			else if (dao.getKundetype().equals("F")) { //F=Fakturakunde
 				kundNr = String.valueOf(firkuDaoServices.getFikufn(dbErrorStackTrace));
-				logger.info("kundnr from FIKUNE, kundnr="+kundNr);
+				logger.info("kundnr from FIKUFN, kundnr="+kundNr);
 				if (!firkuDaoServices.invoiceCustomerEnabled(dbErrorStackTrace)) {
 					logger.error("ERROR: Not allowed to create invoice customer!");
 					throw new IllegalArgumentException("Not allowed to create invoice customer!");
