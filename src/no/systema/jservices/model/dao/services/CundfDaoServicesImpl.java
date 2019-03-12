@@ -3,7 +3,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -222,7 +224,57 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 		cundfDaoList = this.jdbcTemplate.query( sql.toString(), new GenericObjectMapper(new CundfDao()));
 		
 		return cundfDaoList;
-	}		
+	}	
+	
+	
+	@Override
+	public List<CundfDao> findAll(CundfDao qDao, StringBuffer errorStackTrace) {
+		List<CundfDao> cundfDaoList = new ArrayList<CundfDao>();
+		StringBuilder queryString = new StringBuilder(getSELECT_FROM_CLAUSE());
+
+		if (StringUtils.hasValue(qDao.getKundnr())) {
+			queryString.append(" and LOWER(kundnr) LIKE ").append("LOWER(\'%"+qDao.getKundnr()+"%\')");
+		}
+		if (StringUtils.hasValue(qDao.getKnavn())) {
+			queryString.append(" and LOWER(knavn) LIKE ").append("LOWER(\'%"+qDao.getKnavn()+"%\')");
+		}
+		if (StringUtils.hasValue(qDao.getSyrg())) {
+			queryString.append(" and LOWER(syrg) LIKE ").append("LOWER(\'%"+qDao.getSyrg()+"%\')");
+		}
+		if (StringUtils.hasValue(qDao.getSonavn())) {
+			queryString.append(" and LOWER(sonavn) LIKE ").append("LOWER(\'%"+qDao.getSonavn()+"%\')");
+		}
+		if (StringUtils.hasValue(qDao.getSyland())) {
+			queryString.append(" and LOWER(syland) LIKE ").append("LOWER(\'%"+qDao.getSyland()+"%\')");
+		}
+		if (StringUtils.hasValue(qDao.getPostnr())) {
+			if (qDao.getPostnr().length() == 4) {
+				queryString.append(" and postnr = ").append(qDao.getPostnr());
+			} else {
+				queryString.append(" and LOWER(postnr) LIKE ").append("LOWER(\'%"+qDao.getPostnr()+"%\')");
+			}
+		}
+		if (StringUtils.hasValue(qDao.getFirma())) {
+			queryString.append(" and LOWER(firma) LIKE ").append("LOWER(\'%"+qDao.getFirma()+"%\')");
+		}
+		
+		queryString.append(" ORDER BY kundnr ");
+
+		logger.info("queryString.toString()="+ queryString.toString());
+
+		try {
+
+			cundfDaoList = this.jdbcTemplate.query( queryString.toString(), new GenericObjectMapper(new CundfDao()));
+
+		} catch (Exception e) {
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			cundfDaoList = null;
+		}
+
+		return cundfDaoList;
+	}	
 	
 	@Override
 	public int update(Object daoObj, StringBuffer errorStackTrace) {
@@ -596,7 +648,6 @@ public class CundfDaoServicesImpl implements CundfDaoServices {
 	private Cum3lmDaoService cum3lmDaoService = null;                                                            
 	public void setCum3lmDaoService( Cum3lmDaoService cum3lmDaoService) {this.cum3lmDaoService = cum3lmDaoService;}          
 	public Cum3lmDaoService getCum3lmDaoService() {return this.cum3lmDaoService;}
-
 
 	//TODO: Add more children...
 

@@ -4,8 +4,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -28,6 +30,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServic
 import no.systema.jservices.common.dao.Cum3lmDao;
 import no.systema.jservices.common.dao.FirkuDao;
 import no.systema.jservices.common.dao.ViskundeDao;
+import no.systema.jservices.common.dao.services.CundfDaoService;
 import no.systema.jservices.common.dao.services.FirkuDaoService;
 import no.systema.jservices.common.dao.services.FirmvisDaoService;
 import no.systema.jservices.common.dao.services.KodtftDaoService;
@@ -76,7 +79,7 @@ public class JsonResponseOutputterController_CUNDF {
 	 * @return
 	 * @Example SELECT *: http://gw.systema.no:8080/syjservicesbcore/syjsSYCUNDFR.do?user=OSCAR
 	 * @Example SELECT specific: http://gw.systema.no:8080/syjservicesbcore/syjsSYCUNDFR.do?user=OSCAR&kundnr=1
-	 * @Example SELECT specific with unique firm: http://gw.systema.no:8080/syjservicesbcore/syjsSYCUNDFR.do?user=OSCAR&kundnr=1&firma=SY
+	 * @Example SELECT specific with unique firm: http://localhost:8080/syjservicesbcore/syjsSYCUNDFR.do?user=OSCAR&kundnr=1&firma=SY
 	 * @Example SELECT specific with name: http://gw.systema.no:8080/syjservicesbcore/syjsSYCUNDFR.do?user=OSCAR&knavn=SYS&firma=SY
 	 * 
 	 */
@@ -84,58 +87,62 @@ public class JsonResponseOutputterController_CUNDF {
 	@ResponseBody
 	public String syjsRList( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		
 		try{
 			logger.info("Inside syjsSYCUNDFR.do");
-			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
-			
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
-            //DEBUG --> logger.info("USERNAME:" + userName + "XX");
             String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
+            List list = null;
 			
-			//Start processing now
-			if(userName!=null && !"".equals(userName)){
-				//bind attributes is any
+			if( StringUtils.hasValue(userName) ){
 				CundfDao dao = new CundfDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 	            binder.bind(request);
-	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
-	            List list = null;
-				//do SELECT
-	            logger.info("A");
-				if(dao.getKundnr()!=null && !"".equals(dao.getKundnr())){
-					logger.info("cundfDaoServices.findById");
-					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
-						list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
-					}else{
-						list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
+
+	            if (isEmpty(dao)) {
+	            	list = cundfDaoServices.findFetchFirstRowsOnly(100, dbErrorStackTrace);
+	            } else {
+		            if( StringUtils.hasValue(dao.getKundnr()) ){
+						logger.info("cundfDaoServices.findById");
+						if( StringUtils.hasValue(dao.getFirma()) ){
+							list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
+						}else{
+							list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
+						}
+					} else {
+						logger.info("cundfDaoServices.findAll");
+						list = cundfDaoServices.findAll(dao, dbErrorStackTrace);
 					}
-				}else if (dao.getKnavn()!=null && !"".equals(dao.getKnavn())){
-					logger.info("cundfDaoServices.findByName");
-					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
-						list = this.cundfDaoServices.findByName(dao.getKnavn(), dao.getFirma(), dbErrorStackTrace);
-					}else{
-						list = this.cundfDaoServices.findByName(dao.getKnavn(), dbErrorStackTrace);
-					}
-				}else if (dao.getSyrg()!=null && !"".equals(dao.getSyrg())){
-					
-					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
-						//logger.info("Z");
-						list = this.cundfDaoServices.findByOrgnr(dao.getSyrg(), dao.getFirma(), dbErrorStackTrace);
-					}else{
-						//logger.info("ZZZ");
-						list = this.cundfDaoServices.findByOrgnr(dao.getSyrg(), dbErrorStackTrace);
-					}
-				}else{
-					
-					list = this.cundfDaoServices.findFetchFirstRowsOnly(100, dbErrorStackTrace);
-					
-				}
+	            }
+	            
+//	            if(dao.getKundnr()!=null && !"".equals(dao.getKundnr())){
+//					logger.info("cundfDaoServices.findById");
+//					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
+//						list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
+//					}else{
+//						list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
+//					}
+//				}else if (dao.getKnavn()!=null && !"".equals(dao.getKnavn())){
+//					logger.info("cundfDaoServices.findByName");
+//					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
+//						list = this.cundfDaoServices.findByName(dao.getKnavn(), dao.getFirma(), dbErrorStackTrace);
+//					}else{
+//						list = this.cundfDaoServices.findByName(dao.getKnavn(), dbErrorStackTrace);
+//					}
+//				}else if (dao.getSyrg()!=null && !"".equals(dao.getSyrg())){
+//					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
+//						list = this.cundfDaoServices.findByOrgnr(dao.getSyrg(), dao.getFirma(), dbErrorStackTrace);
+//					}else{
+//						list = this.cundfDaoServices.findByOrgnr(dao.getSyrg(), dbErrorStackTrace);
+//					}
+//				}else{
+//					list = this.cundfDaoServices.findFetchFirstRowsOnly(100, dbErrorStackTrace);
+//				}
 				//process result
 				if (list!=null){
 					//write the final JSON output
@@ -166,6 +173,20 @@ public class JsonResponseOutputterController_CUNDF {
 		return sb.toString();
 	}
 	
+	private boolean isEmpty(CundfDao qDao) {
+		if (   StringUtils.hasValue(qDao.getKundnr()) 
+			|| StringUtils.hasValue(qDao.getKnavn()) 
+			|| StringUtils.hasValue(qDao.getSyrg()) 
+			|| StringUtils.hasValue(qDao.getSonavn()) 
+			|| StringUtils.hasValue(qDao.getSyland()) 
+			|| StringUtils.hasValue(qDao.getPostnr()) 
+			|| StringUtils.hasValue(qDao.getFirma())) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 
 	/**
 	 * 
@@ -675,6 +696,7 @@ public class JsonResponseOutputterController_CUNDF {
 	
 	@Autowired
 	VispnrDaoService vispnrDaoService;	
+	
 	
 }
 

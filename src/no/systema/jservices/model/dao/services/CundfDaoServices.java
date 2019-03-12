@@ -57,4 +57,15 @@ public interface CundfDaoServices extends IDaoServices {
 	 */
 	public int orgNrCount(String orgnr, StringBuffer errorStackTrace);
 	
+
+	/**
+	 * Find all on where-clause from populated qDao
+	 * Support a subset from CundfDao.
+	 * 
+	 * @param qDao, used in where-clause
+	 * @param errorStackTrace
+	 * @return  List CundfDao
+	 */
+	public List<CundfDao> findAll(CundfDao qDao, StringBuffer errorStackTrace);
+	
 }

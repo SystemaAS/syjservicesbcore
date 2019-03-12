@@ -113,6 +113,31 @@ public class TestJCundfDaoServicesImpl {
 		
 	}	
 	
+
+	@Test
+	public final void testFindAll() {
+		CundfDao qDao = new CundfDao();
+		qDao.setKundnr("2");
+		qDao.setKnavn("cargo");
+		qDao.setSyrg("93"); //936809219
+		qDao.setSonavn("cargo");
+		qDao.setSyland("NO");
+		qDao.setPostnr("16");
+		qDao.setFirma("SY");
+		
+		
+		List<CundfDao>  resultList = cundfDaoServices.findAll(qDao, errorStackTrace);
+
+		assertTrue(resultList.size() > 0);
+
+		resultList.forEach(c -> {
+			System.out.println("c="+ReflectionToStringBuilder.toString(c));
+			
+		});
+		
+		
+	}	
+	
 	
 
 	//@Test
