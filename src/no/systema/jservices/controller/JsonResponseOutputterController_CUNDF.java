@@ -593,7 +593,7 @@ public class JsonResponseOutputterController_CUNDF {
 
 	private void addLandkodeIfPostnrIsNorsk(CundfDao dao) {
 		logger.info(":::addLandkodeIfPostnrIsNorsk:::");
-		if (!StringUtils.hasValue(dao.getPostnr())) {
+		if (!StringUtils.hasValue(dao.getPostnr()) || StringUtils.hasValue(dao.getSyland())) {
 			return;
 		}
 		VispnrDao qDao = new VispnrDao();
