@@ -7,12 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
 
-import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.common.dao.KodtlikDao;
 import no.systema.jservices.common.dao.ValufDao;
 import no.systema.jservices.common.dao.VispnrDao;
-import no.systema.jservices.common.dao.services.FirkuDaoService;
 import no.systema.jservices.common.dao.services.KodtftDaoService;
 import no.systema.jservices.common.dao.services.KodtlikDaoService;
 import no.systema.jservices.common.dao.services.KodtlkDaoService;
@@ -96,7 +94,6 @@ public class SYCUNDFR_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syland", new Object[] { dao.getSyland()}), "error", dbErrors));
 					retval = false;					
 				}	
-				
 				//Postnr (norsk)
 				if ( StringUtils.hasValue(dao.getSyland())  && StringUtils.hasValue(dao.getPostnr()) ) {
 					if (dao.getSyland().equals("NO") && landKodeExistInVispnr(dao.getSyland())) {
@@ -107,7 +104,6 @@ public class SYCUNDFR_U {
 						}
 					}					
 				}	
-
 				//Postnr (utlendsk)
 				if ( StringUtils.hasValue(dao.getSyland())  && StringUtils.hasValue(dao.getSypoge()) ) {
 					if (landKodeExistInVispnr(dao.getSyland())) {
@@ -118,7 +114,6 @@ public class SYCUNDFR_U {
 						}
 					}					
 				}		
-	
 				//Postnr v /postboks
 				if ( StringUtils.hasValue(dao.getSyland())  && StringUtils.hasValue(dao.getPnpbku()) ) {
 					if (dao.getSyland().equals("NO") && landKodeExistInVispnr(dao.getSyland())) {
@@ -129,6 +124,13 @@ public class SYCUNDFR_U {
 						}
 					}					
 				}	
+				//Postnr(utl) landkode mandatory
+				if (vispnrDaoService.hasVismaIntegration() && StringUtils.hasValue(dao.getSypoge())) {
+					if (!StringUtils.hasValue(dao.getSyland())) {
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.sypoge", null), "error", dbErrors));
+						retval = false;
+					}
+				} 
 				
 				if ( (dao.getSyopdt() != null  && !"".equals(dao.getSyopdt()) ) && !existInKodtoty(dao.getSyopdt())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -340,7 +342,6 @@ public class SYCUNDFR_U {
 		}
 	}
 	
-	//TODO add check only if landkod exist in vispnr
 	private boolean existInVispnr(String syland, String postnr) {
 		VispnrDao qDao = new VispnrDao();
 		qDao.setVilk(syland);
