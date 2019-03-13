@@ -4,10 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,7 +28,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirmDaoServic
 import no.systema.jservices.common.dao.Cum3lmDao;
 import no.systema.jservices.common.dao.FirkuDao;
 import no.systema.jservices.common.dao.ViskundeDao;
-import no.systema.jservices.common.dao.services.CundfDaoService;
+import no.systema.jservices.common.dao.VispnrDao;
 import no.systema.jservices.common.dao.services.FirkuDaoService;
 import no.systema.jservices.common.dao.services.FirmvisDaoService;
 import no.systema.jservices.common.dao.services.KodtftDaoService;
@@ -586,13 +584,37 @@ public class JsonResponseOutputterController_CUNDF {
 		
 		}
 		
+		if (hasVismaNetIntegration()) {
+			addLandkodeIfPostnrIsNorsk(dao);
+		}
+		
+		
+	}
+
+	private void addLandkodeIfPostnrIsNorsk(CundfDao dao) {
+		logger.info(":::addLandkodeIfPostnrIsNorsk:::");
+		if (!StringUtils.hasValue(dao.getPostnr())) {
+			return;
+		}
+		VispnrDao qDao = new VispnrDao();
+		qDao.setViponr(dao.getPostnr());
+		qDao.setVilk("NO");
+		
+		if (vispnrDaoService.exist(qDao)) {
+			dao.setSyland("NO");
+		}
 	}
 
 	private void addFieldsToDaoWhenEdit(CundfDao dao, StringBuffer dbErrorStackTrace) {
 		logger.info(":::addFieldsToDaoWhenEdit:::");
 		if (!StringUtils.hasValue(dao.getSonavn())) {
 			addDefaultSonavn(dao);
-		}		
+		}	
+		
+		if (hasVismaNetIntegration()) {
+			addLandkodeIfPostnrIsNorsk(dao);
+		}
+		
 	}
 	
 	private void addDefaultSonavn(CundfDao dao) {

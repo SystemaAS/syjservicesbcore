@@ -118,6 +118,17 @@ public class SYCUNDFR_U {
 						}
 					}					
 				}		
+	
+				//Postnr v /postboks
+				if ( StringUtils.hasValue(dao.getSyland())  && StringUtils.hasValue(dao.getPnpbku()) ) {
+					if (dao.getSyland().equals("NO") && landKodeExistInVispnr(dao.getSyland())) {
+						if ( !existInVispnr(dao.getSyland(), dao.getPnpbku()) ) {
+							errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+									messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.pnpbku", new Object[] { dao.getPnpbku(), dao.getSyland()}), "error", dbErrors));
+							retval = false;							
+						}
+					}					
+				}	
 				
 				if ( (dao.getSyopdt() != null  && !"".equals(dao.getSyopdt()) ) && !existInKodtoty(dao.getSyopdt())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -168,7 +179,6 @@ public class SYCUNDFR_U {
 				//Update, betbet check
 				if (!StringUtils.hasValue(dao.getKundetype())) { 
 					if (!firkuDaoServices.isAdressCustomer(new Integer(dao.getKundnr()),dbErrors) && !StringUtils.hasValue(dao.getBetbet())) {
-						logger.info("KILROY IS HERE");
 						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
 						retval = false;
 					}
