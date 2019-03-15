@@ -124,9 +124,9 @@ public class SYCUNDFR_U {
 						}
 					}					
 				}	
-				//Postnr(utl) landkode mandatory
+				//Postnr(utl) landkode mandatory. Note: landkode set i Controller. Postnr blur syland
 				if (vispnrDaoService.hasVismaIntegration() && StringUtils.hasValue(dao.getSypoge())) {
-					if (!StringUtils.hasValue(dao.getSyland())) {
+					if (!StringUtils.hasValue(dao.getSyland()) && !StringUtils.hasValue(dao.getPostnr())) {
 						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.sypoge", null), "error", dbErrors));
 						retval = false;
 					}
@@ -235,9 +235,9 @@ public class SYCUNDFR_U {
 		if(dao.getBetbet()==null || "".equals(dao.getBetbet())){
 			dao.setBetbet(ZERO);
 		}
-		if(dao.getPostnr()==null || "".equals(dao.getPostnr())){
-			dao.setPostnr(ZERO);
-		}
+//		if(dao.getPostnr()==null || "".equals(dao.getPostnr())){
+//			dao.setPostnr(ZERO);
+//		}
 		if(dao.getXxinm3()==null || "".equals(dao.getXxinm3())){
 			dao.setXxinm3(ZERO);
 		}
