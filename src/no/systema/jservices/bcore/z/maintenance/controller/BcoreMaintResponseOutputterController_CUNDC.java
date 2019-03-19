@@ -186,6 +186,7 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 							dmlRetval = cundcDaoServices.update(dto, dbErrorStackTrace);
 						}
 					} else {
+						logger.error("ERROR on ADD/UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update");
 						// write JSON error output
 						errMsg = "ERROR on ADD/UPDATE: invalid (rulerLord)?  Try to check: <DaoServices>.update";
 						status = "error";
