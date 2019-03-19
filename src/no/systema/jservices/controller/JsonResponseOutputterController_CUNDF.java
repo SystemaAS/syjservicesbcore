@@ -117,31 +117,6 @@ public class JsonResponseOutputterController_CUNDF {
 						list = cundfDaoServices.findAll(dao, dbErrorStackTrace);
 					}
 	            }
-	            
-//	            if(dao.getKundnr()!=null && !"".equals(dao.getKundnr())){
-//					logger.info("cundfDaoServices.findById");
-//					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
-//						list = this.cundfDaoServices.findById(dao.getKundnr(), dao.getFirma(), dbErrorStackTrace);
-//					}else{
-//						list = this.cundfDaoServices.findById(dao.getKundnr(), dbErrorStackTrace);
-//					}
-//				}else if (dao.getKnavn()!=null && !"".equals(dao.getKnavn())){
-//					logger.info("cundfDaoServices.findByName");
-//					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
-//						list = this.cundfDaoServices.findByName(dao.getKnavn(), dao.getFirma(), dbErrorStackTrace);
-//					}else{
-//						list = this.cundfDaoServices.findByName(dao.getKnavn(), dbErrorStackTrace);
-//					}
-//				}else if (dao.getSyrg()!=null && !"".equals(dao.getSyrg())){
-//					if(dao.getFirma()!=null && !"".equals(dao.getFirma())){
-//						list = this.cundfDaoServices.findByOrgnr(dao.getSyrg(), dao.getFirma(), dbErrorStackTrace);
-//					}else{
-//						list = this.cundfDaoServices.findByOrgnr(dao.getSyrg(), dbErrorStackTrace);
-//					}
-//				}else{
-//					list = this.cundfDaoServices.findFetchFirstRowsOnly(100, dbErrorStackTrace);
-//				}
-				//process result
 				if (list!=null){
 					//write the final JSON output
 					sb.append(jsonWriter.setJsonResult_Common_GetCompositeList(userName, list));

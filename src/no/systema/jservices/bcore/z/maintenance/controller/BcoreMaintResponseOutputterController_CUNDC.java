@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import no.systema.jservices.bcore.z.maintenance.controller.rules.CUNDC_U;
@@ -230,20 +231,6 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		return sb.toString();
 	}
 
-	private void adjustDao(CundcDto dto) {
-		StringBuilder cavdDefault = new StringBuilder("00000000000000000000");
-		cavdDefault.append("00000000000000000000");
-		cavdDefault.append("00000000000000000000");
-		cavdDefault.append("00000000000000000000"); // 80
-		if (dto.getCavd() == null || "".equals(dto.getCavd())) {
-			dto.setCavd(cavdDefault.toString());
-		}
-		
-		if ("EMMA-XML".equals(dto.getCconta())) {
-			dto.setCmerge(""); //Disable
-		}
-	}
-	
 	/**
 	 * FreeForm Source:
 	 * 	 File: 		CUNDC
@@ -299,6 +286,22 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 		session.invalidate();
 		return sb.toString();
 	}	
+	
+
+	private void adjustDao(CundcDto dto) {
+		StringBuilder cavdDefault = new StringBuilder("00000000000000000000");
+		cavdDefault.append("00000000000000000000");
+		cavdDefault.append("00000000000000000000");
+		cavdDefault.append("00000000000000000000"); // 80
+		if (dto.getCavd() == null || "".equals(dto.getCavd())) {
+			dto.setCavd(cavdDefault.toString());
+		}
+		
+		if ("EMMA-XML".equals(dto.getCconta())) {
+			dto.setCmerge(""); //Disable
+		}
+	}	
+	
 	
 	// ----------------
 	// WIRED SERVICES
@@ -360,9 +363,5 @@ public class BcoreMaintResponseOutputterController_CUNDC {
 	public KodafDaoService getKodafDaoService() {
 		return this.kodafDaoServices;
 	}	
-	
-	
-	
-	
 	
 }

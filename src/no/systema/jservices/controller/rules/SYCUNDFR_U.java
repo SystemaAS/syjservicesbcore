@@ -171,20 +171,20 @@ public class SYCUNDFR_U {
 					retval = false;					
 				}					
 	
-				//New, betbet check
-				if (StringUtils.hasValue(dao.getKundetype())) {
-					if ("F".equals(dao.getKundetype()) && !StringUtils.hasValue(dao.getBetbet())) {
-						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
-						retval = false;
-					}
-				} 
-				//Update, betbet check
-				if (!StringUtils.hasValue(dao.getKundetype())) { 
-					if (!firkuDaoServices.isAdressCustomer(new Integer(dao.getKundnr()),dbErrors) && !StringUtils.hasValue(dao.getBetbet())) {
-						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
-						retval = false;
-					}
-				}
+//				//New, betbet check
+//				if (StringUtils.hasValue(dao.getKundetype())) {
+//					if ("F".equals(dao.getKundetype()) && !StringUtils.hasValue(dao.getBetbet())) {
+//						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
+//						retval = false;
+//					}
+//				} 
+//				//Update, betbet check
+//				if (!StringUtils.hasValue(dao.getKundetype())) { 
+//					if (!firkuDaoServices.isAdressCustomer(new Integer(dao.getKundnr()),dbErrors) && !StringUtils.hasValue(dao.getBetbet())) {
+//						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
+//						retval = false;
+//					}
+//				}
 
 			} else{ 
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -235,9 +235,9 @@ public class SYCUNDFR_U {
 		if(dao.getBetbet()==null || "".equals(dao.getBetbet())){
 			dao.setBetbet(ZERO);
 		}
-//		if(dao.getPostnr()==null || "".equals(dao.getPostnr())){
-//			dao.setPostnr(ZERO);
-//		}
+		if(dao.getPostnr()==null || "".equals(dao.getPostnr())){
+			dao.setPostnr(ZERO);
+		}
 		if(dao.getXxinm3()==null || "".equals(dao.getXxinm3())){
 			dao.setXxinm3(ZERO);
 		}
