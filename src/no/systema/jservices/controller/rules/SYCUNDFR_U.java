@@ -171,20 +171,20 @@ public class SYCUNDFR_U {
 					retval = false;					
 				}					
 	
-//				//New, betbet check
-//				if (StringUtils.hasValue(dao.getKundetype())) {
-//					if ("F".equals(dao.getKundetype()) && !StringUtils.hasValue(dao.getBetbet())) {
-//						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
-//						retval = false;
-//					}
-//				} 
-//				//Update, betbet check
-//				if (!StringUtils.hasValue(dao.getKundetype())) { 
-//					if (!firkuDaoServices.isAdressCustomer(new Integer(dao.getKundnr()),dbErrors) && !StringUtils.hasValue(dao.getBetbet())) {
-//						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
-//						retval = false;
-//					}
-//				}
+				//New, betbet check
+				if (StringUtils.hasValue(dao.getKundetype())) {
+					if ("F".equals(dao.getKundetype()) && hasInValidBetBet(dao.getBetbet())) {
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
+						retval = false;
+					}
+				} 
+				//Update, betbet check
+				if (!StringUtils.hasValue(dao.getKundetype())) { 
+					if (!firkuDaoServices.isAdressCustomer(new Integer(dao.getKundnr()),dbErrors) && hasInValidBetBet(dao.getBetbet())) {
+						errors.append(jsonWriter.setJsonSimpleErrorResult(user, messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.betbet", null), "error", dbErrors));
+						retval = false;
+					}
+				}
 
 			} else{ 
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -204,6 +204,17 @@ public class SYCUNDFR_U {
 	}
 
 
+	private boolean hasInValidBetBet(String betbet) {
+		if (betbet.equals("NOT_SET")) {  //correspond to value in JSP.
+			return true;
+			
+		} else {
+			return false;
+		}
+		
+	}
+	
+	
 	public boolean isValidInputForDelete(CundfDao dao, String user, String mode){
 		boolean retval = true;
 		if( StringUtils.hasValue(user) && StringUtils.hasValue(mode) ){
@@ -231,9 +242,6 @@ public class SYCUNDFR_U {
 		String ZERO = "0";
 		if(dao.getFmot()==null || "".equals(dao.getFmot())){
 			dao.setFmot(ZERO);
-		}
-		if(dao.getBetbet()==null || "".equals(dao.getBetbet())){
-			dao.setBetbet(ZERO);
 		}
 		if(dao.getPostnr()==null || "".equals(dao.getPostnr())){
 			dao.setPostnr(ZERO);
