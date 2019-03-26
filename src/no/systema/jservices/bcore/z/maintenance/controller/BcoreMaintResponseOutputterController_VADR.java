@@ -151,7 +151,7 @@ public class BcoreMaintResponseOutputterController_VADR {
 							resultDao = vadrDaoService.create(dao);
 							logger.info("VADR created, dao="+ReflectionToStringBuilder.toString(resultDao));
 						} else if ("U".equals(mode)) {
-							resultDao = vadrDaoService.update(dao);
+							resultDao = vadrDaoService.updateNr1(dao);
 							logger.info("VADR updated, dao="+ReflectionToStringBuilder.toString(resultDao));
 						}
 					}
