@@ -53,7 +53,7 @@ public class BcoreMaintResponseOutputterController_VADR {
 			String firma = request.getParameter("firma");
 			
 			// Check ALWAYS user in BRIDF
-			String userName = this.bridfDaoServices.findNameById(user);
+			String userName = bridfDaoServices.findNameById(user);
 			String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
@@ -125,6 +125,10 @@ public class BcoreMaintResponseOutputterController_VADR {
 		StringBuffer dbErrorStackTrace  = new StringBuffer();
 		String user = request.getParameter("user");
 		String mode = request.getParameter("mode");
+	
+		logger.info("user="+user);
+		logger.info("mode="+mode);
+		
 		
 		try {
 			// Check ALWAYS user in BRIDF
@@ -162,15 +166,16 @@ public class BcoreMaintResponseOutputterController_VADR {
 					}
 
 				} else {
+					logger.error("user: "+user+ " not found in bridf.");
 					// write JSON error output
-					errMsg = "ERROR on UPDATE";
+					errMsg = "ERROR on DML for VADR";
 					status = "error";
 					dbErrorStackTrace.append("request input parameters are invalid: <user>");
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				}
 			} else {
 				// write JSON error output
-				errMsg = "ERROR on ADD/UPDATE: invalid rulerLord, error="+sb.toString();
+				errMsg = "ERROR on ADD/UPDATE for VADR: invalid rulerLord, error="+sb.toString();
 				status = "error";
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				logger.error(sb);
