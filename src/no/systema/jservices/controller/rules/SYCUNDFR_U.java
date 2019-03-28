@@ -109,7 +109,7 @@ public class SYCUNDFR_U {
 					if (landKodeExistInVispnr(dao.getSyland())) {
 						if ( !existInVispnr(dao.getSyland(), dao.getSypoge()) ) {
 							errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-									messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.sypoge", new Object[] { dao.getSypoge(), dao.getSyland()}), "error", dbErrors));
+									messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.sypoge.x", new Object[] { dao.getSypoge(), dao.getSyland()}), "error", dbErrors));
 							retval = false;							
 						}
 					}					
