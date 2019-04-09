@@ -25,7 +25,6 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.SVLTH_U;
 import no.systema.jservices.common.dao.SvlthDao;
 import no.systema.jservices.common.dao.services.SvlthDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
-import no.systema.jservices.common.util.DateTimeManager;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.services.BridfDaoServices;

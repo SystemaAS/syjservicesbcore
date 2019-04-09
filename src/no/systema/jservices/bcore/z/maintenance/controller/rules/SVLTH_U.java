@@ -33,14 +33,26 @@ public class SVLTH_U {
 	public boolean isValidInput(SvlthDao dao, String user){
 		boolean retval = true;
 		boolean isInlagg = dao.getSvlth_h().equals(EventTypeEnum.INLAGG.getValue());
-		if (isInlagg  && svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_irn(), dao.getSvlth_id2())) {
-			errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-					messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] { EventTypeEnum.INLAGG, dao.getSvlth_irn(), dao.getSvlth_id2()}), "error", dbErrors));
-			retval = false;					
-		}	
-
+		if (isInlagg) {
+			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_irn(), dao.getSvlth_id2())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] { EventTypeEnum.INLAGG, dao.getSvlth_irn(), dao.getSvlth_id2()}), "error", dbErrors));
+				retval = false;					
+			}			
+			if (!validateMrnLenght(dao.getSvlth_irn())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.mrn.invalid.lenght", new Object[] {  dao.getSvlth_irn()}), "error", dbErrors));
+				retval = false;					
+			}			
+			
+		}
+		
 		return retval;
 
+	}
+
+	private boolean validateMrnLenght(String svlth_irn) {
+		return svlth_irn.length() == 18;
 	}
 
 }
