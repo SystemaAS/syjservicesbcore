@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SVLTH_U;
 import no.systema.jservices.common.dao.SvlthDao;
 import no.systema.jservices.common.dao.services.SvlthDaoService;
+import no.systema.jservices.common.dto.SvlthDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -52,25 +53,23 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 
 		logger.info("INSIDE /syjsSVLTH...");
 		
-		JsonResponseWriter2<SvlthDao> jsonWriter = new JsonResponseWriter2<SvlthDao>();		
+		JsonResponseWriter2<SvlthDto> jsonWriter = new JsonResponseWriter2<SvlthDto>();		
 		String errMsg = "";
 		String status = "ok";
 		StringBuffer dbErrorStackTrace = new StringBuffer();
 		StringBuffer sb = new StringBuffer();
-		List<SvlthDao> svlthDaoList = null;
-		
+		List<SvlthDto> svlthDtoList = new ArrayList<SvlthDto>();	
 		try {
 			String userName = bridfDaoServices.findNameById(user);
 			if (StringUtils.hasValue(userName)) {
 
-				if (DO_NOT_LOAD != null) {  //datatables trick
+				if (DO_NOT_LOAD != null) {  //datatables trick, due to autoload
 					//do nothing
-					svlthDaoList = new ArrayList<SvlthDao>(); 
 				} else {
-					svlthDaoList = svlthDaoService.findAll(svlth_h,svlth_irn, svlth_id2 );
+					svlthDtoList = svlthDaoService.findAll(svlth_h,svlth_irn, svlth_id2 );
 				}
 
-				sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svlthDaoList));
+				sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svlthDtoList));
 				
 			}	else {
 				errMsg = "ERROR on SELECT";
