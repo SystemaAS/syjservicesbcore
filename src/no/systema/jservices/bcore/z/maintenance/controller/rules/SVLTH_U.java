@@ -33,6 +33,8 @@ public class SVLTH_U {
 	public boolean isValidInput(SvlthDao dao, String user){
 		boolean retval = true;
 		boolean isInlagg = dao.getSvlth_h().equals(EventTypeEnum.INLAGG.getValue());
+		boolean isUttag = dao.getSvlth_h().equals(EventTypeEnum.UTTAG.getValue());
+
 		if (isInlagg) {
 			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_irn(), dao.getSvlth_id2())) {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
@@ -42,6 +44,14 @@ public class SVLTH_U {
 			if (!validateMrnLenght(dao.getSvlth_irn())) {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 						messageSourceHelper.getMessage("systema.bcore.accounting.error.mrn.invalid.lenght", new Object[] {  dao.getSvlth_irn()}), "error", dbErrors));
+				retval = false;					
+			}			
+			
+		}
+		if (isUttag) {
+			if (!svlthDaoService.validUttagQuantity(dao.getSvlth_unt(), dao.getSvlth_irn(), dao.getSvlth_id2())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.invalid.quantity", new Object[] { dao.getSvlth_unt(), dao.getSvlth_irn()}), "error", dbErrors));
 				retval = false;					
 			}			
 			

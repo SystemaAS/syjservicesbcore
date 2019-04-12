@@ -38,6 +38,8 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 	/**
 	 * Search in SVLTH
 	 * 
+	 * Note: Returning dto
+	 * 
 	 * Example :
 	 * http://localhost:8080/syjservicesbcore/syjsSVLTH?user=SYSTEMA&svlth_h=I&svlth_irn=1NO123456789012345
 	 */
@@ -66,7 +68,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 				if (DO_NOT_LOAD != null) {  //datatables trick, due to autoload
 					//do nothing
 				} else {
-					svlthDtoList = svlthDaoService.findAll(svlth_h,svlth_irn, svlth_id2 );
+					svlthDtoList = svlthDaoService.getAll(svlth_h,svlth_irn, svlth_id2 );
 				}
 
 				sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svlthDtoList));
