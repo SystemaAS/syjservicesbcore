@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SVLTH_U;
 import no.systema.jservices.common.dao.SvlthDao;
 import no.systema.jservices.common.dao.services.SvlthDaoService;
+import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.dto.SvlthDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
@@ -121,7 +122,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 
-	        SVLTH_U rulerLord = new SVLTH_U(request, svlthDaoService, sb, dbErrorStackTrace); 
+	        SVLTH_U rulerLord = new SVLTH_U(request, svlthDaoService, svtx03fDaoService ,sb, dbErrorStackTrace); 
 	        
 			if (rulerLord.isValidInput(dao, userName)) {
 				if (StringUtils.hasValue(userName)) {
@@ -180,5 +181,10 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 	public void setSvlthDaoService(SvlthDaoService value){ this.svlthDaoService = value; }
 	public SvlthDaoService getSvlthDaoService(){ return this.svlthDaoService; }		
 
-	
+	@Qualifier ("svtx03fDaoService")
+	private Svtx03fDaoService svtx03fDaoService;
+	@Autowired
+	@Required
+	public void setSvtx03fDaoService(Svtx03fDaoService value){ this.svtx03fDaoService = value; }
+	public Svtx03fDaoService getSvtx03fDaoService(){ return this.svtx03fDaoService; }			
 }

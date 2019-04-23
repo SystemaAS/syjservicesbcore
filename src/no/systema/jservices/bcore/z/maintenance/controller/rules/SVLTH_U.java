@@ -6,6 +6,8 @@ import org.apache.log4j.Logger;
 
 import no.systema.jservices.common.dao.SvlthDao;
 import no.systema.jservices.common.dao.services.SvlthDaoService;
+import no.systema.jservices.common.dao.services.Svtx03fDaoService;
+import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.common.values.EventTypeEnum;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.main.util.MessageSourceHelper;
@@ -21,13 +23,15 @@ public class SVLTH_U {
 	private StringBuffer errors = null;
 	private StringBuffer dbErrors = null;
 	private SvlthDaoService svlthDaoService = null;
+	private Svtx03fDaoService svtx03fDaoService = null;
 
 	
-	public SVLTH_U(HttpServletRequest request, SvlthDaoService svlthDaoService,StringBuffer sb, StringBuffer dbErrorStackTrace) {
+	public SVLTH_U(HttpServletRequest request, SvlthDaoService svlthDaoService,Svtx03fDaoService svtx03fDaoService, StringBuffer sb, StringBuffer dbErrorStackTrace) {
 		messageSourceHelper = new MessageSourceHelper(request);
 		this.errors = sb;
 		this.dbErrors = dbErrorStackTrace;
 		this.svlthDaoService = svlthDaoService;
+		this.svtx03fDaoService = svtx03fDaoService;
 	}
 	
 	public boolean isValidInput(SvlthDao dao, String user){
@@ -45,7 +49,12 @@ public class SVLTH_U {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 						messageSourceHelper.getMessage("systema.bcore.accounting.error.mrn.invalid.lenght", new Object[] {  dao.getSvlth_irn()}), "error", dbErrors));
 				retval = false;					
-			}			
+			}
+			if (!svtx03fDaoService.kollislagExist(dao.getSvlth_isl())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.svlth_isl.exist",new Object[] { dao.getSvlth_isl() }),"error", dbErrors));
+				retval = false;
+			}
 			
 		}
 		if (isUttag) {
