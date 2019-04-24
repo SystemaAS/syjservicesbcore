@@ -49,6 +49,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 	public String syjsSVLTH(HttpSession session, 
 			@RequestParam(value = "user", required = true) String user,
 			@RequestParam(value = "svlth_h", required = false) String svlth_h,
+			@RequestParam(value = "svlth_ign", required = false) String svlth_ign,
 			@RequestParam(value = "svlth_irn", required = false) String svlth_irn,
 			@RequestParam(value = "svlth_id1", required = false) Integer svlth_id1,
 			@RequestParam(value = "svlth_id2", required = false) Integer svlth_id2,
@@ -69,7 +70,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 				if (DO_NOT_LOAD != null) {  //datatables trick, due to autoload
 					//do nothing
 				} else {
-					svlthDtoList = svlthDaoService.getAll(svlth_h,svlth_irn, svlth_id2 );
+					svlthDtoList = svlthDaoService.getAll(svlth_h, svlth_ign, svlth_irn, svlth_id2 );
 				}
 
 				sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svlthDtoList));
