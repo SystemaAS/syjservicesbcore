@@ -58,7 +58,7 @@ public class SVLTH_U {
 			
 		}
 		if (isUttag) {
-			if (!svlthDaoService.validUttagQuantity(dao.getSvlth_unt(), dao.getSvlth_irn(), dao.getSvlth_id2())) {
+			if (!svlthDaoService.validUttagQuantity(dao.getSvlth_unt(), dao.getSvlth_irn())) {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 						messageSourceHelper.getMessage("systema.bcore.accounting.error.invalid.quantity", new Object[] { dao.getSvlth_unt(), dao.getSvlth_irn()}), "error", dbErrors));
 				retval = false;					

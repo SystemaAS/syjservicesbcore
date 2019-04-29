@@ -51,11 +51,21 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 			@RequestParam(value = "svlth_h", required = false) String svlth_h,
 			@RequestParam(value = "svlth_ign", required = false) String svlth_ign,
 			@RequestParam(value = "svlth_irn", required = false) String svlth_irn,
-			@RequestParam(value = "svlth_id1", required = false) Integer svlth_id1,
 			@RequestParam(value = "svlth_id2", required = false) Integer svlth_id2,
+			@RequestParam(value = "svlth_ud1", required = false) Integer svlth_ud1,
+			@RequestParam(value = "svlth_um1", required = false) Integer svlth_um1,
 			@RequestParam(value = "DO_NOT_LOAD", required = false) String DO_NOT_LOAD) {
 
 		logger.info("INSIDE /syjsSVLTH...");
+		
+		logger.info("svlth_h="+svlth_h);
+		logger.info("svlth_ign="+svlth_ign);
+		logger.info("svlth_irn="+svlth_irn);
+		logger.info("svlth_id2="+svlth_id2);
+		logger.info("svlth_ud1="+svlth_ud1);
+		logger.info("svlth_um1="+svlth_um1);
+		
+		
 		
 		JsonResponseWriter2<SvlthDto> jsonWriter = new JsonResponseWriter2<SvlthDto>();		
 		String errMsg = "";
@@ -70,7 +80,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 				if (DO_NOT_LOAD != null) {  //datatables trick, due to autoload
 					//do nothing
 				} else {
-					svlthDtoList = svlthDaoService.getAll(svlth_h, svlth_ign, svlth_irn, svlth_id2 );
+					svlthDtoList = svlthDaoService.getAll(svlth_h, svlth_ign, svlth_irn, svlth_id2, svlth_ud1, svlth_um1 );
 				}
 
 				sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svlthDtoList));
