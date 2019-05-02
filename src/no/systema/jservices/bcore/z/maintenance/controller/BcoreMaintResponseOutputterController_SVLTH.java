@@ -52,8 +52,9 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 			@RequestParam(value = "svlth_ign", required = false) String svlth_ign,
 			@RequestParam(value = "svlth_irn", required = false) String svlth_irn,
 			@RequestParam(value = "svlth_id2", required = false) Integer svlth_id2,
-			@RequestParam(value = "svlth_ud1", required = false) Integer svlth_ud1,
-			@RequestParam(value = "svlth_um1", required = false) Integer svlth_um1,
+			@RequestParam(value = "svlth_id1", required = false) Integer svlth_id1,
+			@RequestParam(value = "svlth_im1", required = false) Integer svlth_im1,
+			@RequestParam(value = "svlth_rty", required = false) String svlth_rty,
 			@RequestParam(value = "DO_NOT_LOAD", required = false) String DO_NOT_LOAD) {
 
 		logger.info("INSIDE /syjsSVLTH...");
@@ -62,9 +63,9 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 		logger.info("svlth_ign="+svlth_ign);
 		logger.info("svlth_irn="+svlth_irn);
 		logger.info("svlth_id2="+svlth_id2);
-		logger.info("svlth_ud1="+svlth_ud1);
-		logger.info("svlth_um1="+svlth_um1);
-		
+		logger.info("svlth_id1="+svlth_id1);
+		logger.info("svlth_im1="+svlth_im1);
+		logger.info("svlth_rty="+svlth_rty);
 		
 		
 		JsonResponseWriter2<SvlthDto> jsonWriter = new JsonResponseWriter2<SvlthDto>();		
@@ -80,13 +81,13 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 				if (DO_NOT_LOAD != null) {  //datatables trick, due to autoload
 					//do nothing
 				} else {
-					svlthDtoList = svlthDaoService.getAll(svlth_h, svlth_ign, svlth_irn, svlth_id2, svlth_ud1, svlth_um1 );
+					svlthDtoList = svlthDaoService.getAll(svlth_h, svlth_ign, svlth_irn, svlth_id2, svlth_id1, svlth_im1, svlth_rty );
 				}
 
 				sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svlthDtoList));
 				
-			}	else {
-				errMsg = "ERROR on SELECT";
+			} else {
+				errMsg = "ERROR on SELECT ";
 				status = "error";
 				dbErrorStackTrace.append("request input parameters are invalid: <user> ");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
