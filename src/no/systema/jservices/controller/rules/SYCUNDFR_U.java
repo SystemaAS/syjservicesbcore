@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
@@ -165,6 +167,7 @@ public class SYCUNDFR_U {
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr06", new Object[] { dao.getSyfr06()}), "error", dbErrors));
 					retval = false;					
 				}	
+	
 				if ( (StringUtils.hasValue(dao.getSyfr06())) && !existInElma(dao.getSyrg())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr06X", new Object[] { dao.getSyrg()}), "error", dbErrors));
@@ -393,6 +396,11 @@ public class SYCUNDFR_U {
 	}		
 	
 	private boolean existInElma(String orgnr) {
+		//Sanity check
+		if (!StringUtils.hasValue(orgnr)) {
+			return false;
+		}
+		
 		Entry entry = entryRequest.getElmaEntry(orgnr);
 		if (entry != null) {
 			return true;
