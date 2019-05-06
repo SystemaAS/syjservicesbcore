@@ -3,10 +3,13 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.support.DatabaseStartupValidator;
 
+import lombok.NonNull;
 import no.systema.jservices.common.dao.SvlthDao;
 import no.systema.jservices.common.dao.services.SvlthDaoService;
 import no.systema.jservices.common.dao.services.Svtx03fDaoService;
+import no.systema.jservices.common.util.DateTimeManager;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.common.values.EventTypeEnum;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
@@ -40,9 +43,9 @@ public class SVLTH_U {
 		boolean isUttag = dao.getSvlth_h().equals(EventTypeEnum.UTTAG.getValue());
 
 		if (isInlagg) {
-			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_irn(), dao.getSvlth_id2())) {
+			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_irn())) {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-						messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] { EventTypeEnum.INLAGG, dao.getSvlth_irn(), dao.getSvlth_id2()}), "error", dbErrors));
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] { EventTypeEnum.INLAGG, dao.getSvlth_irn()}), "error", dbErrors));
 				retval = false;					
 			}			
 			if (!validateMrnLenght(dao.getSvlth_irn())) {
@@ -55,6 +58,14 @@ public class SVLTH_U {
 						messageSourceHelper.getMessage("systema.bcore.accounting.error.svlth_isl.exist",new Object[] { dao.getSvlth_isl() }),"error", dbErrors));
 				retval = false;
 			}
+			
+			if (!validDateFormat(dao.getSvlth_id2())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.svlth_id2.invalid",new Object[] { dao.getSvlth_id2() }),"error", dbErrors));
+				retval = false;
+			}
+			
+			
 			
 		}
 		if (isUttag) {
@@ -70,7 +81,11 @@ public class SVLTH_U {
 
 	}
 
-	private boolean validateMrnLenght(String svlth_irn) {
+	private boolean validDateFormat(@NonNull Integer svlth_id2) {
+		return DateTimeManager.isValidDate(svlth_id2.toString());
+	}
+
+	private boolean validateMrnLenght(@NonNull String svlth_irn) {
 		return svlth_irn.length() == 18;
 	}
 
