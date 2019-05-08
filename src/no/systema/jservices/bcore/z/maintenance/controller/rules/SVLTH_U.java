@@ -43,9 +43,16 @@ public class SVLTH_U {
 		boolean isUttag = dao.getSvlth_h().equals(EventTypeEnum.UTTAG.getValue());
 
 		if (isInlagg) {
-			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_irn())) {
+			if (svlthDaoService.existMrn(EventTypeEnum.INLAGG, dao.getSvlth_irn())) {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 						messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] { EventTypeEnum.INLAGG, dao.getSvlth_irn()}), "error", dbErrors));
+				retval = false;					
+			}			
+			logger.info("dao.getSvlth_ign()="+dao.getSvlth_ign());
+			logger.info("svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_ign())="+svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_ign()));
+			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_ign())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] { EventTypeEnum.INLAGG, dao.getSvlth_ign()}), "error", dbErrors));
 				retval = false;					
 			}			
 			if (!validateMrnLenght(dao.getSvlth_irn())) {
