@@ -3,14 +3,12 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.support.DatabaseStartupValidator;
 
 import lombok.NonNull;
 import no.systema.jservices.common.dao.SvlthDao;
 import no.systema.jservices.common.dao.services.SvlthDaoService;
 import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.util.DateTimeManager;
-import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.common.values.EventTypeEnum;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.main.util.MessageSourceHelper;
@@ -43,13 +41,6 @@ public class SVLTH_U {
 		boolean isUttag = dao.getSvlth_h().equals(EventTypeEnum.UTTAG.getValue());
 
 		if (isInlagg) {
-			if (svlthDaoService.existMrn(EventTypeEnum.INLAGG, dao.getSvlth_irn())) {
-				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-						messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] { EventTypeEnum.INLAGG, dao.getSvlth_irn()}), "error", dbErrors));
-				retval = false;					
-			}			
-			logger.info("dao.getSvlth_ign()="+dao.getSvlth_ign());
-			logger.info("svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_ign())="+svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_ign()));
 			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_ign())) {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 						messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] { EventTypeEnum.INLAGG, dao.getSvlth_ign()}), "error", dbErrors));
@@ -72,15 +63,18 @@ public class SVLTH_U {
 				retval = false;
 			}
 			
-			
-			
 		}
 		if (isUttag) {
-			if (!svlthDaoService.validUttagQuantity(dao.getSvlth_unt(), dao.getSvlth_irn())) {
+			if (!svlthDaoService.validUttagQuantity(dao.getSvlth_unt(), dao.getSvlth_ign())) {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-						messageSourceHelper.getMessage("systema.bcore.accounting.error.invalid.quantity", new Object[] { dao.getSvlth_unt(), dao.getSvlth_irn()}), "error", dbErrors));
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.invalid.quantity", new Object[] { dao.getSvlth_unt(), dao.getSvlth_ign()}), "error", dbErrors));
 				retval = false;					
-			}			
+			}		
+			if (!validateTullidLenght(dao.getSvlth_uti())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.svlth_uti.invalid.length",new Object[] { dao.getSvlth_uti() }),"error", dbErrors));
+				retval = false;
+			}
 			
 		}
 		
@@ -96,4 +90,9 @@ public class SVLTH_U {
 		return svlth_irn.length() == 18;
 	}
 
+	private boolean validateTullidLenght(@NonNull String svlth_uti) {
+		return svlth_uti.length() == 10;
+	}	
+	
+	
 }
