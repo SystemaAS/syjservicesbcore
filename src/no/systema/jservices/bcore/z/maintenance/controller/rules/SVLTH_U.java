@@ -41,9 +41,9 @@ public class SVLTH_U {
 		boolean isUttag = dao.getSvlth_h().equals(EventTypeEnum.UTTAG.getValue());
 
 		if (isInlagg) {
-			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_ign())) {
+			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_ign(), dao.getSvlth_pos())) {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-						messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] { EventTypeEnum.INLAGG, dao.getSvlth_ign()}), "error", dbErrors));
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.exist", new Object[] {dao.getSvlth_ign(), dao.getSvlth_pos()}), "error", dbErrors));
 				retval = false;					
 			}			
 			if (!validateMrnLenght(dao.getSvlth_irn())) {
@@ -65,9 +65,9 @@ public class SVLTH_U {
 			
 		}
 		if (isUttag) {
-			if (!svlthDaoService.validUttagQuantity(dao.getSvlth_unt(), dao.getSvlth_ign())) {
+			if (!svlthDaoService.validUttagQuantity(dao.getSvlth_unt(), dao.getSvlth_ign(), dao.getSvlth_pos())) {
 				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-						messageSourceHelper.getMessage("systema.bcore.accounting.error.invalid.quantity", new Object[] { dao.getSvlth_unt(), dao.getSvlth_ign()}), "error", dbErrors));
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.invalid.quantity", new Object[] { dao.getSvlth_unt(), dao.getSvlth_ign(), dao.getSvlth_pos()}), "error", dbErrors));
 				retval = false;					
 			}		
 			if (!validateTullidLenght(dao.getSvlth_uti())) {
