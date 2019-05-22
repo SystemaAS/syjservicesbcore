@@ -21,68 +21,46 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import no.systema.jservices.bcore.z.maintenance.controller.rules.SVLTH_U;
-import no.systema.jservices.common.dao.SvlthDao;
+import no.systema.jservices.bcore.z.maintenance.controller.rules.SVLTU_U;
 import no.systema.jservices.common.dao.SvltuDao;
-import no.systema.jservices.common.dao.services.SvlthDaoService;
 import no.systema.jservices.common.dao.services.SvltuDaoService;
-import no.systema.jservices.common.dao.services.Svtx03fDaoService;
-import no.systema.jservices.common.dto.SvlthDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
-import no.systema.jservices.common.values.EventTypeEnum;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
-public class BcoreMaintResponseOutputterController_SVLTH {
-	private static final Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_SVLTH.class.getName());
+public class BcoreMaintResponseOutputterController_SVLTU {
+	private static final Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_SVLTU.class.getName());
 
 	
 	/**
-	 * Search in SVLTH
-	 * 
-	 * Note: Returning dto
+	 * Search in SVLTU
 	 * 
 	 * Example :
-	 * http://localhost:8080/syjservicesbcore/syjsSVLTH?user=SYSTEMA&svlth_igl=BJO&svlth_ign=BJO19-004
+	 * http://localhost:8080/syjservicesbcore/syjsSVLTU?user=SYSTEMA&svlth_igl=BJO&svlth_ign=19-003&svlth_pos=1
 	 */
-	@RequestMapping(path = "/syjsSVLTH", method = RequestMethod.GET)
+	@RequestMapping(path = "/syjsSVLTU", method = RequestMethod.GET)
 	@ResponseBody
 	public String syjsSVLTH(HttpSession session, 
 			@RequestParam(value = "user", required = true) String user,
-			@RequestParam(value = "svlth_h", required = false) String svlth_h,
-			@RequestParam(value = "svlth_igl", required = false) String svlth_igl,
-			@RequestParam(value = "svlth_ign", required = false) String svlth_ign,
-			@RequestParam(value = "svlth_pos", required = false) String svlth_pos,
-			@RequestParam(value = "svlth_irn", required = false) String svlth_irn,
-			@RequestParam(value = "svlth_id2F", required = false) Integer svlth_id2F,
-			@RequestParam(value = "svlth_id2T", required = false) Integer svlth_id2T,
-			@RequestParam(value = "svlth_id1", required = false) Integer svlth_id1,
-			@RequestParam(value = "svlth_im1", required = false) Integer svlth_im1,
-			@RequestParam(value = "svlth_rty", required = false) String svlth_rty,
+			@RequestParam(value = "svlth_igl", required = true) String svlth_igl,
+			@RequestParam(value = "svlth_ign", required = true) String svlth_ign,
+			@RequestParam(value = "svlth_pos", required = true) String svlth_pos,
 			@RequestParam(value = "DO_NOT_LOAD", required = false) String DO_NOT_LOAD) {
 
-		logger.info("INSIDE /syjsSVLTH...");
+		logger.info("INSIDE /syjsSVLTU...");
 		
-		logger.info("svlth_h="+svlth_h);
 		logger.info("svlth_igl="+svlth_igl);
 		logger.info("svlth_ign="+svlth_ign);
 		logger.info("svlth_pos="+svlth_pos);
-		logger.info("svlth_irn="+svlth_irn);
-		logger.info("svlth_id2F="+svlth_id2F);
-		logger.info("svlth_id2T="+svlth_id2T);
-		logger.info("svlth_id1="+svlth_id1);
-		logger.info("svlth_im1="+svlth_im1);
-		logger.info("svlth_rty="+svlth_rty);
 		
-		
-		JsonResponseWriter2<SvlthDto> jsonWriter = new JsonResponseWriter2<SvlthDto>();		
+		JsonResponseWriter2<SvltuDao> jsonWriter = new JsonResponseWriter2<SvltuDao>();		
 		String errMsg = "";
 		String status = "ok";
 		StringBuffer dbErrorStackTrace = new StringBuffer();
 		StringBuffer sb = new StringBuffer();
-		List<SvlthDto> svlthDtoList = new ArrayList<SvlthDto>();	
+		List<SvltuDao> svlthDtoList = new ArrayList<SvltuDao>();	
 		try {
 			String userName = bridfDaoServices.findNameById(user);
 			if (StringUtils.hasValue(userName)) {
@@ -90,10 +68,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 				if (DO_NOT_LOAD != null) {  //datatables trick, due to autoload
 					//do nothing
 				} else {
-					svlthDtoList = svlthDaoService.getAll(svlth_h, svlth_igl, svlth_ign,svlth_pos, svlth_irn, svlth_id2F,svlth_id2T, svlth_id1, svlth_im1, svlth_rty );
-					if (StringUtils.hasValue(svlth_h) && svlth_h.equals(EventTypeEnum.UTTAG.getValue())) {
-						addUtgHandlingar(svlthDtoList);
-					}
+					svlthDtoList = svltuDaoService.findAll(svlth_igl, svlth_ign, svlth_pos);
 				}
 
 				sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svlthDtoList));
@@ -118,11 +93,11 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 
 	}
 	
-
-	@RequestMapping(value = "syjsSVLTH_U.do", method = { RequestMethod.GET, RequestMethod.POST })
+	
+	@RequestMapping(value = "syjsSVLTU_U.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String syjsSVLTH_U(HttpSession session, HttpServletRequest request) {	
-		logger.info("INSIDE syjsSVLTH_U.do");
+	public String syjsSVLTU_U(HttpSession session, HttpServletRequest request) {	
+		logger.info("INSIDE syjsSVLT_U.do");
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		String userName = null;
@@ -141,17 +116,17 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 			userName = this.bridfDaoServices.findNameById(user);
 			errMsg = "";
 			status = "ok";
-			SvlthDao dao = new SvlthDao();
-			SvlthDao resultDao = new SvlthDao();
+			SvltuDao dao = new SvltuDao();
+			SvltuDao resultDao = new SvltuDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 			binder.bind(request);
 
-	        SVLTH_U rulerLord = new SVLTH_U(request, svlthDaoService, svtx03fDaoService ,sb, dbErrorStackTrace); 
+	        SVLTU_U rulerLord = new SVLTU_U(request, svltuDaoService,sb, dbErrorStackTrace); 
 	        
 			if (rulerLord.isValidInput(dao, userName)) {
 				if (StringUtils.hasValue(userName)) {
-						resultDao = svlthDaoService.create(dao);
-						logger.info("SVLTH created, dao="+ReflectionToStringBuilder.toString(resultDao));
+						resultDao = svltuDaoService.create(dao);
+						logger.info("SVLTU created, dao="+ReflectionToStringBuilder.toString(resultDao));
 					if (resultDao == null) {
 						errMsg = "Could not add dao=" + ReflectionToStringBuilder.toString(dao);
 						status = "error ";
@@ -164,14 +139,14 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 				} else {
 					logger.error("user: "+user+ " not found in bridf.");
 					// write JSON error output
-					errMsg = "ERROR on DML for SVLTH";
+					errMsg = "ERROR on DML for SVLTU";
 					status = "error";
 					dbErrorStackTrace.append("request input parameters are invalid: <user>");
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				}
 			} else {
 				// write JSON error output
-				errMsg = "ERROR on ADD for SVLTH: invalid rulerLord, error="+sb.toString();
+				errMsg = "ERROR on ADD for SVLTU: invalid rulerLord, error="+sb.toString();
 				status = "error";
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				logger.error(sb);
@@ -180,7 +155,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 
 		} catch (Throwable e) {
 			logger.error("::ERROR::", e);
-			errMsg = "ERROR on add/update SVLTH: "+e.getMessage();
+			errMsg = "ERROR on add SVLTU: "+e.getMessage();
 			status = "error ";
 			dbErrorStackTrace.append(e.getMessage());
 			sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status,dbErrorStackTrace));
@@ -189,33 +164,6 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 		return sb.toString();
 		
 	}
-
-	
-	private void addUtgHandlingar(List<SvlthDto> svlthDtoList) {
-		logger.info("::addUtgHandlingar::");
-		List<SvlthDto> newList = new ArrayList<SvlthDto>();
-
-		svlthDtoList.forEach(dto -> {
-			dto.setSvlth_uex(getUtgaendeHandlingar(dto.getSvlth_uex(), dto.getSvlth_igl(), dto.getSvlth_ign(), dto.getSvlth_pos()));
-			newList.add(dto);
-		});
-		
-		svlthDtoList.clear();
-		svlthDtoList.addAll(newList);
-		
-	}
-
-	private String getUtgaendeHandlingar(String uex, String svlth_igl, String svlth_ign, String svlth_pos) {
-		StringBuffer buffer = new StringBuffer(uex);
-		List<SvltuDao> list = svltuDaoService.findAll(svlth_igl, svlth_ign, svlth_pos);
-		list.forEach(dao -> {
-			buffer.append(System.lineSeparator()).append("#").append(dao.getSvltu_uha());			
-		});
-
-		return buffer.toString();
-	}
-
-	
 	
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
@@ -224,13 +172,6 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 	public void setBridfDaoServices (BridfDaoServices value){ this.bridfDaoServices = value; }
 	public BridfDaoServices getBridfDaoServices(){ return this.bridfDaoServices; }	
 
-	@Qualifier ("svlthDaoService")
-	private SvlthDaoService svlthDaoService;
-	@Autowired
-	@Required
-	public void setSvlthDaoService(SvlthDaoService value){ this.svlthDaoService = value; }
-	public SvlthDaoService getSvlthDaoService(){ return this.svlthDaoService; }		
-
 	@Qualifier ("svltuDaoService")
 	private SvltuDaoService svltuDaoService;
 	@Autowired
@@ -238,11 +179,5 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 	public void setSvltuDaoService(SvltuDaoService value){ this.svltuDaoService = value; }
 	public SvltuDaoService getSvltuDaoService(){ return this.svltuDaoService; }		
 
-	
-	@Qualifier ("svtx03fDaoService")
-	private Svtx03fDaoService svtx03fDaoService;
-	@Autowired
-	@Required
-	public void setSvtx03fDaoService(Svtx03fDaoService value){ this.svtx03fDaoService = value; }
-	public Svtx03fDaoService getSvtx03fDaoService(){ return this.svtx03fDaoService; }			
+		
 }
