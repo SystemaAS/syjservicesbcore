@@ -3,7 +3,9 @@ package no.systema.jservices.bcore.z.maintenance.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.systema.jservices.common.dao.SvltfDao;
 import no.systema.jservices.common.dao.services.SvltfDaoService;
 import no.systema.jservices.common.json.JsonResponseWriter2;
+import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
@@ -31,7 +34,7 @@ public class BcoreMaintResponseOutputterController_SVLTF {
 	
 	/**
 	 * @return
-	 * @Example SELECT specific: http://localhost:8080/syjservicesbcore/syjsSVLTF.do?user=FREDRIK
+	 * @Example SELECT specific: http://localhost:8080/syjservicesbcore/syjsSVLTF.do?user=FREDRIK&svltf_igl=BJO
 	 * @Example SELECT list: http://localhost:8080/syjservicesbcore/syjsSVLTF.do?user=FREDRIK
 	 * 
 	 */
@@ -44,6 +47,7 @@ public class BcoreMaintResponseOutputterController_SVLTF {
 		
 		try {
 			String user = request.getParameter("user");
+			String svltf_igl = request.getParameter("svltf_igl");
 			// Check ALWAYS user in BRIDF
 			String userName = this.bridfDaoServices.findNameById(user); 
 			String errMsg = "";
@@ -51,7 +55,14 @@ public class BcoreMaintResponseOutputterController_SVLTF {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 
 			if ((userName != null && !"".equals(userName))) {
-				svltfDaoList = svltfDaoService.findAll(null);
+				if (StringUtils.hasValue(svltf_igl)) {
+					Map<String, Object> params = new HashMap<String, Object>();
+					params.put("svltf_igl", svltf_igl);
+					logger.info("WTF");
+					svltfDaoList = svltfDaoService.findAll(params);
+				} else {
+					svltfDaoList = svltfDaoService.findAll(null);
+				}
 				if (svltfDaoList != null) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svltfDaoList));
 				} else {

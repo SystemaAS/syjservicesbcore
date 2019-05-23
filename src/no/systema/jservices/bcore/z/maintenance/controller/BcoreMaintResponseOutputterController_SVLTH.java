@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -123,7 +124,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 	@ResponseBody
 	public String syjsSVLTH_U(HttpSession session, HttpServletRequest request) {	
 		logger.info("INSIDE syjsSVLTH_U.do");
-		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		JsonResponseWriter2<SvlthDao> jsonWriter = new JsonResponseWriter2<SvlthDao>();		
 		StringBuffer sb = new StringBuffer();
 		String userName = null;
 		String errMsg;
@@ -159,7 +160,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					} else {
 						// OK UPDATE
-						sb.append(jsonWriter.setJsonSimpleValidResult(userName, status));
+						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, Arrays.asList(resultDao)));
 					}
 				} else {
 					logger.error("user: "+user+ " not found in bridf.");
