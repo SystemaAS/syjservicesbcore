@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import no.systema.jservices.bcore.z.maintenance.controller.rules.SVLTH_U;
 import no.systema.jservices.common.dao.SvlthDao;
 import no.systema.jservices.common.dao.SvltuDao;
+import no.systema.jservices.common.dao.services.SvltfDaoService;
 import no.systema.jservices.common.dao.services.SvlthDaoService;
 import no.systema.jservices.common.dao.services.SvltuDaoService;
 import no.systema.jservices.common.dao.services.Svtx03fDaoService;
@@ -32,7 +33,6 @@ import no.systema.jservices.common.dto.SvlthDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.common.values.EventTypeEnum;
-import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
@@ -216,7 +216,28 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 		return buffer.toString();
 	}
 
+
+	/**
+	 * 
+	 * Generate concat godsnummer with value from SVLTF.
+	 * 
+	 * Example :
+	 * http://localhost:8080/syjservicesbcore/generateGodsnummer.do?user=SYSTEMA&svlth_igl=BJO
+	 * 
+	 * @param session
+	 * @param request
+	 * @return
+	 */
 	
+	@RequestMapping(value = "generateGodsnummer.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String generateGodsnummer(@RequestParam(value = "svlth_igl", required = true) String svlth_igl,
+										HttpSession session, HttpServletRequest request) {	
+		logger.info("INSIDE generateGodsnummer");
+		
+		return svltfDaoService.getGenerateGodsnummer(svlth_igl);
+		
+	}
 	
 	@Qualifier ("bridfDaoServices")
 	private BridfDaoServices bridfDaoServices;
@@ -232,6 +253,14 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 	public void setSvlthDaoService(SvlthDaoService value){ this.svlthDaoService = value; }
 	public SvlthDaoService getSvlthDaoService(){ return this.svlthDaoService; }		
 
+	@Qualifier ("svltfDaoService")
+	private SvltfDaoService svltfDaoService;
+	@Autowired
+	@Required
+	public void setSvltfDaoService(SvltfDaoService value){ this.svltfDaoService = value; }
+	public SvltfDaoService getSvltfDaoService(){ return this.svltfDaoService; }		
+	
+	
 	@Qualifier ("svltuDaoService")
 	private SvltuDaoService svltuDaoService;
 	@Autowired
