@@ -32,7 +32,6 @@ import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.dto.SvlthDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.common.util.StringUtils;
-import no.systema.jservices.common.values.EventTypeEnum;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
@@ -92,7 +91,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 					//do nothing
 				} else {
 					svlthDtoList = svlthDaoService.getAll(svlth_h, svlth_igl, svlth_ign,svlth_pos, svlth_irn, svlth_id2F,svlth_id2T, svlth_id1, svlth_im1, svlth_rty );
-					if (StringUtils.hasValue(svlth_h) && svlth_h.equals(EventTypeEnum.UTTAG.getValue())) {
+					if (!svlthDtoList.isEmpty()) {
 						addUtgHandlingar(svlthDtoList);
 					}
 				}
@@ -193,11 +192,10 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 
 	
 	private void addUtgHandlingar(List<SvlthDto> svlthDtoList) {
-		logger.info("::addUtgHandlingar::");
 		List<SvlthDto> newList = new ArrayList<SvlthDto>();
 
 		svlthDtoList.forEach(dto -> {
-			dto.setSvlth_uex(getUtgaendeHandlingar(dto.getSvlth_uex(), dto.getSvlth_igl(), dto.getSvlth_ign(), dto.getSvlth_pos()));
+			dto.setSvlth_uex_concat(getMoreUtgaendeHandlingar( dto.getSvlth_igl(), dto.getSvlth_ign(), dto.getSvlth_pos()));
 			newList.add(dto);
 		});
 		
@@ -206,8 +204,8 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 		
 	}
 
-	private String getUtgaendeHandlingar(String uex, String svlth_igl, String svlth_ign, String svlth_pos) {
-		StringBuffer buffer = new StringBuffer(uex);
+	private String getMoreUtgaendeHandlingar(String svlth_igl, String svlth_ign, String svlth_pos) {
+		StringBuffer buffer = new StringBuffer();
 		List<SvltuDao> list = svltuDaoService.findAll(svlth_igl, svlth_ign, svlth_pos);
 		list.forEach(dao -> {
 			buffer.append(System.lineSeparator()).append("#").append(dao.getSvltu_uha());			
@@ -226,7 +224,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 	 * 
 	 * @param session
 	 * @param request
-	 * @return
+	 * @return e.g 19-0001
 	 */
 	
 	@RequestMapping(value = "generateGodsnummer.do", method = { RequestMethod.GET, RequestMethod.POST })
