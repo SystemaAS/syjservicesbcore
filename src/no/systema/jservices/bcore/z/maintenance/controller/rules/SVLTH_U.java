@@ -9,6 +9,7 @@ import no.systema.jservices.common.dao.SvlthDao;
 import no.systema.jservices.common.dao.services.SvlthDaoService;
 import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.util.DateTimeManager;
+import no.systema.jservices.common.util.StringUtils;
 import no.systema.jservices.common.values.EventTypeEnum;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.main.util.MessageSourceHelper;
@@ -39,6 +40,7 @@ public class SVLTH_U {
 		boolean retval = true;
 		boolean isInlagg = dao.getSvlth_h().equals(EventTypeEnum.INLAGG.getValue());
 		boolean isUttag = dao.getSvlth_h().equals(EventTypeEnum.UTTAG.getValue());
+		boolean isRattelse = dao.getSvlth_h().equals(EventTypeEnum.RATTELSE.getValue());
 
 		if (isInlagg) {
 			if (svlthDaoService.exist(EventTypeEnum.INLAGG, dao.getSvlth_ign(), dao.getSvlth_pos())) {
@@ -77,6 +79,15 @@ public class SVLTH_U {
 			}
 			
 		}
+		if (isRattelse) {
+			if (StringUtils.hasValue(dao.getSvlth_rsl())  && !svtx03fDaoService.kollislagExist(dao.getSvlth_rsl())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.svlth_isl.exist",new Object[] { dao.getSvlth_rsl() }),"error", dbErrors));
+				retval = false;
+			}
+			
+		}		
+		
 		
 		return retval;
 
