@@ -85,7 +85,11 @@ public class SVLTH_U {
 						messageSourceHelper.getMessage("systema.bcore.accounting.error.svlth_isl.exist",new Object[] { dao.getSvlth_rsl() }),"error", dbErrors));
 				retval = false;
 			}
-			
+			if (!validateTullidLenght(dao.getSvlth_ruti())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.svlth_uti.invalid.length",new Object[] { dao.getSvlth_ruti() }),"error", dbErrors));
+				retval = false;
+			}
 		}		
 		
 		
@@ -102,7 +106,7 @@ public class SVLTH_U {
 	}
 
 	private boolean validateTullidLenght(@NonNull String svlth_uti) {
-		return svlth_uti.length() == 10;
+		return svlth_uti.length() >= 10;
 	}	
 	
 	
