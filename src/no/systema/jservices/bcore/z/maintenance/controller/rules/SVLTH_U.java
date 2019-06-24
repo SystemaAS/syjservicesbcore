@@ -1,5 +1,7 @@
 package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
+import java.time.LocalDate;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
@@ -64,6 +66,12 @@ public class SVLTH_U {
 						messageSourceHelper.getMessage("systema.bcore.accounting.error.svlth_id2.invalid",new Object[] { dao.getSvlth_id2() }),"error", dbErrors));
 				retval = false;
 			}
+
+			if (!validateGodsnummer(dao.getSvlth_igl(), dao.getSvlth_ign())) {
+				errors.append(jsonWriter.setJsonSimpleErrorResult(user,
+						messageSourceHelper.getMessage("systema.bcore.accounting.error.svlth_ign.invalid",new Object[] { dao.getSvlth_igl(), dao.getSvlth_ign()}),"error", dbErrors));
+				retval = false;
+			}
 			
 		}
 		if (isUttag) {
@@ -109,5 +117,55 @@ public class SVLTH_U {
 		return svlth_uti.length() >= 10;
 	}	
 	
+	static boolean validateGodsnummer(@NonNull String svlth_igl,  @NonNull String svlth_ign) {
+		String validGodslokalkod = svlth_igl;
+		int validYear = LocalDate.now().getYear(); 
+		String validYearString = String.valueOf(validYear).substring(2); 
+		int validPrevYear = LocalDate.now().getYear()-1; 
+		String validPrevYearString = String.valueOf(validPrevYear).substring(2); 
+		int validNextYear = LocalDate.now().getYear()+1; 
+		String validNextYearString = String.valueOf(validNextYear).substring(2); 
+		int validNummerLenght = 4;
+		int validFullLenght = 10;
+		String separator = "-";
+		int separatorIdx;
+
+		if (svlth_ign.length() != validFullLenght) {
+			logger.info("svlth_ign.length()="+svlth_ign.length());
+			return false;
+		}	
+
+		if (!svlth_ign.contains(separator)) {
+			logger.info("svlth_ign.contains(separator)="+svlth_ign.contains(separator));
+			return false;
+		}		
+		
+		if (!svlth_ign.substring(0,3).equals(validGodslokalkod)) {
+			logger.info("svlth_ign.substring(0,3)="+svlth_ign.substring(0,3));
+			return false;
+		}
+
+		if (svlth_ign.substring(3,5).equals(validYearString) || svlth_ign.substring(3,5).equals(validPrevYearString) || svlth_ign.substring(3,5).equals(validNextYearString)) {
+			//continue
+		} else {
+			logger.info("svlth_ign.substring(3,5)="+svlth_ign.substring(3,5));
+			return false;
+		}
+
+		if (!svlth_ign.substring(5,6).equals("-")) {
+			logger.info("svlth_ign.substring(5,6)="+svlth_ign.substring(5,6));
+			return false;
+		}				
+
+		separatorIdx = svlth_ign.indexOf(separator);
+		if (svlth_ign.substring(separatorIdx+1,10).length() != validNummerLenght) {
+			logger.info("svlth_ign.substring(separatorIdx+1,10).length()="+svlth_ign.substring(separatorIdx+1,10).length());
+			return false;
+		}
+		
+		
+		return true;
+	}	
+
 	
 }
