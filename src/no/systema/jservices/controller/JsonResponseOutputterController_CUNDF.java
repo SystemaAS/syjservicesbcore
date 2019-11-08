@@ -223,6 +223,7 @@ public class JsonResponseOutputterController_CUNDF {
 					if (rulerLord.isValidInput(dao, userName, mode)) {
 						rulerLord.updateNumericFieldsIfNull(dao);
 						if ("A".equals(mode)) {
+							//sometimes the dao.getKundnr() will have a valid value meaning that L1-Master has already given a kundnr to use as id in Cundf
 							addFieldsToDaoWhenNew(dao, dbErrorStackTrace);
 					        addCum3LmToDao(dao,m3m3,mllm );
 	
