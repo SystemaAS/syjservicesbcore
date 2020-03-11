@@ -84,6 +84,23 @@ public class JsonResponseWriter {
 		
 		return sb.toString();
 	}
+	
+	/**
+	 * 
+	 * @param field
+	 * @param fieldValue
+	 * @return
+	 */
+	public String setJsonResult_Common_GetField_Simple(String field, String fieldValue ){
+		StringBuffer sb = new StringBuffer();
+		//build the return JSON
+		sb.append(JsonConstants.JSON_START);
+		sb.append(this.setFieldQuotes(field) + ":" + this.setFieldQuotes(fieldValue));
+		sb.append(JsonConstants.JSON_END);
+		
+		return sb.toString();
+	}
+	
 	/**
 	 * 
 	 * @param field

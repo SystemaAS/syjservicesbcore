@@ -149,6 +149,51 @@ public class JsonResponseOutputterController {
 		return sb.toString();
 	}
 	
+	/**
+	 * GET an UUID - super simple JSON-string
+	 * http://localhost:8080/syjservicesbcore/syjsuuid.do
+	 * 
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="syjsuuid.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String syjsUUID(HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();
+		try{
+			logger.info("Inside syjsUUID");
+			sb.append(jsonWriter.setJsonResult_Common_GetField_Simple("uuid", UUID.randomUUID().toString()));
+			
+		}catch(Exception e){
+			return "ERROR [JsonResponseOutputterController]";
+		}
+	    session.invalidate();
+		return sb.toString();
+	}
+	/**
+	 * UUID within a list ...
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="syjsuuid_.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String syjsUUID_complex(HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();
+		try{
+			logger.info("Inside syjsUUID");
+			sb.append(jsonWriter.setJsonResult_Common_GetField("uuid", UUID.randomUUID().toString()));
+			
+		}catch(Exception e){
+			return "ERROR [JsonResponseOutputterController]";
+		}
+	    session.invalidate();
+		return sb.toString();
+	}
+	
 	
 	
 	/**
