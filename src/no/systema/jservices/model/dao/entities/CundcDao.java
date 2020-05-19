@@ -6,6 +6,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.entities.ArkvedkDao;
 @SuppressWarnings("serial")
 public class CundcDao implements Serializable, IDao {
 
+	private String rownum = "";
 	private String ccompn = "";   //key                  
 	private String cfirma = "";	  //key    
 	private String cconta = "";  //key
@@ -239,6 +240,13 @@ public class CundcDao implements Serializable, IDao {
 	}
 	public void setCtypeorg(String ctypeorg) {
 		this.ctypeorg = ctypeorg;
+	}
+	
+	public String getRownum() {
+		return rownum;
+	}
+	public void setRownum(String rownum) {
+		this.rownum = rownum;
 	}
 	
 	

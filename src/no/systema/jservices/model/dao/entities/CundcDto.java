@@ -11,6 +11,7 @@ package no.systema.jservices.model.dao.entities;
  */
 public class CundcDto {
 
+	private String rownum = "";
 	private String ccompn = ""; // key
 	private String cfirma = ""; // key
 	private String cconta = ""; // key
@@ -536,6 +537,13 @@ public class CundcDto {
 	}
 	public void setCtypeorg(String ctypeorg) {
 		this.ctypeorg = ctypeorg;
+	}
+	
+	public String getRownum() {
+		return rownum;
+	}
+	public void setRownum(String rownum) {
+		this.rownum = rownum;
 	}
 
 

@@ -253,13 +253,15 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" WHERE   ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
+			sql.append(" AND   rrn(cundc) = ?");
+			
 			if ("".equals(dto.getCtype())) {
 				sql.append(" and NULLIF(ctype, '') IS NULL ");			
 				dto.setCtype(null);
-				retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta() });
+				retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta(), dto.getRownum() });
 			} else {
 				sql.append(" and ctype = ? ");
-				retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta(), dto.getCtype() });
+				retval = this.jdbcTemplate.update(sql.toString(), new Object[] { dto.getCcompn(), dto.getCfirma(), dto.getCconta(), dto.getRownum(), dto.getCtype() });
 			} 
 			
 			logger.info("dao="+ReflectionToStringBuilder.toString(dto));
@@ -436,7 +438,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 	private String getSELECT_FROM_CLAUSE(){
 		StringBuilder sql = new StringBuilder();
 
-		sql.append(" select ccompn, cfirma, cconta, cconta ccontaOrg, ctype, ctype ctypeOrg, cphone, cmobil, cfax, cemail, clive, ");
+		sql.append(" select rrn(c) rownum, ccompn, cfirma, cconta, cconta ccontaOrg, ctype, ctype ctypeOrg, cphone, cmobil, cfax, cemail, clive, ");
 		sql.append(" cprint, sonavn, cemne, cavd, cavdio, copd, copdio, cmerge ");
 		sql.append(" FROM cundc c, firm f ");
 		sql.append(" WHERE c.cfirma = f.fifirm ");
