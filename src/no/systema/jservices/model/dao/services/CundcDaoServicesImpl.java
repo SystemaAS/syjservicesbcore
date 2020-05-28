@@ -61,20 +61,22 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		try {
 			StringBuilder sql = new StringBuilder();
 			sql.append(this.getSELECT_FROM_CLAUSE());
+			sql.append(" and rrn(c) = ? ");
 			sql.append(" and ccompn = ? ");
 			sql.append(" and cfirma = ? ");
 			sql.append(" and cconta = ? ");
+			
 			if ("".equals(queryDao.getCtype())) {
 				queryDao.setCtype(null);
 				sql.append(" and NULLIF(ctype, '') IS NULL ");			
 				dao = (CundcDao) this.jdbcTemplate.queryForObject(sql.toString(),
-						new Object[] { queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta() },
+						new Object[] { queryDao.getRownum(), queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta() },
 						new GenericObjectMapper(new CundcDao()));
 			
 			} else {
 				sql.append(" and ctype = ? ");
 				dao = (CundcDao) this.jdbcTemplate.queryForObject(sql.toString(),
-						new Object[] { queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta(), queryDao.getCtype() },
+						new Object[] { queryDao.getRownum(), queryDao.getCcompn(), queryDao.getCfirma(), queryDao.getCconta(), queryDao.getCtype() },
 						new GenericObjectMapper(new CundcDao()));
 			
 			} 
@@ -149,6 +151,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 			sql.append(" WHERE ccompn = ? ");
 			sql.append(" AND   cfirma = ? ");
 			sql.append(" AND   cconta = ?");
+			sql.append(" AND   rrn(cundc) = ?");
 			if ("".equals(dto.getCtype())) {
 				dto.setCtype(null);
 				sql.append(" and NULLIF(ctype, '') IS NULL ");			
@@ -156,7 +159,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 						dto.getCconta(), dto.getCtype(), dto.getCphone(), dto.getCmobil(), dto.getCemail(), dto.getClive(), 
 						dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), dto.getCopd(),
 						dto.getCopdio(), dto.getCmerge(),dto.getCfax(),
-						dto.getCcompn(),dto.getCfirma(), dto.getCcontaorg()
+						dto.getCcompn(),dto.getCfirma(), dto.getCcontaorg(), dto.getRownum()
 						} );
 			
 			} else {
@@ -166,13 +169,13 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 						dto.getCprint(), dto.getSonavn(), dto.getCemne(), dto.getCavd(), dto.getCavdio(), dto.getCopd(),
 						dto.getCopdio(), dto.getCmerge(),dto.getCfax(),
 						//id's
-						dto.getCcompn(),dto.getCfirma(), dto.getCcontaorg(), dto.getCtypeorg()
+						dto.getCcompn(),dto.getCfirma(), dto.getCcontaorg(), dto.getRownum(), dto.getCtypeorg() 
 						} );
 			
 			} 
 			
 			logger.info("dto="+ReflectionToStringBuilder.toString(dto));
-			logger.info("update::sql="+sql.toString());
+			logger.warn("update::sql="+sql.toString());
 			
 			if (retval>=0) {
 				ArkvedkDao arkvedkDao = createArkvedkDao(dto, errorStackTrace);
