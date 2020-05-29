@@ -51,6 +51,8 @@ public class CUNDC_U {
 			if ( (dto.getCfirma() != null && !"".equals(dto.getCfirma())) && (dto.getCcompn() != null && !"".equals(dto.getCcompn()))
 					&& (dto.getCconta() != null && !"".equals(dto.getCconta())) && (dto.getCtype() != null && !"".equals(dto.getCtype())) ) {
 				// Check duplicate
+				//Removed duplicate control because JOVOs requirement for TOTEN. Ref.mail: May 28--> allow duplicates
+				/*
 				if (  "A".equals(mode)   &&  existInCundc(dto.getCfirma(), dto.getCcompn(), dto.getCconta(), dto.getCtype())) {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dto.getCconta(), dto.getCcompn() }), "error", dbErrors));
@@ -60,7 +62,7 @@ public class CUNDC_U {
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
 							messageSourceHelper.getMessage("systema.bcore.kunderegister.kontaktpersoner.error.cconta", new Object[] { dto.getCconta(), dto.getCcompn() }), "error", dbErrors));
 					retval = false;
-				}
+				}*/
 				// Check funksjon (if prefixed with *)
 				if (dto.getCtype() != null && !"".equals(dto.getCtype())) {
 					if (dto.getCtype().startsWith("*") && !existInKofast(dto.getCtype().substring(1), !ID_CHECK)) {
