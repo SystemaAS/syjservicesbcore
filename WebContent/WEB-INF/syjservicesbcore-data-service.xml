@@ -52,6 +52,9 @@
   <bean id="firmLoginDaoServices" class="no.systema.jservices.model.dao.services.FirmLoginDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="firmArcDaoServices" class="no.systema.jservices.model.dao.services.FirmArcDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   
   <bean id="hedummyDaoServices" class="no.systema.jservices.model.dao.services.HedummyDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
