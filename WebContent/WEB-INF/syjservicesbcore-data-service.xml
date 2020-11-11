@@ -55,11 +55,12 @@
   <bean id="firmArcDaoServices" class="no.systema.jservices.model.dao.services.FirmArcDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
+  <bean id="arkivpDaoServices" class="no.systema.jservices.model.dao.services.ArkivpDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   <bean id="hedummyDaoServices" class="no.systema.jservices.model.dao.services.HedummyDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
   <bean id="navavdDaoServices" class="no.systema.jservices.bcore.z.maintenance.model.dao.services.NavavdDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
