@@ -54,10 +54,10 @@ public class ArkivpDaoServicesImpl implements ArkivpDaoServices {
 		List<ArkivpDao> retval = new ArrayList<ArkivpDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select * from arkivp where artype = ? and arlink = ? ");
+			sql.append(" select * from arkivp where arlink = ? ");
 			
 			logger.warn(sql.toString());
-			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { "TL", id }, new BeanPropertyRowMapper(ArkivpDao.class));
+			retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new BeanPropertyRowMapper(ArkivpDao.class));
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);

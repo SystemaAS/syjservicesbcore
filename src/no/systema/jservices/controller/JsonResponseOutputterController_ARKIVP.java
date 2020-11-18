@@ -52,7 +52,7 @@ public class JsonResponseOutputterController_ARKIVP {
 	public String syjsRList( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriterAux jsonWriter = new JsonResponseWriterAux();
 		StringBuffer sb = new StringBuffer();
-		
+
 		try{
 			logger.info("Inside syjsARKIVP");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
@@ -125,7 +125,7 @@ public class JsonResponseOutputterController_ARKIVP {
 	private boolean isDoFind(ArkivpDao dao){
 		boolean retval = false;
 		if(StringUtils.isNotEmpty(dao.getAruser()) || StringUtils.isNotEmpty(dao.getArrfk()) || 
-		   StringUtils.isNotEmpty(dao.getArdate())){
+				StringUtils.isNotEmpty(dao.getArtype()) || StringUtils.isNotEmpty(dao.getArdate())){
 			retval = true;
 		}
 		
