@@ -79,8 +79,15 @@ public class ArkivpDaoServicesImpl implements ArkivpDaoServices {
 			sql.append(" select * from arkivp where artype = ?" ); params.add(dao.getArtype());
 			//walk through the filter fields
 			if(StringUtils.isNotEmpty(dao.getArrfk())){ sql.append(" and arrfk = ? "); params.add(dao.getArrfk()); }
+			if(StringUtils.isNotEmpty(dao.getArbhis())){ sql.append(" and arbhis = ? "); params.add(dao.getArbhis()); }
 			if(StringUtils.isNotEmpty(dao.getAruser())){ sql.append(" and aruser = ? "); params.add(dao.getAruser()); }
-			if(!"0".equals(dao.getArdate())){ sql.append(" and ardate = ? "); params.add(dao.getArdate()); }
+			if(!"0".equals(dao.getOwn_ardateTo())){ 
+				sql.append(" and   ardate >= ? "); params.add(dao.getArdate());
+				sql.append(" and   ardate <= ? "); params.add(dao.getOwn_ardateTo());
+			}else if (!"0".equals(dao.getArdate())){
+				sql.append(" and ardate = ? "); params.add(dao.getArdate());
+				
+			}
 			logger.warn(sql.toString());
 			logger.warn(params.toString());
 			retval = this.jdbcTemplate.query( sql.toString(), params.toArray(new Object[0]), new BeanPropertyRowMapper(ArkivpDao.class));

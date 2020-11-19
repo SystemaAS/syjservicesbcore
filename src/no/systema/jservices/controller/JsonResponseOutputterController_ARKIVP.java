@@ -125,7 +125,7 @@ public class JsonResponseOutputterController_ARKIVP {
 	private boolean isDoFind(ArkivpDao dao){
 		boolean retval = false;
 		if(StringUtils.isNotEmpty(dao.getAruser()) || StringUtils.isNotEmpty(dao.getArrfk()) || 
-				StringUtils.isNotEmpty(dao.getArtype()) || StringUtils.isNotEmpty(dao.getArdate())){
+				StringUtils.isNotEmpty(dao.getArbhis())  || !"0".equals(dao.getArdate()) ){
 			retval = true;
 		}
 		
