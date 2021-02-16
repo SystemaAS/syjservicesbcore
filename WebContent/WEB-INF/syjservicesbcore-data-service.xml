@@ -184,6 +184,17 @@
   <bean id="qaokp08aDaoServices" class="no.systema.jservices.model.dao.services.Qaokp08aDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  
+  <!--///////////////////
+      CW1-eHubConnect
+      DAO-Service layer
+     ///////////////////
+  -->
+  <bean id="sadhDaoServices" class="no.systema.cw1.jservices.services.SadhDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  
+  
   <!--///////////////////
         NativeExtractor 
       ///////////////////
