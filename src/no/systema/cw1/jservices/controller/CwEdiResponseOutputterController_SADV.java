@@ -20,9 +20,9 @@ import javax.servlet.http.HttpSession;
 
 //Application
 //import no.systema.jservices.model.dao.entities.GenericTableColumnsDao;
-import no.systema.cw1.jservices.controller.rules.SADH_U;
-import no.systema.cw1.jservices.dao.SadhDao;
-import no.systema.cw1.jservices.services.SadhDaoServices;
+import no.systema.cw1.jservices.controller.rules.SADV_U;
+import no.systema.cw1.jservices.dao.SadvDao;
+import no.systema.cw1.jservices.services.SadvDaoServices;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 //rules
@@ -40,28 +40,28 @@ import no.systema.jservices.jsonwriter.JsonResponseWriter;
  */
 
 @Controller
-public class CwEdiResponseOutputterController_SADH {
-	private static Logger logger = Logger.getLogger(CwEdiResponseOutputterController_SADH.class.getName());
+public class CwEdiResponseOutputterController_SADV {
+	private static Logger logger = Logger.getLogger(CwEdiResponseOutputterController_SADV.class.getName());
 	
 	/**
 	 * FreeForm Source:
-	 * 	 File: 		SADH
+	 * 	 File: 		SADV and children
 	 * 	 PGM:		N/A
-	 * 	 Member: 	SADH - SELECT LIST or SELECT SPECIFIC
+	 * 	 Member: 	SADV - SELECT LIST or SELECT SPECIFIC
 	 *  
 	 * 
 	 * @return
-	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/cw1SADH.do?user=OSCAR&sist=A ... 
+	 * @Example SELECT http://gw.systema.no:8080/syjservicesbcore/cw1SADV.do?user=OSCAR&svavd ... 
 	 * 
 	 */
-	@RequestMapping(value="cw1SADH.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="cw1SADV.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsRList( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.warn("Inside cw1SADH");
+			logger.warn("Inside cw1SADV");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			//Check ALWAYS user in BRIDF
@@ -74,16 +74,16 @@ public class CwEdiResponseOutputterController_SADH {
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				//bind attributes is any
-				SadhDao dao = new SadhDao();
+				SadvDao dao = new SadvDao();
 				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
 	            binder.bind(request);
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
 				//do SELECT
 				logger.warn("Before SELECT ...");
-	            if( StringUtils.isNotEmpty(dao.getSist())){
+	            if( StringUtils.isNotEmpty(dao.getSvavd()) && StringUtils.isNotEmpty(dao.getSvtdn())){
 	            	logger.warn("getList");
-	            	list = this.sadhDaoServices.getList(dao.getSist(), dbErrorStackTrace);
+	            	list = this.sadvDaoServices.getList(dao.getSvavd(), dao.getSvtdn(), dbErrorStackTrace);
 				}
 				//process result
 				if (list!=null){
@@ -118,25 +118,25 @@ public class CwEdiResponseOutputterController_SADH {
 	/**
 	 * 
 	 * Update Database DML operations
-	 * File: 	SADH
+	 * File: 	SADV
 	 * PGM:		
 	 * Member: 	CW1 EDI - UPDATE SPECIFIC
 	 * 
-	 * @Example UPDATE: http://gw.systema.no:8080/syjservicesbcore/syjsSADH_U.do?user=OSCAR&mode=U/A/D
+	 * @Example UPDATE: http://gw.systema.no:8080/syjservicesbcore/syjsSADV_U.do?user=OSCAR&mode=U/A/D
 	 *
 	 * @param session
 	 * @param request
 	 * @return
 	 * 
 	 */
-	@RequestMapping(value="cw1SADH_U.do", method={RequestMethod.GET, RequestMethod.POST})
+	@RequestMapping(value="cw1SADV_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsR_U( HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		
 		try{
-			logger.info("Inside cw1SADH_U");
+			logger.info("Inside cw1SADV_U");
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
@@ -148,20 +148,20 @@ public class CwEdiResponseOutputterController_SADH {
 			StringBuffer dbErrorStackTrace = new StringBuffer();
 			
 			//bind attributes is any
-			SadhDao dao = new SadhDao();
+			SadvDao dao = new SadvDao();
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
-            logger.warn("AVD:" + dao.getSiavd());
-            logger.warn("OPD:" + dao.getSitdn());
+            logger.warn("AVD:" + dao.getSvavd());
+            logger.warn("OPD:" + dao.getSvtdn());
             //rules
-            SADH_U rulerLord = new SADH_U();
+            SADV_U rulerLord = new SADV_U();
 			//Start processing now
 			if(userName!=null && !"".equals(userName)){
 				int dmlRetval = 0;
 				if("U".equals(mode)){
 					if(rulerLord.isValidInput(dao, userName, mode)){
 						logger.warn("calling update...");
-						dmlRetval = this.sadhDaoServices.update(dao, dbErrorStackTrace);
+						dmlRetval = this.sadvDaoServices.update(dao, dbErrorStackTrace);
 					}else{
 						//write JSON error output
 						errMsg = "ERROR on DELETE ALL: invalid?  Try to check: <DaoServices>.deleteAll";
@@ -208,9 +208,9 @@ public class CwEdiResponseOutputterController_SADH {
 	//WIRED SERVICES
 	//----------------
 	@Autowired
-	private SadhDaoServices sadhDaoServices;
-	public void setSadhDaoServices (SadhDaoServices value){ this.sadhDaoServices = value; }
-	public SadhDaoServices getSadhDaoServices(){ return this.sadhDaoServices; }
+	private SadvDaoServices sadvDaoServices;
+	public void setSadvDaoServices (SadvDaoServices value){ this.sadvDaoServices = value; }
+	public SadvDaoServices getSadvDaoServices(){ return this.sadvDaoServices; }
 	
 	
 	@Autowired

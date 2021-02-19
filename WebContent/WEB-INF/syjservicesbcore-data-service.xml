@@ -193,7 +193,12 @@
   <bean id="sadhDaoServices" class="no.systema.cw1.jservices.services.SadhDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
-  
+  <bean id="sadvDaoServices" class="no.systema.cw1.jservices.services.SadvDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  <bean id="sadfDaoServices" class="no.systema.cw1.jservices.services.SadfDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   
   <!--///////////////////
         NativeExtractor 
