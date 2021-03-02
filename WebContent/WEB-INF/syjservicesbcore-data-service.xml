@@ -196,6 +196,12 @@
   <bean id="sadvDaoServices" class="no.systema.cw1.jservices.services.SadvDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="sadvcnDaoServices" class="no.systema.cw1.jservices.services.SadvcnDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  <bean id="sadwDaoServices" class="no.systema.cw1.jservices.services.SadwDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   <bean id="sadfDaoServices" class="no.systema.cw1.jservices.services.SadfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
