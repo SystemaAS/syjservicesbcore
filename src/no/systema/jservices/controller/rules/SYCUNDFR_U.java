@@ -169,9 +169,11 @@ public class SYCUNDFR_U {
 				}	
 	
 				if ( (StringUtils.hasValue(dao.getSyfr06())) && !existInElma(dao.getSyrg())) {
+					/* removed Toten Use Case: Apr 15, 2021 - OT
 					errors.append(jsonWriter.setJsonSimpleErrorResult(user,
-							messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr06X", new Object[] { dao.getSyrg()}), "error", dbErrors));
-					retval = false;					
+					messageSourceHelper.getMessage("systema.bcore.kunderegister.kunde.error.syfr06X", new Object[] { dao.getSyrg()}), "error", dbErrors));
+					retval = false;
+					*/					
 				}					
 	
 				//New, betbet check
