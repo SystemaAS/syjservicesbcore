@@ -207,6 +207,16 @@
   </bean>
   
   <!--///////////////////
+      PostNord A53-WebService for return shipments
+      DAO-Service layer
+     ///////////////////
+  -->
+  <bean id="pn104fDaoServices" class="no.systema.uxternal.jservices.services.Pn104fDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  
+  
+  <!--///////////////////
         NativeExtractor 
       ///////////////////
    -->  
