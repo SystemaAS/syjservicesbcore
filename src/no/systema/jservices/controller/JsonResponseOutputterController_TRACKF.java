@@ -68,6 +68,10 @@ public class JsonResponseOutputterController_TRACKF {
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("ttavd", dao.getTtavd());
 					params.put("ttopd", dao.getTtopd());
+					//
+					if(StringUtils.hasValue(dao.getTtacti())) {
+						params.put("ttacti", dao.getTtacti());
+					}
 					//get specific 
 					if(dao.getTtdate() > 0 && dao.getTttime() > 0){
 						params.put("ttdate", dao.getTtdate());
