@@ -155,7 +155,7 @@ public class JsonResponseOutputterController_EDIM {
             logger.info("DAO="+ReflectionToStringBuilder.toString(dao));
    
             //rules
-            EDIMR_U rulerLord = null; 
+            EDIMR_U rulerLord = new EDIMR_U(); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;

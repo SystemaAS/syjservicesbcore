@@ -9,7 +9,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import no.systema.jservices.common.dao.SvtfiDao;
 import no.systema.jservices.common.util.DateTimeManager;
 import no.systema.jservices.model.dao.entities.EdimDao;
+import no.systema.jservices.model.dao.entities.EdissDao;
 import no.systema.jservices.model.dao.mapper.EdimMapper;
+import no.systema.jservices.model.dao.mapper.SvtfiMapper;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -110,12 +112,12 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 			sql.append(" mtdn,mffbnr  ) "); 
 			
 		
-			sql.append(" VALUES(?, ?, ?, ?, ?, ?, ?, ? ,?,?, ");
-			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, "); 
-			sql.append(" ?, ?, ?, ?, ?, ?, ?, ?, ? , ?, "); 
-			sql.append(" ?, ? ) "); 
+			sql.append(" VALUES(?,?,?,?,?,?,?,?,?,?, ");
+			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
+			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
+			sql.append(" ?,? ) "); 
 			
-			/*
+			logger.warn(dao.toString());
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 					svtfiDao.getSvtf_0004(), svtfiDao.getSvtf_0010(), dao.getM0035(), dao.getM0062(), dao.getM0065(),dao.getM0068(), dao.getM1001(), dao.getM1004(), dao.getM1225(),dao.getMsn(), 
 					counterEdiCmn, dao.getMsr(), dao.getMst(), dao.getMdt(), dao.getMtm(), dao.getMven(), dao.getM0068a(), dao.getM0068b(), dao.getM0068c(), dao.getM0068d(),
@@ -127,7 +129,7 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 			if(retval>=0){
 				retval = this.updateCounterEdicCmn(counterEdiCmn, errorStackTrace);
 			}
-			*/
+			
 				
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -163,9 +165,12 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 		SvtfiDao dao = null;
 		
 		try{
-			StringBuffer sql = new StringBuffer();
-			sql.append("Select * from SVTFI");
-			dao = this.jdbcTemplate.queryForObject( sql.toString(), SvtfiDao.class);
+			String sql = " select * from svtfi ";
+			List<SvtfiDao> list = jdbcTemplate.query( sql, new SvtfiMapper());
+			logger.warn("SVTFI list size:" + list.size());
+			for (SvtfiDao record : list) {
+				dao = record;
+			}
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
