@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import no.systema.jservices.common.dao.SvtfiDao;
 import no.systema.jservices.common.util.DateTimeManager;
 import no.systema.jservices.model.dao.entities.EdimDao;
-import no.systema.jservices.model.dao.entities.EdissDao;
 import no.systema.jservices.model.dao.mapper.EdimMapper;
 import no.systema.jservices.model.dao.mapper.SvtfiMapper;
 import no.systema.main.util.DbErrorMessageManager;
@@ -53,12 +52,15 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 		return list;
 	}
 	
-	
+	/**
+	 * UPDATE
+	 */
 	@Override
 	public int update(Object daoObj, StringBuffer errorStackTrace) {
 		int retval = 0;
 		
 		try{
+			
 			EdimDao dao = (EdimDao)daoObj;
 			String today = new DateTimeManager().getCurrentDate_ISO("yyyMMdd");
 			String now = new DateTimeManager().getCurrentDate_ISO("HHmmss");
@@ -70,11 +72,11 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 			
 			StringBuffer sql = new StringBuffer();
 			
-			sql.append(" UPDATE edim SET msn = ?, mdt = ?, mtm = ?  ");
-			sql.append(" WHERE  mavd = ?, AND mtdn = ?, AND mdt = ? , AND mtm = ? ");
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getMsn(), today, now, 
+			sql.append(" UPDATE edim SET msn = ?, mst = ?, mdt = ?, mtm = ?,   ");
+			sql.append(" WHERE  mavd = ?, AND mtdn = ?, AND msr = ?, AND mdt = ? , AND mtm = ? ");
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getMsn(), dao.getMst(), today, now,  
 					//WHERE
-					dao.getMavd(), dao.getMtdn(), dao.getMdt(), dao.getMtm() } );
+					dao.getMavd(), dao.getMtdn(), dao.getMsr(), dao.getMdt(), dao.getMtm() } );
 			
 			//adjust edic.cmn counter only when it has been incremented
 			if(retval>=0){
@@ -94,7 +96,9 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 		return retval;
 	}
 	
-	
+	/**
+	 * INSERT 
+	 */
 	@Override
 	public int insert(Object daoObj, StringBuffer errorStackTrace) {
 		int retval = 0;

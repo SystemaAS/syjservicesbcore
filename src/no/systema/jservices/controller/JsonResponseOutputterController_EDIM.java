@@ -162,15 +162,30 @@ public class JsonResponseOutputterController_EDIM {
 				
 				if (rulerLord.isValidInput(dao, userName, mode)) {
 					if ("A".equals(mode)) {
-						dmlRetval = edimDaoServices.insert(dao, dbErrorStackTrace);
-				        
+						if(rulerLord.isValidInputInsert(dao, user, mode)){
+							dmlRetval = edimDaoServices.insert(dao, dbErrorStackTrace);
+						}else {
+							// write JSON error output
+							errMsg = "ERROR on INSERT: invalid rulerLord error";
+							status = "error";
+							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+							logger.error(sb);
+						}
 					} else if ("U".equals(mode)) {
-				        dmlRetval = edimDaoServices.update(dao, dbErrorStackTrace);
+						if(rulerLord.isValidInputUpdate(dao, user, mode)){
+							dmlRetval = edimDaoServices.update(dao, dbErrorStackTrace);
+						}else {
+							// write JSON error output
+							errMsg = "ERROR on UPDATE: invalid rulerLord error";
+							status = "error";
+							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+							logger.error(sb);
+						}
 				        
 					}
 				} else {
 					// write JSON error output
-					errMsg = "ERROR on ADD/UPDATE: invalid rulerLord, error="+sb.toString();
+					errMsg = "ERROR on INSERT/UPDATE: invalid rulerLord, error";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					logger.error(sb);
