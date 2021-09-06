@@ -9,7 +9,6 @@ import no.systema.jservices.model.dao.entities.CundfDao;
  * @date Sep 2021
  * 
  */
-public interface EdimDaoServices extends IDaoServices { 
+public interface EdisDaoServices extends IDaoServices { 
 	
-	public Integer getCounterEdicCsn();	
 }

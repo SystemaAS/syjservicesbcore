@@ -37,7 +37,7 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(" select * from edim ");
-			sql.append(" where bla bla = ? ");
+			sql.append(" where msn = ? ");
 			list = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new EdimMapper());
 			
 			
@@ -64,24 +64,19 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 			EdimDao dao = (EdimDao)daoObj;
 			String today = new DateTimeManager().getCurrentDate_ISO("yyyMMdd");
 			String now = new DateTimeManager().getCurrentDate_ISO("HHmmss");
-			String counterEdiCsn = null;
-			if(StringUtils.isEmpty(dao.getMsn())) {
-				counterEdiCsn = this.getCounterEdicCsn().toString();
-				dao.setMsn(counterEdiCsn);
-			}
 			
 			StringBuffer sql = new StringBuffer();
 			
-			sql.append(" UPDATE edim SET msn = ?, mst = ?, mdt = ?, mtm = ?,   ");
-			sql.append(" WHERE  mavd = ?, AND mtdn = ?, AND msr = ?, AND mdt = ? , AND mtm = ? ");
+			sql.append(" UPDATE edim SET msn = ?, mst = ?, mdt = ?, mtm = ?   ");
+			sql.append(" WHERE  mavd = ? AND mtdn = ? AND msr = ? AND mdt = ? AND mtm = ? ");
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getMsn(), dao.getMst(), today, now,  
 					//WHERE
 					dao.getMavd(), dao.getMtdn(), dao.getMsr(), dao.getMdt(), dao.getMtm() } );
 			
 			//adjust edic.cmn counter only when it has been incremented
 			if(retval>=0){
-				if(StringUtils.isNotEmpty(counterEdiCsn)) {
-					retval = this.updateCounterEdicCsn(counterEdiCsn, errorStackTrace);
+				if(StringUtils.isNotEmpty(dao.getMsn())) {
+					retval = this.updateCounterEdicCsn(dao.getMsn(), errorStackTrace);
 				}
 			}
 			
@@ -219,7 +214,7 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 		return retval;
 	}
 	
-	private Integer getCounterEdicCsn() {
+	public Integer getCounterEdicCsn() {
 		Integer cmn = null;
 		try{
 			//cmn contains the LAST_USED så we have to increase it before we use it

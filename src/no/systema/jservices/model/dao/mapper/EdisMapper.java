@@ -2,7 +2,7 @@ package no.systema.jservices.model.dao.mapper;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.RowMapper;
-import no.systema.jservices.model.dao.entities.EdimDao;
+import no.systema.jservices.model.dao.entities.EdiiDao;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -16,11 +16,11 @@ import java.util.List;
  * @date  Sep, 2021
  * 
  */
-public class EdimMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(EdimMapper.class.getName());
+public class EdisMapper implements RowMapper {
+	private static Logger logger = Logger.getLogger(EdisMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-    	EdimDao dao = new EdimDao();
+    	EdiiDao dao = new EdiiDao();
     	try{
 	    	Class cl = Class.forName(dao.getClass().getCanonicalName());
 			Field[] fields = cl.getDeclaredFields();

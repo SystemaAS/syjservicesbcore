@@ -40,6 +40,10 @@
   <bean id="edimDaoServices" class="no.systema.jservices.model.dao.services.EdimDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="edisDaoServices" class="no.systema.jservices.model.dao.services.EdisDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
+  
   <bean id="edissFtpLogDaoServices" class="no.systema.jservices.model.dao.services.EdissFtpLogDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
