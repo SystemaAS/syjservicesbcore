@@ -146,6 +146,7 @@ public class JsonResponseOutputterController_EDIM {
 			logger.info("Inside syjsEDIMR_U.do");
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
+			String specialInsert = request.getParameter("si");
 			//Check ALWAYS user in BRIDF
             userName = this.bridfDaoServices.findNameById(user);
 			
@@ -165,7 +166,11 @@ public class JsonResponseOutputterController_EDIM {
 				if (rulerLord.isValidInput(dao, userName, mode)) {
 					if ("A".equals(mode)) {
 						if(rulerLord.isValidInputInsert(dao, user, mode)){
-							dmlRetval = edimDaoServices.insert(dao, dbErrorStackTrace);
+							if(StringUtils.isNotEmpty(specialInsert)) {
+								dmlRetval = edimDaoServices.insertWhenInboundFile(dao, dbErrorStackTrace);
+							}else {
+								dmlRetval = edimDaoServices.insert(dao, dbErrorStackTrace);
+							}
 						}else {
 							// write JSON error output
 							errMsg = "ERROR on INSERT: invalid rulerLord error";

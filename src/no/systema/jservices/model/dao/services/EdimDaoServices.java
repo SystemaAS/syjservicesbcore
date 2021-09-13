@@ -11,5 +11,6 @@ import no.systema.jservices.model.dao.entities.CundfDao;
  */
 public interface EdimDaoServices extends IDaoServices { 
 	
-	public Integer getCounterEdicCsn();	
+	public Integer getCounterEdicCsn();
+	public int insertWhenInboundFile(Object daoObj, StringBuffer errorStackTrace);
 }

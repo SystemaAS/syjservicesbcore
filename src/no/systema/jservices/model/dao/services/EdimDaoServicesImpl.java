@@ -144,6 +144,59 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 	}
 	
 	/**
+	 * INSERT 
+	 */
+	@Override
+	public int insertWhenInboundFile(Object daoObj, StringBuffer errorStackTrace) {
+		int retval = 0;
+		try {
+			String counterEdiCmn = this.getCounterEdicCmn().toString();
+			String counterEdiCsn   = this.getCounterEdicCsn().toString();
+					
+			final EdimDao dao = (EdimDao) daoObj;
+			//adjust
+			dao.setMsn(counterEdiCsn);
+			dao.setMmn(counterEdiCmn);
+			
+			final StringBuilder sql = new StringBuilder();
+			sql.append(" INSERT INTO edim (m0004,m0010,m0035,m0062,m0065,m0068,m1001,m1004,m1225,msn, ");
+			sql.append(" mmn,msr,mst,mdt,mtm,mven,m0068a,m0068b,m0068c,m0068d, ");
+			sql.append(" m0068e,m0068f,m2005b,m3039d,m3039e,m5004d,m1n07,m1n08,m9n01,mavd, ");
+			sql.append(" mtdn,mffbnr  ) "); 
+			
+		
+			sql.append(" VALUES(?,?,?,?,?,?,?,?,?,?, ");
+			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
+			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
+			sql.append(" ?,? ) "); 
+			
+			logger.warn(dao.toString());
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
+					dao.getM0004(), dao.getM0010(), dao.getM0035(), dao.getM0062(), dao.getM0065(),dao.getM0068(), dao.getM1001(), dao.getM1004(), dao.getM1225(),dao.getMsn(), 
+					counterEdiCmn, dao.getMsr(), dao.getMst(), dao.getMdt(), dao.getMtm(), dao.getMven(), dao.getM0068a(), dao.getM0068b(), dao.getM0068c(), dao.getM0068d(),
+					dao.getM0068e(), dao.getM0068f(), dao.getM2005b(), dao.getM3039d(), dao.getM3039e(), dao.getM5004d(), dao.getM1n07(), dao.getM1n08(), dao.getM9n01(), dao.getMavd(),
+					dao.getMtdn(),dao.getMffbnr()
+					});
+			
+			//adjust edic.cmn counter
+			if(retval>=0){
+				retval = this.updateCounterEdicCmn(counterEdiCmn, errorStackTrace);
+				retval = this.updateCounterEdicCsn(counterEdiCsn, errorStackTrace);
+			}
+			
+				
+			} catch (Exception e) {
+				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+				e.printStackTrace();
+				logger.info(e);
+				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+				retval = -1;
+			}				
+			
+		return retval;
+	}
+	
+	/**
 	 * 
 	 * Note: This method must NOT be called as public, use cascadeDelete instead
 	 * 
