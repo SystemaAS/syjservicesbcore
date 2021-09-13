@@ -169,7 +169,7 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
 			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
 			sql.append(" ?,? ) "); 
-			
+			logger.warn("insertWhenIboundFile...");
 			logger.warn(dao.toString());
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 					dao.getM0004(), dao.getM0010(), dao.getM0035(), dao.getM0062(), dao.getM0065(),dao.getM0068(), dao.getM1001(), dao.getM1004(), dao.getM1225(),dao.getMsn(), 
