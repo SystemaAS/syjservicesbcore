@@ -33,7 +33,7 @@ public class EDISR_U {
 				StringUtils.isNotEmpty(dao.getSst()) && StringUtils.isNotEmpty(dao.getSdt()) && 
 				StringUtils.isNotEmpty(dao.getStm()) && StringUtils.isNotEmpty(dao.getSlib()) && 
 				StringUtils.isNotEmpty(dao.getSfile()) && StringUtils.isNotEmpty(dao.getSmbr()) && 
-				StringUtils.isNotEmpty(dao.getSmbrs()) && StringUtils.isNotEmpty(dao.getSifs()) ){
+				StringUtils.isNotEmpty(dao.getSmbrs())  ){
 				//OK	
 				
 			}else{
