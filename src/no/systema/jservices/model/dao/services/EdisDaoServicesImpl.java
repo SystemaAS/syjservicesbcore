@@ -93,7 +93,7 @@ public class EdisDaoServicesImpl implements EdisDaoServices {
 			
 			//adjust edic.cmn counter
 			if(retval>=0){
-				retval = this.createRecordEDISX(dao.getSmbr(), errorStackTrace);
+				retval = this.createRecordEDISX(dao, errorStackTrace);
 			}
 			
 				
@@ -126,15 +126,21 @@ public class EdisDaoServicesImpl implements EdisDaoServices {
 	 * @param errorStackTrace
 	 * @return
 	 */
-	private int createRecordEDISX(String id, StringBuffer errorStackTrace) {
+	private int createRecordEDISX(EdisDao dao, StringBuffer errorStackTrace) {
 		int retval = 0;
 		try {
 			final StringBuilder sql = new StringBuilder();
 			
-			sql.append(" INSERT INTO edisx (SXPRODM,SXIFSOBJ ) ");
-			sql.append(" VALUES(?,? ) "); 
+			sql.append(" INSERT INTO edisx (SXPRODM,SXBACKM,SXWORKM,SXIFSOBJ ) ");
+			sql.append(" VALUES(?,?,?,? ) ");
+			//outbound files
+			String sxIfsObj = "*IFS";
+			//inbound files
+			if(dao.getSmbr().startsWith("R")) {
+				sxIfsObj = dao.getSifs();
+			}
 			
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { id, "*IFS" });
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSmbr(),"","", sxIfsObj });
 			
 				
 			} catch (Exception e) {
