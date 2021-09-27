@@ -126,7 +126,7 @@ public class JsonResponseOutputterController_TVINF {
 	 */
 	@RequestMapping(value="syjsTVINFR_U.do", method={RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
-	public String syjsCundf_U( HttpSession session, HttpServletRequest request, Locale locale) {
+	public String syjsTvinf_U( HttpSession session, HttpServletRequest request, Locale locale) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();	
 
@@ -136,7 +136,7 @@ public class JsonResponseOutputterController_TVINF {
 		String userName = null;
 		
 		try{
-			logger.info("Inside syjsEDIMR_U.do");
+			logger.warn("Inside syjsTVINFR_U.do");
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
 			//Check ALWAYS user in BRIDF
@@ -147,7 +147,7 @@ public class JsonResponseOutputterController_TVINF {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             
-            logger.info("DAO="+ReflectionToStringBuilder.toString(dao));
+            logger.warn("DAO="+ReflectionToStringBuilder.toString(dao));
    
             //rules
             TVINFR_U rulerLord = new TVINFR_U(); 
