@@ -86,6 +86,40 @@ public class SvihDaoServicesImpl implements SvihDaoServices {
 		return retval;
 	}
 	
+	public int updateLight(Object daoObj, StringBuffer errorStackTrace) {
+		int retval = 0;
+		try {
+			SvihDao dao = (SvihDao)daoObj;
+			
+			final StringBuilder sql = new StringBuilder();
+			
+			sql.append(" UPDATE svih SET svih_syst = ?, svih_syst2 = ?, svih_mrn = ?  ");
+			sql.append(" WHERE  svih_syav = ? AND svih_syop = ? AND svih_sysg = ? AND svih_tuid = ? ");
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSvih_syst(), dao.getSvih_syst2(), dao.getSvih_mrn(),
+					//WHERE
+					dao.getSvih_syav(), dao.getSvih_syop(), dao.getSvih_sysg(), dao.getSvih_tuid() } );
+			logger.warn(sql.toString());
+			logger.warn("syst:" + dao.getSvih_syst());
+			logger.warn("syav:" + dao.getSvih_syav());
+			logger.warn("syop:" + dao.getSvih_syop());
+			logger.warn("sysg:" + dao.getSvih_sysg());
+			logger.warn("tuid:" + dao.getSvih_tuid());
+			logger.warn("syst2:" + dao.getSvih_syst2());
+			logger.warn("mrn:" + dao.getSvih_mrn());
+			
+				
+			} catch (Exception e) {
+				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+				e.printStackTrace();
+				logger.info(e);
+				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+				retval = -1;
+			}				
+			
+		
+		return retval;
+	}
+	
 	/**
 	 * INSERT 
 	 */

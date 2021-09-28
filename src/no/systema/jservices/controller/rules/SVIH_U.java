@@ -31,7 +31,27 @@ public class SVIH_U {
 			
 			if( StringUtils.isNotEmpty(dao.getSvih_syst()) && StringUtils.isNotEmpty(dao.getSvih_syav()) &&
 				StringUtils.isNotEmpty(dao.getSvih_syop()) && StringUtils.isNotEmpty(dao.getSvih_tuid()) &&
-				StringUtils.isNotEmpty(dao.getSvih_sysg())  ) {		
+				StringUtils.isNotEmpty(dao.getSvih_sysg()) && StringUtils.isNotEmpty(dao.getSvih_syst2()) ) {		
+				//OK	
+				
+			}else{
+				logger.fatal("Ruler lord INVALID:" + dao.toString());
+				retval = false;
+			}
+			
+		}
+		return retval;
+	}
+	public boolean isValidInputUpdateLight(SvihDao dao, String user, String mode){
+		
+		boolean retval = true;
+		if( (StringUtils.isNotEmpty(user)) && StringUtils.isNotEmpty(mode) ){
+			//check dao
+			
+			if( StringUtils.isNotEmpty(dao.getSvih_syst()) && StringUtils.isNotEmpty(dao.getSvih_syav()) &&
+				StringUtils.isNotEmpty(dao.getSvih_syop()) && StringUtils.isNotEmpty(dao.getSvih_tuid()) &&
+				StringUtils.isNotEmpty(dao.getSvih_sysg()) && StringUtils.isNotEmpty(dao.getSvih_syst2()) &&
+				StringUtils.isNotEmpty(dao.getSvih_mrn())) {		
 				//OK	
 				
 			}else{

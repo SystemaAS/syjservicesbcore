@@ -104,12 +104,26 @@ public class JsonResponseOutputterController_SVIH {
 							dmlRetval = svihDaoServices.updateStatus(dao, dbErrorStackTrace);
 						}else {
 							// write JSON error output
-							errMsg = "ERROR on UPDATE: invalid rulerLord error";
+							errMsg = "ERROR on UPDATE: invalid rulerLord error - update status";
 							status = "error";
 							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 							logger.error(sb);
 						}
+						
 				        
+					}else if ("UL".equals(mode)) {
+						if(rulerLord.isValidInputUpdateLight(dao, user, mode)){
+							logger.warn("syst:" + dao.getSvih_syst());
+							logger.warn("syst2:" + dao.getSvih_syst2());
+							logger.warn("mrn:" + dao.getSvih_mrn());
+							dmlRetval = svihDaoServices.updateLight(dao, dbErrorStackTrace);
+						}else {
+							// write JSON error output
+							errMsg = "ERROR on UPDATE: invalid rulerLord error - update light";
+							status = "error";
+							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+							logger.error(sb);
+						}
 					}else {
 						// write JSON error output
 						errMsg = "ERROR on UPDATE mode: " + mode + " is not implemented yet...";
