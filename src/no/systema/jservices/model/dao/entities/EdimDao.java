@@ -39,6 +39,6 @@ public class EdimDao implements Serializable, IDao  {
 	private String mavd   = "0"; //         sonet        4  0       4       273        begge    avdeling                       
 	private String mtdn   = "0"; //         sonet        7  0       7       277        begge    tolldeklarasjonsnr                
 	private String mffbnr  = "0"; //        sonet        3  0       3       284        begge    fraktbrevnummer                   
-	
+	private String muuid = ""; // 			tegn		40
 
 }

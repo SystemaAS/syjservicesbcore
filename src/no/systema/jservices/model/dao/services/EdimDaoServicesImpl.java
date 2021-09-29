@@ -52,6 +52,26 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 		return list;
 	}
 	
+	public List findByUuid(String uuid, StringBuffer errorStackTrace) {
+		List<EdimDao> list = new ArrayList<EdimDao>();
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select * from edim ");
+			sql.append(" where muuid = ? ");
+			list = this.jdbcTemplate.query( sql.toString(), new Object[] { uuid }, new EdimMapper());
+			
+			
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.error(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			list = null;
+		}
+		return list;
+	}
+	
 	/**
 	 * UPDATE
 	 */
@@ -110,20 +130,20 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 			sql.append(" INSERT INTO edim (m0004,m0010,m0035,m0062,m0065,m0068,m1001,m1004,m1225,msn, ");
 			sql.append(" mmn,msr,mst,mdt,mtm,mven,m0068a,m0068b,m0068c,m0068d, ");
 			sql.append(" m0068e,m0068f,m2005b,m3039d,m3039e,m5004d,m1n07,m1n08,m9n01,mavd, ");
-			sql.append(" mtdn,mffbnr  ) "); 
+			sql.append(" mtdn,mffbnr,muuid  ) "); 
 			
 		
 			sql.append(" VALUES(?,?,?,?,?,?,?,?,?,?, ");
 			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
 			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
-			sql.append(" ?,? ) "); 
+			sql.append(" ?,?,? ) "); 
 			
 			logger.warn(dao.toString());
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 					dao.getM0004(), dao.getM0010(), dao.getM0035(), dao.getM0062(), dao.getM0065(),dao.getM0068(), dao.getM1001(), dao.getM1004(), dao.getM1225(),dao.getMsn(), 
 					counterEdiCmn, dao.getMsr(), dao.getMst(), dao.getMdt(), dao.getMtm(), dao.getMven(), dao.getM0068a(), dao.getM0068b(), dao.getM0068c(), dao.getM0068d(),
 					dao.getM0068e(), dao.getM0068f(), dao.getM2005b(), dao.getM3039d(), dao.getM3039e(), dao.getM5004d(), dao.getM1n07(), dao.getM1n08(), dao.getM9n01(), dao.getMavd(),
-					dao.getMtdn(),dao.getMffbnr()
+					dao.getMtdn(),dao.getMffbnr(),dao.getMuuid()
 					});
 			
 			//adjust edic.cmn counter
@@ -162,20 +182,20 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 			sql.append(" INSERT INTO edim (m0004,m0010,m0035,m0062,m0065,m0068,m1001,m1004,m1225,msn, ");
 			sql.append(" mmn,msr,mst,mdt,mtm,mven,m0068a,m0068b,m0068c,m0068d, ");
 			sql.append(" m0068e,m0068f,m2005b,m3039d,m3039e,m5004d,m1n07,m1n08,m9n01,mavd, ");
-			sql.append(" mtdn,mffbnr  ) "); 
+			sql.append(" mtdn,mffbnr,muuid  ) "); 
 			
 		
 			sql.append(" VALUES(?,?,?,?,?,?,?,?,?,?, ");
 			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
 			sql.append(" ?,?,?,?,?,?,?,?,?,?, "); 
-			sql.append(" ?,? ) "); 
+			sql.append(" ?,?,? ) "); 
 			logger.warn("insertWhenIboundFile...");
 			logger.warn(dao.toString());
 			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { 
 					dao.getM0004(), dao.getM0010(), dao.getM0035(), dao.getM0062(), dao.getM0065(),dao.getM0068(), dao.getM1001(), dao.getM1004(), dao.getM1225(),dao.getMsn(), 
 					counterEdiCmn, dao.getMsr(), dao.getMst(), dao.getMdt(), dao.getMtm(), dao.getMven(), dao.getM0068a(), dao.getM0068b(), dao.getM0068c(), dao.getM0068d(),
 					dao.getM0068e(), dao.getM0068f(), dao.getM2005b(), dao.getM3039d(), dao.getM3039e(), dao.getM5004d(), dao.getM1n07(), dao.getM1n08(), dao.getM9n01(), dao.getMavd(),
-					dao.getMtdn(),dao.getMffbnr()
+					dao.getMtdn(),dao.getMffbnr(),dao.getMuuid()
 					});
 			
 			//adjust edic.cmn counter

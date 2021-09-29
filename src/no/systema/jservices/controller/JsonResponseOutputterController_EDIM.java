@@ -84,8 +84,15 @@ public class JsonResponseOutputterController_EDIM {
 					counterCsn  = this.edimDaoServices.getCounterEdicCsn().toString();
 					 sb.append(counterCsn);
 				}else {
-            		logger.warn("findById msn:" + dao.getMsn());
-            		list = this.edimDaoServices.findById(dao.getMsn(), dbErrorStackTrace);
+					if(StringUtils.isNotEmpty(dao.getMsn())) {
+	            		logger.warn("findById msn:" + dao.getMsn());
+	            		list = this.edimDaoServices.findById(dao.getMsn(), dbErrorStackTrace);
+					
+					}else if(StringUtils.isNotEmpty(dao.getMuuid())) {
+						logger.warn("findByUuid uuid:" + dao.getMuuid());
+	            		list = this.edimDaoServices.findById(dao.getMuuid(), dbErrorStackTrace);
+					}
+					
 					if(list!=null && list.size()>0) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
 						

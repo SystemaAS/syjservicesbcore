@@ -13,4 +13,5 @@ public interface EdimDaoServices extends IDaoServices {
 	
 	public Integer getCounterEdicCsn();
 	public int insertWhenInboundFile(Object daoObj, StringBuffer errorStackTrace);
+	public List findByUuid(String uuid, StringBuffer errorStackTrace);
 }
