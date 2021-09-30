@@ -61,6 +61,8 @@ public class JsonResponseOutputterController_EDIM {
 			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
 			String user = request.getParameter("user");
 			String csnParam = request.getParameter("csn");
+			String lrnParam = request.getParameter("lrn");
+			
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
             //DEBUG --> logger.info("USERNAME:" + userName + "XX");
@@ -83,14 +85,20 @@ public class JsonResponseOutputterController_EDIM {
 					logger.info("getCsnCounter");
 					counterCsn  = this.edimDaoServices.getCounterEdicCsn().toString();
 					 sb.append(counterCsn);
-				}else {
-					if(StringUtils.isNotEmpty(dao.getMsn())) {
+	            
+	            }else {
+					
+	            	if( StringUtils.isNotEmpty(lrnParam) ){
+		            	logger.warn("findByTuid tuid(M1004):" + dao.getM1004());
+		            	list = this.edimDaoServices.findByTuid(dao.getM1004(), dbErrorStackTrace);
+					
+	            	}else if(StringUtils.isNotEmpty(dao.getMsn())) {
 	            		logger.warn("findById msn:" + dao.getMsn());
 	            		list = this.edimDaoServices.findById(dao.getMsn(), dbErrorStackTrace);
-					
+	            		
 					}else if(StringUtils.isNotEmpty(dao.getMuuid())) {
 						logger.warn("findByUuid uuid:" + dao.getMuuid());
-	            		list = this.edimDaoServices.findById(dao.getMuuid(), dbErrorStackTrace);
+	            		list = this.edimDaoServices.findByUuid(dao.getMuuid(), dbErrorStackTrace);
 					}
 					
 					if(list!=null && list.size()>0) {

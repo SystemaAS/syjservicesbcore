@@ -116,6 +116,7 @@ public class JsonResponseOutputterController_SVIH {
 							logger.warn("syst:" + dao.getSvih_syst());
 							logger.warn("syst2:" + dao.getSvih_syst2());
 							logger.warn("mrn:" + dao.getSvih_mrn());
+							logger.warn("lrn:" + dao.getSvih_lrn());
 							dmlRetval = svihDaoServices.updateLight(dao, dbErrorStackTrace);
 						}else {
 							// write JSON error output

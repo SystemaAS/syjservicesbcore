@@ -73,6 +73,41 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 	}
 	
 	/**
+	 * This method sorts in a desc order.
+	 * @param tuid
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public List findByTuid(String tuid, StringBuffer errorStackTrace) {
+		List<EdimDao> list = new ArrayList<EdimDao>();
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select * from edim ");
+			sql.append(" where m1004 = ? ");
+			sql.append(" order by mdt desc, mtm desc ");
+			
+			list = this.jdbcTemplate.query( sql.toString(), new Object[] { tuid }, new EdimMapper());
+			//we are interested only in the first available record with MUUID = not empty hence emulating a select as if there was a muuid
+			for(EdimDao record: list) {
+				if (StringUtils.isNotEmpty(record.getMuuid())) {
+					list.clear();
+					list.add(record);
+					break;
+				}
+			}
+			//logger.warn(list.toString());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.error(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			list = null;
+		}
+		return list;
+	}
+	
+	/**
 	 * UPDATE
 	 */
 	@Override
