@@ -28,7 +28,7 @@ public class EDISR_U {
 			
 			if( StringUtils.isNotEmpty(dao.getS0004()) && StringUtils.isNotEmpty(dao.getS0010()) && 
 				StringUtils.isNotEmpty(dao.getS0020()) && StringUtils.isNotEmpty(dao.getS0026()) && 
-				StringUtils.isNotEmpty(dao.getS0035()) && StringUtils.isNotEmpty(dao.getS0036()) && 
+				StringUtils.isNotEmpty(dao.getS0036()) && 
 				StringUtils.isNotEmpty(dao.getSsn()) && StringUtils.isNotEmpty(dao.getSsr()) && 
 				StringUtils.isNotEmpty(dao.getSst()) && StringUtils.isNotEmpty(dao.getSdt()) && 
 				StringUtils.isNotEmpty(dao.getStm()) && StringUtils.isNotEmpty(dao.getSlib()) && 
