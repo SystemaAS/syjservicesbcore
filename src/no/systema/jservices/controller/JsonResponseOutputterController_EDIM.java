@@ -92,7 +92,7 @@ public class JsonResponseOutputterController_EDIM {
 		            	logger.warn("findByTuid tuid(M1004):" + dao.getM1004());
 		            	list = this.edimDaoServices.findByTuid(dao.getM1004(), dbErrorStackTrace);
 					
-	            	}else if(StringUtils.isNotEmpty(dao.getMsn())) {
+	            	}else if(StringUtils.isNotEmpty(dao.getMsn()) && !dao.getMsn().equals("0") ) {
 	            		logger.warn("findById msn:" + dao.getMsn());
 	            		list = this.edimDaoServices.findById(dao.getMsn(), dbErrorStackTrace);
 	            		
