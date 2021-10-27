@@ -79,7 +79,7 @@ public class JsonResponseOutputterController_EDIM {
 	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
 	            List list = null;
 				//do SELECT
-	            logger.info("Before SELECT ...");
+	            logger.warn("Before SELECT ...");
 	            
 	            if( StringUtils.isNotEmpty(csnParam) ){
 					logger.info("getCsnCounter");

@@ -50,7 +50,7 @@ public class SVIH_U {
 			
 			if( StringUtils.isNotEmpty(dao.getSvih_syst()) && StringUtils.isNotEmpty(dao.getSvih_syav()) &&
 				StringUtils.isNotEmpty(dao.getSvih_syop()) && StringUtils.isNotEmpty(dao.getSvih_tuid()) &&
-				StringUtils.isNotEmpty(dao.getSvih_sysg()) && StringUtils.isNotEmpty(dao.getSvih_syst2())) {		
+				StringUtils.isNotEmpty(dao.getSvih_sysg()) ) {		
 				//OK	
 				
 			}else{

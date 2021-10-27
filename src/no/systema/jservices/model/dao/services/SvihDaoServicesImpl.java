@@ -93,11 +93,20 @@ public class SvihDaoServicesImpl implements SvihDaoServices {
 			
 			final StringBuilder sql = new StringBuilder();
 			
-			sql.append(" UPDATE svih SET svih_syst = ?, svih_syst2 = ?, svih_mrn = ? , svih_lrn = ?   ");
-			sql.append(" WHERE  svih_syav = ? AND svih_syop = ? AND svih_sysg = ? AND svih_tuid = ? ");
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSvih_syst(), dao.getSvih_syst2(), dao.getSvih_mrn(), dao.getSvih_lrn(),
+			if(StringUtils.isNotEmpty(dao.getSvih_mrn())) {
+				sql.append(" UPDATE svih SET svih_syst = ?, svih_syst2 = ?, svih_mrn = ? , svih_lrn = ?   ");
+				sql.append(" WHERE  svih_syav = ? AND svih_syop = ? AND svih_sysg = ? AND svih_tuid = ? ");
+				retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSvih_syst(), dao.getSvih_syst2(), dao.getSvih_mrn(), dao.getSvih_lrn(),
 					//WHERE
 					dao.getSvih_syav(), dao.getSvih_syop(), dao.getSvih_sysg(), dao.getSvih_tuid() } );
+			}else {
+				sql.append(" UPDATE svih SET svih_syst = ?, svih_syst2 = ?, svih_lrn = ?   ");
+				sql.append(" WHERE  svih_syav = ? AND svih_syop = ? AND svih_sysg = ? AND svih_tuid = ? ");
+				retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSvih_syst(), dao.getSvih_syst2(), dao.getSvih_lrn(),
+					//WHERE
+					dao.getSvih_syav(), dao.getSvih_syop(), dao.getSvih_sysg(), dao.getSvih_tuid() } );
+			}
+			
 			logger.warn(sql.toString());
 			logger.warn("syst:" + dao.getSvih_syst());
 			logger.warn("syav:" + dao.getSvih_syav());
