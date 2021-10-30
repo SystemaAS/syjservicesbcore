@@ -50,6 +50,9 @@
   <bean id="tvinfDaoServices" class="no.systema.jservices.model.dao.services.TvinfDaoServicesImpl">
       <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
   </bean>
+  <bean id="sviv_aggDaoServices" class="no.systema.jservices.model.dao.services.Sviv_aggDaoServicesImpl">
+      <property name="jdbcTemplate"><ref bean="jdbcTemplate"/></property>
+  </bean>
   
   
   <bean id="edissFtpLogDaoServices" class="no.systema.jservices.model.dao.services.EdissFtpLogDaoServicesImpl">
