@@ -147,12 +147,6 @@ public class JsonResponseOutputterController_SVIV_AGG {
         String errMsg = "";
 		String status = "ok";
 		String userName = null;
-		for(Sviv_aggDao dao: itemList) {
-			logger.warn("VATA:" + dao.getSviv_vata());
-			logger.warn("VANO:" + dao.getSviv_vano());
-			
-		}
-			
 		
 		try{
 			logger.info("Inside syjsSVIV_AGG_U.do");
@@ -162,60 +156,30 @@ public class JsonResponseOutputterController_SVIV_AGG {
 			
 			//Check ALWAYS user in BRIDF
             userName = this.bridfDaoServices.findNameById(user);
-            
-            int retval = this.sviv_aggDaoServices.insert(itemList, dbErrorStackTrace);
-            if(retval>=0) {
-            	logger.warn(itemList);
-            	sb.append(itemList.size());
+            for(Sviv_aggDao rec: itemList) {
+            	//DEBUG
+            	/*logger.warn("1;" + rec.getSviv_kota());
+            	logger.warn("2;" + rec.getSviv_kot2());
+            	logger.warn("3;" + rec.getSviv_kot3());
+            	logger.warn("4;" + rec.getSviv_kot4());
+            	logger.warn("5;" + rec.getSviv_kot5());
+            	*/
             }
-            /*
-            int retval = 0;
-            for(Sviv_aggDao dao : itemList) {
-            	retval = this.sviv_aggDaoServices.insert(dao, dbErrorStackTrace);
-            	sb.append(itemList.size());
-            }*/
             
-            
-			/*
-			//bind attributes is any
-			EdimDao dao = new EdimDao();
-			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
-            binder.bind(request);
-            
-            logger.info("DAO="+ReflectionToStringBuilder.toString(dao));
-   
-            //rules
-            EDIMR_U rulerLord = new EDIMR_U(); 
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
 				
-				if (rulerLord.isValidInput(dao, userName, mode)) {
+				if ( (itemList!=null && itemList.size()>0) && StringUtils.isNotEmpty(mode)) {
 					if ("A".equals(mode)) {
-						if(rulerLord.isValidInputInsert(dao, user, mode)){
-							if(StringUtils.isNotEmpty(specialInsert)) {
-								dmlRetval = edimDaoServices.insertWhenInboundFile(dao, dbErrorStackTrace);
-							}else {
-								dmlRetval = edimDaoServices.insert(dao, dbErrorStackTrace);
-							}
-						}else {
-							// write JSON error output
-							errMsg = "ERROR on INSERT: invalid rulerLord error";
-							status = "error";
-							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-							logger.error(sb);
-						}
-					} else if ("U".equals(mode)) {
-						if(rulerLord.isValidInputUpdate(dao, user, mode)){
-							dmlRetval = edimDaoServices.update(dao, dbErrorStackTrace);
-						}else {
-							// write JSON error output
-							errMsg = "ERROR on UPDATE: invalid rulerLord error";
-							status = "error";
-							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-							logger.error(sb);
-						}
-				        
+						dmlRetval = this.sviv_aggDaoServices.insert(itemList, dbErrorStackTrace);
+			
+					}else {
+						// write JSON error output
+						errMsg = "ERROR on INSERT: invalid itemList size or mode. Inspect log files ...";
+						status = "error";
+						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+						logger.error(sb);
 					}
 				} else {
 					// write JSON error output
@@ -230,13 +194,17 @@ public class JsonResponseOutputterController_SVIV_AGG {
 				// ----------------------------------
 				if (dmlRetval < 0) {
 					// write JSON error output
-					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
+					errMsg = "ERROR on ADD: invalid after executing the INSERT. Try to check: <DaoServices>.insert";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					logger.error(sb);
 				} else {
-					// OK UPDATE
-					sb.append(jsonWriter.setJsonSimpleValidResult(userName, dao, status));
+					// OK INSERT
+					String debug = "INSERT OK: --> List size:" + itemList.size() + " ";
+					logger.warn(debug + itemList.stream().findFirst().get() );
+					//return web service ...
+					sb.append(debug);
+					sb.append(jsonWriter.setJsonSimpleValidResult(userName, itemList.stream().findFirst().get(), status));
 				}
 
 			} else {
@@ -247,7 +215,7 @@ public class JsonResponseOutputterController_SVIV_AGG {
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				logger.error(sb);
 			}
-			*/
+			
 			
 		}catch(Exception e){
 			//write std.output error output
