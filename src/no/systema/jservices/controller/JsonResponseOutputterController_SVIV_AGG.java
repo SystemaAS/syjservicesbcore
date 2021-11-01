@@ -47,7 +47,9 @@ import no.systema.jservices.common.json.JsonResponseWriter2;
 import no.systema.jservices.controller.rules.EDIMR_U;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.EdimDao;
+import no.systema.jservices.model.dao.entities.SvivRflnDao;
 import no.systema.jservices.model.dao.entities.Sviv_aggDao;
+import no.systema.jservices.model.dao.entities.Sviv_aggWrapper;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.EdimDaoServices;
 import no.systema.jservices.model.dao.services.Sviv_aggDaoServices;
@@ -137,8 +139,9 @@ public class JsonResponseOutputterController_SVIV_AGG {
 	 */
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping(value = "syjsSVIV_AGG_U.do", method = { RequestMethod.GET, RequestMethod.POST } )
+	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public String syjsSVIV_AGG_U(@RequestBody List<Sviv_aggDao> itemList, HttpSession session, HttpServletRequest request) {
+	public String syjsSVIV_AGG_U(@RequestBody Sviv_aggWrapper input, HttpSession session, HttpServletRequest request) {
 		
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();	
@@ -152,27 +155,31 @@ public class JsonResponseOutputterController_SVIV_AGG {
 			logger.info("Inside syjsSVIV_AGG_U.do");
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
-			
-			
+			Collection<Sviv_aggDao> itemListSviva_agg = input.getDataAggr();
+			Collection<SvivRflnDao> itemListSviv = input.getDataRfln();
 			//Check ALWAYS user in BRIDF
             userName = this.bridfDaoServices.findNameById(user);
-            for(Sviv_aggDao rec: itemList) {
+            /*for(Sviv_aggDao rec: itemListSviva_agg) {
             	//DEBUG
-            	/*logger.warn("1;" + rec.getSviv_kota());
+            	logger.warn("1;" + rec.getSviv_kota());
             	logger.warn("2;" + rec.getSviv_kot2());
             	logger.warn("3;" + rec.getSviv_kot3());
             	logger.warn("4;" + rec.getSviv_kot4());
             	logger.warn("5;" + rec.getSviv_kot5());
-            	*/
-            }
+            	
+            }*/
             
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
 				
-				if ( (itemList!=null && itemList.size()>0) && StringUtils.isNotEmpty(mode)) {
+				if ( (itemListSviva_agg!=null && itemListSviva_agg.size()>0) && StringUtils.isNotEmpty(mode)) {
 					if ("A".equals(mode)) {
-						dmlRetval = this.sviv_aggDaoServices.insert(itemList, dbErrorStackTrace);
+						dmlRetval = this.sviv_aggDaoServices.insertSviv_agg((List)itemListSviva_agg, dbErrorStackTrace);
+						if(dmlRetval>=0) {
+							//update SVIV (set sviv_rfln)
+							dmlRetval = this.sviv_aggDaoServices.updateSviv((List)itemListSviv, dbErrorStackTrace);
+						}
 			
 					}else {
 						// write JSON error output
@@ -200,11 +207,11 @@ public class JsonResponseOutputterController_SVIV_AGG {
 					logger.error(sb);
 				} else {
 					// OK INSERT
-					String debug = "INSERT OK: --> List size:" + itemList.size() + " ";
-					logger.warn(debug + itemList.stream().findFirst().get() );
+					String str = "INSERT OK";
+					logger.warn(str + itemListSviva_agg.stream().findFirst().get() );
 					//return web service ...
-					sb.append(debug);
-					sb.append(jsonWriter.setJsonSimpleValidResult(userName, itemList.stream().findFirst().get(), status));
+					sb.append(str);
+					sb.append(jsonWriter.setJsonSimpleValidResult(userName, itemListSviva_agg.stream().findFirst().get(), status));
 				}
 
 			} else {

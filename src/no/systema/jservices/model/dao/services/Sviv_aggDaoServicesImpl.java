@@ -19,6 +19,7 @@ import no.systema.cw1.jservices.dao.SadfDao;
 import no.systema.jservices.common.dao.SvtfiDao;
 import no.systema.jservices.common.util.DateTimeManager;
 import no.systema.jservices.model.dao.entities.EdimDao;
+import no.systema.jservices.model.dao.entities.SvivRflnDao;
 import no.systema.jservices.model.dao.entities.Sviv_aggDao;
 import no.systema.jservices.model.dao.mapper.EdimMapper;
 import no.systema.jservices.model.dao.mapper.SvtfiMapper;
@@ -144,7 +145,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 	 * TEST = OK with only 4 columns.
 	 */
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public int insert(List<Sviv_aggDao> items, StringBuffer errorStackTrace) {
+	public int insertSviv_agg(List<Sviv_aggDao> items, StringBuffer errorStackTrace) {
 		int retval = 0;
 		
 		
@@ -171,11 +172,14 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				/*sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
+				
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
+				
+				
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
@@ -420,6 +424,54 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 
 	}                                  
 
+	
+	/**
+	 * 
+	 * @param itemListSviv
+	 * @param errorStackTrace
+	 * @return
+	 */
+	//@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public int updateSviv(List<SvivRflnDao> itemListSviv, StringBuffer errorStackTrace) {
+		int retval = 0;
+		
+		logger.info(itemListSviv);
+		StringBuilder sql = new StringBuilder();
+		try {
+			
+			//(1) 
+			sql.append(" update sviv set sviv_rfln = ? ");
+			sql.append(" where sviv_syav = ? and sviv_syop = ? and sviv_syli = ? ");
+			
+			
+			this.jdbcTemplate.batchUpdate(sql.toString(), new BatchPreparedStatementSetter() {
+				
+				@Override
+			      public void setValues(PreparedStatement ps, int i) throws SQLException {
+					SvivRflnDao item = itemListSviv.get(i);
+			        ps.setString(1,adjustTegn(item.getSviv_rfln()));
+			        ps.setString(2,adjustTegn(item.getSviv_syav()));
+			        ps.setString(3,adjustTegn(item.getSviv_syop()));
+			        ps.setString(4,adjustTegn(item.getSviv_syli()));
+			        
+					
+			      }
+			      @Override
+			      public int getBatchSize() {
+			        return itemListSviv.size();
+			      }
+			    });
+			
+			} catch (Exception e) {
+				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+				e.printStackTrace();
+				logger.info(e);
+				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+				retval = -1;
+			}				
+			return retval;
+	}
+	
 
 	
 	private String adjustSonet(String value) {
