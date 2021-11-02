@@ -3,10 +3,7 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -15,14 +12,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import no.systema.cw1.jservices.dao.SadfDao;
-import no.systema.jservices.common.dao.SvtfiDao;
 import no.systema.jservices.common.util.DateTimeManager;
 import no.systema.jservices.model.dao.entities.EdimDao;
 import no.systema.jservices.model.dao.entities.SvivRflnDao;
 import no.systema.jservices.model.dao.entities.Sviv_aggDao;
-import no.systema.jservices.model.dao.mapper.EdimMapper;
-import no.systema.jservices.model.dao.mapper.SvtfiMapper;
+import no.systema.jservices.model.dao.entities.Sviva_aggDao;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -145,7 +139,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 	 * TEST = OK with only 4 columns.
 	 */
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public int insertSviv_agg(List<Sviv_aggDao> items, StringBuffer errorStackTrace) {
+	public int insertSviv_agg(List<Sviv_aggDao> items, List<Sviva_aggDao> avgifter, StringBuffer errorStackTrace) {
 		int retval = 0;
 		
 		
@@ -362,15 +356,28 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 				      }
 				    });
 				}
+				//(3)insert into sviva_agg
+				if(retvalDelete>=0 && retval>=0) {
+					if(avgifter!=null && avgifter.size()>0) {
+						retval = this.insertSviva_agg(avgifter, errorStackTrace);
+					}
+				}
+			
+			
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
 				logger.info(e);
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
+				//clean up
+				Sviv_aggDao deleteDao = items.stream().findFirst().get();
+				this.delete(deleteDao, errorStackTrace); //includes SVIV_AGG and SVIVA_AGG
+				
 			}				
 			return retval;
 	}
+	
 	
 	/**
 	 * We use a manual CASCADE since the tables lack foreign keys to do that automatically via the database...
@@ -381,7 +388,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 		try{
 			Sviv_aggDao dao = (Sviv_aggDao)daoObj;
 			//(1)delete child table first (SVIVA_AGG)
-			int tmp = this.deleteSviva_agg(daoObj, errorStackTrace);
+			int tmp = this.deleteSviva_agg(dao.getSviv_syav(), dao.getSviv_syop(), errorStackTrace);
 			
 			if(tmp>=0) {
 				StringBuffer sql = new StringBuffer();
@@ -411,10 +418,9 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 	 * @param errorStackTrace
 	 * @return
 	 */
-	private int deleteSviva_agg(Object daoObj, StringBuffer errorStackTrace) {
+	private int deleteSviva_agg(String avd, String opd, StringBuffer errorStackTrace) {
 		int retval = 0;
 		try{
-			Sviv_aggDao dao = (Sviv_aggDao)daoObj;
 				
 			StringBuffer sql = new StringBuffer();
 			//DEBUG --> logger.info("mydebug");
@@ -423,7 +429,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			sql.append(" AND sviva_sop = ? ");
 			
 			//params
-			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { dao.getSviv_syav(), dao.getSviv_syop() } );
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { avd, opd } );
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
@@ -444,7 +450,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 	 * @param errorStackTrace
 	 * @return
 	 */
-	//@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public int updateSviv(List<SvivRflnDao> itemListSviv, StringBuffer errorStackTrace) {
 		int retval = 0;
 		
@@ -481,6 +487,60 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 				logger.info(e);
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
+			}				
+			return retval;
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public int insertSviva_agg(List<Sviva_aggDao> avgiftList, StringBuffer errorStackTrace) {
+		int retval = 0;
+		
+		logger.info(avgiftList);
+		StringBuilder sql = new StringBuilder();
+		try {
+			
+			//(1) 
+			sql.append(" INSERT INTO SVIVA_AGG( ");
+			sql.append(" sviva_sav, sviva_sop, sviva_sli, sviva_abk, sviva_abg, sviva_abs, sviva_abx, sviva_abb  "); 
+			sql.append(" )");
+			
+			sql.append(" VALUES (");
+			sql.append(" ? ,?, ?, ? ,?, ?, ? ,?  "); 
+			
+			sql.append(" )");
+			
+			this.jdbcTemplate.batchUpdate(sql.toString(), new BatchPreparedStatementSetter() {
+				
+				@Override
+			      public void setValues(PreparedStatement ps, int i) throws SQLException {
+					Sviva_aggDao item = avgiftList.get(i);
+					//keys
+					ps.setString(1,adjustTegn(item.getSviva_sav())); // sonet        4  0       4         1        Begge    SYSPED Avdeling g  
+			        ps.setString(2,adjustTegn(item.getSviva_sop())); //sonet        7  0       7         5        Begge    SYSPED Oppdragsn  
+			        ps.setString(3,adjustTegn(item.getSviva_sli())); //sonet        5  0       5        12        Begge    SYSPED Linjenr
+			        //rest
+					ps.setString(4,adjustTegn(item.getSviva_abk())); //tegn            3       3        17        Begge    Avgber.avgkod
+			        ps.setBigDecimal(5,new BigDecimal(adjustSonet(item.getSviva_abg()))); // sonet       11  3      11        20        Begge    Avgber.besk.gr  
+			        ps.setBigDecimal(6,new BigDecimal(adjustSonet(item.getSviva_abs()))); // sonet        9  4       9        31        Begge    Avgber.avg.sats
+			        ps.setString(7,adjustTegn(item.getSviva_abx())); 					  // tegn            4       4        40        Begge    Avgber.x.menhet
+			        ps.setBigDecimal(8,new BigDecimal(adjustSonet(item.getSviva_abb()))); // sonet        9  0       9        44        Begge    Belopp
+			        
+			      }
+			      @Override
+			      public int getBatchSize() {
+			        return avgiftList.size();
+			      }
+			    });
+			
+			} catch (Exception e) {
+				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+				e.printStackTrace();
+				logger.info(e);
+				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+				retval = -1;
+				//celan up
+				Sviva_aggDao avgDao = avgiftList.stream().findFirst().get();
+				int tmp = this.deleteSviva_agg(avgDao.getSviva_sav(), avgDao.getSviva_sop(), errorStackTrace);
 			}				
 			return retval;
 	}
