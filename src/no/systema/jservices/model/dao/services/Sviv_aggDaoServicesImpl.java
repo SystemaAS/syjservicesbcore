@@ -153,7 +153,8 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 		try {
 			//(1)delete all previous data related to syav and syop
 			Sviv_aggDao deleteDao = items.stream().findFirst().get();
-			int retvalDelete = this.delete(deleteDao, errorStackTrace);
+			int retvalDelete = this.delete(deleteDao, errorStackTrace); //includes SVIV_AGG and SVIVA_AGG
+			
 			
 			//(2)insert 
 			if(retvalDelete>=0) {
@@ -162,7 +163,18 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 				sql.append(" ,sviv_kos3, sviv_kos4, sviv_kos5, sviv_godm, sviv_god2, sviv_god3, sviv_god4, sviv_god5, sviv_vasl, sviv_vas2  ");
 				sql.append(" ,sviv_vas3, sviv_vas4, sviv_vano, sviv_vata, sviv_vati, sviv_vat4, sviv_vat5, sviv_ulkd, sviv_brut, sviv_fokd  ");
 				sql.append(" ,sviv_eup1, sviv_eup2, sviv_neto, sviv_kvot, sviv_kono, sviv_ankv, sviv_suko, sviv_suk6, sviv_sukb, sviv_sutx  ");
+				sql.append(" ,sviv_sut2, sviv_sut3, sviv_sut4, sviv_sut5, sviv_sut6, sviv_sut7, sviv_sut8, sviv_sut9, sviv_suta, sviv_sutb  ");
 				
+				sql.append(" ,sviv_sutc, sviv_sutd, sviv_sute, sviv_sutf, sviv_suok, sviv_sukr, sviv_suar, sviv_atin, sviv_stva, sviv_stva2  ");
+				sql.append(" ,sviv_fabl, sviv_bit1, sviv_bit2, sviv_bit3, sviv_bit4, sviv_bit5, sviv_bit6, sviv_bit7, sviv_bit8, sviv_bit9  ");
+				sql.append(" ,sviv_bii1, sviv_bii2, sviv_bii3, sviv_bii4, sviv_bii5, sviv_bii6, sviv_bii7, sviv_bii8, sviv_bii9, sviv_co01  ");
+				sql.append(" ,sviv_co02, sviv_co03, sviv_co04, sviv_co05, sviv_co06, sviv_co07, sviv_co08, sviv_co09, sviv_co10, sviv_co11  ");
+				sql.append(" ,sviv_co12, sviv_co13, sviv_co14, sviv_co15, sviv_co16, sviv_co17, sviv_co18, sviv_co19, sviv_co20, sviv_tik1  ");
+				
+				sql.append(" ,sviv_tik2, sviv_tik3, sviv_tik4, sviv_tik5, sviv_tik6, sviv_tik7, sviv_tik8, sviv_tik9, sviv_tit1, sviv_tit2  ");
+				sql.append(" ,sviv_tit3, sviv_tit4, sviv_tit5, sviv_tit6, sviv_tit7, sviv_tit8, sviv_tit9, sviv_tix1, sviv_tix2, sviv_tix3  ");
+				sql.append(" ,sviv_tix4, sviv_tix5, sviv_tix6, sviv_tix7, sviv_tix8, sviv_tix9, sviv_lagi, sviv_lagt, sviv_lagl, sviv_call  ");
+				sql.append(" ,sviv_err, sviv_folk " );
 				
 				sql.append(" )");
 				
@@ -171,7 +183,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
-				/*sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
+				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
@@ -184,7 +196,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?, ?, ? ,?, ?, ? ,?, ?, ?  ");
 				sql.append(" ,? ,?  ");
-				*/
+				
 				
 				sql.append(" )");
 				
@@ -239,7 +251,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 						ps.setString(39, adjustTegn(item.getSviv_sukb ()));  //tegn            5       5       647        begge    særsk.uppl.kod 
 						ps.setString(40, adjustTegn(item.getSviv_sutx ()));  //tegn           70      70       652        begge    særsk.uppl.text
 						
-						/*
+						
 						ps.setString(41, adjustTegn(item.getSviv_sut2 ()));  //tegn           70      70       722        begge    særsk.uppl.text
 						ps.setString(42, adjustTegn(item.getSviv_sut3 ()));  //tegn           70      70       792        begge    særsk.uppl.text
 						ps.setString(43, adjustTegn(item.getSviv_sut4 ()));  //tegn           70      70       862        begge    særsk.uppl.text
@@ -255,14 +267,14 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 						ps.setString(52, adjustTegn(item.getSviv_sutd ()));  //tegn           70      70      1492        begge    særsk.uppl.text
 						ps.setString(53, adjustTegn(item.getSviv_sute ()));  //tegn           70      70      1562        begge    særsk.uppl.text
 						ps.setString(54, adjustTegn(item.getSviv_sutf ()));  //tegn           70      70      1632        begge    særsk.uppl.text
-						ps.setString(55, new BigDecimal(adjustSonet(item.getSviv_suok ())));  //sonet       11  0      11      1702        begge    særsk.uppl.ø.kost  
-						ps.setString(56, new BigDecimal(adjustSonet(item.getSviv_sukr ())));  //sonet       11  0      11      1713        begge    særsk.uppl.kassa.r 
-						ps.setString(57, new BigDecimal(adjustSonet(item.getSviv_suar ())));  //sonet       11  0      11      1724        begge    særsk.uppl.annan.r 
+						ps.setBigDecimal(55, new BigDecimal(adjustSonet(item.getSviv_suok ())));  //sonet       11  0      11      1702        begge    særsk.uppl.ø.kost  
+						ps.setBigDecimal(56, new BigDecimal(adjustSonet(item.getSviv_sukr ())));  //sonet       11  0      11      1713        begge    særsk.uppl.kassa.r 
+						ps.setBigDecimal(57, new BigDecimal(adjustSonet(item.getSviv_suar ())));  //sonet       11  0      11      1724        begge    særsk.uppl.annan.r 
 						ps.setString(58, adjustTegn(item.getSviv_atin ()));  //tegn            3       3      1735        begge    åtgærdsindikator   
-						ps.setString(59, new BigDecimal(adjustSonet(item.getSviv_stva ())));  //sonet       11  0      11      1738        begge    stat.værde  
-						ps.setString(60, new BigDecimal(adjustSonet(item.getSviv_stva2())));  //sonet       11  0      11      1749        begge    tullværde          
+						ps.setBigDecimal(59, new BigDecimal(adjustSonet(item.getSviv_stva ())));  //sonet       11  0      11      1738        begge    stat.værde  
+						ps.setBigDecimal(60, new BigDecimal(adjustSonet(item.getSviv_stva2())));  //sonet       11  0      11      1749        begge    tullværde          
 						
-						ps.setString(61, new BigDecimal(adjustSonet(item.getSviv_fabl ())));  //sonet       11  3      11      1760        begge    fakturabelopp      
+						ps.setBigDecimal(61, new BigDecimal(adjustSonet(item.getSviv_fabl ())));  //sonet       11  3      11      1760        begge    fakturabelopp      
 						ps.setString(62, adjustTegn(item.getSviv_bit1 ()));  //tegn            4       4      1771        begge    bil.handl, typ     
 						ps.setString(63, adjustTegn(item.getSviv_bit2 ()));  //tegn            4       4      1775        begge    bil.handl, typ     
 						ps.setString(64, adjustTegn(item.getSviv_bit3 ()));  //tegn            4       4      1779        begge    bil.handl, typ
@@ -283,7 +295,8 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 						ps.setString(78, adjustTegn(item.getSviv_bii8 ()));  //tegn           35      35      2052        begge    bil.handl, id   
 						ps.setString(79, adjustTegn(item.getSviv_bii9 ()));  //tegn           35      35      2087        begge    bil.handl, id   
 						ps.setString(80, adjustTegn(item.getSviv_co01 ()));  //tegn           17      17      2122        begge    containernummer
-						 
+						
+						
 						ps.setString(81, adjustTegn(item.getSviv_co02 ()));  //tegn           17      17      2139        begge    containernummer 
 						ps.setString(82, adjustTegn(item.getSviv_co03 ()));  //tegn           17      17      2156        begge    containernummer 
 						ps.setString(83, adjustTegn(item.getSviv_co04 ()));  //tegn           17      17      2173        begge    containernummer
@@ -305,7 +318,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 						ps.setString(98, adjustTegn(item.getSviv_co19 ()));  //tegn           17      17      2428        begge    containernummer
 						ps.setString(99, adjustTegn(item.getSviv_co20 ()));  //tegn           17      17      2445        begge    containernummer
 						ps.setString(100, adjustTegn(item.getSviv_tik1 ()));  //tegn            1       1      2462        begge    tid.handl. kat
-						 
+						
 						ps.setString(101, adjustTegn(item.getSviv_tik2 ()));  //tegn            1       1      2463        begge    tid.handl. kat 
 						ps.setString(102, adjustTegn(item.getSviv_tik3 ()));  //tegn            1       1      2464        begge    tid.handl. kat
 						ps.setString(103, adjustTegn(item.getSviv_tik4 ()));  //tegn            1       1      2465        begge    tid.handl. kat
@@ -327,7 +340,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 						ps.setString(118, adjustTegn(item.getSviv_tix1 ()));  //tegn           35      35      2498        begge    tid.handl. txt 
 						ps.setString(119, adjustTegn(item.getSviv_tix2 ()));  //tegn           35      35      2533        begge    tid.handl. txt 
 						ps.setString(120, adjustTegn(item.getSviv_tix3 ()));  //tegn           35      35      2568        begge    tid.handl. txt
-						 
+						
 						ps.setString(121, adjustTegn(item.getSviv_tix4 ()));  //tegn           35      35      2603        begge    tid.handl. txt
 						ps.setString(122, adjustTegn(item.getSviv_tix5 ()));  //tegn           35      35      2638        begge    tid.handl. txt
 						ps.setString(123, adjustTegn(item.getSviv_tix6 ()));  //tegn           35      35      2673        begge    tid.handl. txt
@@ -338,10 +351,10 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 						ps.setString(128, adjustTegn(item.getSviv_lagt ()));  //tegn            1       1      2827        begge    49.lager typ        
 						ps.setString(129, adjustTegn(item.getSviv_lagl ()));  //tegn            2       2      2828        begge    49.lager lk         
 						ps.setString(130, adjustTegn(item.getSviv_call ()));  //tegn            2       2      2830        begge    call me
-						             
+						           
 						ps.setString(131, adjustTegn(item.getSviv_err  ()));  //tegn            1       1      2832        begge    error flag          
 						ps.setString(132, adjustTegn(item.getSviv_folk ()));  //tegn            2       2      2833        begge    förmånsursprungsland
-				         */
+				         
 				      }
 				      @Override
 				      public int getBatchSize() {

@@ -135,7 +135,10 @@ public class JsonResponseOutputterController_SVIV_AGG {
 	 * 
 	 * @Example UPDATE:
 	 *          http://gw.systema.no:8080/syjservicesbcore/syjsSVIV_AGG_U.do?user=OSCAR&mode=U/A/D...
-	 *
+	 *          
+	 * TEST = OK from curl:         
+	 * curl -H 'Content-Type:application/json;;charset=utf-8' -X POST 'http://localhost:8080/syjservicesbcore/syjsSVIV_AGG_U.do?user=OSCAR&mode=A' -d '{"dataAggr":[{"sviv_syav":"1","sviv_syop":"253","sviv_syli":"1","sviv_vata":"111"}, {"sviv_syav":"1","sviv_syop":"253","sviv_syli":"2","sviv_vata":"222"}], "dataRfln":[{"sviv_syav":"1","sviv_syop":"253","sviv_syli":"1","sviv_vata":"111","sviv_rfln":"1"}, {"sviv_syav":"1","sviv_syop":"253","sviv_syli":"2","sviv_vata":"222", "sviv_rfln":"2"}]}'
+	 * 
 	 */
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping(value = "syjsSVIV_AGG_U.do", method = { RequestMethod.GET, RequestMethod.POST } )
