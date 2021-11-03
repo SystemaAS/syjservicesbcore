@@ -15,5 +15,7 @@ import no.systema.jservices.model.dao.entities.Sviva_aggDao;
 public interface Sviv_aggDaoServices extends IDaoServices { 
 	
 	public int insertSviv_agg(List<Sviv_aggDao> items, List<Sviva_aggDao> avgifter, StringBuffer errorStackTrace);
-	public int updateSviv(List<SvivRflnDao> itemListSviv, StringBuffer errorStackTrace);
+	public int updateVanoSviv(List<SvivRflnDao> itemListSviv, StringBuffer errorStackTrace);
+	public int updateRflnSviv(List<SvivRflnDao> itemListRfln, StringBuffer errorStackTrace);
+	public int blankRfln(String avd, String opd, StringBuffer errorStackTrace);
 }

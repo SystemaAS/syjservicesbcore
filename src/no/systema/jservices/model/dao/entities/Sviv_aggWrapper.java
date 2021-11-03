@@ -11,6 +11,7 @@ public class Sviv_aggWrapper {
 	private Collection<Sviv_aggDao> dataAggr;
 	private Collection<SvivRflnDao> dataRfln;
 	private Collection<Sviva_aggDao> dataAggrAvg;
+	private Collection<SvivRflnDao> dataSviv;
 	
 	
 	

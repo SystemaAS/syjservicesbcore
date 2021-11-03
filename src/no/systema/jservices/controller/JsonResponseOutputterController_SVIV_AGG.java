@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -137,15 +138,17 @@ public class JsonResponseOutputterController_SVIV_AGG {
 	 * @Example UPDATE:
 	 *          http://gw.systema.no:8080/syjservicesbcore/syjsSVIV_AGG_U.do?user=OSCAR&mode=U/A/D...
 	 *          
-	 * TEST = OK from curl:         
-	 * curl -H 'Content-Type:application/json;;charset=utf-8' -X POST 'http://localhost:8080/syjservicesbcore/syjsSVIV_AGG_U.do?user=OSCAR&mode=A' -d '{"dataAggr":[{"sviv_syav":"1","sviv_syop":"253","sviv_syli":"1","sviv_vata":"111"}, {"sviv_syav":"1","sviv_syop":"253","sviv_syli":"2","sviv_vata":"222"}], "dataRfln":[{"sviv_syav":"1","sviv_syop":"253","sviv_syli":"1","sviv_vata":"111","sviv_rfln":"1"}, {"sviv_syav":"1","sviv_syop":"253","sviv_syli":"2","sviv_vata":"222", "sviv_rfln":"2"}]}'
+	 * TEST = OK from curl (to test the rest lists only)         
+	 * a)curl -H 'Content-Type:application/json;;charset=utf-8' -X POST 'http://localhost:8080/syjservicesbcore/syjsSVIV_AGG_U.do?user=OSCAR&mode=A' -d '{"dataAggr":[{"sviv_syav":"1","sviv_syop":"253","sviv_syli":"1","sviv_vata":"111"}, {"sviv_syav":"1","sviv_syop":"253","sviv_syli":"2","sviv_vata":"222"}], "dataRfln":[{"sviv_syav":"1","sviv_syop":"253","sviv_syli":"1","sviv_vata":"111","sviv_rfln":"1"}, {"sviv_syav":"1","sviv_syop":"253","sviv_syli":"2","sviv_vata":"222", "sviv_rfln":"2"}], "dataAggrAvg":[], "dataSviv":[]}'
+	 * b)curl -H 'Content-Type:application/json;;charset=utf-8' -X POST 'http://localhost:8080/syjservicesbcore/syjsSVIV_AGG_U.do?user=OSCAR&mode=D&avd=1&opd=253' -d '{"dataAggr":[], "dataRfln":[], "dataAggrAvg":[], "dataSviv":[]}'
 	 * 
 	 */
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping(value = "syjsSVIV_AGG_U.do", method = { RequestMethod.GET, RequestMethod.POST } )
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public String syjsSVIV_AGG_U(@RequestBody Sviv_aggWrapper wrapper, HttpSession session, HttpServletRequest request) {
+	public String syjsSVIV_AGG_U(@RequestParam("avd") String avd, @RequestParam("opd") String opd,
+							 	 @RequestBody Sviv_aggWrapper wrapper, HttpSession session, HttpServletRequest request) {
 		
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();	
@@ -161,28 +164,51 @@ public class JsonResponseOutputterController_SVIV_AGG {
             if(wrapper.getDataAggr()!=null) { logger.warn("WRAPPER-rest-service--> dataAggr-list:" + wrapper.getDataAggr().size()); }
     		if(wrapper.getDataRfln()!=null) { logger.warn("WRAPPER-rest-service--> dataRfln-list:" + wrapper.getDataRfln().size()); }
     		if(wrapper.getDataAggrAvg()!=null) { logger.warn("WRAPPER-rest-service--> dataAggrAvg-list:" + wrapper.getDataAggrAvg().size()); }
-            //
-			String user = request.getParameter("user");
+    		if(wrapper.getDataSviv()!=null) { logger.warn("WRAPPER-rest-service--> dataSviv-list:" + wrapper.getDataSviv().size()); }
+            
+    		String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
 			Collection<Sviv_aggDao> itemListSviv_agg = wrapper.getDataAggr();
-			Collection<SvivRflnDao> itemListSviv = wrapper.getDataRfln();
+			Collection<SvivRflnDao> itemListRfln = wrapper.getDataRfln();
 			Collection<Sviva_aggDao> itemListAvgifter = wrapper.getDataAggrAvg();
+			Collection<SvivRflnDao> itemListSviv = wrapper.getDataSviv();
+			
+			
 			//Check ALWAYS user in BRIDF
             userName = this.bridfDaoServices.findNameById(user);
-            
             
 			//Start processing now
 			if (userName != null) {
 				int dmlRetval = 0;
 				
-				if ( (itemListSviv_agg!=null && itemListSviv_agg.size()>0) && StringUtils.isNotEmpty(mode)) {
+				if ( StringUtils.isNotEmpty(user) && StringUtils.isNotEmpty(mode)) {
 					if ("A".equals(mode)) {
-						dmlRetval = this.sviv_aggDaoServices.insertSviv_agg((List)itemListSviv_agg, (List)itemListAvgifter, dbErrorStackTrace);
+						logger.warn("update vano");
+						dmlRetval = this.sviv_aggDaoServices.updateVanoSviv((List)itemListSviv, dbErrorStackTrace);
 						if(dmlRetval>=0) {
-							//update SVIV (set sviv_rfln)
-							dmlRetval = this.sviv_aggDaoServices.updateSviv((List)itemListSviv, dbErrorStackTrace);
+							dmlRetval = this.sviv_aggDaoServices.insertSviv_agg((List)itemListSviv_agg, (List)itemListAvgifter, dbErrorStackTrace);
+							if(dmlRetval>=0) {
+								//update SVIV (set sviv_rfln)
+								dmlRetval = this.sviv_aggDaoServices.updateRflnSviv((List)itemListRfln, dbErrorStackTrace);
+							}
+							sb.append("INSERT(OK) ");
 						}
-			
+						
+					}else if (mode.equals("D")) {
+						logger.warn("DELETE mode... cleaning up (sviv_agg/sviva_agg/sviv(rfln) since there is no aggregation requirement in this operation");
+						Sviv_aggDao dao = new Sviv_aggDao();
+						dao.setSviv_syav(avd);
+						dao.setSviv_syop(opd);
+						
+						dmlRetval = this.sviv_aggDaoServices.delete(dao, dbErrorStackTrace);
+						if(dmlRetval>=0) {
+							logger.warn("update vano");
+							dmlRetval = this.sviv_aggDaoServices.updateVanoSviv((List)itemListSviv, dbErrorStackTrace);
+							logger.warn("blank rfln");
+							dmlRetval = this.sviv_aggDaoServices.blankRfln(avd, opd, dbErrorStackTrace);
+						}
+						sb.append("DELETE Sviv_agg and UPDATE vano/rfln(OK) ");
+						
 					}else {
 						// write JSON error output
 						errMsg = "ERROR on INSERT: invalid itemList size or mode. Inspect log files ...";
@@ -190,7 +216,7 @@ public class JsonResponseOutputterController_SVIV_AGG {
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 						logger.error(sb);
 					}
-				} else {
+				}else {
 					// write JSON error output
 					errMsg = "ERROR on INSERT/UPDATE: invalid rulerLord, error";
 					status = "error";
@@ -208,12 +234,18 @@ public class JsonResponseOutputterController_SVIV_AGG {
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 					logger.error(sb);
 				} else {
-					// OK INSERT
-					String str = "INSERT OK";
-					logger.warn(str + itemListSviv_agg.stream().findFirst().get() );
+					// OK 
+					Sviv_aggDao response = null;
+					if(itemListSviv_agg!=null && itemListSviv_agg.size()>0) {
+						response = itemListSviv_agg.stream().findFirst().get();
+					}else {
+						response = new Sviv_aggDao();
+						response.setSviv_syav(avd);
+						response.setSviv_syop(opd);
+					}
+					logger.warn( response );
 					//return web service ...
-					sb.append(str);
-					sb.append(jsonWriter.setJsonSimpleValidResult(userName, itemListSviv_agg.stream().findFirst().get(), status));
+					sb.append(jsonWriter.setJsonSimpleValidResult(userName, response, status));
 				}
 
 			} else {

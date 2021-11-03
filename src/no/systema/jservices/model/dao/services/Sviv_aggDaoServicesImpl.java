@@ -367,7 +367,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.info(e);
+				logger.warn(e);
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 				//clean up
@@ -402,7 +402,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			}
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
+			logger.warn(writer.toString());
 			//Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
@@ -410,7 +410,9 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 
 		return retval;
 
-	}                                  
+	}
+	
+	
 
 	/**
 	 * Child table
@@ -433,7 +435,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.info(writer.toString());
+			logger.warn(writer.toString());
 			//Chop the message to comply to JSON-validation
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			retval = -1;
@@ -451,7 +453,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 	 * @return
 	 */
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public int updateSviv(List<SvivRflnDao> itemListSviv, StringBuffer errorStackTrace) {
+	public int updateVanoSviv(List<SvivRflnDao> itemListSviv, StringBuffer errorStackTrace) {
 		int retval = 0;
 		
 		logger.info(itemListSviv);
@@ -459,7 +461,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 		try {
 			
 			//(1) 
-			sql.append(" update sviv set sviv_rfln = ? ");
+			sql.append(" update sviv set sviv_vano = ? ");
 			sql.append(" where sviv_syav = ? and sviv_syop = ? and sviv_syli = ? ");
 			
 			
@@ -468,7 +470,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 				@Override
 			      public void setValues(PreparedStatement ps, int i) throws SQLException {
 					SvivRflnDao item = itemListSviv.get(i);
-			        ps.setString(1,adjustTegn(item.getSviv_rfln()));
+					ps.setString(1,adjustTegn(item.getSviv_vano()));
 			        ps.setString(2,adjustTegn(item.getSviv_syav()));
 			        ps.setString(3,adjustTegn(item.getSviv_syop()));
 			        ps.setString(4,adjustTegn(item.getSviv_syli()));
@@ -484,12 +486,85 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.info(e);
+				logger.warn(e);
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 			}				
 			return retval;
 	}
+	
+	/**
+	 * 
+	 */
+	public int updateRflnSviv(List<SvivRflnDao> itemListRfln, StringBuffer errorStackTrace) {
+		int retval = 0;
+		
+		logger.info(itemListRfln);
+		StringBuilder sql = new StringBuilder();
+		try {
+			
+			//(1) 
+			sql.append(" update sviv set sviv_rfln = ? ");
+			sql.append(" where sviv_syav = ? and sviv_syop = ? and sviv_syli = ? ");
+			
+			
+			this.jdbcTemplate.batchUpdate(sql.toString(), new BatchPreparedStatementSetter() {
+				
+				@Override
+			      public void setValues(PreparedStatement ps, int i) throws SQLException {
+					SvivRflnDao item = itemListRfln.get(i);
+					ps.setString(1,adjustTegn(item.getSviv_rfln()));
+			        ps.setString(2,adjustTegn(item.getSviv_syav()));
+			        ps.setString(3,adjustTegn(item.getSviv_syop()));
+			        ps.setString(4,adjustTegn(item.getSviv_syli()));
+			        
+					
+			      }
+			      @Override
+			      public int getBatchSize() {
+			        return itemListRfln.size();
+			      }
+			    });
+			
+			} catch (Exception e) {
+				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+				e.printStackTrace();
+				logger.warn(e);
+				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+				retval = -1;
+			}				
+			return retval;
+	}
+	
+	/**
+	 * 
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	public int blankRfln(String avd, String opd, StringBuffer errorStackTrace) {
+		int retval = 0;
+		
+		try{
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append(" update sviv set sviv_rfln = ? ");
+			sql.append(" where sviv_syav = ? and sviv_syop = ? ");
+			
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { "0", avd, opd } );
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.warn(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
+		
+		return retval;
+	}
+	
+	
 	
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public int insertSviva_agg(List<Sviva_aggDao> avgiftList, StringBuffer errorStackTrace) {
@@ -535,7 +610,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.info(e);
+				logger.warn(e);
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 				//celan up
@@ -545,7 +620,38 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			return retval;
 	}
 	
+	/**
+	 * Cleans up any reference on rfln
+	 * @param daoObj
+	 * @param errorStackTrace
+	 * @return
+	 */
+	/*
+	public int blankRflnSviv(Object daoObj, StringBuffer errorStackTrace) {
+		int retval = 0;
+		try{
+			Sviv_aggDao dao = (Sviv_aggDao)daoObj;
+			
+			StringBuffer sql = new StringBuffer();
+			//(2)delete main table);
+			sql.append(" UPDATE sviv SET sviv_rfln = ? ");
+			sql.append(" WHERE sviv_syav = ? ");
+			sql.append(" AND sviv_syop = ? ");
+			
+			//params
+			retval = this.jdbcTemplate.update( sql.toString(), new Object[] { "0", dao.getSviv_syav(), dao.getSviv_syop() } );
+		
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.info(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			retval = -1;
+		}
 
+		return retval;
+	}
+	*/
 	
 	private String adjustSonet(String value) {
 		String retval = value;
