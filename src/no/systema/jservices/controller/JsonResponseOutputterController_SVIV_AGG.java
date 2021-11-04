@@ -53,7 +53,6 @@ import no.systema.jservices.model.dao.entities.Sviv_aggDao;
 import no.systema.jservices.model.dao.entities.Sviv_aggWrapper;
 import no.systema.jservices.model.dao.entities.Sviva_aggDao;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
-import no.systema.jservices.model.dao.services.EdimDaoServices;
 import no.systema.jservices.model.dao.services.Sviv_aggDaoServices;
 
 @RestController
@@ -64,50 +63,64 @@ public class JsonResponseOutputterController_SVIV_AGG {
 	 * File: SVIV_AGG
 	 * 
 	 * @Example SELECT
-	 *          specific:http://gw.systema.no:8080/syjservicesbcore/syjsSADVARE.do?user=OSCAR&levenr=1&varenr=9004901000
+	 *          specific:http://gw.systema.no:8080/syjservicesbcore/syjsSVIV_AGG.do?user=OSCAR&avd=1&opd=253&lin=1
 	 * @Example SELECT list:
-	 *          http://gw.systema.no:8080/syjservicesbcore/syjsSADVARE.do?user=OSCAR&levenr=1
+	 *          http://gw.systema.no:8080/syjservicesbcore/syjsSVIV_AGG.do?user=OSCAR&avd=1&opd=253
 	 * 
 	 */
-	/*
-	@RequestMapping(value = "syjsSADVARE.do", method = { RequestMethod.GET, RequestMethod.POST })
+	
+	@RequestMapping(value = "syjsSVIV_AGG.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String doSadvare(HttpSession session, HttpServletRequest request) {
-		JsonResponseWriter2<SadvareDao> jsonWriter = new JsonResponseWriter2<SadvareDao>();
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
-		List<SadvareDao> sadvareDaoList = new ArrayList<SadvareDao>();
-		String levenr = request.getParameter("levenr");
-		String varenr = request.getParameter("varenr");
+		
+		String user = request.getParameter("user");
+		String avd = request.getParameter("avd");
+		String opd = request.getParameter("opd");
+		String lin = request.getParameter("lin");
+		
+		
 
 		try {
-			String user = request.getParameter("user");
+			
 			String userName = this.bridfDaoServices.findNameById(user);
+			//logger.warn(userName + avd + opd);
 			String errMsg = "";
 			String status = "ok";
 			StringBuffer dbErrorStackTrace = new StringBuffer();
-			if ((userName != null && !"".equals(userName)) && (levenr != null && !"".equals(levenr))) {
-				if (varenr != null && !"".equals(varenr)) {
-					SadvareDao dao = fetchRecord(levenr, varenr);
-					sadvareDaoList.add(dao);
+			logger.warn("Inside syjsSVIV_AGG.do");
+			if (StringUtils.isNotEmpty(userName) && (StringUtils.isNotEmpty(avd) && StringUtils.isNotEmpty(opd)) ) {
+				Sviv_aggDao dao = new Sviv_aggDao();
+				dao.setSviv_syav(avd);
+				dao.setSviv_syop(opd);
+				dao.setSviv_syli(lin);
+				List list = null;
+				if (lin != null && !"".equals(lin)) {
+					list = this.sviv_aggDaoServices.findById(dao, dbErrorStackTrace);
+					
 				} else {
-					sadvareDaoList = fetchList(levenr);
+					logger.warn("getting list (avd/opd)");
+					list = this.sviv_aggDaoServices.getList(dao, dbErrorStackTrace);
 				}
-				if (sadvareDaoList != null) {
-					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, sadvareDaoList));
+				
+				if (list != null) {
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
 				} else {
-					errMsg = "ERROR on SELECT: Can not find SadvareDao list";
+					errMsg = "ERROR on SELECT: Can not find SVIV_AGG list";
 					status = "error";
-					logger.info(status + errMsg);
+					logger.warn(status + errMsg);
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 				}
 			} else {
-				errMsg = "ERROR on SELECT";
+				errMsg = "ERROR on SELECT: request input parameters are invalid: <user> and <avd/opd>";
 				status = "error";
-				dbErrorStackTrace.append("request input parameters are invalid: <user> and <levenr> ");
+				dbErrorStackTrace.append(errMsg);
+				logger.warn(status + errMsg);
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 			}
 		} catch (Exception e) {
-			logger.info("Error :", e);
+			logger.warn("Error :", e);
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
@@ -118,7 +131,7 @@ public class JsonResponseOutputterController_SVIV_AGG {
 		return sb.toString();
 
 	}
-*/
+
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@RequestMapping(value = "/foo.do",  method=RequestMethod.POST )
 	@ResponseStatus(HttpStatus.OK)

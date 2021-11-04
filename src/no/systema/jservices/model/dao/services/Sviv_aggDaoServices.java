@@ -18,4 +18,6 @@ public interface Sviv_aggDaoServices extends IDaoServices {
 	public int updateVanoSviv(List<SvivRflnDao> itemListSviv, StringBuffer errorStackTrace);
 	public int updateRflnSviv(List<SvivRflnDao> itemListRfln, StringBuffer errorStackTrace);
 	public int blankRfln(String avd, String opd, StringBuffer errorStackTrace);
+	public List<Sviv_aggDao> getList(Object daoObj, StringBuffer errorStackTrace);
+	public List findById(Object daoObj, StringBuffer errorStackTrace);
 }

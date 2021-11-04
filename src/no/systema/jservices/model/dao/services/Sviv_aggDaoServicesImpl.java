@@ -3,6 +3,7 @@ import java.io.Writer;
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,7 @@ import no.systema.jservices.model.dao.entities.EdimDao;
 import no.systema.jservices.model.dao.entities.SvivRflnDao;
 import no.systema.jservices.model.dao.entities.Sviv_aggDao;
 import no.systema.jservices.model.dao.entities.Sviva_aggDao;
+import no.systema.jservices.model.dao.mapper.Sviv_aggMapper;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -31,20 +33,36 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 	
 	
 	@Override
-	public List<EdimDao> getList(StringBuffer errorStackTrace){
+	public List<Sviv_aggDao> getList(StringBuffer errorStackTrace){
 		//N/A
 		return null;
 	}
 	
 	@Override
+	public List<Sviv_aggDao> getList(Object daoObj, StringBuffer errorStackTrace){
+		Sviv_aggDao dao = (Sviv_aggDao)daoObj;
+		StringBuilder sql = new StringBuilder();
+		sql.append(" select * from sviv_agg where sviv_syav = ? and sviv_syop = ? ");
+		return this.jdbcTemplate.query( sql.toString(), new Object[] { dao.getSviv_syav() , dao.getSviv_syop()}, new Sviv_aggMapper());
+	}
+	
+	@Override
 	public List findById(String id, StringBuffer errorStackTrace){
-		/*
-		List<EdimDao> list = new ArrayList<EdimDao>();
+		//N/A
+		return null;
+	}
+	
+	@Override
+	public List findById(Object daoObj, StringBuffer errorStackTrace){
+		Sviv_aggDao dao = (Sviv_aggDao)daoObj;
+		List<Sviv_aggDao> list = new ArrayList<Sviv_aggDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select * from edim ");
-			sql.append(" where msn = ? ");
-			list = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new EdimMapper());
+			sql.append(" select * from sviv_agg ");
+			sql.append(" where sviv_syav = ? ");
+			sql.append(" and sviv_syop = ? ");
+			sql.append(" and sviv_syli = ? ");
+			list = this.jdbcTemplate.query( sql.toString(), new Object[] { dao.getSviv_syav(), dao.getSviv_syop(), dao.getSviv_syli() }, new Sviv_aggMapper());
 			
 			
 			
@@ -56,8 +74,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			list = null;
 		}
 		return list;
-		*/
-		return null;
+		
 	}
 	
 	
