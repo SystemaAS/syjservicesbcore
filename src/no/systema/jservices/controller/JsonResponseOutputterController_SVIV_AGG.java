@@ -3,26 +3,18 @@ package no.systema.jservices.controller;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.jdbc.BadSqlGrammarException;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.ServletRequestDataBinder;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,22 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import no.systema.jservices.bcore.z.maintenance.controller.rules.SADVARE_U;
-import no.systema.jservices.common.dao.SadvareDao;
-import no.systema.jservices.common.dao.services.Kodts2DaoService;
-import no.systema.jservices.common.dao.services.Kodts5DaoService;
-import no.systema.jservices.common.dao.services.Kodts6DaoService;
-import no.systema.jservices.common.dao.services.Kodts7DaoService;
-import no.systema.jservices.common.dao.services.Kodts8DaoService;
-import no.systema.jservices.common.dao.services.KodtsaDaoService;
-import no.systema.jservices.common.dao.services.KodtsbDaoService;
-import no.systema.jservices.common.dao.services.KodtvalfDaoService;
-import no.systema.jservices.common.dao.services.SadvareDaoService;
-import no.systema.jservices.common.dao.services.TariDaoService;
-import no.systema.jservices.common.json.JsonResponseWriter2;
-import no.systema.jservices.controller.rules.EDIMR_U;
+
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
-import no.systema.jservices.model.dao.entities.EdimDao;
 import no.systema.jservices.model.dao.entities.SvivRflnDao;
 import no.systema.jservices.model.dao.entities.Sviv_aggDao;
 import no.systema.jservices.model.dao.entities.Sviv_aggWrapper;
@@ -71,7 +49,7 @@ public class JsonResponseOutputterController_SVIV_AGG {
 	
 	@RequestMapping(value = "syjsSVIV_AGG.do", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
-	public String doSadvare(HttpSession session, HttpServletRequest request) {
+	public String doSviv(HttpSession session, HttpServletRequest request) {
 		JsonResponseWriter jsonWriter = new JsonResponseWriter();
 		StringBuffer sb = new StringBuffer();
 		
@@ -132,18 +110,6 @@ public class JsonResponseOutputterController_SVIV_AGG {
 
 	}
 
-	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	@RequestMapping(value = "/foo.do",  method=RequestMethod.POST )
-	@ResponseStatus(HttpStatus.OK)
-	public Map update(@RequestBody Collection<Object> input, HttpServletRequest request) throws Exception{
-		logger.warn("remote host:" + request.getRemoteHost() + " " + "remote ipadress:" + request.getRemoteAddr());
-		
-		Map responseMap = new HashMap();
-		responseMap.put("data", input.toString());
-		
-		
-		return responseMap;
-		}
 
 	/**
 	 * Update Database DML operations File: SVIV_AGG
@@ -282,6 +248,69 @@ public class JsonResponseOutputterController_SVIV_AGG {
 			status = "error";
 			sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 
+		}
+
+		session.invalidate();
+		return sb.toString();
+
+	}
+	/**
+	 * Child table - secondary
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "syjsSVIVA_AGG.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String doSviva(HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();
+		
+		String user = request.getParameter("user");
+		String avd = request.getParameter("avd");
+		String opd = request.getParameter("opd");
+		String lin = request.getParameter("lin");
+		
+		
+
+		try {
+			
+			String userName = this.bridfDaoServices.findNameById(user);
+			//logger.warn(userName + avd + opd);
+			String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+			logger.warn("Inside syjsSVIVA_AGG.do");
+			if (StringUtils.isNotEmpty(userName) && (StringUtils.isNotEmpty(avd) && StringUtils.isNotEmpty(opd)) ) {
+				Sviv_aggDao dao = new Sviv_aggDao();
+				dao.setSviv_syav(avd);
+				dao.setSviv_syop(opd);
+				dao.setSviv_syli(lin);
+				List list = null;
+				list = this.sviv_aggDaoServices.findByIdSviva(avd,opd,lin, dbErrorStackTrace);
+				
+
+				if (list != null) {
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
+				} else {
+					errMsg = "ERROR on SELECT: Can not find SVIV_AGG list";
+					status = "error";
+					logger.warn(status + errMsg);
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}
+			} else {
+				errMsg = "ERROR on SELECT: request input parameters are invalid: <user> and <avd/opd>";
+				status = "error";
+				dbErrorStackTrace.append(errMsg);
+				logger.warn(status + errMsg);
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+		} catch (Exception e) {
+			logger.warn("Error :", e);
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
 		}
 
 		session.invalidate();

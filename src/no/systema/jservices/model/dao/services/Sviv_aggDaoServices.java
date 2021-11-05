@@ -20,4 +20,6 @@ public interface Sviv_aggDaoServices extends IDaoServices {
 	public int blankRfln(String avd, String opd, StringBuffer errorStackTrace);
 	public List<Sviv_aggDao> getList(Object daoObj, StringBuffer errorStackTrace);
 	public List findById(Object daoObj, StringBuffer errorStackTrace);
+	//sviva_agg
+	public List findByIdSviva(String avd, String opd, String lin, StringBuffer errorStackTrace);
 }

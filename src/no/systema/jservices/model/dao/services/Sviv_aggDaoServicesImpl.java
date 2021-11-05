@@ -19,6 +19,7 @@ import no.systema.jservices.model.dao.entities.SvivRflnDao;
 import no.systema.jservices.model.dao.entities.Sviv_aggDao;
 import no.systema.jservices.model.dao.entities.Sviva_aggDao;
 import no.systema.jservices.model.dao.mapper.Sviv_aggMapper;
+import no.systema.jservices.model.dao.mapper.Sviva_aggMapper;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -44,6 +45,12 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 		StringBuilder sql = new StringBuilder();
 		sql.append(" select * from sviv_agg where sviv_syav = ? and sviv_syop = ? ");
 		return this.jdbcTemplate.query( sql.toString(), new Object[] { dao.getSviv_syav() , dao.getSviv_syop()}, new Sviv_aggMapper());
+	}
+	@Override
+	public List findByIdSviva(String avd, String opd, String lin, StringBuffer errorStackTrace) {
+		StringBuilder sql = new StringBuilder();
+		sql.append(" select * from sviva_agg where sviva_sav = ? and sviva_sop = ? and sviva_sli = ? ");
+		return this.jdbcTemplate.query( sql.toString(), new Object[] { avd , opd, lin }, new Sviva_aggMapper());
 	}
 	
 	@Override
