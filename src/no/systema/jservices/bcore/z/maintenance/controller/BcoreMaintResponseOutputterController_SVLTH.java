@@ -114,6 +114,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 		}
 
 		session.invalidate();
+		logger.info(sb.toString());
 		return sb.toString();
 
 	}

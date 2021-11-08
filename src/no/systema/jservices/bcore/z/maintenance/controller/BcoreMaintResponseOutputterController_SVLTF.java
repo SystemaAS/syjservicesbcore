@@ -58,12 +58,14 @@ public class BcoreMaintResponseOutputterController_SVLTF {
 				if (StringUtils.hasValue(svltf_igl)) {
 					Map<String, Object> params = new HashMap<String, Object>();
 					params.put("svltf_igl", svltf_igl);
-					logger.info("WTF");
+					logger.warn("WTF");
 					svltfDaoList = svltfDaoService.findAll(params);
 				} else {
+					logger.warn("finAll(null)");
 					svltfDaoList = svltfDaoService.findAll(null);
 				}
 				if (svltfDaoList != null) {
+						logger.warn("svltfDaoList.size():" + svltfDaoList.size());
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, svltfDaoList));
 				} else {
 					errMsg = "ERROR on SELECT: Can not find SvltfDao list";
@@ -78,7 +80,7 @@ public class BcoreMaintResponseOutputterController_SVLTF {
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
 			}
 		} catch (Exception e) {
-			logger.info("Error :", e);
+			logger.error("Error :", e);
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
@@ -86,6 +88,7 @@ public class BcoreMaintResponseOutputterController_SVLTF {
 		}
 
 		session.invalidate();
+		logger.info(sb.toString());
 		return sb.toString();
 
 	}
