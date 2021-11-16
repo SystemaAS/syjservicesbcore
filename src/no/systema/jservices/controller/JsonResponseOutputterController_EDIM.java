@@ -62,6 +62,8 @@ public class JsonResponseOutputterController_EDIM {
 			String user = request.getParameter("user");
 			String csnParam = request.getParameter("csn");
 			String lrnParam = request.getParameter("lrn");
+			String mrnParam = request.getParameter("mrn");
+			
 			
 			//Check ALWAYS user in BRIDF
             String userName = this.bridfDaoServices.findNameById(user);
@@ -99,7 +101,12 @@ public class JsonResponseOutputterController_EDIM {
 					}else if(StringUtils.isNotEmpty(dao.getMuuid())) {
 						logger.warn("findByUuid uuid:" + dao.getMuuid());
 	            		list = this.edimDaoServices.findByUuid(dao.getMuuid(), dbErrorStackTrace);
-					}
+					
+					}else if( StringUtils.isNotEmpty(mrnParam) ){
+		            	logger.warn("findByMrn mrn(svih_mrn):" + mrnParam);
+		            	list = this.edimDaoServices.findByMrn(mrnParam, dbErrorStackTrace);
+					
+	            	}
 					
 					if(list!=null && list.size()>0) {
 						sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
