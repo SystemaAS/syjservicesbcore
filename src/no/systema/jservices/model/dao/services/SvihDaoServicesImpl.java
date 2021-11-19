@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.model.dao.entities.EdimDao;
 import no.systema.jservices.model.dao.entities.SvihDao;
+import no.systema.jservices.model.dao.mapper.SvihMapper;
 import no.systema.main.util.DbErrorMessageManager;
 
 /**
@@ -30,14 +31,14 @@ public class SvihDaoServicesImpl implements SvihDaoServices {
 	}
 	
 	@Override
-	public List findById(String id, StringBuffer errorStackTrace){
+	public List findById(String tuid, StringBuffer errorStackTrace){
 		
 		List<SvihDao> list = new ArrayList<SvihDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
 			sql.append(" select * from svih ");
-			sql.append(" where bla bla = ? ");
-			//TODO list = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new EdisMapper());
+			sql.append(" where svih_tuid = ? ");
+			list = this.jdbcTemplate.query( sql.toString(), new Object[] { tuid }, new SvihMapper());
 			
 			
 			

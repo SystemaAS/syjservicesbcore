@@ -22,6 +22,7 @@ import no.systema.jservices.controller.rules.SVIH_U;
 import no.systema.jservices.jsonwriter.JsonResponseWriter;
 import no.systema.jservices.model.dao.entities.EdimDao;
 import no.systema.jservices.model.dao.entities.SvihDao;
+import no.systema.jservices.model.dao.entities.SvihDao2;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 import no.systema.jservices.model.dao.services.EdimDaoServices;
 import no.systema.jservices.model.dao.services.SvihDaoServices;
@@ -43,6 +44,68 @@ import no.systema.jservices.model.dao.services.SvihDaoServices;
 public class JsonResponseOutputterController_SVIH {
 	private static Logger logger = Logger.getLogger(JsonResponseOutputterController_SVIH.class.getName());
 	
+	
+	/**
+	 * 
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "syjsSVIH.do", method = { RequestMethod.GET, RequestMethod.POST })
+	@ResponseBody
+	public String doSvih(HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();
+		String user = request.getParameter("user");
+		
+		try {
+			
+			String userName = this.bridfDaoServices.findNameById(user);
+			
+			String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+			logger.warn("Inside syjsSVIH.do");
+			
+			if (StringUtils.isNotEmpty(userName)) {
+				//bind attributes is any
+				SvihDao2 dao = new SvihDao2();
+				ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
+	            binder.bind(request);
+				List list = null;
+				if (StringUtils.isNotEmpty(dao.getSvih_tuid())) {
+					logger.warn("getting list (tuid)");
+					list = this.svihDaoServices.findById(dao.getSvih_tuid(), dbErrorStackTrace);
+					
+				} 
+				
+				if (list != null) {
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
+				} else {
+					errMsg = "ERROR on SELECT: Can not find SVIH list";
+					status = "error";
+					logger.warn(status + errMsg);
+					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+				}
+			} else {
+				errMsg = "ERROR on SELECT: request input parameters are invalid: <user>";
+				status = "error";
+				dbErrorStackTrace.append(errMsg);
+				logger.warn(status + errMsg);
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+		} catch (Exception e) {
+			logger.warn("Error :", e);
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+
+		session.invalidate();
+		return sb.toString();
+
+	}
 	
 	/**
 	 * 
@@ -112,11 +175,11 @@ public class JsonResponseOutputterController_SVIH {
 						
 				        
 					}else if ("UL".equals(mode)) {
+						logger.warn("syst:" + dao.getSvih_syst());
+						logger.warn("syst2:" + dao.getSvih_syst2());
+						logger.warn("mrn:" + dao.getSvih_mrn());
+						logger.warn("lrn:" + dao.getSvih_lrn());
 						if(rulerLord.isValidInputUpdateLight(dao, user, mode)){
-							logger.warn("syst:" + dao.getSvih_syst());
-							logger.warn("syst2:" + dao.getSvih_syst2());
-							logger.warn("mrn:" + dao.getSvih_mrn());
-							logger.warn("lrn:" + dao.getSvih_lrn());
 							dmlRetval = svihDaoServices.updateLight(dao, dbErrorStackTrace);
 						}else {
 							// write JSON error output
