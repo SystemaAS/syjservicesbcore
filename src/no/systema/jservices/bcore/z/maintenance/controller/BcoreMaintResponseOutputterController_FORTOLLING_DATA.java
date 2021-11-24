@@ -65,18 +65,20 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 				if (errMsg == null) {
 					//continue;
 				} else {
+					logger.warn("ERROR #####################################");
 					throw new RuntimeException("something went wrong...errMsg="+errMsg);
 				}
 				fortollingDtoList = fortollingDaoService.getStats(qDto);
 				if (fortollingDtoList != null) {
-					logger.info("fortollingDtoList.size()=" + fortollingDtoList.size());
-					logger.info("appendar till sb.");
+					logger.warn("fortollingDtoList.size()=" + fortollingDtoList.size());
+					logger.warn("appendar till sb.");
 					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, fortollingDtoList));
-					logger.info("appendat till sb!");
+					logger.warn("appendat till sb!");
 				} else {
 					errMsg = "ERROR on SELECT: Can not find FortollingDto list";
 					status = "error";
 					logger.info(status + errMsg);
+					logger.warn("ERROR #####################################" + errMsg);
 					sb.append(errMsg);
 				}
 			} else {
@@ -94,7 +96,8 @@ public class BcoreMaintResponseOutputterController_FORTOLLING_DATA {
 		}
 
 		session.invalidate();
-		logger.info("About to return...");
+		logger.warn("About to return...");
+		//logger.warn(sb.toString());
 		return sb.toString();
 
 	}
