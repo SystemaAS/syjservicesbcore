@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules.tds;
 
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.tds.SvnstdDao;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
@@ -15,7 +15,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.SvxkodfDaoSer
  * @date jun 26, 2017
  */
 public class SVX053R_U {
-	private static Logger logger = Logger.getLogger(SVX053R_U.class.getName());
+	private static Logger logger = LogManager.getLogger(SVX053R_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
 	private SvxkodfDaoServices svxkodfDaoServices;
 	

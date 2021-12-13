@@ -1,7 +1,7 @@
 package no.systema.jservices.model.dao.services;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import no.systema.jservices.model.dao.mapper.FirmMapper;
 import no.systema.jservices.model.dao.entities.FirmDao;
@@ -13,7 +13,7 @@ import no.systema.jservices.model.dao.entities.FirmDao;
  * 
  */
 public class FirmLoginDaoServicesImpl implements FirmLoginDaoServices {
-	private static Logger logger = Logger.getLogger(FirmLoginDaoServicesImpl.class.getName());
+	private static Logger logger = LogManager.getLogger(FirmLoginDaoServicesImpl.class.getName());
 	
 	/**
 	 * @param userName

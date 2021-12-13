@@ -9,7 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -45,7 +45,7 @@ import no.systema.jservices.model.dao.services.EdiiDaoServices;
 
 @Controller
 public class BcoreMaintResponseOutputterController_CUNDC {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_CUNDC.class.getName());
+	private static Logger logger = LogManager.getLogger(BcoreMaintResponseOutputterController_CUNDC.class.getName());
 
 	/**
 	 * FreeForm Source:

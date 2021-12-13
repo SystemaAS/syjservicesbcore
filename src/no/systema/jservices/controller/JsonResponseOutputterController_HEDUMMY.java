@@ -9,8 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+ 
+import org.apache.logging.log4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -56,7 +56,7 @@ import no.systema.jservices.controller.rules.SYEDIIR_U;
 
 @Controller
 public class JsonResponseOutputterController_HEDUMMY {
-	private static Logger logger = Logger.getLogger(JsonResponseOutputterController_HEDUMMY.class.getName());
+	private static Logger logger = LogManager.getLogger(JsonResponseOutputterController_HEDUMMY.class.getName());
 	
 	/**
 	 *

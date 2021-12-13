@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -65,7 +65,7 @@ import no.systema.jservices.model.dao.services.EdiiDaoServices;
 
 @Controller
 public class JsonResponseOutputterController_CUNDF {
-	private static Logger logger = Logger.getLogger(JsonResponseOutputterController_CUNDF.class.getName());
+	private static Logger logger = LogManager.getLogger(JsonResponseOutputterController_CUNDF.class.getName());
 	
 	/**
 	 *

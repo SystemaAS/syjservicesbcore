@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KofastDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
@@ -19,7 +19,7 @@ import no.systema.main.util.MessageSourceHelper;
  * @date May 9, 2017
  */
 public class SYPARF2_U {
-	private static Logger logger = Logger.getLogger(SYPARF2_U.class.getName());
+	private static Logger logger = LogManager.getLogger(SYPARF2_U.class.getName());
 	private JsonResponseWriter2<SyparfDto> jsonWriter = new JsonResponseWriter2<SyparfDto>();
 	private MessageSourceHelper messageSourceHelper = null;
 	private KofastDaoServices kofastDaoServices = null;

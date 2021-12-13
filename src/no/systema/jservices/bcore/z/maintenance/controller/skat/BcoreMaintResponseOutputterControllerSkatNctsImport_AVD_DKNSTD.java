@@ -9,7 +9,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -44,7 +44,7 @@ import no.systema.jservices.model.dao.services.EdiiDaoServices;
 
 @Controller
 public class BcoreMaintResponseOutputterControllerSkatNctsImport_AVD_DKNSTD {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSkatNctsImport_AVD_DKNSTD.class.getName());
+	private static Logger logger = LogManager.getLogger(BcoreMaintResponseOutputterControllerSkatNctsImport_AVD_DKNSTD.class.getName());
 	
 	/**
 	 * FreeForm Source:

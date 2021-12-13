@@ -9,8 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+ 
+import org.apache.logging.log4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -52,7 +52,7 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.sad.TR053R_U;
 
 @Controller
 public class BcoreMaintResponseOutputterControllerSadNctsImport_AVD_TRISTD {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSadNctsImport_AVD_TRISTD.class.getName());
+	private static Logger logger = LogManager.getLogger(BcoreMaintResponseOutputterControllerSadNctsImport_AVD_TRISTD.class.getName());
 	
 	/**
 	 * FreeForm Source:

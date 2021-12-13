@@ -9,8 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+ 
+import org.apache.logging.log4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -52,7 +52,7 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.skat.DKX003R_U;
 
 @Controller
 public class BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTDFV {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTDFV.class.getName());
+	private static Logger logger = LogManager.getLogger(BcoreMaintResponseOutputterControllerSkatNctsExport_AVD_DKXSTDFV.class.getName());
 	
 	/**
 	 * FreeForm Source:

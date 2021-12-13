@@ -2,7 +2,7 @@ package no.systema.jservices.controller.rules;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import no.systema.jservices.model.dao.entities.EdisDao;
 
@@ -12,7 +12,7 @@ import no.systema.jservices.model.dao.entities.EdisDao;
  * @date Sep 2021
  */
 public class EDISR_U {
-	private static Logger logger = Logger.getLogger(EDISR_U.class.getName());
+	private static Logger logger = LogManager.getLogger(EDISR_U.class.getName());
 
 	/**
 	 * 

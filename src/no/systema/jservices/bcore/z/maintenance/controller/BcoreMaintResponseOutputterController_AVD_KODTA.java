@@ -9,8 +9,8 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+ 
+import org.apache.logging.log4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -54,7 +54,7 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.SYFA14R_U;
 
 @Controller
 public class BcoreMaintResponseOutputterController_AVD_KODTA {
-	private static Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_AVD_KODTA.class.getName());
+	private static Logger logger = LogManager.getLogger(BcoreMaintResponseOutputterController_AVD_KODTA.class.getName());
 	
 	/**
 	 * FreeForm Source:

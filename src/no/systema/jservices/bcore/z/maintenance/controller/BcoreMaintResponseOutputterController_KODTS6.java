@@ -8,7 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -24,7 +24,7 @@ import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
 public class BcoreMaintResponseOutputterController_KODTS6 {
-	private static final Logger logger = Logger.getLogger(BcoreMaintResponseOutputterController_KODTS6.class.getName());
+	private static final Logger logger = LogManager.getLogger(BcoreMaintResponseOutputterController_KODTS6.class.getName());
 
 	
 	/**

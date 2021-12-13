@@ -1,6 +1,6 @@
 package no.systema.jservices.model.dao.mapper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.RowMapper;
 import no.systema.jservices.model.dao.entities.Qaokp08Dao;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * 
  */
 public class Qaokp08aMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(Qaokp08aMapper.class.getName());
+	private static Logger logger = LogManager.getLogger(Qaokp08aMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	Qaokp08Dao dao = new Qaokp08Dao();

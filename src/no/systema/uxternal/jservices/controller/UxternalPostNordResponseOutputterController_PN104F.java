@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +39,7 @@ import no.systema.jservices.jsonwriter.JsonResponseWriter;
 
 @Controller
 public class UxternalPostNordResponseOutputterController_PN104F {
-	private static Logger logger = Logger.getLogger(UxternalPostNordResponseOutputterController_PN104F.class.getName());
+	private static Logger logger = LogManager.getLogger(UxternalPostNordResponseOutputterController_PN104F.class.getName());
 	
 	/**
 	 * FreeForm Source:

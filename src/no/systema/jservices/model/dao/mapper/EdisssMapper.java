@@ -1,6 +1,6 @@
 package no.systema.jservices.model.dao.mapper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.jservices.model.dao.entities.EdisssDao;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * 
  */
 public class EdisssMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(EdisssMapper.class.getName());
+	private static Logger logger = LogManager.getLogger(EdisssMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	EdisssDao dao = new EdisssDao();

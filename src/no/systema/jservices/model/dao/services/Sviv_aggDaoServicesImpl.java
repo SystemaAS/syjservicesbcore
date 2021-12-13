@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
@@ -29,7 +29,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
-	private static Logger logger = Logger.getLogger(Sviv_aggDaoServicesImpl.class.getName());
+	private static Logger logger = LogManager.getLogger(Sviv_aggDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	

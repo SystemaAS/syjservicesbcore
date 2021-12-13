@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
@@ -19,7 +19,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class ArktxtDaoServicesImpl implements ArktxtDaoServices {
-	private static Logger logger = Logger.getLogger(ArktxtDaoServicesImpl.class.getName());
+	private static Logger logger = LogManager.getLogger(ArktxtDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	@Override

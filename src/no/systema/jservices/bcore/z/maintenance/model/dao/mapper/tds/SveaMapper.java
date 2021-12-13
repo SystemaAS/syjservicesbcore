@@ -1,6 +1,6 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.mapper.tds;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.tds.SveaDao;
@@ -18,7 +18,7 @@ import java.util.List;
  * 
  */
 public class SveaMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(SveaMapper.class.getName());
+	private static Logger logger = LogManager.getLogger(SveaMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	

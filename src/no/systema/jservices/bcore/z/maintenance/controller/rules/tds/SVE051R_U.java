@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules.tds;
 
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.tds.SveaDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.tds.SveaDaoServices;
@@ -13,7 +13,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.tds.SveaDaoSe
  * @date Jun 08, 2017
  */
 public class SVE051R_U {
-	private static Logger logger = Logger.getLogger(SVE051R_U.class.getName());
+	private static Logger logger = LogManager.getLogger(SVE051R_U.class.getName());
 	
 	private StringBuffer validatorStackTrace = new StringBuffer();
 	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }

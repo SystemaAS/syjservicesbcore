@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
@@ -22,7 +22,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class ArkvedkDaoServicesImpl implements ArkvedkDaoServices {
-	private static Logger logger = Logger.getLogger(ArkvedkDaoServicesImpl.class.getName());
+	private static Logger logger = LogManager.getLogger(ArkvedkDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	@Override

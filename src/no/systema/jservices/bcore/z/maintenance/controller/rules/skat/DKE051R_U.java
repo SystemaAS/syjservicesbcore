@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules.skat;
 
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DkeaDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.skat.DkeaDaoServices;
@@ -13,7 +13,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.skat.DkeaDaoS
  * @date Apr 26, 2017
  */
 public class DKE051R_U {
-	private static Logger logger = Logger.getLogger(DKE051R_U.class.getName());
+	private static Logger logger = LogManager.getLogger(DKE051R_U.class.getName());
 	
 	private StringBuffer validatorStackTrace = new StringBuffer();
 	public String getValidatorStackTrace (){ return this.validatorStackTrace.toString(); }

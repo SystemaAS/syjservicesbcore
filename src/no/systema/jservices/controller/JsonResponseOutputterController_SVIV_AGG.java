@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -35,7 +35,7 @@ import no.systema.jservices.model.dao.services.Sviv_aggDaoServices;
 
 @RestController
 public class JsonResponseOutputterController_SVIV_AGG {
-	private static final Logger logger = Logger.getLogger(JsonResponseOutputterController_SVIV_AGG.class.getName());
+	private static final Logger logger = LogManager.getLogger(JsonResponseOutputterController_SVIV_AGG.class.getName());
 
 	/**
 	 * File: SVIV_AGG

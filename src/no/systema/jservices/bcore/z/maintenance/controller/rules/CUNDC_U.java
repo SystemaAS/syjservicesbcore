@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
 import no.systema.jservices.common.util.EmailValidator;
 import no.systema.jservices.common.util.StringUtils;
@@ -22,7 +22,7 @@ import no.systema.main.util.MessageSourceHelper;
  * @date Nov 7, 2016
  */
 public class CUNDC_U {
-	private static Logger logger = Logger.getLogger(CUNDC_U.class.getName());
+	private static Logger logger = LogManager.getLogger(CUNDC_U.class.getName());
 	private JsonResponseWriter jsonWriter = new JsonResponseWriter();
 	private MessageSourceHelper messageSourceHelper = null;
 	private CundcDaoServices cundcDaoServices = null;

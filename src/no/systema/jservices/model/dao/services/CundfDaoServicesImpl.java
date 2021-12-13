@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.TransactionStatus;
@@ -23,7 +23,7 @@ import no.systema.main.util.DbErrorMessageManager;
 
 
 public class CundfDaoServicesImpl implements CundfDaoServices {
-	private static Logger logger = Logger.getLogger(CundfDaoServicesImpl.class.getName());
+	private static Logger logger = LogManager.getLogger(CundfDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	@Override

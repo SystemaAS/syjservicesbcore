@@ -4,7 +4,7 @@
 package no.systema.main.util;
 
 import java.util.*;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 /**
  * Utility class to manage message notes issues
@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * 
  */
 public class StringManager {
-	private static Logger logger = Logger.getLogger(StringManager.class.getName());
+	private static Logger logger = LogManager.getLogger(StringManager.class.getName());
 	
 	/**
 	 * Get lines separated with CR

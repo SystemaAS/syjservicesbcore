@@ -1,6 +1,6 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.mapper.skat;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DkiaDao;
@@ -18,7 +18,7 @@ import java.util.List;
  * 
  */
 public class DkiaMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(DkiaMapper.class.getName());
+	private static Logger logger = LogManager.getLogger(DkiaMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	

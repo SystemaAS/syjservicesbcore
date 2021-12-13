@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.KofastDaoServices;
 import no.systema.jservices.common.dao.ArkextDao;
@@ -23,7 +23,7 @@ import no.systema.main.util.MessageSourceHelper;
  * @date Apr 11, 2017
  */
 public class ARKTXT_U {
-	private static Logger logger = Logger.getLogger(ARKTXT_U.class.getName());
+	private static Logger logger = LogManager.getLogger(ARKTXT_U.class.getName());
 	private JsonResponseWriter2<ArktxtDto> jsonWriter = new JsonResponseWriter2<ArktxtDto>();
 	private MessageSourceHelper messageSourceHelper = null;
 	private ArktxtDaoService arktxtDaoService = null;

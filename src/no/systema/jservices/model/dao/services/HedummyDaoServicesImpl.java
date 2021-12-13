@@ -2,7 +2,7 @@ package no.systema.jservices.model.dao.services;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import no.systema.jservices.model.dao.mapper.HedummyMapper;
@@ -14,7 +14,7 @@ import no.systema.jservices.common.dao.services.util.Db2MemberAliasManager;
 
 
 public class HedummyDaoServicesImpl implements HedummyDaoServices {
-	private static Logger logger = Logger.getLogger(HedummyDaoServicesImpl.class.getName());
+	private static Logger logger = LogManager.getLogger(HedummyDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	private StringManager strMgr = new StringManager();
 	private Db2MemberAliasManager db2MemberAliasMgr = new Db2MemberAliasManager();

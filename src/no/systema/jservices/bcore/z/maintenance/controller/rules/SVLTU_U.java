@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import lombok.NonNull;
 import no.systema.jservices.common.dao.SvlthDao;
@@ -20,7 +20,7 @@ import no.systema.main.util.MessageSourceHelper;
  * @date 2019-04-01
  */
 public class SVLTU_U {
-	private static Logger logger = Logger.getLogger(SVLTH_U.class.getName());
+	private static Logger logger = LogManager.getLogger(SVLTH_U.class.getName());
 	private JsonResponseWriter jsonWriter = new JsonResponseWriter();
 	private MessageSourceHelper messageSourceHelper = null;
 	private StringBuffer errors = null;

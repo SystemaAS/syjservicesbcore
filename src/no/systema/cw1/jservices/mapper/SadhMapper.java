@@ -1,6 +1,6 @@
 package no.systema.cw1.jservices.mapper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.cw1.jservices.dao.SadhDao;
@@ -18,7 +18,7 @@ import java.util.List;
  * 
  */
 public class SadhMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(SadhMapper.class.getName());
+	private static Logger logger = LogManager.getLogger(SadhMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	SadhDao dao = new SadhDao();

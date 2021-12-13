@@ -1,6 +1,6 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.mapper.sad;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdfvDao;
@@ -19,7 +19,7 @@ import java.util.List;
  * 
  */
 public class TrustdfvMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(TrustdfvMapper.class.getName());
+	private static Logger logger = LogManager.getLogger(TrustdfvMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	

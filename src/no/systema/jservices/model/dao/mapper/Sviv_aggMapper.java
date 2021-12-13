@@ -1,6 +1,6 @@
 package no.systema.jservices.model.dao.mapper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.RowMapper;
 import no.systema.jservices.model.dao.entities.Sviv_aggDao;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * 
  */
 public class Sviv_aggMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(Sviv_aggMapper.class.getName());
+	private static Logger logger = LogManager.getLogger(Sviv_aggMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	Sviv_aggDao dao = new Sviv_aggDao();

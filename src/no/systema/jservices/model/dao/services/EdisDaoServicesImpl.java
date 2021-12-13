@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.common.dao.SvtfiDao;
@@ -22,7 +22,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class EdisDaoServicesImpl implements EdisDaoServices {
-	private static Logger logger = Logger.getLogger(EdisDaoServicesImpl.class.getName());
+	private static Logger logger = LogManager.getLogger(EdisDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	

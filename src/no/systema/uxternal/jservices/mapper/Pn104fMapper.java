@@ -1,6 +1,6 @@
 package no.systema.uxternal.jservices.mapper;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.uxternal.jservices.dao.Pn104fDao;
@@ -18,7 +18,7 @@ import java.util.List;
  * 
  */
 public class Pn104fMapper implements RowMapper {
-	private static Logger logger = Logger.getLogger(Pn104fMapper.class.getName());
+	private static Logger logger = LogManager.getLogger(Pn104fMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	Pn104fDao dao = new Pn104fDao();

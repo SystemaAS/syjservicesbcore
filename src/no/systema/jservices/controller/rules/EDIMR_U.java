@@ -2,7 +2,7 @@ package no.systema.jservices.controller.rules;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import no.systema.jservices.controller.JsonResponseOutputterController_EDIM;
 import no.systema.jservices.model.dao.entities.EdimDao;
@@ -13,7 +13,7 @@ import no.systema.jservices.model.dao.entities.EdimDao;
  * @date Nov 2020
  */
 public class EDIMR_U {
-	private static Logger logger = Logger.getLogger(EDIMR_U.class.getName());
+	private static Logger logger = LogManager.getLogger(EDIMR_U.class.getName());
 
 	/**
 	 * 

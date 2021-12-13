@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +35,7 @@ import no.systema.jservices.jsonwriter.JsonResponseWriterAux;
 
 @Controller
 public class JsonResponseOutputterController_ARKIVP {
-	private static Logger logger = Logger.getLogger(JsonResponseOutputterController_ARKIVP.class.getName());
+	private static Logger logger = LogManager.getLogger(JsonResponseOutputterController_ARKIVP.class.getName());
 	/**
 	 * FreeForm Source:
 	 * 	 File: 		ARKIVP

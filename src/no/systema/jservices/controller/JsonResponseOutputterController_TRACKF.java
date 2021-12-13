@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -32,7 +32,7 @@ import no.systema.jservices.common.util.StringUtils;
 
 @Controller
 public class JsonResponseOutputterController_TRACKF {
-	private static final Logger logger = Logger.getLogger(JsonResponseOutputterController_TRACKF.class.getName());
+	private static final Logger logger = LogManager.getLogger(JsonResponseOutputterController_TRACKF.class.getName());
 	/**
 	 * File: TRACKF
 	 * 

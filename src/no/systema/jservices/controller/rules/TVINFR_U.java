@@ -2,7 +2,7 @@ package no.systema.jservices.controller.rules;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.*;
 
 import no.systema.jservices.model.dao.entities.TvinfDao;
 
@@ -12,7 +12,7 @@ import no.systema.jservices.model.dao.entities.TvinfDao;
  * @date Sep 2021
  */
 public class TVINFR_U {
-	private static Logger logger = Logger.getLogger(TVINFR_U.class.getName());
+	private static Logger logger = LogManager.getLogger(TVINFR_U.class.getName());
 
 	/**
 	 * 
