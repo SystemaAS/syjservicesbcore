@@ -3,7 +3,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KofastDao;
@@ -20,7 +20,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class KofastDaoServicesImpl implements KofastDaoServices {
-	private static Logger logger = LogManager.getLogger(KofastDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(KofastDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	@Override

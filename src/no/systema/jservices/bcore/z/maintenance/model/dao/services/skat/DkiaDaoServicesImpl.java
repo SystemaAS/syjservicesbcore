@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.services.skat;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.skat.DkiaMapper;
@@ -17,7 +17,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class DkiaDaoServicesImpl implements DkiaDaoServices {
-	private static Logger logger = LogManager.getLogger(DkiaDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(DkiaDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	/**

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -65,7 +65,7 @@ import no.systema.jservices.model.dao.services.EdiiDaoServices;
 
 @Controller
 public class JsonResponseOutputterController_CUNDF {
-	private static Logger logger = LogManager.getLogger(JsonResponseOutputterController_CUNDF.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(JsonResponseOutputterController_CUNDF.class.getName());
 	
 	/**
 	 *
@@ -246,7 +246,7 @@ public class JsonResponseOutputterController_CUNDF {
 						errMsg = "ERROR on ADD/UPDATE: invalid rulerLord, error="+sb.toString();
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-						logger.error(sb);
+						logger.error(sb.toString());
 					}
 				}
 				// ----------------------------------
@@ -257,7 +257,7 @@ public class JsonResponseOutputterController_CUNDF {
 					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-					logger.error(sb);
+					logger.error(sb.toString());
 				} else {
 					// OK UPDATE
 					sb.append(jsonWriter.setJsonSimpleValidResult(userName, dao, status));
@@ -269,7 +269,7 @@ public class JsonResponseOutputterController_CUNDF {
 				status = "error";
 				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-				logger.error(sb);
+				logger.error(sb.toString());
 			}
 			
 		}catch(Exception e){
@@ -277,7 +277,7 @@ public class JsonResponseOutputterController_CUNDF {
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
-			logger.info(sb);
+			logger.info(sb.toString());
 			logger.error(":::ERROR:::",e);
 			errMsg = "ERROR on ADD/UPDATE:  error="+e.getMessage();
 			status = "error";

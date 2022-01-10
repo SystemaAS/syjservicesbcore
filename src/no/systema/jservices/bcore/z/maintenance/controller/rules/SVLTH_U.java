@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 import lombok.NonNull;
 import no.systema.jservices.common.dao.SvlthDao;
@@ -21,7 +21,7 @@ import no.systema.main.util.MessageSourceHelper;
  * @date 2019-04-01
  */
 public class SVLTH_U {
-	private static Logger logger = LogManager.getLogger(SVLTH_U.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SVLTH_U.class.getName());
 	private JsonResponseWriter jsonWriter = new JsonResponseWriter();
 	private MessageSourceHelper messageSourceHelper = null;
 	private StringBuffer errors = null;

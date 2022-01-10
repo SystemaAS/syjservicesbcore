@@ -10,7 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -27,7 +27,7 @@ import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
 public class BcoreMaintResponseOutputterController_SVLTF {
-	private static final Logger logger = LogManager.getLogger(BcoreMaintResponseOutputterController_SVLTF.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(BcoreMaintResponseOutputterController_SVLTF.class.getName());
 
 	@Autowired
 	private SvltfDaoService svltfDaoService;

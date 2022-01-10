@@ -1,6 +1,6 @@
 package no.systema.jservices.bcore.z.maintenance.model.dao.mapper;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.KodtvKodtwDao;
@@ -17,7 +17,7 @@ import java.util.*;
  * 
  */
 public class KodtvKodtwMapper implements RowMapper {
-	private static Logger logger = LogManager.getLogger(KodtvKodtwMapper.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(KodtvKodtwMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	

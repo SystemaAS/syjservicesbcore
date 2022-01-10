@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 /**
  * @author oscardelatorre
@@ -17,7 +17,7 @@ import org.apache.logging.log4j.*;
  *
  */
 public class SvxstdDao implements Serializable, IDao {
-	private static final Logger logger = LogManager.getLogger(SvxstdDao.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(SvxstdDao.class.getName());
 	
 	//This record is used in special occasions when the session object is impossible to use
 	//Typically in a Validator when we want to check further into RPG and we need the user name in a parameter (user=Oscar)

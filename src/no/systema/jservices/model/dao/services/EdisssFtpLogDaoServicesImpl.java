@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.sql.PreparedStatement;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 
@@ -19,7 +19,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class EdisssFtpLogDaoServicesImpl implements EdisssFtpLogDaoServices {
-	private static Logger logger = LogManager.getLogger(EdisssFtpLogDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(EdisssFtpLogDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	/**

@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.KodtsfSyparfMapper;
@@ -18,7 +18,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class KodtsfSyparfDaoServicesImpl implements KodtsfSyparfDaoServices {
-	private static Logger logger = LogManager.getLogger(KodtsfSyparfDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(KodtsfSyparfDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	

@@ -1,6 +1,6 @@
 package no.systema.jservices.model.dao.mapper;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.RowMapper;
 import no.systema.jservices.model.dao.entities.TvinfDao;
 
@@ -17,7 +17,7 @@ import java.util.List;
  * 
  */
 public class TvinfMapper implements RowMapper {
-	private static Logger logger = LogManager.getLogger(TvinfMapper.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(TvinfMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	TvinfDao dao = new TvinfDao();

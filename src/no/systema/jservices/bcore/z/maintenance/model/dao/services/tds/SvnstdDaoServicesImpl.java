@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.services.tds;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.tds.SvnstdMapper;
@@ -17,7 +17,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class SvnstdDaoServicesImpl implements SvnstdDaoServices {
-	private static Logger logger = LogManager.getLogger(SvnstdDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SvnstdDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	/**

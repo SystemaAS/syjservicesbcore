@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.model.dao.entities.EdimDao;
@@ -20,7 +20,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class SvihDaoServicesImpl implements SvihDaoServices {
-	private static Logger logger = LogManager.getLogger(SvihDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SvihDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	
@@ -78,7 +78,7 @@ public class SvihDaoServicesImpl implements SvihDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.info(e);
+				logger.info(e.toString());
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 			}				
@@ -122,7 +122,7 @@ public class SvihDaoServicesImpl implements SvihDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.info(e);
+				logger.info(e.toString());
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 			}				
@@ -178,7 +178,7 @@ public class SvihDaoServicesImpl implements SvihDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.info(e);
+				logger.info(e.toString());
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 			}				

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.FirkuDaoServices;
 import no.systema.jservices.common.dao.KodtlikDao;
@@ -34,7 +34,7 @@ import no.systema.main.util.MessageSourceHelper;
  * @date Aug 4, 2016
  */
 public class SYCUNDFR_U {
-	private static Logger logger = LogManager.getLogger(SYCUNDFR_U.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SYCUNDFR_U.class.getName());
 	private JsonResponseWriter jsonWriter = new JsonResponseWriter();
 	private MessageSourceHelper messageSourceHelper = null;
 	private CundfDaoServices cundfDaoServices = null;

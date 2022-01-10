@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.jservices.model.dao.entities.CundcDao;
@@ -18,7 +18,7 @@ import no.systema.jservices.model.dao.entities.CundcDao;
  * 
  */
 public class CundcMapper implements RowMapper {
-	private static Logger logger = LogManager.getLogger(CundcMapper.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(CundcMapper.class.getName());
 	
 	public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 		CundcDao dao = new CundcDao();

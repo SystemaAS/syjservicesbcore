@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import no.systema.jservices.model.dao.entities.IDao;
@@ -20,7 +20,7 @@ import no.systema.jservices.model.dao.entities.IDao;
  */
 @SuppressWarnings("rawtypes")
 public class GenericObjectMapper implements RowMapper {
-	private static Logger logger = LogManager.getLogger(GenericObjectMapper.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(GenericObjectMapper.class.getName());
 	private IDao dao = null;
 	private String className = null;
 

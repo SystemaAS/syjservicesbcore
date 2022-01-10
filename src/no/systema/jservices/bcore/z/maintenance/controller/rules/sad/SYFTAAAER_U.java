@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules.sad;
 
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.StandeDao;
 import no.systema.jservices.model.dao.services.EdiiDaoServices;
@@ -15,7 +15,7 @@ import no.systema.jservices.model.dao.entities.EdiiDao;
  * @date Sep 16, 2016
  */
 public class SYFTAAAER_U {
-	private static Logger logger = LogManager.getLogger(SYFTAAAER_U.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SYFTAAAER_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
 	
 	private StringBuffer validatorStackTrace = new StringBuffer();

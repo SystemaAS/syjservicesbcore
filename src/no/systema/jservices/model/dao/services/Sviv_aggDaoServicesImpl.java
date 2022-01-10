@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Propagation;
@@ -29,7 +29,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
-	private static Logger logger = LogManager.getLogger(Sviv_aggDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(Sviv_aggDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	
@@ -150,7 +150,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.info(e);
+				logger.info(e.toString());
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 			}				
@@ -391,7 +391,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.warn(e);
+				logger.warn(e.toString());
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 				//clean up
@@ -480,7 +480,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 	public int updateVanoSviv(List<SvivRflnDao> itemListSviv, StringBuffer errorStackTrace) {
 		int retval = 0;
 		
-		logger.info(itemListSviv);
+		logger.info(itemListSviv.toString());
 		StringBuilder sql = new StringBuilder();
 		try {
 			
@@ -510,7 +510,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.warn(e);
+				logger.warn(e.toString());
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 			}				
@@ -523,7 +523,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 	public int updateRflnSviv(List<SvivRflnDao> itemListRfln, StringBuffer errorStackTrace) {
 		int retval = 0;
 		
-		logger.info(itemListRfln);
+		logger.info(itemListRfln.toString());
 		StringBuilder sql = new StringBuilder();
 		try {
 			
@@ -553,7 +553,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.warn(e);
+				logger.warn(e.toString());
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 			}				
@@ -594,7 +594,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 	public int insertSviva_agg(List<Sviva_aggDao> avgiftList, StringBuffer errorStackTrace) {
 		int retval = 0;
 		
-		logger.info(avgiftList);
+		logger.info(avgiftList.toString());
 		StringBuilder sql = new StringBuilder();
 		try {
 			
@@ -634,7 +634,7 @@ public class Sviv_aggDaoServicesImpl implements Sviv_aggDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.warn(e);
+				logger.warn(e.toString());
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 				//celan up

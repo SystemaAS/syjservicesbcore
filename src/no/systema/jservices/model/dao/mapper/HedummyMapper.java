@@ -1,6 +1,6 @@
 package no.systema.jservices.model.dao.mapper;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.RowMapper;
 import no.systema.jservices.model.dao.entities.EdiiDao;
 
@@ -19,7 +19,7 @@ import no.systema.jservices.model.dao.entities.HedummyDao;
  * 
  */
 public class HedummyMapper implements RowMapper {
-	private static Logger logger = LogManager.getLogger(HedummyMapper.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(HedummyMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	HedummyDao dao = new HedummyDao();

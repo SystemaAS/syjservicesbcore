@@ -2,7 +2,7 @@ package no.systema.jservices.controller.rules;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 import no.systema.jservices.controller.JsonResponseOutputterController_EDIM;
 import no.systema.jservices.model.dao.entities.EdimDao;
@@ -14,7 +14,7 @@ import no.systema.jservices.model.dao.entities.SvihDao;
  * @date Sep 2021
  */
 public class SVIH_U {
-	private static Logger logger = LogManager.getLogger(SVIH_U.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SVIH_U.class.getName());
 
 	/**
 	 * 
@@ -35,7 +35,7 @@ public class SVIH_U {
 				//OK	
 				
 			}else{
-				logger.fatal("Ruler lord INVALID:" + dao.toString());
+				logger.error("Ruler lord INVALID:" + dao.toString());
 				retval = false;
 			}
 			
@@ -54,7 +54,7 @@ public class SVIH_U {
 				//OK	
 				
 			}else{
-				logger.fatal("Ruler lord INVALID:" + dao.toString());
+				logger.error("Ruler lord INVALID:" + dao.toString());
 				retval = false;
 			}
 			

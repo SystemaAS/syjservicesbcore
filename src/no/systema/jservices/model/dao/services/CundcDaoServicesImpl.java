@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.ArktxtDao;
@@ -21,7 +21,7 @@ import no.systema.main.util.DbErrorMessageManager;
 
 
 public class CundcDaoServicesImpl implements CundcDaoServices {
-	private static Logger logger = LogManager.getLogger(CundcDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(CundcDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	@Override
@@ -107,7 +107,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.error(e);
+			logger.error(e.toString());
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 		}
 
@@ -129,7 +129,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		} 
 		catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
-			logger.error(e);
+			logger.error(e.toString());
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 		}
 
@@ -334,7 +334,7 @@ public class CundcDaoServicesImpl implements CundcDaoServices {
 		} catch (Exception e) {
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 			logger.error(writer.toString());
-			logger.error(e);
+			logger.error(e.toString());
 			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 			return false;
 		}

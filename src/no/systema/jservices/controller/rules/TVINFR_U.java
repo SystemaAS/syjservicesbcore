@@ -2,7 +2,7 @@ package no.systema.jservices.controller.rules;
 
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 import no.systema.jservices.model.dao.entities.TvinfDao;
 
@@ -12,7 +12,7 @@ import no.systema.jservices.model.dao.entities.TvinfDao;
  * @date Sep 2021
  */
 public class TVINFR_U {
-	private static Logger logger = LogManager.getLogger(TVINFR_U.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(TVINFR_U.class.getName());
 
 	/**
 	 * 
@@ -31,7 +31,7 @@ public class TVINFR_U {
 				//OK	
 				
 			}else{
-				logger.fatal("Ruler lord INVALID:" + dao.toString());
+				logger.error("Ruler lord INVALID:" + dao.toString());
 				retval = false;
 			}
 			

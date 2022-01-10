@@ -2,7 +2,7 @@ package no.systema.uxternal.jservices.services;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.uxternal.jservices.dao.Pn104fDao;
@@ -16,7 +16,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class Pn104fDaoServicesImpl implements Pn104fDaoServices {
-	private static Logger logger = LogManager.getLogger(Pn104fDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(Pn104fDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	

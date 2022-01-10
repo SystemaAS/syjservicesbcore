@@ -10,7 +10,7 @@ import javax.annotation.PreDestroy;
 
 
  
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -52,7 +52,7 @@ import no.systema.jservices.bcore.z.maintenance.controller.rules.tds.SVX003R_U;
 
 @Controller
 public class BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTDFV {
-	private static Logger logger = LogManager.getLogger(BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTDFV.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(BcoreMaintResponseOutputterControllerTdsNctsExport_AVD_SVXSTDFV.class.getName());
 	
 	/**
 	 * FreeForm Source:

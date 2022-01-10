@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules.sad;
 
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.sad.TrustdfvDao;
@@ -19,7 +19,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.sad.TrustdDao
  * @date Sep 30, 2016
  */
 public class TR003R_U {
-	private static Logger logger = LogManager.getLogger(TR003R_U.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(TR003R_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
 	private TrkodfDaoServices trkodfDaoServices;
 	

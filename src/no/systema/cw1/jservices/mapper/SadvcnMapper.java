@@ -1,6 +1,6 @@
 package no.systema.cw1.jservices.mapper;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import lombok.Data;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Data
 public class SadvcnMapper implements RowMapper {
-	private static Logger logger = LogManager.getLogger(SadvcnMapper.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SadvcnMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	SadvcnDao dao = new SadvcnDao();

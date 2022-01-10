@@ -2,7 +2,7 @@ package no.systema.jservices.model.dao.services;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import no.systema.jservices.model.dao.mapper.HedummyMapper;
@@ -14,7 +14,7 @@ import no.systema.jservices.common.dao.services.util.Db2MemberAliasManager;
 
 
 public class HedummyDaoServicesImpl implements HedummyDaoServices {
-	private static Logger logger = LogManager.getLogger(HedummyDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(HedummyDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	private StringManager strMgr = new StringManager();
 	private Db2MemberAliasManager db2MemberAliasMgr = new Db2MemberAliasManager();
@@ -100,7 +100,7 @@ public class HedummyDaoServicesImpl implements HedummyDaoServices {
 				//do the thing
 				StringBuffer sql = new StringBuffer();
 				sql.append(this.getSELECT_FROM_CLAUSE());
-				logger.info(sql);
+				logger.info(sql.toString());
 				sql.append(" where heavd = ? ");
 				//logger.info(sql.toString() + " -->id:" + id);
 				retval = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new HedummyMapper());

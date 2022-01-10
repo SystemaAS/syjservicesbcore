@@ -7,7 +7,7 @@ import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +42,7 @@ import no.systema.jservices.model.dao.services.SvihDaoServices;
 
 @Controller
 public class JsonResponseOutputterController_SVIH {
-	private static Logger logger = LogManager.getLogger(JsonResponseOutputterController_SVIH.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(JsonResponseOutputterController_SVIH.class.getName());
 	
 	
 	/**
@@ -170,7 +170,7 @@ public class JsonResponseOutputterController_SVIH {
 							errMsg = "ERROR on UPDATE: invalid rulerLord error - update status";
 							status = "error";
 							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-							logger.error(sb);
+							logger.error(sb.toString());
 						}
 						
 				        
@@ -186,21 +186,21 @@ public class JsonResponseOutputterController_SVIH {
 							errMsg = "ERROR on UPDATE: invalid rulerLord error - update light";
 							status = "error";
 							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-							logger.error(sb);
+							logger.error(sb.toString());
 						}
 					}else {
 						// write JSON error output
 						errMsg = "ERROR on UPDATE mode: " + mode + " is not implemented yet...";
 						status = "error";
 						sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-						logger.error(sb);
+						logger.error(sb.toString());
 					}
 				} else {
 					// write JSON error output
 					errMsg = "ERROR on INSERT/UPDATE: invalid rulerLord, error";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-					logger.error(sb);
+					logger.error(sb.toString());
 				}
 				
 				// ----------------------------------
@@ -211,7 +211,7 @@ public class JsonResponseOutputterController_SVIH {
 					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-					logger.error(sb);
+					logger.error(sb.toString());
 				} else {
 					// OK UPDATE
 					sb.append(jsonWriter.setJsonSimpleValidResult(userName, dao, status));
@@ -223,7 +223,7 @@ public class JsonResponseOutputterController_SVIH {
 				status = "error";
 				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-				logger.error(sb);
+				logger.error(sb.toString());
 			}
 			
 		}catch(Exception e){
@@ -231,7 +231,7 @@ public class JsonResponseOutputterController_SVIH {
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
-			logger.info(sb);
+			logger.info(sb.toString());
 			logger.error(":::ERROR:::",e);
 			errMsg = "ERROR on ADD/UPDATE:  error="+e.getMessage();
 			status = "error";

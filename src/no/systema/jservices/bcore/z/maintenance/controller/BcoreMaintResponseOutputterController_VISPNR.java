@@ -7,7 +7,7 @@ import java.io.Writer;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -31,7 +31,7 @@ import no.systema.jservices.model.dao.services.BridfDaoServices;
  */
 @Controller
 public class BcoreMaintResponseOutputterController_VISPNR {
-	private static final Logger logger = LogManager.getLogger(BcoreMaintResponseOutputterController_VISPNR.class.getName());
+	private static final Logger logger = LoggerFactory.getLogger(BcoreMaintResponseOutputterController_VISPNR.class.getName());
 
 	
 	/**
@@ -84,7 +84,7 @@ public class BcoreMaintResponseOutputterController_VISPNR {
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
-			logger.info(sb);
+			logger.info(sb.toString());
 			logger.error(":::ERROR:::",e);
 			errMsg = "ERROR SELECT:  error="+e.getMessage();
 			status = "error";

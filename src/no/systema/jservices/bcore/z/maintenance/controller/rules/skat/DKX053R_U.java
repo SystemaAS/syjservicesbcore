@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules.skat;
 
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.entities.skat.DknstdDao;
 import no.systema.jservices.bcore.z.maintenance.model.dao.services.skat.DknstdDaoServices;
@@ -16,7 +16,7 @@ import no.systema.jservices.bcore.z.maintenance.model.dao.services.DkxkodfDaoSer
  * @date Apr 21, 2017
  */
 public class DKX053R_U {
-	private static Logger logger = LogManager.getLogger(DKX053R_U.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(DKX053R_U.class.getName());
 	private EdiiDaoServices ediiDaoServices;
 	private DkxkodfDaoServices dkxkodfDaoServices;
 	

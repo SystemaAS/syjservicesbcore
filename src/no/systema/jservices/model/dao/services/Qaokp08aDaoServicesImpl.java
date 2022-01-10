@@ -2,7 +2,7 @@ package no.systema.jservices.model.dao.services;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import no.systema.jservices.model.dao.mapper.Qaokp08aMapper;
 import no.systema.main.util.DbErrorMessageManager;
@@ -15,7 +15,7 @@ import no.systema.jservices.model.dao.entities.Qaokp08Dao;
  * 
  */
 public class Qaokp08aDaoServicesImpl implements Qaokp08aDaoServices {
-	private static Logger logger = LogManager.getLogger(Qaokp08aDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(Qaokp08aDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	/**

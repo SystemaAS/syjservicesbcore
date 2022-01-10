@@ -2,7 +2,7 @@ package no.systema.cw1.jservices.services;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.cw1.jservices.dao.SadfDao;
@@ -16,7 +16,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class SadfDaoServicesImpl implements SadfDaoServices {
-	private static Logger logger = LogManager.getLogger(SadfDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SadfDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	

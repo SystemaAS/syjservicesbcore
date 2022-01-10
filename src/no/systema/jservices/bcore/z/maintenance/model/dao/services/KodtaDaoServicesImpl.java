@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Required;
@@ -23,7 +23,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class KodtaDaoServicesImpl implements KodtaDaoServices {
-	private static Logger logger = LogManager.getLogger(KodtaDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(KodtaDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	/**

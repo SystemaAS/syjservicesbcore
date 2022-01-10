@@ -7,7 +7,7 @@ import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +38,7 @@ import no.systema.jservices.model.dao.services.EdimDaoServices;
 
 @Controller
 public class JsonResponseOutputterController_EDIM {
-	private static Logger logger = LogManager.getLogger(JsonResponseOutputterController_EDIM.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(JsonResponseOutputterController_EDIM.class.getName());
 	
 	/**
 	 * Source:
@@ -198,7 +198,7 @@ public class JsonResponseOutputterController_EDIM {
 							errMsg = "ERROR on INSERT: invalid rulerLord error";
 							status = "error";
 							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-							logger.error(sb);
+							logger.error(sb.toString());
 						}
 					} else if ("U".equals(mode)) {
 						if(rulerLord.isValidInputUpdate(dao, user, mode)){
@@ -208,7 +208,7 @@ public class JsonResponseOutputterController_EDIM {
 							errMsg = "ERROR on UPDATE: invalid rulerLord error";
 							status = "error";
 							sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-							logger.error(sb);
+							logger.error(sb.toString());
 						}
 				        
 					}
@@ -217,7 +217,7 @@ public class JsonResponseOutputterController_EDIM {
 					errMsg = "ERROR on INSERT/UPDATE: invalid rulerLord, error";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-					logger.error(sb);
+					logger.error(sb.toString());
 				}
 				
 				// ----------------------------------
@@ -228,7 +228,7 @@ public class JsonResponseOutputterController_EDIM {
 					errMsg = "ERROR on ADD/UPDATE: invalid?  Try to check: <DaoServices>.insert/update/delete";
 					status = "error";
 					sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-					logger.error(sb);
+					logger.error(sb.toString());
 				} else {
 					// OK UPDATE
 					sb.append(jsonWriter.setJsonSimpleValidResult(userName, dao, status));
@@ -240,7 +240,7 @@ public class JsonResponseOutputterController_EDIM {
 				status = "error";
 				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
 				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
-				logger.error(sb);
+				logger.error(sb.toString());
 			}
 			
 		}catch(Exception e){
@@ -248,7 +248,7 @@ public class JsonResponseOutputterController_EDIM {
 			Writer writer = new StringWriter();
 			PrintWriter printWriter = new PrintWriter(writer);
 			e.printStackTrace(printWriter);
-			logger.info(sb);
+			logger.info(sb.toString());
 			logger.error(":::ERROR:::",e);
 			errMsg = "ERROR on ADD/UPDATE:  error="+e.getMessage();
 			status = "error";

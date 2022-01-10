@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
 import java.util.*;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.bcore.z.maintenance.model.dao.mapper.KodtvKodtwMapper;
@@ -16,7 +16,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
-	private static Logger logger = LogManager.getLogger(KodtvKodtwDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(KodtvKodtwDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	/**
@@ -48,7 +48,7 @@ public class KodtvKodtwDaoServicesImpl implements KodtvKodtwDaoServices {
 		List<KodtvKodtwDao> retval = new ArrayList<KodtvKodtwDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
-			logger.info(retval);
+			logger.info(retval.toString());
 			sql.append(this.getSELECT_CLAUSE());
 			//WHERE
 			sql.append(" where a.kovavd = ?  ");

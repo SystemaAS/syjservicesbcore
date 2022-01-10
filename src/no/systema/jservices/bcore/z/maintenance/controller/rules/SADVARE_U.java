@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 import no.systema.jservices.common.dao.Kodts5Dao;
 import no.systema.jservices.common.dao.Kodts8Dao;
@@ -28,7 +28,7 @@ import no.systema.main.util.MessageSourceHelper;
  * @date Mar 27, 2017
  */
 public class SADVARE_U {
-	private static Logger logger = LogManager.getLogger(SADVARE_U.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SADVARE_U.class.getName());
 	private JsonResponseWriter2<SadvareDao> jsonWriter = new JsonResponseWriter2<SadvareDao>();
 	private MessageSourceHelper messageSourceHelper = null;
 	private Kodts7DaoService kodts7DaoService = null;

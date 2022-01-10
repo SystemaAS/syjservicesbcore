@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.controller.rules;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 
 import no.systema.jservices.common.dao.SvewDao;
 import no.systema.jservices.common.dao.services.SvtproDaoService;
@@ -18,7 +18,7 @@ import no.systema.main.util.MessageSourceHelper;
  * @date Mai 22, 2017
  */
 public class SVEW_U {
-	private static Logger logger = LogManager.getLogger(SVEW_U.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(SVEW_U.class.getName());
 	private JsonResponseWriter2<SvewDao> jsonWriter = new JsonResponseWriter2<SvewDao>();
 	private MessageSourceHelper messageSourceHelper = null;
 	private Svtx03fDaoService svtx03fDaoService = null;

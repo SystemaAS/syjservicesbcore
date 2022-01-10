@@ -2,7 +2,7 @@ package no.systema.jservices.bcore.z.maintenance.model.dao.services;
 import java.io.Writer;
 import java.util.*;
 import java.sql.*;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 
@@ -17,7 +17,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
-	private static Logger logger = LogManager.getLogger(KodtpUtskrsDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(KodtpUtskrsDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	/**
@@ -70,7 +70,7 @@ public class KodtpUtskrsDaoServicesImpl implements KodtpUtskrsDaoServices {
 		List<KodtpUtskrsDao> retval = new ArrayList<KodtpUtskrsDao>();
 		try{
 			StringBuffer sql = new StringBuffer();
-			logger.info(retval);
+			logger.info(retval.toString());
 			sql.append(this.getSELECT_CLAUSE());
 			//WHERE
 			sql.append(" where a.kopavd = ?  ");

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.common.dao.SvtfiDao;
@@ -22,7 +22,7 @@ import no.systema.main.util.DbErrorMessageManager;
  * 
  */
 public class TvinfDaoServicesImpl implements TvinfDaoServices {
-	private static Logger logger = LogManager.getLogger(TvinfDaoServicesImpl.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(TvinfDaoServicesImpl.class.getName());
 	private DbErrorMessageManager dbErrorMessageMgr = new DbErrorMessageManager();
 	
 	
@@ -87,7 +87,7 @@ public class TvinfDaoServicesImpl implements TvinfDaoServices {
 			} catch (Exception e) {
 				Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
 				e.printStackTrace();
-				logger.info(e);
+				logger.info(e.toString());
 				errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
 				retval = -1;
 			}				

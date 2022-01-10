@@ -10,7 +10,7 @@ import javax.annotation.PreDestroy;
 
 
  
-import org.apache.logging.log4j.*;
+import org.slf4j.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
@@ -53,7 +53,7 @@ import no.systema.jservices.jsonwriter.JsonResponseWriter;
 
 @Controller
 public class JsonResponseOutputterController_FIRM {
-	private static Logger logger = LogManager.getLogger(JsonResponseOutputterController_FIRM.class.getName());
+	private static Logger logger = LoggerFactory.getLogger(JsonResponseOutputterController_FIRM.class.getName());
 	
 	/**
 	 *
