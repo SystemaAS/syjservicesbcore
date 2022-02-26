@@ -3,7 +3,7 @@ package no.systema.jservices.model.dao.mapper;
 import org.slf4j.*;
 import org.springframework.jdbc.core.RowMapper;
 
-import no.systema.jservices.common.dao.SvtfiDao;
+import no.systema.jservices.model.dao.entities.SvtfiDao;
 
 import java.lang.reflect.Field;
 import java.sql.ResultSet;
@@ -17,8 +17,8 @@ import java.util.List;
  * @date  Sep, 2021
  * 
  */
-public class SvtfiMapper implements RowMapper {
-	private static Logger logger = LoggerFactory.getLogger(SvtfiMapper.class.getName());
+public class SvtfiTESSMapper implements RowMapper {
+	private static Logger logger = LoggerFactory.getLogger(SvtfiTESSMapper.class.getName());
 	
     public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
     	SvtfiDao dao = new SvtfiDao();
