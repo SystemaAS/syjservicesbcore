@@ -106,6 +106,25 @@ public class EdimDaoServicesImpl implements EdimDaoServices {
 		}
 		return list;
 	}
+	
+	public List findByTuidAll(String tuid, StringBuffer errorStackTrace) {
+		List<EdimDao> list = new ArrayList<EdimDao>();
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select * from edim ");
+			sql.append(" where m1004 = ? ");
+			
+			list = this.jdbcTemplate.query( sql.toString(), new Object[] { tuid }, new EdimMapper());
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.error(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			list = null;
+		}
+		return list;
+	}
 	/**
 	 * Same as findByTuid but with MRN-nr (that is found only in SVIH)
 	 * @param mrn

@@ -91,8 +91,14 @@ public class JsonResponseOutputterController_EDIM {
 	            }else {
 					
 	            	if( StringUtils.isNotEmpty(lrnParam) ){
-		            	logger.warn("findByTuid tuid(M1004):" + dao.getM1004());
-		            	list = this.edimDaoServices.findByTuid(dao.getM1004(), dbErrorStackTrace);
+	            		
+	            		if(lrnParam.equals("all")) {
+	            			logger.warn("findByTuidAll tuid(M1004):" + dao.getM1004());
+	            			list = this.edimDaoServices.findByTuidAll(dao.getM1004(), dbErrorStackTrace);
+	            		}else {
+	            			logger.warn("findByTuid tuid(M1004):" + dao.getM1004());
+		            		list = this.edimDaoServices.findByTuid(dao.getM1004(), dbErrorStackTrace);
+	            		}
 					
 	            	}else if(StringUtils.isNotEmpty(dao.getMsn()) && !dao.getMsn().equals("0") ) {
 	            		logger.warn("findById msn:" + dao.getMsn());

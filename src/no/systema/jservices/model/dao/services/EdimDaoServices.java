@@ -15,5 +15,6 @@ public interface EdimDaoServices extends IDaoServices {
 	public int insertWhenInboundFile(Object daoObj, StringBuffer errorStackTrace);
 	public List findByUuid(String uuid, StringBuffer errorStackTrace);
 	public List findByTuid(String tuid, StringBuffer errorStackTrace);
+	public List findByTuidAll(String tuid, StringBuffer errorStackTrace);
 	public List findByMrn(String mrn, StringBuffer errorStackTrace);
 }
