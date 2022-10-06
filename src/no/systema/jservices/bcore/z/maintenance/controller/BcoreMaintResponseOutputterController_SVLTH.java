@@ -31,7 +31,9 @@ import no.systema.jservices.common.dao.services.SvltuDaoService;
 import no.systema.jservices.common.dao.services.Svtx03fDaoService;
 import no.systema.jservices.common.dto.SvlthDto;
 import no.systema.jservices.common.json.JsonResponseWriter2;
+import no.systema.jservices.common.util.DateTimeManager;
 import no.systema.jservices.common.util.StringUtils;
+import no.systema.jservices.common.values.EventTypeEnum;
 import no.systema.jservices.model.dao.services.BridfDaoServices;
 
 @Controller
@@ -47,7 +49,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 	 * Example :
 	 * http://localhost:8080/syjservicesbcore/syjsSVLTH?user=SYSTEMA&svlth_igl=BJO&svlth_ign=BJO19-004
 	 */
-	@RequestMapping(path = "/syjsSVLTH", method = RequestMethod.GET)
+	@RequestMapping(path = "/syjsSVLTH", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String syjsSVLTH(HttpSession session, 
 			@RequestParam(value = "user", required = true) String user,
@@ -61,7 +63,11 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 			@RequestParam(value = "svlth_id1", required = false) Integer svlth_id1,
 			@RequestParam(value = "svlth_im1", required = false) Integer svlth_im1,
 			@RequestParam(value = "svlth_rty", required = false) String svlth_rty,
-			@RequestParam(value = "DO_NOT_LOAD", required = false) String DO_NOT_LOAD) {
+			@RequestParam(value = "DO_NOT_LOAD", required = false) String DO_NOT_LOAD, 
+			@RequestParam(value = "godsnrPrefix", required = false) String godsnrPrefix) {
+			
+		
+		
 
 		logger.info("INSIDE /syjsSVLTH...");
 		
@@ -75,7 +81,7 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 		logger.info("svlth_id1="+svlth_id1);
 		logger.info("svlth_im1="+svlth_im1);
 		logger.info("svlth_rty="+svlth_rty);
-		
+		logger.warn("godsnrPrefix="+godsnrPrefix);
 		
 		JsonResponseWriter2<SvlthDto> jsonWriter = new JsonResponseWriter2<SvlthDto>();		
 		String errMsg = "";
@@ -90,9 +96,32 @@ public class BcoreMaintResponseOutputterController_SVLTH {
 				if (DO_NOT_LOAD != null) {  //datatables trick, due to autoload
 					//do nothing
 				} else {
-					svlthDtoList = svlthDaoService.getAll(svlth_h, svlth_igl, svlth_ign,svlth_pos, svlth_irn, svlth_id2F,svlth_id2T, svlth_id1, svlth_im1, svlth_rty );
-					if (!svlthDtoList.isEmpty()) {
-						addUtgHandlingar(svlthDtoList);
+					if(godsnrPrefix!=null && !godsnrPrefix.isEmpty()) {
+						logger.debug("A");
+						boolean exist = svlthDaoService.existMrn(EventTypeEnum.INLAGG, svlth_irn);
+						logger.debug("B");
+						if(!exist) {
+							logger.debug("C");
+							SvlthDao dao = svlthDaoService.getNextGodsnr(godsnrPrefix);
+							if (dao!=null) {
+								SvlthDto dto = new SvlthDto();
+								if(dao.getSvlth_ign()!=null){
+									dto.setSvlth_ign(dao.getSvlth_ign().trim());
+									logger.warn(dto.getSvlth_ign());
+									svlthDtoList.add(dto);
+								}else {
+									logger.warn("SVLTH_IGN is null ??");
+								}
+							}
+						}else {
+							logger.warn("MRN exists:" + svlth_irn + " check the Godsnr in SVLTH...");
+							
+						}
+					}else {
+						svlthDtoList = svlthDaoService.getAll(svlth_h, svlth_igl, svlth_ign,svlth_pos, svlth_irn, svlth_id2F,svlth_id2T, svlth_id1, svlth_im1, svlth_rty );
+						if (!svlthDtoList.isEmpty()) {
+							addUtgHandlingar(svlthDtoList);
+						}
 					}
 				}
 
