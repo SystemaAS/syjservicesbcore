@@ -52,6 +52,27 @@ public class SvihDaoServicesImpl implements SvihDaoServices {
 		return list;
 	}
 	
+	public List findByMrn(String mrn, StringBuffer errorStackTrace){
+		
+		List<SvihDao> list = new ArrayList<SvihDao>();
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select * from svih ");
+			sql.append(" where svih_mrn = ? ");
+			list = this.jdbcTemplate.query( sql.toString(), new Object[] { mrn }, new SvihMapper());
+			
+			
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.error(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			list = null;
+		}
+		return list;
+	}
+	
 	/**
 	 * UPDATE
 	 */

@@ -77,7 +77,11 @@ public class JsonResponseOutputterController_SVIH {
 					logger.warn("getting list (tuid)");
 					list = this.svihDaoServices.findById(dao.getSvih_tuid(), dbErrorStackTrace);
 					
-				} 
+				}else if (StringUtils.isNotEmpty(dao.getSvih_mrn())) {
+					logger.warn("getting list (mrn)");
+					list = this.svihDaoServices.findByMrn(dao.getSvih_mrn(), dbErrorStackTrace);
+					
+				}  
 				
 				if (list != null) {
 					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));

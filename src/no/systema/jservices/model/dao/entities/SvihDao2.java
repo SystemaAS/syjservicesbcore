@@ -114,6 +114,9 @@ public class SvihDao2 implements Serializable, IDao  {
 	private String svih_kval = "";//  tegn            1       1      1216        begge    kvalitetssäkrad 
 	private String svih_godn = "";//  tegn           15      15      1217        begge    godsnummer   
 	private String svih_0035 = "";//  tegn            1       1      1232        begge    testindikator
+	private String svih_mrn = "";//  tegn            22       22      1232        begge   MASTERREF TULLVERKET
+	private String svih_lrn = "";//  tegn            22       22      1232        begge   Tullid om 5 år
+	
 
 	
 	
