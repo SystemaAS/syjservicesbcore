@@ -171,7 +171,7 @@ public class JsonResponseOutputterController_EDIM {
 		String userName = null;
 		
 		try{
-			logger.info("Inside syjsEDIMR_U.do");
+			logger.warn("Inside syjsEDIMR_U.do");
 			String user = request.getParameter("user");
 			String mode = request.getParameter("mode");
 			String specialInsert = request.getParameter("si");
@@ -183,7 +183,7 @@ public class JsonResponseOutputterController_EDIM {
 			ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
             binder.bind(request);
             
-            logger.info("DAO="+ReflectionToStringBuilder.toString(dao));
+            logger.warn("DAO="+ReflectionToStringBuilder.toString(dao));
    
             //rules
             EDIMR_U rulerLord = new EDIMR_U(); 
@@ -194,6 +194,7 @@ public class JsonResponseOutputterController_EDIM {
 				if (rulerLord.isValidInput(dao, userName, mode)) {
 					if ("A".equals(mode)) {
 						if(rulerLord.isValidInputInsert(dao, user, mode)){
+							logger.warn("AAA");
 							if(StringUtils.isNotEmpty(specialInsert)) {
 								dmlRetval = edimDaoServices.insertWhenInboundFile(dao, dbErrorStackTrace);
 							}else {
@@ -207,6 +208,7 @@ public class JsonResponseOutputterController_EDIM {
 							logger.error(sb.toString());
 						}
 					} else if ("U".equals(mode)) {
+						logger.warn("UUU");
 						if(rulerLord.isValidInputUpdate(dao, user, mode)){
 							dmlRetval = edimDaoServices.update(dao, dbErrorStackTrace);
 						}else {
