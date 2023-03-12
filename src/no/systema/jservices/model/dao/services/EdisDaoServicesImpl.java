@@ -10,7 +10,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import no.systema.jservices.common.dao.SvtfiDao;
 import no.systema.jservices.common.util.DateTimeManager;
+import no.systema.jservices.model.dao.entities.EdimEdisAs4SenderDao;
 import no.systema.jservices.model.dao.entities.EdisDao;
+import no.systema.jservices.model.dao.mapper.EdimEdisAs4SenderMapper;
 import no.systema.jservices.model.dao.mapper.EdisMapper;
 import no.systema.jservices.model.dao.mapper.SvtfiMapper;
 import no.systema.main.util.DbErrorMessageManager;
@@ -43,6 +45,42 @@ public class EdisDaoServicesImpl implements EdisDaoServices {
 			list = this.jdbcTemplate.query( sql.toString(), new Object[] { id }, new EdisMapper());
 			
 			
+			
+		}catch(Exception e){
+			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);
+			logger.error(writer.toString());
+			//Chop the message to comply to JSON-validation
+			errorStackTrace.append(this.dbErrorMessageMgr.getJsonValidDbException(writer));
+			list = null;
+		}
+		return list;
+	}
+	
+	/**
+	 * This method is used in the edi-dms-as4-sender application (SKAT Connectivity module)
+	 * 
+	 */
+	@Override
+	public List<EdimEdisAs4SenderDao> findFilePathByOpp(String avd, String opd, String path, StringBuffer errorStackTrace){
+		
+		List<EdimEdisAs4SenderDao> list = new ArrayList<EdimEdisAs4SenderDao>();
+		
+		try{
+			StringBuffer sql = new StringBuffer();
+			sql.append(" select max(a.msn)msn, max(b.sifs) sifs ");
+			sql.append(" from edim a, edis b ");
+			sql.append(" where a.msn = b.ssn ");
+			sql.append(" and a.mavd = ? ");
+			sql.append(" and a.mtdn = ? ");
+			
+			sql.append(" and b.sifs LIKE ? ");
+			sql.append(" and a.msn > 0 ");
+			sql.append(" order by max(a.msn) desc ");
+			
+			
+			list = this.jdbcTemplate.query( sql.toString(), new Object[] { avd, opd, "%" + path + "%" }, new EdimEdisAs4SenderMapper());
+			
+
 			
 		}catch(Exception e){
 			Writer writer = this.dbErrorMessageMgr.getPrintWriter(e);

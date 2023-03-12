@@ -11,4 +11,5 @@ import no.systema.jservices.model.dao.entities.CundfDao;
  */
 public interface EdisDaoServices extends IDaoServices { 
 	
+	public List findFilePathByOpp(String avd, String opd, String path, StringBuffer errorStackTrace);
 }

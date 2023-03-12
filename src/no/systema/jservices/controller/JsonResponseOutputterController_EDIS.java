@@ -231,6 +231,82 @@ public class JsonResponseOutputterController_EDIS {
 		return sb.toString();
 
 	}
+	
+	
+	/**
+	 * 
+	 * @param session
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="syjsAS4Sender_getReadyFiles.do", method={RequestMethod.GET, RequestMethod.POST})
+	@ResponseBody
+	public String syjsAS4SenderGetReadyFiles( HttpSession session, HttpServletRequest request) {
+		JsonResponseWriter jsonWriter = new JsonResponseWriter();
+		StringBuffer sb = new StringBuffer();
+		String avd = request.getParameter("avd");
+		String opd = request.getParameter("opd");
+		String path = request.getParameter("path");
+		
+		
+		try{
+			logger.info("Inside syjsAS4Sender_getReadyFiles");
+			//TEST-->logger.info("Servlet root:" + AppConstants.VERSION_SYJSERVICES);
+			String user = request.getParameter("user");
+			//Check ALWAYS user in BRIDF
+            String userName = this.bridfDaoServices.findNameById(user);
+            //DEBUG --> logger.info("USERNAME:" + userName + "XX");
+            String errMsg = "";
+			String status = "ok";
+			StringBuffer dbErrorStackTrace = new StringBuffer();
+			
+			//Start processing now
+			if(userName!=null && !"".equals(userName)){
+				//bind attributes is any
+				//EdimEdisAs4SenderDao dao = new EdimEdisAs4SenderDao();
+				//ServletRequestDataBinder binder = new ServletRequestDataBinder(dao);
+	            //binder.bind(request);
+	            //At this point we now know if we are selecting a specific or all the db-table content (select *)
+	            List list = null;
+				//do SELECT
+	            logger.info("Before SELECT ...");
+	            if( StringUtils.isNotEmpty(avd) && StringUtils.isNotEmpty(opd) && StringUtils.isNotEmpty(path)  ){
+            		
+            		list = this.edisDaoServices.findFilePathByOpp(avd, opd, path, dbErrorStackTrace);
+            		
+	            }
+	            
+	           	//normal process result
+				if (list!=null){
+					//write the final JSON output
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
+				}else{
+					//phantom return
+					logger.info("phantom return...");
+					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, new ArrayList()));
+				}
+            
+			}else{
+				//write JSON error output
+				errMsg = "ERROR on SELECT";
+				status = "error";
+				dbErrorStackTrace.append("request input parameters are invalid: <user>, <other mandatory fields>");
+				sb.append(jsonWriter.setJsonSimpleErrorResult(userName, errMsg, status, dbErrorStackTrace));
+			}
+			
+		}catch(Exception e){
+			//write std.output error output
+			Writer writer = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(writer);
+			e.printStackTrace(printWriter);
+			return "ERROR [JsonResponseOutputterController]" + writer.toString();
+		}
+		session.invalidate();
+		return sb.toString();
+	}
+	
+	
+	
 
 	
 	
