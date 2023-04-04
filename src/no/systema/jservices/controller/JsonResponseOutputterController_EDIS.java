@@ -271,14 +271,11 @@ public class JsonResponseOutputterController_EDIS {
 				//do SELECT
 	            logger.info("Before SELECT ...");
 	            if( StringUtils.isNotEmpty(avd) && StringUtils.isNotEmpty(opd) && StringUtils.isNotEmpty(path)  ){
-            		
             		list = this.edisDaoServices.findFilePathByOpp(avd, opd, path, dbErrorStackTrace);
-            		
 	            }
 	            
 	           	//normal process result
 				if (list!=null){
-					//write the final JSON output
 					sb.append(jsonWriter.setJsonResult_Common_GetList(userName, list));
 				}else{
 					//phantom return

@@ -67,9 +67,9 @@ public class EdisDaoServicesImpl implements EdisDaoServices {
 		
 		try{
 			StringBuffer sql = new StringBuffer();
-			sql.append(" select max(a.msn)msn, max(b.sifs) sifs, max(a.m0004)m0004, max(a.m0010)m0010, ");
-			sql.append(" max(a.m0035)m0035, max(a.m1001)m1001, max(a.m1225)m1225, ");
-			sql.append(" max(a.m1004)m1004, max(a.m0065)m0065, max(a.msr)msr ");
+			sql.append(" select distinct a.msn msn, b.sifs sifs, a.m0004 m0004, a.m0010 m0010, ");
+			sql.append(" a.m0035 m0035, a.m1001 m1001, a.m1225 m1225, ");
+			sql.append(" a.m1004 m1004, a.m0065 m0065, a.msr msr, a.muuid muuid ");
 			sql.append(" from edim a, edis b ");
 			sql.append(" where a.msn = b.ssn ");
 			sql.append(" and a.mavd = ? ");
@@ -78,7 +78,8 @@ public class EdisDaoServicesImpl implements EdisDaoServices {
 			sql.append(" and b.sifs LIKE ? ");
 			sql.append(" and a.msn > 0 ");
 			sql.append(" and a.msr = ? ");
-			sql.append(" order by max(a.msn) desc ");
+			sql.append(" order by a.msn desc ");
+			sql.append(" fetch first 1 rows only ");
 			
 			
 			list = this.jdbcTemplate.query( sql.toString(), new Object[] { avd, opd, "%" + path + "%", "S" }, new EdimEdisAs4SenderMapper());
